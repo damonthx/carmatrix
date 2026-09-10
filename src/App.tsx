@@ -3,18 +3,16 @@ import {
   Search, MapPin, Heart, User, ChevronDown, 
   ArrowUpRight, CarFront, Sparkles, CheckCircle2, 
   AlertTriangle, AlertCircle, ArrowUpCircle, ArrowDownLeft,
-  RefreshCw
+  RefreshCw, Calculator, Zap, DollarSign, ShieldCheck,
+  TrendingUp, Bot, Compass, HelpCircle, Layers, SlidersHorizontal
 } from 'lucide-react';
-import { GoogleGenAI, Type, Schema } from "@google/genai";
 import SearchPage from './SearchPage';
 import TCOCalculator from './TCOCalculator';
-import SellPage from './SellPage';
 import SellMyCar from './pages/SellMyCar';
 import VehicleDetailPage from './VehicleDetailPage';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
-import HeroSearch from './components/HeroSearch';
 import VisionPage from './VisionPage';
 import TeamPage from './TeamPage';
 import PressPage from './PressPage';
@@ -33,54 +31,114 @@ import ExpertAdviceFeeds from './components/ExpertAdviceFeeds';
 import FeaturedInfluencerFeeds from './components/FeaturedInfluencerFeeds';
 import FinancePage from './FinancePage';
 
-const NavBar = ({ onSearchClick, onSellClick, onHomeClick, onSignInClick, onDashboardClick, onMarketPulseClick, onFinanceClick, session }: { onSearchClick: () => void; onSellClick: () => void; onHomeClick: () => void; onSignInClick: () => void; onDashboardClick: () => void; onMarketPulseClick: () => void; onFinanceClick: () => void; session: any }) => (
-  <header className="light-glass sticky top-0 z-50">
-    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+// Toolkit Widgets
+import EVComparisonWidget from './components/toolkit/EVComparisonWidget';
+import ValuationWidget from './components/toolkit/ValuationWidget';
+import InspectionChecklistWidget from './components/toolkit/InspectionChecklistWidget';
+import AIAdvisorWidget from './components/toolkit/AIAdvisorWidget';
+
+const NavBar = ({ 
+  onSearchClick, 
+  onSellClick, 
+  onHomeClick, 
+  onSignInClick, 
+  onDashboardClick, 
+  onMarketPulseClick, 
+  onFinanceClick, 
+  onScrollToTool,
+  session 
+}: { 
+  onSearchClick: () => void; 
+  onSellClick: () => void; 
+  onHomeClick: () => void; 
+  onSignInClick: () => void; 
+  onDashboardClick: () => void; 
+  onMarketPulseClick: () => void; 
+  onFinanceClick: () => void; 
+  onScrollToTool?: (toolId: string) => void;
+  session: any 
+}) => (
+  <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
+    <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-16">
         <div className="flex items-center gap-8">
-          <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
+          <div className="cursor-pointer flex items-center gap-2.5 shrink-0" onClick={onHomeClick}>
             <img 
               src="https://www.image2url.com/r2/default/images/1777060703818-28c3abbb-38ac-4291-b8f5-fd07d1cbb81e.png" 
-              alt="CarGurus Logo" 
+              alt="CarMeta Logo" 
               className="h-7 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
+            <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider bg-sky-100 text-[#29abe2] rounded-full border border-sky-200">
+              Research Toolkit
+            </span>
           </div>
+          
           <nav className="hidden md:flex gap-6 text-[13px] font-bold text-gray-800">
-            <div className="relative group">
-              <button onClick={onSearchClick} className="flex items-center gap-1.5 hover:text-[#29abe2] transition-colors py-5 outline-none">Shop <ChevronDown size={14} strokeWidth={1}/></button>
-              <div className="light-glass-card absolute top-[90%] left-0 w-[200px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 flex flex-col py-2">
-                <button onClick={onSearchClick} className="text-left px-4 py-2 hover:bg-slate-100/50 hover:text-[#29abe2] transition-colors">Buy</button>
-                <button onClick={onSellClick} className="text-left px-4 py-2 hover:bg-slate-100/50 hover:text-[#29abe2] transition-colors">Sell</button>
-                <a href="#" className="px-4 py-2 hover:bg-slate-100/50 hover:text-[#29abe2] transition-colors">Certified Pre-Owned</a>
-              </div>
-            </div>
-            
-            <div className="relative group">
-              <button onClick={onSellClick} className="flex items-center gap-1.5 hover:text-[#29abe2] transition-colors py-5 outline-none">Sell <ChevronDown size={14} strokeWidth={1}/></button>
-              <div className="light-glass-card absolute top-[90%] left-0 w-[160px] rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 flex flex-col py-2">
-                <button onClick={onSellClick} className="text-left px-4 py-2 hover:bg-slate-100/50 hover:text-[#29abe2] transition-colors">Sell my car</button>
-                <a href="#" className="px-4 py-2 hover:bg-slate-100/50 hover:text-[#29abe2] transition-colors">Car Values</a>
-              </div>
-            </div>
-            
-            <a href="#" onClick={(e) => { e.preventDefault(); onFinanceClick(); }} className="flex items-center gap-1.5 hover:text-[#29abe2] transition-colors py-5">Finance <ChevronDown size={14} strokeWidth={1}/></a>
-            <a href="#" onClick={(e) => { e.preventDefault(); onSellClick(); }} className="flex items-center gap-1.5 hover:text-[#29abe2] transition-colors py-5">Sell My Car</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); onMarketPulseClick(); }} className="flex items-center gap-1.5 hover:text-[#29abe2] transition-colors py-5">Market Pulse</a>
+            <button 
+              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ai-advisor'); }}
+              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+            >
+              <Sparkles size={14} className="text-[#29abe2]" />
+              AI Advisor
+            </button>
+
+            <button 
+              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('tco-calculator'); }}
+              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+            >
+              <Calculator size={14} className="text-slate-600" />
+              5-Yr TCO
+            </button>
+
+            <button 
+              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('valuation-estimator'); }}
+              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+            >
+              <DollarSign size={14} className="text-slate-600" />
+              Valuations
+            </button>
+
+            <button 
+              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ev-comparison'); }}
+              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+            >
+              <Zap size={14} className="text-emerald-500" />
+              EV vs Gas
+            </button>
+
+            <button 
+              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('inspection-checklist'); }}
+              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+            >
+              <ShieldCheck size={14} className="text-amber-500" />
+              Fee & Inspection
+            </button>
+
+            <button 
+              onClick={(e) => { e.preventDefault(); onMarketPulseClick(); }} 
+              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+            >
+              <TrendingUp size={14} className="text-slate-600" />
+              Market Pulse
+            </button>
           </nav>
         </div>
-        <div className="flex items-center gap-5 text-gray-500">
+
+        <div className="flex items-center gap-4 text-gray-500">
           <button 
-            onClick={session ? onDashboardClick : onSignInClick}
-            className="hover:text-[#29abe2] transition-colors"
+            onClick={onSearchClick}
+            className="text-xs font-bold text-slate-700 hover:text-[#29abe2] bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            <Heart size={20} strokeWidth={1} />
+            <Search size={13} />
+            <span>Search Inventory</span>
           </button>
+
           <button 
             onClick={session ? onDashboardClick : onSignInClick}
-            className="hover:text-[#29abe2] transition-colors flex items-center gap-2"
+            className="hover:text-[#29abe2] transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <User size={20} strokeWidth={1} />
+            <User size={18} strokeWidth={1.5} />
             <span className="text-[13px] font-bold text-gray-800 hidden sm:inline">
               {session ? 'Account' : 'Sign In'}
             </span>
@@ -91,52 +149,75 @@ const NavBar = ({ onSearchClick, onSellClick, onHomeClick, onSignInClick, onDash
   </header>
 );
 
-const ActionBanners = () => (
-  <div className="max-w-[1000px] mx-auto px-4 -mt-10 relative z-10 mb-16">
-    <div className="light-glass-card rounded-[14px] p-2.5 max-w-[280px] mb-6 flex justify-between items-center hidden md:flex cursor-pointer hover:bg-white/80 transition-colors">
-      <div>
-        <h4 className="text-[11px] font-bold text-slate-900">Recent searches</h4>
-        <div className="text-[11px] text-[#29abe2] font-semibold mt-0.5">All Cars <span className="text-gray-400 font-medium">Allen, TX</span></div>
-      </div>
-      <div className="bg-slate-200/50 hover:bg-slate-200 p-1 rounded-full"><ChevronDown size={14} strokeWidth={1} className="text-gray-600"/></div>
-    </div>
+const ToolkitHeroHeader = ({ 
+  activeFilter, 
+  setActiveFilter, 
+  onScrollToTool 
+}: { 
+  activeFilter: string; 
+  setActiveFilter: (f: string) => void; 
+  onScrollToTool: (toolId: string) => void;
+}) => {
+  const tools = [
+    { id: 'all', name: 'All Tools', icon: Layers },
+    { id: 'ai', name: 'AI Buyer Advisor', icon: Bot, target: 'ai-advisor' },
+    { id: 'tco', name: '5-Yr Ownership TCO', icon: Calculator, target: 'tco-calculator' },
+    { id: 'loan', name: 'Auto Loan & Budget', icon: SlidersHorizontal, target: 'loan-calculator' },
+    { id: 'ev', name: 'EV vs Gas Simulator', icon: Zap, target: 'ev-comparison' },
+    { id: 'valuation', name: 'Trade-In & Valuation', icon: DollarSign, target: 'valuation-estimator' },
+    { id: 'inspection', name: 'Inspection & Fees', icon: ShieldCheck, target: 'inspection-checklist' },
+    { id: 'market', name: 'Market Pulse Trends', icon: TrendingUp, target: 'market-trends' },
+  ];
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="light-glass-card p-6 rounded-[20px] flex flex-col justify-between relative cursor-pointer min-h-[160px] overflow-hidden group">
-        <div className="z-10 relative">
-          <h3 className="text-[20px] font-bold leading-tight mb-2 pr-4 text-slate-900">Sell your car for the best price</h3>
-          <p className="text-[12px] text-slate-600 font-medium max-w-[150px]">Compare multiple offers in minutes</p>
-        </div>
-        <div className="absolute right-4 bottom-4 z-10 w-7 h-7 bg-white border border-slate-200/50 group-hover:bg-white/80 transition-colors rounded-full flex items-center justify-center">
-          <ArrowUpRight size={16} strokeWidth={1} className="text-slate-900" />
-        </div>
-        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=300&q=80" className="absolute -bottom-8 -right-8 w-40 h-40 object-cover rounded-full opacity-30 mix-blend-multiply" alt="Car"/>
-      </div>
-      
-      <div className="bg-[#29abe2] text-white p-6 rounded-[20px] flex flex-col justify-between relative cursor-pointer min-h-[160px] group shadow-[0_8px_30px_rgb(0,0,0,0.07)]">
-        <div className="flex justify-between items-start">
-          <h3 className="text-[20px] font-bold leading-tight max-w-[160px] text-white">Start your financing online</h3>
-          <div className="bg-white/20 border border-white/20 text-white p-1 rounded flex items-center justify-center w-6 h-6 shadow-sm"><span className="text-[11px] font-bold">%</span></div>
-        </div>
-        <div className="absolute right-4 bottom-4 w-7 h-7 bg-white/20 border border-white/20 group-hover:bg-white/30 transition-colors rounded-full flex items-center justify-center">
-          <ArrowUpRight size={16} strokeWidth={1} className="text-white" />
-        </div>
-      </div>
+  return (
+    <div className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="light-glass-card p-6 rounded-[20px] flex flex-col justify-between relative cursor-pointer min-h-[160px] group">
-        <h3 className="text-[20px] font-bold leading-tight max-w-[180px] text-slate-900">
-          Search <span className="text-[#CC0000]">in your own words</span> with AI
-        </h3>
-        <div className="absolute top-5 right-5 text-[#CC0000]">
-          <Sparkles size={20} className="text-[#CC0000]" strokeWidth={1}/>
+      <div className="max-w-[1100px] mx-auto text-center relative z-10">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-sky-500/10 border border-sky-400/30 rounded-full text-[#29abe2] text-xs font-bold mb-4">
+          <Sparkles size={14} />
+          <span>Car Buyer Intelligence Suite</span>
         </div>
-        <div className="absolute right-4 bottom-4 w-7 h-7 bg-white border border-slate-200/50 group-hover:bg-white/80 transition-colors rounded-full flex items-center justify-center">
-          <ArrowUpRight size={16} strokeWidth={1} className="text-slate-900" />
+
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight mb-4">
+          Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] to-emerald-400">buy smarter</span>.
+        </h1>
+
+        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed mb-8">
+          Unbiased calculators, 5-year ownership cost projections, live market valuations, and AI negotiation research designed to save you thousands.
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-slate-800/80 backdrop-blur-md rounded-2xl border border-slate-700/80 max-w-4xl mx-auto shadow-2xl">
+          {tools.map((t) => {
+            const Icon = t.icon;
+            const isSelected = activeFilter === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => {
+                  setActiveFilter(t.id);
+                  if (t.target) {
+                    onScrollToTool(t.target);
+                  }
+                }}
+                className={
+                  "flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer " +
+                  (isSelected
+                    ? "bg-[#29abe2] text-white shadow-lg shadow-sky-500/25"
+                    : "text-slate-300 hover:text-white hover:bg-slate-700/60")
+                }
+              >
+                <Icon size={14} className={isSelected ? "text-white" : "text-slate-400"} />
+                <span>{t.name}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const EstimateBudgetSection = () => {
   const [downPayment, setDownPayment] = React.useState(2350);
@@ -152,221 +233,142 @@ const EstimateBudgetSection = () => {
     : monthlyPayment * loanTerm;
     
   const totalBudget = Math.round(maxLoanAmount + downPayment + (includeTradeIn ? tradeInAmount : 0));
+  const totalLoanRepayment = Math.round(monthlyPayment * loanTerm);
+  const totalInterestPaid = Math.max(0, totalLoanRepayment - Math.round(maxLoanAmount));
 
   return (
-    <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start mt-8 mb-20 px-4 md:px-0">
-      <div className="w-full lg:w-[35%] pt-4">
-        <h2 className="text-[40px] font-extrabold mb-6 tracking-tight text-[#0f1111] leading-tight">Estimate your budget</h2>
-        <p className="text-[#0f1111] font-medium mb-8 text-[15px] leading-relaxed">Then get personalized rates with no impact on your credit score</p>
-        <button className="bg-[#29abe2] text-white px-6 py-2.5 rounded-full font-bold text-[15px] hover:bg-[#2089b5] transition-colors">
-          Get pre-qualified
-        </button>
-      </div>
-      
-      <div className="w-full lg:w-[65%]">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div>
-            <label className="block text-[12px] font-bold text-[#0f1111] mb-2">Est. down payment</label>
-            <div className="light-glass rounded-md p-3 text-[15px] text-[#0f1111] flex focus-within:ring-1 focus-within:ring-[#29abe2] focus-within:border-[#29abe2] transition-all">
-              <span className="text-[#0f1111] mr-1">$</span>
-              <input 
-                type="number" 
-                value={downPayment} 
-                onChange={e => setDownPayment(Number(e.target.value))}
-                className="w-full outline-none font-medium bg-transparent text-[#0f1111]"
-              />
-            </div>
+    <div className="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-200/40 p-6 md:p-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
+            <SlidersHorizontal size={14} className="text-[#29abe2]" />
+            <span>Financing & Budget Engine</span>
           </div>
-          
-          <div>
-            <label className="block text-[12px] font-bold text-[#0f1111] mb-2">Loan term</label>
-            <div className="light-glass rounded-md p-3 text-[15px] text-[#0f1111] relative">
-              <select 
-                value={loanTerm} 
-                onChange={e => setLoanTerm(Number(e.target.value))}
-                className="w-full appearance-none outline-none bg-transparent font-medium text-[#0f1111] cursor-pointer"
-              >
-                <option value={36}>36 months</option>
-                <option value={48}>48 months</option>
-                <option value={60}>60 months</option>
-                <option value={72}>72 months</option>
-              </select>
-              <ChevronDown size={16} strokeWidth={1} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"/>
-            </div>
-          </div>
-          
-          <div>
-            <label className="block text-[12px] font-bold text-[#0f1111] mb-2">Credit score</label>
-            <div className="light-glass rounded-md p-3 text-[15px] text-[#0f1111] relative">
-              <select 
-                value={apr} 
-                onChange={e => setApr(Number(e.target.value))}
-                className="w-full appearance-none outline-none bg-transparent font-medium text-[#0f1111] cursor-pointer"
-              >
-                <option value={0.065}>740+ (Excellent)</option>
-                <option value={0.0979}>680-739 (Good)</option>
-                <option value={0.1400}>630-679 (Fair)</option>
-                <option value={0.2000}>Below 630</option>
-              </select>
-              <ChevronDown size={16} strokeWidth={1} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"/>
-            </div>
-          </div>
-          
-          <div>
-            <label className="block text-[12px] font-bold text-[#0f1111] mb-2">Est. monthly payment</label>
-            <div className="light-glass rounded-md p-3 text-[15px] text-[#0f1111] flex focus-within:ring-1 focus-within:ring-[#29abe2] focus-within:border-[#29abe2] transition-all">
-              <span className="text-[#0f1111] mr-1">$</span>
-              <input 
-                type="number" 
-                value={monthlyPayment} 
-                onChange={e => setMonthlyPayment(Number(e.target.value))}
-                className="w-full outline-none font-medium bg-transparent text-[#0f1111]"
-              />
-            </div>
-          </div>
+          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Auto Loan & Affordability Calculator</h3>
+          <p className="text-slate-500 text-sm mt-1">Calculate purchasing power, down payment leverage, and total interest amortization.</p>
         </div>
-        
-        <div className="flex items-center gap-6 mb-10 h-10">
-          <div className="flex items-center gap-3 cursor-pointer shrink-0" onClick={() => setIncludeTradeIn(!includeTradeIn)}>
-            <div className={`w-[42px] h-6 rounded-full relative transition-colors ${includeTradeIn ? 'bg-[#29abe2]' : 'bg-[#999999]'}`}>
-              <div className={`w-5 h-5 bg-white rounded-full absolute top-[2px] shadow-[0_2px_4px_rgba(0,0,0,0.1)] border border-slate-200/50 transition-all ${includeTradeIn ? 'left-[20px]' : 'left-[2px]'}`}></div>
-            </div>
-            <span className="text-[14px] text-[#0f1111] font-medium">Include trade-in</span>
-          </div>
 
-          {includeTradeIn && (
-            <div className="flex items-center gap-3 animate-in fade-in slide-in-from-left-4 duration-300">
-              <label className="text-[14px] text-[#0f1111] font-medium whitespace-nowrap">Trade-in value:</label>
-              <div className="light-glass rounded-md p-2 text-[15px] text-[#0f1111] flex focus-within:ring-1 focus-within:ring-[#29abe2] focus-within:border-[#29abe2] transition-all w-32">
-                <span className="text-[#0f1111] mr-1">$</span>
+        <div className="bg-[#29abe2] text-white p-4 rounded-2xl shrink-0 min-w-[200px]">
+          <span className="text-[11px] font-semibold text-sky-100 uppercase tracking-wider block">Estimated Max Vehicle Price</span>
+          <span className="text-3xl font-black text-white leading-none block mt-1">
+            {"$" + totalBudget.toLocaleString()}
+          </span>
+          <span className="text-[11px] text-sky-100 block mt-1 font-medium">with {((apr || 0) * 100).toFixed(2)}% APR</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+        <div className="lg:col-span-7 space-y-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 mb-1">Target Monthly</label>
+              <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+                <span className="text-slate-400 mr-1">$</span>
                 <input 
                   type="number" 
-                  value={tradeInAmount} 
-                  onChange={e => setTradeInAmount(Number(e.target.value))}
-                  className="w-full outline-none font-medium bg-transparent text-[#0f1111]"
-                  placeholder="0"
+                  value={monthlyPayment} 
+                  onChange={e => setMonthlyPayment(Number(e.target.value))}
+                  className="w-full outline-none bg-transparent"
                 />
               </div>
             </div>
-          )}
-        </div>
-        
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
-          <span className="text-[52px] md:text-[68px] font-extrabold tracking-tighter text-[#0f1111] leading-none">${totalBudget.toLocaleString()}</span>
-          <span className="text-[16px] md:text-[18px] font-bold text-[#0f1111] flex items-center tracking-tight">
-            with {(apr * 100).toFixed(2)}% APR 
-            <div className="ml-1.5 w-[18px] h-[18px] rounded-full border-[1.5px] border-[#0f1111] text-[#0f1111] flex items-center justify-center text-[11px] font-bold cursor-help relative -top-0.5">?</div>
-          </span>
-        </div>
-        
-        <p className="text-[13px] text-[#0f1111] font-medium mt-8">
-          Not ready to pre-qualify? <a href="#" className="font-bold underline decoration-[1.5px] underline-offset-2 hover:text-[#29abe2] hover:decoration-[#29abe2] transition-colors">Shop by estimated budget</a>
-        </p>
-      </div>
-    </div>
-  );
-};
 
-const DiscoverBanner = () => (
-  <div 
-    className="md:rounded-[40px] max-w-[1000px] w-full mx-auto my-14 relative bg-cover bg-center h-[350px] flex items-center justify-center p-8 group overflow-hidden cursor-pointer shadow-xl shadow-slate-200/50"
-    style={{ backgroundImage: 'url(https://www.image2url.com/r2/default/images/1777315584853-8c5b178f-06a1-46e3-a841-d7f7f06dd0f9.jpg)' }}
-  >
-    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
-    <div className="relative z-10 max-w-[800px] mx-auto text-center">
-      <h2 className="text-[36px] md:text-[48px] font-extrabold text-white tracking-tight drop-shadow-xl shadow-black">Discover your perfect car</h2>
-    </div>
-  </div>
-);
-
-const BrowseByBodyType = ({ onCategoryClick }: { onCategoryClick: (category: string) => void }) => {
-  const bodyTypes = [
-    { name: "SUVs", image: "https://www.image2url.com/r2/default/images/1777076688091-58e09a91-5b3b-4dd7-b654-601a5c63f23f.png" },
-    { name: "Trucks", image: "https://www.image2url.com/r2/default/images/1777076717445-1b9247fb-8052-48e7-8c93-12ae7eab3246.png" },
-    { name: "Sedans", image: "https://www.image2url.com/r2/default/images/1777076745922-a40daeac-f2f6-47dd-ae25-20531dc8e4dc.png" },
-    { name: "Minivans", image: "https://www.image2url.com/r2/default/images/1777078730143-68ee0acb-9d6c-4346-be9b-9d9b17c9846c.png" },
-    { name: "Hatchbacks", image: "https://www.image2url.com/r2/default/images/1777078912101-fc5cbb47-d8b3-4c26-bf42-30c36e8c9476.png" },
-    { name: "Wagons", image: "https://www.image2url.com/r2/default/images/1777087101613-38ede01b-918c-4bc8-b1ae-1806a01a96ab.png" },
-    { name: "Coupes", image: "https://www.image2url.com/r2/default/images/1777087179492-c16fb7d2-b502-44df-b5c6-ef8d394fb26a.png" }
-  ];
-  
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const getCardStyle = (index: number) => {
-    const total = bodyTypes.length;
-    // Calculate distance from active index (0 is active, 1 is right, -1 is left, etc.)
-    let diff = (index - activeIndex) % total;
-    if (diff < -Math.floor(total / 2)) diff += total;
-    if (diff > Math.floor(total / 2)) diff -= total;
-
-    // The front 3 cards (diff: -1, 0, 1) are sharp, others are blurred and pushed back
-    const isFront = Math.abs(diff) <= 1;
-    
-    // Calculate 3D transforms
-    const translateZ = isFront ? 0 : -200;
-    const translateX = diff * 198; 
-    const scale = isFront ? (diff === 0 ? 1 : 0.9) : 0.7;
-    const opacity = isFront ? 1 : 0.6;
-    const blur = isFront ? 'blur(0px)' : 'blur(4px)';
-    const zIndex = isFront ? (diff === 0 ? 30 : 20) : 10;
-
-    return {
-      transform: `translateX(calc(-50% + ${translateX}px)) translateZ(${translateZ}px) scale(${scale})`,
-      opacity,
-      filter: blur,
-      zIndex,
-      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-    };
-  };
-
-  return (
-    <div className="text-center mb-24 overflow-hidden py-10">
-      <h2 className="text-3xl font-bold text-slate-900 mb-12 tracking-tight">Browse by body type</h2>
-      <div 
-        className="relative h-[360px] w-full max-w-[1000px] mx-auto perspective-1000"
-        style={{ perspective: '1000px' }}
-      >
-        {bodyTypes.map((type, i) => (
-          <div 
-            key={i} 
-            className="absolute left-1/2 top-0 light-glass-card rounded-2xl w-[288px] h-[288px] p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-white/80"
-            style={getCardStyle(i)}
-            onClick={() => {
-              if (activeIndex === i) {
-                // Determine the correct API value for the body type
-                let apiValue = type.name;
-                if (type.name === 'SUVs') apiValue = 'SUV';
-                if (type.name === 'Trucks') apiValue = 'Pickup Truck';
-                if (type.name === 'Sedans') apiValue = 'Sedan';
-                if (type.name === 'Minivans') apiValue = 'Minivan';
-                if (type.name === 'Hatchbacks') apiValue = 'Hatchback';
-                if (type.name === 'Wagons') apiValue = 'Wagon';
-                if (type.name === 'Coupes') apiValue = 'Coupe';
-                onCategoryClick(apiValue);
-              } else {
-                setActiveIndex(i);
-              }
-            }}
-          >
-            <div className="h-[172px] w-full flex items-center justify-center mb-3">
-               <img src={type.image} alt={type.name} className="w-full h-full object-contain" />
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 mb-1">Down Payment</label>
+              <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+                <span className="text-slate-400 mr-1">$</span>
+                <input 
+                  type="number" 
+                  value={downPayment} 
+                  onChange={e => setDownPayment(Number(e.target.value))}
+                  className="w-full outline-none bg-transparent"
+                />
+              </div>
             </div>
-            <span className="text-[16px] font-bold text-slate-800">{type.name}</span>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 mb-1">Loan Term</label>
+              <div className="relative">
+                <select 
+                  value={loanTerm} 
+                  onChange={e => setLoanTerm(Number(e.target.value))}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer"
+                >
+                  <option value={36}>36 months</option>
+                  <option value={48}>48 months</option>
+                  <option value={60}>60 months</option>
+                  <option value={72}>72 months</option>
+                  <option value={84}>84 months</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 mb-1">Credit Tier / APR</label>
+              <div className="relative">
+                <select 
+                  value={apr} 
+                  onChange={e => setApr(Number(e.target.value))}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer"
+                >
+                  <option value={0.065}>740+ (6.50%)</option>
+                  <option value={0.0979}>680-739 (9.79%)</option>
+                  <option value={0.1400}>630-679 (14.0%)</option>
+                  <option value={0.2000}>Under 630 (20%)</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              </div>
+            </div>
           </div>
-        ))}
-      </div>
-      
-      {/* Navigation Indicators */}
-      <div className="flex justify-center gap-2 mt-4">
-        {bodyTypes.map((_, i) => (
-          <button
-            key={i}
-            className={`w-2 h-2 rounded-full transition-all ${
-              i === activeIndex ? 'bg-[#29abe2] w-6' : 'bg-slate-300 hover:bg-slate-400'
-            }`}
-            onClick={() => setActiveIndex(i)}
-          />
-        ))}
+
+          <div className="flex items-center gap-4 pt-1">
+            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setIncludeTradeIn(!includeTradeIn)}>
+              <div className={"w-10 h-5 rounded-full relative transition-colors " + (includeTradeIn ? "bg-[#29abe2]" : "bg-slate-300")}>
+                <div className={"w-4 h-4 bg-white rounded-full absolute top-0.5 transition-all " + (includeTradeIn ? "left-5" : "left-0.5")}></div>
+              </div>
+              <span className="text-xs text-slate-800 font-bold">Include Trade-In Equity</span>
+            </div>
+
+            {includeTradeIn && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-500 font-semibold">Trade-in Value:</span>
+                <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 w-28">
+                  <span className="text-slate-400 mr-1">$</span>
+                  <input 
+                    type="number" 
+                    value={tradeInAmount} 
+                    onChange={e => setTradeInAmount(Number(e.target.value))}
+                    className="w-full outline-none bg-transparent"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="lg:col-span-5 flex flex-col justify-between space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between text-slate-600">
+              <span>Estimated Financed Principal:</span>
+              <span className="font-bold text-slate-900">{"$" + Math.round(maxLoanAmount).toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between text-slate-600">
+              <span>Total Estimated Interest:</span>
+              <span className="font-bold text-amber-700">{"$" + totalInterestPaid.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between text-slate-600">
+              <span>Total Loan Payments Over {loanTerm} Mo:</span>
+              <span className="font-bold text-slate-900">{"$" + totalLoanRepayment.toLocaleString()}</span>
+            </div>
+          </div>
+
+          <div className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-1 border-t border-slate-200">
+            <HelpCircle size={13} className="shrink-0" />
+            <span>Excludes state sales tax & title fees. Prequalify with lenders for exact APR.</span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -383,122 +385,126 @@ const ResearchAndReviews = () => {
   const guides = [
     { title: "The Best Gas Mileage Trucks of 2026", img: "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=600&q=80", url: "https://www.edmunds.com/car-reviews/" },
     { title: "The Best Cars for Remote Work in 2026", img: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=600&q=80", url: "https://www.edmunds.com/car-reviews/" },
-    { title: "Toyota Avalon Buying Guide", img: "https://image.pollinations.ai/prompt/Toyota%20Avalon%20sedan%20cinematic%20photography?width=600&height=400&nologo=true", url: "https://www.edmunds.com/toyota/avalon/" },
-    { title: "Toyota 4-Runner Buying Guide", img: "https://image.pollinations.ai/prompt/Toyota%204Runner%20SUV%20offroad%20cinematic%20photography?width=600&height=400&nologo=true", url: "https://www.edmunds.com/toyota/4runner/" },
+    { title: "Toyota RAV4 Long-Term Ownership Review", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80", url: "https://www.edmunds.com/toyota/rav4/" },
+    { title: "How to Avoid Dealer Junk Fees in 2026", img: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80", url: "https://www.edmunds.com/car-reviews/" },
   ];
 
-  const CardSlider = ({ title, items, isReview = false }: { title: string, items: any[], isReview?: boolean }) => (
-    <div className="mb-12">
-      <div className="flex justify-between items-end mb-4">
-        <h3 className="text-[20px] font-bold text-slate-900 tracking-tight">{title}</h3>
-        <a href="#" className="text-[11px] font-bold text-slate-900 underline underline-offset-[3px] hover:text-[#29abe2] decoration-[1.5px] decoration-gray-300 hover:decoration-[#29abe2] transition-colors pb-0.5">View all</a>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {items.map((item, idx) => (
-          <a key={idx} href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="block cursor-pointer group light-glass rounded-[16px] p-2 hover:bg-white/80 transition-all">
-            <div className="rounded-[12px] overflow-hidden mb-3 h-[140px] relative">
-              <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            </div>
-            {isReview ? (
-              <div className="flex items-center gap-1.5 mb-1 px-1 text-[10px] font-bold text-slate-600">
-                <div className="w-[5px] h-[5px] rounded-full bg-[#29abe2]"></div>
-                Expert rating: {item.rating}
-              </div>
-            ) : (
-              <div className="mb-1 px-1 text-[10px] font-bold text-slate-900">Expert guide</div>
-            )}
-            <h4 className="font-bold px-1 text-[13px] text-slate-900 leading-[1.3] group-hover:underline underline-offset-2 decoration-[1.5px]">{item.title}</h4>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
-    <div className="space-y-8">
-      <MarketPulse />
+    <div className="space-y-12">
       <div>
-        <h2 className="text-[24px] font-bold text-slate-900 mb-8 tracking-tight">Research and reviews</h2>
-        <CardSlider title="Car reviews" items={reviews} isReview={true} />
-        <CardSlider title="Buying guides" items={guides} />
+        <div className="flex justify-between items-end mb-4">
+          <div>
+            <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Latest Vehicle Deep Dives</h3>
+            <p className="text-xs text-slate-500 mt-0.5">Independent road tests, reliability findings, and safety scores</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {reviews.map((item, idx) => (
+            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-200/80 rounded-2xl p-3 hover:shadow-lg transition-all">
+              <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
+                <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <span className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  {item.rating}
+                </span>
+              </div>
+              <h4 className="text-xs font-bold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug">{item.title}</h4>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="flex justify-between items-end mb-4">
+          <div>
+            <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Buyer Research Guides</h3>
+            <p className="text-xs text-slate-500 mt-0.5">Practical strategies, financing tips, and inspection advice</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {guides.map((item, idx) => (
+            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-200/80 rounded-2xl p-3 hover:shadow-lg transition-all">
+              <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
+                <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <h4 className="text-xs font-bold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug">{item.title}</h4>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
 
-
-
-const Footer = ({ onNavigate }: { onNavigate: (path: 'home' | 'search' | 'sell' | 'vision' | 'team' | 'press' | 'pr' | 'faq' | 'contact' | 'dealers' | 'influencers' | 'market_pulse' | 'admin_onboarding' | 'finance') => void }) => (
-  <footer className="bg-[#000000] pt-16 mt-auto">
-    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-      <div className="flex flex-col md:flex-row justify-between items-start gap-12">
-        {/* Logo */}
-        <div className="flex-shrink-0">
-          <img 
-            src="https://www.image2url.com/r2/default/images/1777076293809-42633873-14cc-4535-95df-47dc762b0621.png" 
-            alt="CarMeta Logo" 
-            className="h-8 w-auto" 
-            referrerPolicy="no-referrer"
-          />
+const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
+  <footer className="bg-slate-950 text-slate-400 text-xs py-14 border-t border-slate-800 mt-20">
+    <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <div className="col-span-2 space-y-3">
+          <div className="flex items-center gap-2">
+            <img 
+              src="https://www.image2url.com/r2/default/images/1777060703818-28c3abbb-38ac-4291-b8f5-fd07d1cbb81e.png" 
+              alt="CarMeta Logo" 
+              className="h-6 w-auto object-contain brightness-200"
+              referrerPolicy="no-referrer"
+            />
+            <span className="text-sm font-black text-white">CarMeta</span>
+          </div>
+          <p className="text-slate-400 text-xs max-w-sm leading-relaxed">
+            Empowering smart vehicle buyers with unbiased research tools, transparent 5-year ownership projections, and real-time market data.
+          </p>
         </div>
-        
-        {/* Categories */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 w-full md:w-auto flex-1 max-w-[800px] md:pl-10">
-          <div>
-            <h4 className="text-white font-bold text-[15px] mb-4">Products</h4>
-            <ul className="space-y-3">
-              <li><button onClick={() => onNavigate('search')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium text-left">Used Cars for Sale</button></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">New</a></li>
-              <li><button onClick={() => onNavigate('finance')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium text-left">Finance</button></li>
-              <li><button onClick={() => onNavigate('sell')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium text-left">Sell Your Car</button></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-bold text-[15px] mb-4">Work With CarMeta</h4>
-            <ul className="space-y-3">
-              <li><button onClick={() => onNavigate('dealers')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium text-left">Dealers</button></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">Partners</a></li>
-              <li><button onClick={() => onNavigate('influencers')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium text-left">Influencers</button></li>
-              <li><button onClick={() => onNavigate('admin_onboarding')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium text-left">Dealer Intake (Admin)</button></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-bold text-[15px] mb-4">Resources</h4>
-            <ul className="space-y-3">
-              <li><button onClick={() => onNavigate('faq')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">FAQ</button></li>
-              <li><button onClick={() => onNavigate('contact')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">Contact Us</button></li>
-              <li><button onClick={() => onNavigate('market_pulse')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium text-left">Market Pulse</button></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-bold text-[15px] mb-4">About</h4>
-            <ul className="space-y-3">
-              <li><button onClick={() => onNavigate('vision')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">Vision</button></li>
-              <li><button onClick={() => onNavigate('team')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">Team</button></li>
-              <li><button onClick={() => onNavigate('press')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">Press</button></li>
-              <li><button onClick={() => onNavigate('pr')} className="text-slate-400 hover:text-white transition-colors text-[13px] font-medium">Public Relations</button></li>
-            </ul>
-          </div>
+
+        <div>
+          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Research Tools</h4>
+          <ul className="space-y-2">
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">AI Buying Advisor</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">5-Year TCO Calculator</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">EV vs Gas Simulator</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Valuation & Trade-In</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Inspection Checklist</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Marketplace</h4>
+          <ul className="space-y-2">
+            <li><button onClick={() => onNavigate('search')} className="hover:text-white cursor-pointer">Search Inventory</button></li>
+            <li><button onClick={() => onNavigate('sell')} className="hover:text-white cursor-pointer">Sell Your Car</button></li>
+            <li><button onClick={() => onNavigate('market_pulse')} className="hover:text-white cursor-pointer">Market Pulse Trends</button></li>
+            <li><button onClick={() => onNavigate('finance')} className="hover:text-white cursor-pointer">Financing Portal</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Company</h4>
+          <ul className="space-y-2">
+            <li><button onClick={() => onNavigate('vision')} className="hover:text-white cursor-pointer">Vision</button></li>
+            <li><button onClick={() => onNavigate('team')} className="hover:text-white cursor-pointer">Team</button></li>
+            <li><button onClick={() => onNavigate('dealers')} className="hover:text-white cursor-pointer">Dealer Network</button></li>
+            <li><button onClick={() => onNavigate('contact')} className="hover:text-white cursor-pointer">Contact</button></li>
+          </ul>
         </div>
       </div>
-    </div>
-    
-    {/* Bottom Band */}
-    <div className="bg-[#29abe2] py-4">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left">
-        <p className="text-white text-[13px] font-medium">© 2026 CarMeta LLC. All rights reserved.</p>
+
+      <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
+        <span>© 2026 CarMeta Inc. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
+        <div className="flex gap-4">
+          <button onClick={() => onNavigate('faq')} className="hover:text-slate-400 cursor-pointer">FAQ</button>
+          <button onClick={() => onNavigate('pr')} className="hover:text-slate-400 cursor-pointer">Press & PR</button>
+        </div>
       </div>
     </div>
   </footer>
 );
 
 export default function App() {
-  const [currentPath, setCurrentPath] = useState<'home' | 'search' | 'sell' | 'vehicle_detail' | 'signin' | 'signup' | 'dashboard' | 'vision' | 'team' | 'press' | 'pr' | 'faq' | 'contact' | 'dealers' | 'influencers' | 'market_pulse' | 'admin_onboarding' | 'finance'>('home');
-  const [selectedVehicle, setSelectedVehicle] = useState<MarketCheckCar | null>(null);
+  const [currentPath, setCurrentPath] = useState<string>('home');
   const [session, setSession] = useState<any>(null);
-  const [signupEmail, setSignupEmail] = useState<string>('');
+  const [selectedVehicle, setSelectedVehicle] = useState<MarketCheckCar | null>(null);
+  const [signupEmail, setSignupEmail] = useState('');
   const [showSignupSuccess, setShowSignupSuccess] = useState(false);
   const [searchFilters, setSearchFilters] = useState<any>(null);
+  const [activeToolkitFilter, setActiveToolkitFilter] = useState<string>('all');
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -519,18 +525,27 @@ export default function App() {
     setCurrentPath('vehicle_detail');
   };
 
-  // Protected route logic
-  const navigateTo = (path: 'home' | 'search' | 'sell' | 'vehicle_detail' | 'signin' | 'signup' | 'dashboard' | 'vision' | 'team' | 'press' | 'pr' | 'faq' | 'contact' | 'dealers' | 'influencers' | 'market_pulse' | 'admin_onboarding' | 'finance') => {
+  const scrollToTool = (toolId: string) => {
+    setTimeout(() => {
+      const el = document.getElementById(toolId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
+  const navigateTo = (path: string) => {
     const protectedPaths = ['dashboard'];
     if (protectedPaths.includes(path) && !session) {
       setCurrentPath('signin');
     } else {
       setCurrentPath(path);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="font-sans text-slate-900 min-h-screen selection:bg-[#29abe2]/20 relative flex flex-col">
+    <div className="font-sans text-slate-900 min-h-screen selection:bg-[#29abe2]/20 relative flex flex-col bg-slate-50/50">
       <NavBar 
         onSearchClick={() => navigateTo('search')}
         onSellClick={() => navigateTo('sell')}
@@ -539,6 +554,7 @@ export default function App() {
         onDashboardClick={() => navigateTo('dashboard')}
         onMarketPulseClick={() => navigateTo('market_pulse')}
         onFinanceClick={() => navigateTo('finance')}
+        onScrollToTool={scrollToTool}
         session={session}
       />
       
@@ -606,38 +622,74 @@ export default function App() {
           <FinancePage />
         ) : (
           <>
-            <HeroSearch 
-              onSearch={(filters) => {
-                setSearchFilters(filters);
-                navigateTo('search');
-              }} 
-              onSell={() => navigateTo('sell')}
+            <ToolkitHeroHeader 
+              activeFilter={activeToolkitFilter} 
+              setActiveFilter={setActiveToolkitFilter}
+              onScrollToTool={scrollToTool}
             />
           
-          <main className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
-            <BrowseByBodyType 
-              onCategoryClick={(category) => {
-                setSearchFilters({ bodyTypes: [category] });
-                navigateTo('search');
-              }}
-            />
-            <EstimateBudgetSection />
-            <TCOCalculator />
-          </main>
-          
-          <DiscoverBanner />
-          
-          <main className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 py-8 mb-8">
-            <ResearchAndReviews />
-          </main>
-          
+            <main className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+              
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'ai') && (
+                <section id="ai-advisor" className="scroll-mt-24">
+                  <AIAdvisorWidget />
+                </section>
+              )}
 
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'tco') && (
+                <section id="tco-calculator" className="scroll-mt-24">
+                  <TCOCalculator />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'loan') && (
+                <section id="loan-calculator" className="scroll-mt-24">
+                  <EstimateBudgetSection />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'ev') && (
+                <section id="ev-comparison" className="scroll-mt-24">
+                  <EVComparisonWidget />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'valuation') && (
+                <section id="valuation-estimator" className="scroll-mt-24">
+                  <ValuationWidget />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'inspection') && (
+                <section id="inspection-checklist" className="scroll-mt-24">
+                  <InspectionChecklistWidget />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'market') && (
+                <section id="market-trends" className="scroll-mt-24 bg-white rounded-3xl border border-slate-200/80 shadow-xl p-6 md:p-8">
+                  <div className="mb-6">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
+                      <TrendingUp size={14} className="text-[#29abe2]" />
+                      <span>Live Market Feed</span>
+                    </div>
+                    <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Market Trends & Price Index</h3>
+                    <p className="text-slate-500 text-sm mt-1">Track real-time inventory days-supply, wholesale price trajectory, and regional price adjustments.</p>
+                  </div>
+                  <MarketPulse onSearchClick={() => navigateTo('search')} />
+                </section>
+              )}
+
+              <section className="pt-6 border-t border-slate-200">
+                <ResearchAndReviews />
+              </section>
+            </main>
           
-          <LatestArticles />
-          <ExpertAdviceFeeds />
-          <FeaturedInfluencerFeeds />
-        </>
-      )}
+            <LatestArticles />
+            <ExpertAdviceFeeds />
+            <FeaturedInfluencerFeeds />
+          </>
+        )}
       </div>
       
       <Footer onNavigate={navigateTo} />
