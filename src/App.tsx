@@ -60,8 +60,8 @@ const NavBar = ({
 }) => (
   <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-18 py-2">
-        <div className="flex items-center gap-8">
+      <div className="flex justify-between items-center h-20">
+        <div className="flex items-center gap-10">
           <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
@@ -71,74 +71,64 @@ const NavBar = ({
             />
           </div>
           
-          <nav className="hidden md:flex gap-6 text-[13px] font-bold text-gray-800">
+          <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold text-slate-600">
             <button 
               onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ai-advisor'); }}
-              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
-              <Sparkles size={14} className="text-[#29abe2]" />
               AI Advisor
             </button>
 
             <button 
               onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('tco-calculator'); }}
-              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
-              <Calculator size={14} className="text-slate-600" />
-              5-Yr TCO
+              5-Year TCO
             </button>
 
             <button 
               onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('valuation-estimator'); }}
-              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
-              <DollarSign size={14} className="text-slate-600" />
-              Valuations
+              Valuation
             </button>
 
             <button 
               onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ev-comparison'); }}
-              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
-              <Zap size={14} className="text-emerald-500" />
               EV vs Gas
             </button>
 
             <button 
               onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('inspection-checklist'); }}
-              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
-              <ShieldCheck size={14} className="text-amber-500" />
               Fee & Inspection
             </button>
 
             <button 
               onClick={(e) => { e.preventDefault(); onMarketPulseClick(); }} 
-              className="hover:text-[#29abe2] transition-colors py-5 flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
-              <TrendingUp size={14} className="text-slate-600" />
               Market Pulse
             </button>
           </nav>
         </div>
 
-        <div className="flex items-center gap-4 text-gray-500">
+        <div className="flex items-center gap-3">
           <button 
             onClick={onSearchClick}
-            className="text-xs font-bold text-slate-700 hover:text-[#29abe2] bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 px-3.5 py-2 rounded-lg transition-colors cursor-pointer border border-slate-200/70"
           >
-            <Search size={13} />
-            <span>Search Inventory</span>
+            Search Inventory
           </button>
 
           <button 
             onClick={session ? onDashboardClick : onSignInClick}
-            className="hover:text-[#29abe2] transition-colors flex items-center gap-2 cursor-pointer"
+            className="text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-lg transition-all shadow-xs cursor-pointer"
           >
-            <User size={18} strokeWidth={1.5} />
-            <span className="text-[13px] font-bold text-gray-800 hidden sm:inline">
-              {session ? 'Account' : 'Sign In'}
-            </span>
+            {session ? 'Account' : 'Sign In'}
           </button>
         </div>
       </div>
