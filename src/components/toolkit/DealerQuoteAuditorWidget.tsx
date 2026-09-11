@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileSearch, AlertTriangle, CheckCircle2, Copy, Check, Sparkles, DollarSign, Plus, Trash2, MessageSquare } from 'lucide-react';
+import { FileSearch, AlertTriangle, CheckCircle2, Copy, Check, DollarSign, Plus, Trash2, MessageSquare } from 'lucide-react';
 
 interface FeeItem {
   id: string;
@@ -212,8 +212,7 @@ Thank you,
             </div>
 
             {junkTotal > 0 && (
-              <div className="p-3 bg-emerald-500/20 border border-emerald-400/30 rounded-xl text-xs flex items-center gap-2">
-                <Sparkles size={16} className="text-emerald-400 shrink-0" />
+              <div className="p-3 bg-emerald-500/20 border border-emerald-400/30 rounded-xl text-xs">
                 <span className="text-emerald-200">
                   Target Clean OTD Price: <strong className="text-white">${cleanTargetPrice.toLocaleString()}</strong> (Save ${junkTotal.toLocaleString()})
                 </span>
