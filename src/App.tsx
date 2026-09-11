@@ -61,76 +61,58 @@ const NavBar = ({
   <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-20">
-        <div className="flex items-center gap-10">
-          <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
-            <img 
-              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
-              alt="CarMeta Logo" 
-              className="h-12 w-auto object-contain"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          
-          <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold text-slate-600">
-            <button 
-              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ai-advisor'); }}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              AI Advisor
-            </button>
-
-            <button 
-              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('tco-calculator'); }}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              5-Year TCO
-            </button>
-
-            <button 
-              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('valuation-estimator'); }}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              Valuation
-            </button>
-
-            <button 
-              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ev-comparison'); }}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              EV vs Gas
-            </button>
-
-            <button 
-              onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('inspection-checklist'); }}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              Fee & Inspection
-            </button>
-
-            <button 
-              onClick={(e) => { e.preventDefault(); onMarketPulseClick(); }} 
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              Market Pulse
-            </button>
-          </nav>
+        <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
+          <img 
+            src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+            alt="CarMeta Logo" 
+            className="h-12 w-auto object-contain"
+            referrerPolicy="no-referrer"
+          />
         </div>
-
-        <div className="flex items-center gap-3">
+        
+        <nav className="flex items-center gap-6 sm:gap-8 text-[13.5px] font-semibold text-slate-600">
           <button 
-            onClick={onSearchClick}
-            className="text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 px-3.5 py-2 rounded-lg transition-colors cursor-pointer border border-slate-200/70"
+            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ai-advisor'); }}
+            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
           >
-            Search Inventory
+            AI Advisor
           </button>
 
           <button 
-            onClick={session ? onDashboardClick : onSignInClick}
-            className="text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-lg transition-all shadow-xs cursor-pointer"
+            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('tco-calculator'); }}
+            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
           >
-            {session ? 'Account' : 'Sign In'}
+            5-Year TCO
           </button>
-        </div>
+
+          <button 
+            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('valuation-estimator'); }}
+            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+          >
+            Valuation
+          </button>
+
+          <button 
+            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ev-comparison'); }}
+            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+          >
+            EV vs Gas
+          </button>
+
+          <button 
+            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('inspection-checklist'); }}
+            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+          >
+            Fee & Inspection
+          </button>
+
+          <button 
+            onClick={(e) => { e.preventDefault(); onMarketPulseClick(); }} 
+            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+          >
+            Market Pulse
+          </button>
+        </nav>
       </div>
     </div>
   </header>
