@@ -135,36 +135,42 @@ const ToolkitHeroHeader = ({
   onScrollToTool: (toolId: string) => void;
 }) => {
   const tools = [
-    { id: 'all', name: 'All Tools', icon: Layers, color: 'text-sky-400', bg: 'bg-sky-400/10' },
-    { id: 'ai', name: 'AI Advisor', icon: Bot, target: 'ai-advisor', color: 'text-[#29abe2]', bg: 'bg-sky-500/10' },
-    { id: 'vin', name: 'VIN & Recall', icon: Search, target: 'vin-checker', color: 'text-blue-400', bg: 'bg-blue-400/10' },
-    { id: 'quote', name: 'Quote Auditor', icon: FileSearch, target: 'quote-auditor', color: 'text-indigo-400', bg: 'bg-indigo-400/10' },
-    { id: 'state-fees', name: 'State Fees', icon: Scale, target: 'state-fees', color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
-    { id: 'lease', name: 'Lease vs Buy', icon: ArrowLeftRight, target: 'lease-vs-finance', color: 'text-violet-400', bg: 'bg-violet-400/10' },
-    { id: 'tco', name: '5-Yr TCO', icon: Calculator, target: 'tco-calculator', color: 'text-teal-400', bg: 'bg-teal-400/10' },
-    { id: 'loan', name: 'Loan & Budget', icon: SlidersHorizontal, target: 'loan-calculator', color: 'text-amber-400', bg: 'bg-amber-400/10' },
-    { id: 'dossier', name: 'Test Dossier', icon: Printer, target: 'test-drive-dossier', color: 'text-rose-400', bg: 'bg-rose-400/10' },
-    { id: 'depreciation', name: 'Value Curve', icon: TrendingDown, target: 'depreciation-curve', color: 'text-cyan-400', bg: 'bg-cyan-400/10' },
-    { id: 'valuation', name: 'Valuation', icon: DollarSign, target: 'valuation-estimator', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-    { id: 'ev', name: 'EV vs Gas', icon: Zap, target: 'ev-comparison', color: 'text-green-400', bg: 'bg-green-400/10' },
-    { id: 'inspection', name: 'Inspection', icon: ShieldCheck, target: 'inspection-checklist', color: 'text-orange-400', bg: 'bg-orange-400/10' },
-    { id: 'market', name: 'Market Trends', icon: TrendingUp, target: 'market-trends', color: 'text-sky-300', bg: 'bg-sky-300/10' },
+    { id: 'all', name: 'All Tools', tag: 'SUITE', icon: Layers, target: '', gradient: 'from-sky-400/20 via-slate-400/10 to-transparent', border: 'border-sky-300/30', glow: 'rgba(56,189,248,0.25)', color: 'text-sky-300' },
+    { id: 'ai', name: 'AI Advisor', tag: 'COPILOT', icon: Bot, target: 'ai-advisor', gradient: 'from-[#29abe2]/30 via-sky-500/15 to-transparent', border: 'border-[#29abe2]/40', glow: 'rgba(41,171,226,0.35)', color: 'text-[#29abe2]' },
+    { id: 'vin', name: 'VIN & Recall', tag: 'NHTSA', icon: Search, target: 'vin-checker', gradient: 'from-blue-500/30 via-blue-600/15 to-transparent', border: 'border-blue-400/40', glow: 'rgba(59,130,246,0.35)', color: 'text-blue-400' },
+    { id: 'quote', name: 'Quote Auditor', tag: 'AUDIT', icon: FileSearch, target: 'quote-auditor', gradient: 'from-indigo-500/30 via-indigo-600/15 to-transparent', border: 'border-indigo-400/40', glow: 'rgba(99,102,241,0.35)', color: 'text-indigo-400' },
+    { id: 'state-fees', name: 'State Fees', tag: '50-STATE', icon: Scale, target: 'state-fees', gradient: 'from-emerald-500/30 via-emerald-600/15 to-transparent', border: 'border-emerald-400/40', glow: 'rgba(16,185,129,0.35)', color: 'text-emerald-400' },
+    { id: 'lease', name: 'Lease vs Buy', tag: 'COMPARE', icon: ArrowLeftRight, target: 'lease-vs-finance', gradient: 'from-violet-500/30 via-violet-600/15 to-transparent', border: 'border-violet-400/40', glow: 'rgba(139,92,246,0.35)', color: 'text-violet-400' },
+    { id: 'tco', name: '5-Yr TCO', tag: '5-YEAR', icon: Calculator, target: 'tco-calculator', gradient: 'from-teal-500/30 via-teal-600/15 to-transparent', border: 'border-teal-400/40', glow: 'rgba(20,184,166,0.35)', color: 'text-teal-400' },
+    { id: 'loan', name: 'Loan & Budget', tag: 'FINANCE', icon: SlidersHorizontal, target: 'loan-calculator', gradient: 'from-amber-500/30 via-amber-600/15 to-transparent', border: 'border-amber-400/40', glow: 'rgba(245,158,11,0.35)', color: 'text-amber-400' },
+    { id: 'dossier', name: 'Test Dossier', tag: 'PRINT', icon: Printer, target: 'test-drive-dossier', gradient: 'from-rose-500/30 via-rose-600/15 to-transparent', border: 'border-rose-400/40', glow: 'rgba(244,63,94,0.35)', color: 'text-rose-400' },
+    { id: 'depreciation', name: 'Value Curve', tag: '7-YEAR', icon: TrendingDown, target: 'depreciation-curve', gradient: 'from-cyan-500/30 via-cyan-600/15 to-transparent', border: 'border-cyan-400/40', glow: 'rgba(6,182,212,0.35)', color: 'text-cyan-400' },
+    { id: 'valuation', name: 'Valuation', tag: 'LIVE', icon: DollarSign, target: 'valuation-estimator', gradient: 'from-yellow-500/30 via-amber-500/15 to-transparent', border: 'border-yellow-400/40', glow: 'rgba(234,179,8,0.35)', color: 'text-yellow-400' },
+    { id: 'ev', name: 'EV vs Gas', tag: 'GREEN', icon: Zap, target: 'ev-comparison', gradient: 'from-green-500/30 via-emerald-600/15 to-transparent', border: 'border-green-400/40', glow: 'rgba(34,197,94,0.35)', color: 'text-green-400' },
+    { id: 'inspection', name: 'Inspection', tag: 'CHECK', icon: ShieldCheck, target: 'inspection-checklist', gradient: 'from-orange-500/30 via-orange-600/15 to-transparent', border: 'border-orange-400/40', glow: 'rgba(249,115,22,0.35)', color: 'text-orange-400' },
+    { id: 'market', name: 'Market Trends', tag: 'INDEX', icon: TrendingUp, target: 'market-trends', gradient: 'from-sky-400/30 via-blue-500/15 to-transparent', border: 'border-sky-300/40', glow: 'rgba(56,189,248,0.35)', color: 'text-sky-300' },
   ];
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white py-18 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80">
+      {/* Ambient background glows */}
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#29abe2]/20 via-sky-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -left-32 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      
+      {/* Subtle grid texture for high-tech depth */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b20_1px,transparent_1px),linear-gradient(to_bottom,#1e293b20_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none opacity-40" />
 
-      <div className="max-w-[1180px] mx-auto text-center relative z-10">
+      <div className="max-w-[1200px] mx-auto text-center relative z-10">
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight mb-4">
-          Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] to-emerald-400">buy smarter</span>.
+          Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] via-sky-300 to-emerald-400">buy smarter</span>.
         </h1>
 
-        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed mb-10">
+        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed mb-12">
           Unbiased calculators, 5-year ownership cost projections, live market valuations, and AI negotiation research designed to save you thousands.
         </p>
 
+        {/* Elevated Luxury Glassmorphic Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-3.5 max-w-6xl mx-auto">
           {tools.map((t) => {
             const Icon = t.icon;
@@ -179,23 +185,42 @@ const ToolkitHeroHeader = ({
                   }
                 }}
                 className={
-                  "group relative aspect-square flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border " +
+                  "group relative aspect-square flex flex-col items-center justify-between p-3.5 rounded-2xl transition-all duration-300 cursor-pointer backdrop-blur-2xl border text-center overflow-hidden " +
                   (isSelected
-                    ? "bg-gradient-to-b from-[#29abe2]/25 to-sky-600/15 border-[#29abe2] text-white shadow-[0_0_24px_rgba(41,171,226,0.35)] scale-[1.02] ring-1 ring-[#29abe2]/50"
-                    : "bg-white/[0.04] hover:bg-white/[0.09] border-white/10 hover:border-white/20 text-slate-300 hover:text-white shadow-lg shadow-black/20 hover:-translate-y-1")
+                    ? "bg-gradient-to-b from-white/[0.14] via-white/[0.08] to-slate-900/80 border-[#29abe2] shadow-[0_0_35px_rgba(41,171,226,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] scale-[1.03] ring-1 ring-[#29abe2]/80 z-20"
+                    : "bg-gradient-to-b from-white/[0.07] via-white/[0.03] to-transparent hover:from-white/[0.12] hover:via-white/[0.06] hover:to-white/[0.02] border-white/[0.12] hover:border-white/[0.28] shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_0_0_rgba(255,255,255,0.15)] hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.25)]")
                 }
               >
+                {/* Specular top light ray */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
+                {/* Active indicator dot */}
+                {isSelected && (
+                  <span className="absolute top-2 right-2 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#29abe2] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#29abe2]"></span>
+                  </span>
+                )}
+
+                {/* Micro Category Tag */}
+                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400/80 group-hover:text-slate-300 transition-colors">
+                  {t.tag}
+                </span>
+
+                {/* Jewel Icon Pedestal */}
                 <div
                   className={
-                    "w-10 h-10 rounded-xl flex items-center justify-center mb-2.5 transition-all duration-200 " +
+                    "w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 shadow-inner border relative " +
                     (isSelected
-                      ? "bg-[#29abe2] text-white shadow-md shadow-sky-500/40"
-                      : `${t.bg} ${t.color} group-hover:scale-110 group-hover:bg-white/15`)
+                      ? "bg-gradient-to-br from-[#29abe2] to-sky-600 text-white shadow-[0_0_20px_rgba(41,171,226,0.6)] border-white/40 scale-105"
+                      : `bg-gradient-to-br ${t.gradient} ${t.border} ${t.color} group-hover:scale-110 group-hover:shadow-[0_0_20px_${t.glow}] group-hover:border-white/30`)
                   }
                 >
-                  <Icon size={20} strokeWidth={2} />
+                  <Icon size={21} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
                 </div>
-                <span className="text-[11.5px] font-bold tracking-tight text-center leading-tight">
+
+                {/* Card Title */}
+                <span className={"text-[11.5px] font-bold tracking-tight leading-tight transition-colors " + (isSelected ? "text-white" : "text-slate-200 group-hover:text-white")}>
                   {t.name}
                 </span>
               </button>
