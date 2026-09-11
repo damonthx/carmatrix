@@ -32,6 +32,7 @@ import LatestArticles from './components/LatestArticles';
 import ExpertAdviceFeeds from './components/ExpertAdviceFeeds';
 import FeaturedInfluencerFeeds from './components/FeaturedInfluencerFeeds';
 import FinancePage from './FinancePage';
+import LegalCompliancePage from './LegalCompliancePage';
 
 // Toolkit Widgets
 import EVComparisonWidget from './components/toolkit/EVComparisonWidget';
@@ -756,6 +757,17 @@ const ResearchAndReviews = () => {
 const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
   <footer className="bg-slate-950 text-slate-400 text-xs py-14 border-t border-slate-800 mt-20">
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+      {/* FTC Affiliate & Compensation Disclosure Banner */}
+      <div className="mb-12 p-5 rounded-2xl bg-slate-900/90 border border-slate-800/80 text-[11.5px] text-slate-400 leading-relaxed shadow-lg">
+        <div className="flex items-center gap-2 mb-2 text-slate-200 font-bold uppercase tracking-wider text-[10.5px]">
+          <ShieldCheck size={14} className="text-[#29abe2]" />
+          <span>FTC Affiliate & Consumer Compensation Disclosure</span>
+        </div>
+        <p>
+          CarMatrix is an independent consumer automotive intelligence platform operated by <strong className="text-slate-200">Defiant Digital Holdings LLC</strong>. We may receive referral compensation from partner links, pre-qualification requests, insurance quote inquiries, and vehicle history lookups at zero additional cost to you. This compensation does not influence our algorithmic valuation estimates, 5-year ownership cost calculations, dealer quote fee audits, or editorial integrity. All vehicles, trademarks, and brand names belong to their respective owners.
+        </p>
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
         <div className="col-span-2 space-y-3">
           <div className="flex items-center">
@@ -769,6 +781,9 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
           <p className="text-slate-400 text-xs max-w-sm leading-relaxed">
             Empowering smart vehicle buyers with unbiased research tools, transparent 5-year ownership projections, and real-time market data.
           </p>
+          <div className="pt-2 text-[11px] text-slate-500">
+            A publication of <strong className="text-slate-400">Defiant Digital Holdings LLC</strong>
+          </div>
         </div>
 
         <div>
@@ -786,21 +801,26 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         </div>
 
         <div>
-          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Company</h4>
+          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Trust & Legal</h4>
           <ul className="space-y-2">
-            <li><button onClick={() => onNavigate('vision')} className="hover:text-white cursor-pointer">Vision</button></li>
-            <li><button onClick={() => onNavigate('team')} className="hover:text-white cursor-pointer">Team</button></li>
+            <li><button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold">Affiliate Disclosure</button></li>
+            <li><button onClick={() => onNavigate('privacy')} className="hover:text-white cursor-pointer">Privacy Policy</button></li>
+            <li><button onClick={() => onNavigate('terms')} className="hover:text-white cursor-pointer">Terms of Service</button></li>
+            <li><button onClick={() => onNavigate('vision')} className="hover:text-white cursor-pointer">Company Vision</button></li>
             <li><button onClick={() => onNavigate('dealers')} className="hover:text-white cursor-pointer">Dealer Network</button></li>
-            <li><button onClick={() => onNavigate('contact')} className="hover:text-white cursor-pointer">Contact</button></li>
+            <li><button onClick={() => onNavigate('contact')} className="hover:text-white cursor-pointer">Contact Compliance</button></li>
           </ul>
         </div>
       </div>
 
       <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
-        <span>© 2026 CarMatrix Inc. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
-        <div className="flex gap-4">
-          <button onClick={() => onNavigate('faq')} className="hover:text-slate-400 cursor-pointer">FAQ</button>
-          <button onClick={() => onNavigate('pr')} className="hover:text-slate-400 cursor-pointer">Press & PR</button>
+        <span>© 2026 CarMatrix — Defiant Digital Holdings LLC. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
+        <div className="flex flex-wrap items-center gap-4">
+          <button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-slate-300 cursor-pointer">Affiliate Disclosure</button>
+          <button onClick={() => onNavigate('privacy')} className="hover:text-slate-300 cursor-pointer">Privacy Policy</button>
+          <button onClick={() => onNavigate('terms')} className="hover:text-slate-300 cursor-pointer">Terms of Service</button>
+          <button onClick={() => onNavigate('faq')} className="hover:text-slate-300 cursor-pointer">FAQ</button>
+          <button onClick={() => onNavigate('pr')} className="hover:text-slate-300 cursor-pointer">Press & PR</button>
         </div>
       </div>
     </div>
@@ -930,6 +950,12 @@ export default function App() {
           <OnboardingPage />
         ) : currentPath === 'finance' ? (
           <FinancePage />
+        ) : currentPath === 'affiliate_disclosure' || currentPath === 'legal' ? (
+          <LegalCompliancePage initialTab="affiliate" onBack={() => navigateTo('home')} />
+        ) : currentPath === 'privacy' ? (
+          <LegalCompliancePage initialTab="privacy" onBack={() => navigateTo('home')} />
+        ) : currentPath === 'terms' ? (
+          <LegalCompliancePage initialTab="terms" onBack={() => navigateTo('home')} />
         ) : (
           <>
             <ToolkitHeroHeader 
