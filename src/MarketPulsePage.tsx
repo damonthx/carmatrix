@@ -85,36 +85,44 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-[#e8edf2] font-sans selection:bg-[#29abe2]/20 pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white font-sans selection:bg-[#29abe2]/20 pb-20 relative overflow-hidden">
+      {/* Ambient background glows */}
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#29abe2]/20 via-sky-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -left-32 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      
+      {/* Subtle grid texture */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b20_1px,transparent_1px),linear-gradient(to_bottom,#1e293b20_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none opacity-40" />
+
       {/* Top Header */}
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 relative z-10">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-[13px] font-semibold text-[#7d8896] hover:text-[#29abe2] transition-colors mb-6 cursor-pointer"
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-300 hover:text-white px-4 py-2.5 rounded-xl backdrop-blur-xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 hover:border-[#29abe2]/50 transition-all duration-200 mb-6 cursor-pointer shadow-md shadow-black/20 hover:-translate-y-0.5"
         >
-          <ArrowLeft size={16} /> Back to Home
+          <ArrowLeft size={15} /> Back to Home
         </button>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 border-b border-[#161d26] pb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 border-b border-slate-800/80 pb-8">
           <div>
-            <div className="flex items-center gap-2 text-[12px] font-bold text-[#29abe2] uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-2 text-[11px] font-extrabold text-[#29abe2] uppercase tracking-wider px-3 py-1 rounded-full bg-[#29abe2]/10 border border-[#29abe2]/30 mb-3 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-[#29abe2] animate-pulse"></span>
               Live Market Indicators
             </div>
-            <h1 className="text-[36px] md:text-[44px] font-extrabold tracking-tight text-white leading-tight">
+            <h1 className="text-[34px] md:text-[46px] font-black tracking-tight text-white leading-tight">
               Consumer Market Pulse
             </h1>
-            <p className="text-[#8b95a3] font-medium text-[15px] max-w-[650px] mt-2 leading-relaxed">
+            <p className="text-slate-300 font-medium text-[15px] max-w-[650px] mt-2 leading-relaxed">
               Track real-time inflation trends, price indexes, and overhead costs in the automotive industry compiled directly from the U.S. Bureau of Labor Statistics (BLS).
             </p>
           </div>
-          <div className="bg-[#0d1117] border border-[#232c38] rounded-xl px-5 py-4 shrink-0 min-w-[200px]">
-            <div className="text-[11px] font-semibold text-[#7d8896] uppercase tracking-wider mb-1">Last Updated</div>
-            <div className="text-[16px] font-bold text-white">
+          <div className="relative overflow-hidden backdrop-blur-xl bg-slate-900/70 border border-slate-700/70 rounded-2xl px-6 py-4.5 shrink-0 min-w-[210px] shadow-xl shadow-black/30 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
+            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Last Updated</div>
+            <div className="text-[18px] font-black text-white">
               {data ? data.metrics[0]?.asOf : 'Loading...'}
             </div>
-            <div className="text-[11px] text-[#7d8896] mt-1.5 flex items-center gap-1.5">
-              <HelpCircle size={12} /> Edge cached 12h
+            <div className="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1.5">
+              <HelpCircle size={12} className="text-[#29abe2]" /> Edge cached 12h
             </div>
           </div>
         </div>
@@ -122,20 +130,20 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
         {loading ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-4">
-              <div className="h-[300px] bg-[#0d1117] rounded-2xl animate-pulse" />
-              <div className="h-[200px] bg-[#0d1117] rounded-2xl animate-pulse" />
+              <div className="h-[300px] bg-slate-900/60 border border-slate-800 rounded-3xl animate-pulse" />
+              <div className="h-[200px] bg-slate-900/60 border border-slate-800 rounded-3xl animate-pulse" />
             </div>
-            <div className="h-[520px] bg-[#0d1117] rounded-2xl animate-pulse" />
+            <div className="h-[520px] bg-slate-900/60 border border-slate-800 rounded-3xl animate-pulse" />
           </div>
         ) : error || !data ? (
-          <div className="bg-[#1c1214] border border-[#ff5555]/30 rounded-2xl p-8 text-center max-w-[600px] mx-auto my-12">
-            <h3 className="text-xl font-bold text-[#f0997b] mb-2">Failed to Load Market Pulse</h3>
-            <p className="text-[#8b95a3] text-[14px] mb-6">
+          <div className="backdrop-blur-xl bg-rose-950/30 border border-rose-500/30 rounded-3xl p-8 text-center max-w-[600px] mx-auto my-12 shadow-2xl">
+            <h3 className="text-xl font-bold text-rose-300 mb-2">Failed to Load Market Pulse</h3>
+            <p className="text-slate-300 text-[14px] mb-6">
               There was an issue retrieving the latest data from the Bureau of Labor Statistics. Please try again later.
             </p>
             <button 
               onClick={() => window.location.reload()}
-              className="bg-[#29abe2] text-white px-6 py-2 rounded-full font-bold text-[14px] hover:bg-[#2089b5] transition-colors"
+              className="bg-[#29abe2] text-white px-6 py-2.5 rounded-xl font-bold text-[14px] hover:bg-sky-400 transition-all shadow-lg shadow-sky-500/25 cursor-pointer"
             >
               Retry Connection
             </button>
@@ -148,21 +156,21 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
               
               {/* Detailed Chart Card */}
               {selectedMetric && (
-                <div className="bg-[#0d1117] border border-[#232c38] rounded-2xl p-6 shadow-xl">
+                <div className="relative overflow-hidden backdrop-blur-2xl bg-slate-900/80 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/40 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-[#29abe2]/40 before:to-transparent">
                   <div className="flex justify-between items-start mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-[#161d26] p-2.5 rounded-lg border border-[#232c38]">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[#29abe2]/15 border border-[#29abe2]/30 text-[#29abe2] shadow-inner shrink-0">
                         {getMetricIcon(selectedMetric.key)}
                       </div>
                       <div>
-                        <h2 className="text-[20px] font-bold text-white">{selectedMetric.label}</h2>
-                        <p className="text-[12px] text-[#7d8896] font-medium">12-Month Index Trend</p>
+                        <h2 className="text-[22px] font-black text-white tracking-tight">{selectedMetric.label}</h2>
+                        <p className="text-[12px] text-slate-400 font-medium">12-Month BLS Trend Trajectory</p>
                       </div>
                     </div>
                     
                     <div className="text-right">
-                      <div className="text-[12px] text-[#7d8896] font-medium">Current Index</div>
-                      <div className="text-[24px] font-bold text-white mt-0.5">
+                      <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Current Index</div>
+                      <div className="text-[26px] font-black text-white mt-0.5 tracking-tight">
                         {selectedMetric.index.toFixed(1)}
                       </div>
                     </div>
@@ -174,15 +182,15 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
                   </div>
 
                   {/* Monthly Trend Indicators */}
-                  <div className="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-[#161d26]">
-                    <div className="bg-[#161d26] border border-[#232c38] rounded-xl p-4 flex justify-between items-center">
+                  <div className="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-slate-800/80">
+                    <div className="backdrop-blur-xl bg-white/[0.04] border border-white/10 hover:border-white/20 rounded-2xl p-4.5 flex justify-between items-center transition-all shadow-md shadow-black/20">
                       <div>
-                        <div className="text-[11px] text-[#7d8896] uppercase tracking-wider">MoM Change</div>
-                        <div className="text-[18px] font-bold text-white mt-1">
+                        <div className="text-[11px] text-slate-400 uppercase tracking-wider font-bold">MoM Change</div>
+                        <div className="text-[20px] font-black text-white mt-1">
                           {selectedMetric.mom !== null ? `${selectedMetric.mom > 0 ? '+' : ''}${selectedMetric.mom}%` : '—'}
                         </div>
                       </div>
-                      <div className="p-2 bg-[#0d1117] rounded-lg">
+                      <div className="p-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl shadow-xs">
                         {selectedMetric.mom !== null ? (
                           selectedMetric.mom > 0 ? (
                             <TrendingUp className="text-[#f0997b]" size={20} />
@@ -195,14 +203,14 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
                       </div>
                     </div>
 
-                    <div className="bg-[#161d26] border border-[#232c38] rounded-xl p-4 flex justify-between items-center">
+                    <div className="backdrop-blur-xl bg-white/[0.04] border border-white/10 hover:border-white/20 rounded-2xl p-4.5 flex justify-between items-center transition-all shadow-md shadow-black/20">
                       <div>
-                        <div className="text-[11px] text-[#7d8896] uppercase tracking-wider">YoY Change</div>
-                        <div className="text-[18px] font-bold text-white mt-1">
+                        <div className="text-[11px] text-slate-400 uppercase tracking-wider font-bold">YoY Change</div>
+                        <div className="text-[20px] font-black text-white mt-1">
                           {selectedMetric.yoy !== null ? `${selectedMetric.yoy > 0 ? '+' : ''}${selectedMetric.yoy}%` : '—'}
                         </div>
                       </div>
-                      <div className="p-2 bg-[#0d1117] rounded-lg">
+                      <div className="p-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl shadow-xs">
                         {selectedMetric.yoy !== null ? (
                           selectedMetric.yoy > 0 ? (
                             <TrendingUp className="text-[#f0997b]" size={20} />
@@ -220,20 +228,22 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
 
               {/* Insights Card */}
               {selectedMetric && (
-                <div className="bg-[#0d1117] border border-[#232c38] rounded-2xl p-6 shadow-xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#29abe2]/5 rounded-full filter blur-xl transition-all group-hover:bg-[#29abe2]/10" />
-                  <h3 className="text-[18px] font-bold text-white mb-4 flex items-center gap-2">
-                    <BookOpen size={18} className="text-[#29abe2]" />
-                    CarMatrix Market Analysis & Advice
+                <div className="relative overflow-hidden backdrop-blur-2xl bg-slate-900/80 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/40 group before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-[#29abe2]/10 rounded-full filter blur-2xl transition-all duration-300 group-hover:bg-[#29abe2]/15 pointer-events-none" />
+                  <h3 className="text-[18px] font-black text-white mb-4 flex items-center gap-2.5">
+                    <div className="p-2 rounded-lg bg-[#29abe2]/15 border border-[#29abe2]/30 text-[#29abe2]">
+                      <BookOpen size={16} />
+                    </div>
+                    <span>CarMatrix Market Analysis & Strategy</span>
                   </h3>
-                  <div className="bg-[#161d26] border border-[#232c38] rounded-xl p-5">
-                    <p className="text-[14px] leading-relaxed text-[#c9c9c9] font-medium">
+                  <div className="backdrop-blur-xl bg-white/[0.03] border border-white/10 rounded-2xl p-5 shadow-inner">
+                    <p className="text-[14.5px] leading-relaxed text-slate-200 font-medium">
                       {getInsightText(selectedMetric.key, selectedMetric.yoy)}
                     </p>
                   </div>
-                  <div className="mt-4 flex items-center gap-2 text-[12px] text-[#7d8896] font-semibold">
-                    <HelpCircle size={14} /> 
-                    Tip: Compare prices in our Shop page to find local deals matching these index indicators.
+                  <div className="mt-4 flex items-center gap-2 text-[12px] text-slate-400 font-semibold">
+                    <HelpCircle size={14} className="text-[#29abe2]" /> 
+                    <span>Shopper Tip: Check live inventory valuations in our tools to negotiate against these official CPI trends.</span>
                   </div>
                 </div>
               )}
@@ -241,9 +251,12 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
 
             {/* Right Column: Metrics Cards & Summary */}
             <div className="space-y-6">
-              <div className="text-[14px] font-bold text-[#7d8896] uppercase tracking-wider">Select Index</div>
+              <div className="text-[12px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#29abe2]"></span>
+                Select Index Category
+              </div>
               
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {data.metrics.map((m) => {
                   const isActive = m.key === selectedKey;
                   const pct = m.mom ?? m.yoy;
@@ -251,49 +264,52 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
                   const isNegative = pct !== null && pct < 0;
 
                   return (
-                    <div 
+                    <button 
                       key={m.key}
                       onClick={() => setSelectedKey(m.key)}
-                      className={`cursor-pointer border rounded-2xl p-5 transition-all flex justify-between items-center ${
+                      className={`w-full text-left relative overflow-hidden rounded-2xl p-4.5 cursor-pointer transition-all duration-200 flex justify-between items-center ${
                         isActive 
-                          ? 'bg-[#0d1117] border-[#29abe2] shadow-[0_0_15px_rgba(41,171,226,0.15)]' 
-                          : 'bg-[#0d1117]/60 border-[#232c38] hover:border-[#7d8896]/30 hover:bg-[#0d1117]'
+                          ? 'backdrop-blur-2xl bg-gradient-to-r from-[#29abe2]/20 via-sky-600/15 to-slate-900/90 border border-[#29abe2] text-white shadow-[0_0_25px_rgba(41,171,226,0.3)] ring-1 ring-[#29abe2]/50 -translate-y-1 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent' 
+                          : 'backdrop-blur-xl bg-slate-900/60 hover:bg-slate-800/70 border border-slate-700/60 hover:border-sky-400/40 text-slate-300 hover:text-white shadow-lg shadow-black/25 hover:-translate-y-0.5 group before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-3.5">
-                        <div className={`p-2.5 rounded-lg border ${
+                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all shrink-0 ${
                           isActive 
-                            ? 'bg-[#161d26] border-[#29abe2]/30' 
-                            : 'bg-[#161d26]/40 border-[#232c38]'
+                            ? 'bg-[#29abe2] text-white shadow-md shadow-sky-500/40' 
+                            : 'bg-white/[0.05] border border-white/10 group-hover:bg-white/10 group-hover:scale-105'
                         }`}>
                           {getMetricIcon(m.key)}
                         </div>
                         <div>
-                          <h4 className="text-[14px] font-bold text-white">{m.label}</h4>
-                          <span className="text-[11.5px] text-[#7d8896]">Index: {m.index.toFixed(1)}</span>
+                          <h4 className="text-[14.5px] font-bold text-white leading-snug">{m.label}</h4>
+                          <span className="text-[11.5px] text-slate-400 font-medium">Index: {m.index.toFixed(1)}</span>
                         </div>
                       </div>
 
                       <div className="text-right">
-                        <div className={`text-[14px] font-bold flex items-center justify-end gap-1 ${
-                          isPositive ? 'text-[#f0997b]' : isNegative ? 'text-[#5dcaa5]' : 'text-[#8b95a3]'
+                        <div className={`text-[14.5px] font-black flex items-center justify-end gap-1 ${
+                          isPositive ? 'text-[#f0997b]' : isNegative ? 'text-[#5dcaa5]' : 'text-slate-400'
                         }`}>
                           {pct !== null ? `${pct > 0 ? '+' : ''}${pct.toFixed(1)}%` : '—'}
                           {pct !== null ? (
                             pct > 0 ? <TrendingUp size={14} /> : pct < 0 ? <TrendingDown size={14} /> : <Minus size={14} />
                           ) : null}
                         </div>
-                        <div className="text-[10px] text-[#7d8896] font-semibold uppercase mt-0.5">vs. last month</div>
+                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">vs. last month</div>
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
 
               {/* Data Transparency Box */}
-              <div className="bg-[#0d1117] border border-[#232c38] rounded-2xl p-5 text-[12px] leading-relaxed text-[#7d8896]">
-                <h4 className="font-bold text-white mb-2 uppercase tracking-wide text-[10px]">Data transparency & method</h4>
-                The indexes displayed are calculated monthly by the Bureau of Labor Statistics (BLS) using sample baskets of consumer transactions. Sparklines represent index fluctuations over the last 12 reporting cycles. Year-over-Year (YoY) figures represent long-term trends, while Month-over-Month (MoM) tracks short-term market volatility.
+              <div className="relative overflow-hidden backdrop-blur-xl bg-slate-900/70 border border-slate-700/70 rounded-2xl p-5 text-[12px] leading-relaxed text-slate-400 shadow-xl shadow-black/20 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent">
+                <h4 className="font-extrabold text-white mb-2 uppercase tracking-wider text-[11px] flex items-center gap-2">
+                  <ShieldCheck size={14} className="text-emerald-400" />
+                  <span>Data Transparency & Method</span>
+                </h4>
+                The indexes displayed are calculated monthly by the Bureau of Labor Statistics (BLS) using consumer transaction baskets. Sparklines represent index fluctuations over the last 12 reporting cycles. Year-over-Year (YoY) figures reflect long-term trends, while Month-over-Month (MoM) captures short-term market volatility.
               </div>
             </div>
           </div>

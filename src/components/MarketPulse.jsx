@@ -22,24 +22,27 @@ export default function MarketPulse() {
   if (error) return null; // fail silent — never block the page on a widget
 
   return (
-    <section className="rounded-2xl bg-[#0d1117] p-6 font-[Barlow]">
+    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 border border-slate-800/80 backdrop-blur-2xl p-6 md:p-7 shadow-2xl before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-sky-400/30 before:to-transparent">
       <div className="mb-4 flex items-baseline justify-between">
-        <h2 className="text-[15px] font-medium tracking-wide text-[#e8edf2]">
-          Market pulse
-        </h2>
-        <span className="text-[11.5px] text-[#7d8896]">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#29abe2] animate-pulse"></span>
+          <h2 className="text-[14px] font-extrabold tracking-wider uppercase text-white">
+            Consumer Market Pulse
+          </h2>
+        </div>
+        <span className="text-[11.5px] font-medium text-slate-400">
           {data ? `${data.metrics[0]?.asOf} · BLS data` : 'Loading…'}
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {(data?.metrics ?? Array.from({ length: 4 })).map((m, i) =>
           m ? <PulseCard key={m.key} metric={m} /> : <SkeletonCard key={i} />
         )}
       </div>
 
       {data && (
-        <p className="mt-3 text-[11px] text-[#7d8896]">
+        <p className="mt-3.5 text-[11px] text-slate-500 font-medium">
           Source: U.S. Bureau of Labor Statistics, Consumer Price Index.
         </p>
       )}
@@ -54,11 +57,11 @@ function PulseCard({ metric }) {
   const headline = mom ?? yoy;
 
   return (
-    <div className="rounded-xl border-[0.5px] border-[#232c38] bg-[#161d26] px-3.5 py-3">
-      <div className="text-xs text-[#8b95a3]">{label}</div>
+    <div className="relative overflow-hidden rounded-2xl border border-white/10 hover:border-[#29abe2]/50 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl px-4 py-3.5 transition-all duration-200 hover:-translate-y-1 shadow-lg shadow-black/25 group before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent">
+      <div className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors truncate">{label}</div>
 
-      <div className="my-1.5 flex items-baseline gap-1.5">
-        <span className="text-xl font-medium text-[#e8edf2]">
+      <div className="my-2 flex items-baseline gap-2">
+        <span className="text-2xl font-black text-white tracking-tight">
           {fmtPct(headline)}
         </span>
         <Direction value={headline} />
@@ -66,9 +69,9 @@ function PulseCard({ metric }) {
 
       <Sparkline values={sparkline} />
 
-      <div className="mt-1.5 flex justify-between text-[11px] text-[#7d8896]">
+      <div className="mt-2 flex justify-between text-[11px] font-medium text-slate-400">
         <span>vs. last month</span>
-        <span>{fmtPct(yoy)} YoY</span>
+        <span className="font-bold text-slate-200">{fmtPct(yoy)} YoY</span>
       </div>
     </div>
   );
