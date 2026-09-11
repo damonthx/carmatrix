@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileSearch, AlertTriangle, CheckCircle2, Copy, Check, DollarSign, Plus, Trash2, MessageSquare } from 'lucide-react';
+import { FileSearch, AlertTriangle, CheckCircle2, Copy, Check, DollarSign, Plus, Trash2, MessageSquare, Car, Building2, User } from 'lucide-react';
 
 interface FeeItem {
   id: string;
@@ -9,11 +9,20 @@ interface FeeItem {
   reason: string;
 }
 
+const PRESET_VEHICLES = [
+  { name: '2024 Toyota RAV4 XLE', price: 29985, tax: 1874, plates: 260, doc: 599 },
+  { name: '2024 Honda CR-V Sport', price: 34850, tax: 2178, plates: 280, doc: 699 },
+  { name: '2024 Ford F-150 XLT', price: 47620, tax: 2976, plates: 340, doc: 799 },
+  { name: '2024 Tesla Model Y Long Range', price: 44990, tax: 2811, plates: 390, doc: 250 },
+  { name: '2024 Subaru Outback Premium', price: 31195, tax: 1950, plates: 260, doc: 495 },
+  { name: '2024 Hyundai Tucson SEL', price: 28400, tax: 1775, plates: 240, doc: 599 },
+];
+
 const DEFAULT_ITEMS: FeeItem[] = [
-  { id: '1', name: 'Agreed Vehicle Price', amount: 28500, category: 'legit', reason: 'Base vehicle sales price negotiated.' },
-  { id: '2', name: 'State & Local Sales Tax', amount: 1780, category: 'legit', reason: 'Mandatory state/county revenue remittance.' },
+  { id: '1', name: '2024 Toyota RAV4 XLE Price', amount: 29985, category: 'legit', reason: 'Base vehicle sales price negotiated.' },
+  { id: '2', name: 'State & Local Sales Tax', amount: 1874, category: 'legit', reason: 'Mandatory state/county revenue remittance.' },
   { id: '3', name: 'DMV Title & License Plates', amount: 260, category: 'legit', reason: 'Actual government registration charges.' },
-  { id: '4', name: 'Dealer Documentation (Doc) Fee', amount: 699, category: 'negotiable', reason: 'Dealer back-office fee. Check your state cap.' },
+  { id: '4', name: 'Dealer Documentation (Doc) Fee', amount: 599, category: 'negotiable', reason: 'Dealer back-office fee. Check your state cap.' },
   { id: '5', name: 'Interior / Paint Protection Sealant', amount: 895, category: 'junk', reason: 'High-margin dealer add-on. Rarely applied; easily declined.' },
   { id: '6', name: 'VIN Glass Etching', amount: 395, category: 'junk', reason: 'Overpriced theft deterrent available independently for $25.' },
   { id: '7', name: 'Nitrogen Filled Tires', amount: 199, category: 'junk', reason: 'Atmospheric air is already 78% nitrogen. Refuse this fee.' },
@@ -23,6 +32,10 @@ const DEFAULT_ITEMS: FeeItem[] = [
 export default function DealerQuoteAuditorWidget() {
   const [items, setItems] = useState<FeeItem[]>(DEFAULT_ITEMS);
   const [copiedScript, setCopiedScript] = useState<string | null>(null);
+  const [vehicleName, setVehicleName] = useState('2024 Toyota RAV4 XLE');
+  const [salespersonName, setSalespersonName] = useState('Mike');
+  const [dealershipName, setDealershipName] = useState('Metro Auto Toyota');
+  const [buyerName, setBuyerName] = useState('Alex Morgan');
   const [newItemName, setNewItemName] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
   const [newItemCategory, setNewItemCategory] = useState<'legit' | 'negotiable' | 'junk'>('junk');
@@ -33,7 +46,28 @@ export default function DealerQuoteAuditorWidget() {
   const outTheDoorTotal = legitTotal + negotiableTotal + junkTotal;
   const cleanTargetPrice = legitTotal + Math.min(negotiableTotal, 350);
 
-  const vehiclePrice = items.find(i => i.name.toLowerCase().includes('price'))?.amount || 28500;
+  const vehiclePrice = items.find(i => i.name.toLowerCase().includes('price'))?.amount || 29985;
+
+  const handleSelectPreset = (name: string) => {
+    const found = PRESET_VEHICLES.find(v => v.name === name);
+    if (!found) return;
+    setVehicleName(found.name);
+    setItems(prevItems => prevItems.map(item => {
+      if (item.id === '1' || item.name.toLowerCase().includes('price')) {
+        return { ...item, amount: found.price, name: `${found.name} Price` };
+      }
+      if (item.id === '2' || item.name.toLowerCase().includes('tax')) {
+        return { ...item, amount: found.tax };
+      }
+      if (item.id === '3' || item.name.toLowerCase().includes('title') || item.name.toLowerCase().includes('dmv')) {
+        return { ...item, amount: found.plates };
+      }
+      if (item.id === '4' || item.name.toLowerCase().includes('doc')) {
+        return { ...item, amount: found.doc };
+      }
+      return item;
+    }));
+  };
 
   const handleAddItem = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,21 +97,18 @@ export default function DealerQuoteAuditorWidget() {
     setItems(items.filter(i => i.id !== id));
   };
 
-  const emailScript = `Hi [Salesperson Name],
+  const emailScript = `Hi ${salespersonName.trim() ? salespersonName.trim() : 'Sales Team'},
 
-Thank you for sending over the quote for the [Year Make Model]. 
+Thank you for sending over the quote for the ${vehicleName.trim() || 'vehicle'}${dealershipName.trim() ? ` at ${dealershipName.trim()}` : ''}. 
 
 I am ready to move forward this week at an Out-The-Door (OTD) price of $${cleanTargetPrice.toLocaleString()}, which covers the agreed vehicle price ($${vehiclePrice.toLocaleString()}), mandatory state taxes, and official DMV registration fees.
 
-I respectfully request that the dealer add-on packages (${items.filter(i => i.category === 'junk').map(i => i.name).join(', ')}) totaling $${junkTotal.toLocaleString()} be removed from the purchase agreement, as I will not be utilizing these accessories.
-
-If you can send over a revised buyer's order reflecting $${cleanTargetPrice.toLocaleString()} out-the-door, I can sign and arrange delivery immediately.
+${junkTotal > 0 ? `I respectfully request that the dealer add-on packages (${items.filter(i => i.category === 'junk').map(i => i.name).join(', ')}) totaling $${junkTotal.toLocaleString()} be removed from the purchase agreement, as I will not be utilizing these accessories.\n\n` : ''}If you can send over a revised buyer's order reflecting $${cleanTargetPrice.toLocaleString()} out-the-door, I can sign and arrange delivery immediately.
 
 Thank you,
-[Your Name]
-[Your Phone Number]`;
+${buyerName.trim() || '[Your Name]'}`;
 
-  const textScript = `Hi [Name], thanks for the numbers on the [Model]. I'm ready to buy today at $${cleanTargetPrice.toLocaleString()} Out-The-Door including tax and DMV fees, with the dealer add-on packages ($${junkTotal.toLocaleString()}) removed. If that works on your end, send over the revised worksheet and I will put down the deposit!`;
+  const textScript = `Hi ${salespersonName.trim() ? salespersonName.trim() : 'there'}, thanks for the numbers on the ${vehicleName.trim() || 'vehicle'}. I'm ready to buy today at $${cleanTargetPrice.toLocaleString()} Out-The-Door including tax and DMV fees${junkTotal > 0 ? `, with the dealer add-on packages ($${junkTotal.toLocaleString()}) removed` : ''}. If that works for ${dealershipName.trim() || 'your dealership'}, send over the revised worksheet and I will put down the deposit! — ${buyerName.trim() || ''}`;
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -96,6 +127,76 @@ Thank you,
           </div>
           <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Dealer Quote Auditor & Counter-Offer Generator</h3>
           <p className="text-slate-500 text-sm mt-1">Audit line items on dealer worksheets, expose predatory add-ons, and generate clean counter-offers.</p>
+        </div>
+      </div>
+
+      {/* Target Vehicle & Dealership Context Bar */}
+      <div className="mt-6 p-4 bg-slate-50 border border-slate-200/80 rounded-2xl">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2">
+            <Car size={16} className="text-[#29abe2]" />
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Target Vehicle & Dealership Details</span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-xs w-full sm:w-auto">
+            <span className="text-slate-500 font-medium hidden md:inline">Quick Vehicle Preset:</span>
+            <select
+              onChange={(e) => handleSelectPreset(e.target.value)}
+              className="text-xs font-semibold bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-700 outline-none focus:border-[#29abe2] cursor-pointer shadow-xs w-full sm:w-auto"
+              value={PRESET_VEHICLES.some(v => v.name === vehicleName) ? vehicleName : ""}
+            >
+              <option value="" disabled>Choose a preset model...</option>
+              {PRESET_VEHICLES.map((v) => (
+                <option key={v.name} value={v.name}>
+                  {v.name} (~${v.price.toLocaleString()})
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">Target Vehicle (Year/Make/Model)</label>
+            <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2]">
+              <Car size={14} className="text-slate-400 mr-2 shrink-0" />
+              <input
+                type="text"
+                value={vehicleName}
+                onChange={(e) => setVehicleName(e.target.value)}
+                placeholder="e.g. 2024 Toyota RAV4 XLE"
+                className="w-full bg-transparent outline-none text-xs font-bold text-slate-900 placeholder:font-normal"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">Salesperson / Dealership</label>
+            <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2]">
+              <Building2 size={14} className="text-slate-400 mr-2 shrink-0" />
+              <input
+                type="text"
+                value={salespersonName}
+                onChange={(e) => setSalespersonName(e.target.value)}
+                placeholder="e.g. Mike @ Metro Toyota"
+                className="w-full bg-transparent outline-none text-xs font-bold text-slate-900 placeholder:font-normal"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">Your Name (Signs Script)</label>
+            <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2]">
+              <User size={14} className="text-slate-400 mr-2 shrink-0" />
+              <input
+                type="text"
+                value={buyerName}
+                onChange={(e) => setBuyerName(e.target.value)}
+                placeholder="e.g. Alex Morgan"
+                className="w-full bg-transparent outline-none text-xs font-bold text-slate-900 placeholder:font-normal"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
