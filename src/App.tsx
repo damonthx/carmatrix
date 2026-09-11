@@ -4,7 +4,8 @@ import {
   ArrowUpRight, CarFront, Sparkles, CheckCircle2, 
   AlertTriangle, AlertCircle, ArrowUpCircle, ArrowDownLeft,
   RefreshCw, Calculator, Zap, DollarSign, ShieldCheck,
-  TrendingUp, Bot, Compass, HelpCircle, Layers, SlidersHorizontal
+  TrendingUp, Bot, Compass, HelpCircle, Layers, SlidersHorizontal,
+  FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown
 } from 'lucide-react';
 import SearchPage from './SearchPage';
 import TCOCalculator from './TCOCalculator';
@@ -36,6 +37,12 @@ import EVComparisonWidget from './components/toolkit/EVComparisonWidget';
 import ValuationWidget from './components/toolkit/ValuationWidget';
 import InspectionChecklistWidget from './components/toolkit/InspectionChecklistWidget';
 import AIAdvisorWidget from './components/toolkit/AIAdvisorWidget';
+import VINRecallWidget from './components/toolkit/VINRecallWidget';
+import DealerQuoteAuditorWidget from './components/toolkit/DealerQuoteAuditorWidget';
+import StateFeeGuideWidget from './components/toolkit/StateFeeGuideWidget';
+import LeaseVsFinanceWidget from './components/toolkit/LeaseVsFinanceWidget';
+import TestDriveDossierWidget from './components/toolkit/TestDriveDossierWidget';
+import DepreciationPredictorWidget from './components/toolkit/DepreciationPredictorWidget';
 
 const NavBar = ({ 
   onSearchClick, 
@@ -130,12 +137,18 @@ const ToolkitHeroHeader = ({
   const tools = [
     { id: 'all', name: 'All Tools', icon: Layers, color: 'text-sky-400', bg: 'bg-sky-400/10' },
     { id: 'ai', name: 'AI Advisor', icon: Bot, target: 'ai-advisor', color: 'text-[#29abe2]', bg: 'bg-sky-500/10' },
-    { id: 'tco', name: '5-Yr TCO', icon: Calculator, target: 'tco-calculator', color: 'text-indigo-400', bg: 'bg-indigo-400/10' },
-    { id: 'loan', name: 'Loan & Budget', icon: SlidersHorizontal, target: 'loan-calculator', color: 'text-violet-400', bg: 'bg-violet-400/10' },
-    { id: 'ev', name: 'EV vs Gas', icon: Zap, target: 'ev-comparison', color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
-    { id: 'valuation', name: 'Valuation', icon: DollarSign, target: 'valuation-estimator', color: 'text-amber-400', bg: 'bg-amber-400/10' },
-    { id: 'inspection', name: 'Inspection', icon: ShieldCheck, target: 'inspection-checklist', color: 'text-teal-400', bg: 'bg-teal-400/10' },
-    { id: 'market', name: 'Market Trends', icon: TrendingUp, target: 'market-trends', color: 'text-cyan-400', bg: 'bg-cyan-400/10' },
+    { id: 'vin', name: 'VIN & Recall', icon: Search, target: 'vin-checker', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+    { id: 'quote', name: 'Quote Auditor', icon: FileSearch, target: 'quote-auditor', color: 'text-indigo-400', bg: 'bg-indigo-400/10' },
+    { id: 'state-fees', name: 'State Fees', icon: Scale, target: 'state-fees', color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
+    { id: 'lease', name: 'Lease vs Buy', icon: ArrowLeftRight, target: 'lease-vs-finance', color: 'text-violet-400', bg: 'bg-violet-400/10' },
+    { id: 'tco', name: '5-Yr TCO', icon: Calculator, target: 'tco-calculator', color: 'text-teal-400', bg: 'bg-teal-400/10' },
+    { id: 'loan', name: 'Loan & Budget', icon: SlidersHorizontal, target: 'loan-calculator', color: 'text-amber-400', bg: 'bg-amber-400/10' },
+    { id: 'dossier', name: 'Test Dossier', icon: Printer, target: 'test-drive-dossier', color: 'text-rose-400', bg: 'bg-rose-400/10' },
+    { id: 'depreciation', name: 'Value Curve', icon: TrendingDown, target: 'depreciation-curve', color: 'text-cyan-400', bg: 'bg-cyan-400/10' },
+    { id: 'valuation', name: 'Valuation', icon: DollarSign, target: 'valuation-estimator', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
+    { id: 'ev', name: 'EV vs Gas', icon: Zap, target: 'ev-comparison', color: 'text-green-400', bg: 'bg-green-400/10' },
+    { id: 'inspection', name: 'Inspection', icon: ShieldCheck, target: 'inspection-checklist', color: 'text-orange-400', bg: 'bg-orange-400/10' },
+    { id: 'market', name: 'Market Trends', icon: TrendingUp, target: 'market-trends', color: 'text-sky-300', bg: 'bg-sky-300/10' },
   ];
 
   return (
@@ -143,7 +156,7 @@ const ToolkitHeroHeader = ({
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="max-w-[1140px] mx-auto text-center relative z-10">
+      <div className="max-w-[1180px] mx-auto text-center relative z-10">
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight mb-4">
           Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] to-emerald-400">buy smarter</span>.
         </h1>
@@ -152,7 +165,7 @@ const ToolkitHeroHeader = ({
           Unbiased calculators, 5-year ownership cost projections, live market valuations, and AI negotiation research designed to save you thousands.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-3.5 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-3.5 max-w-6xl mx-auto">
           {tools.map((t) => {
             const Icon = t.icon;
             const isSelected = activeFilter === t.id;
@@ -432,10 +445,13 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
           <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Research Tools</h4>
           <ul className="space-y-2">
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">AI Buying Advisor</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">VIN & Recall Scanner</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Dealer Quote Auditor</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">State Doc Fee Guide</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Lease vs. Finance</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">5-Year TCO Calculator</button></li>
-            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">EV vs Gas Simulator</button></li>
-            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Valuation & Trade-In</button></li>
-            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Inspection Checklist</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Test-Drive Dossier</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Depreciation Predictor</button></li>
           </ul>
         </div>
 
@@ -600,6 +616,30 @@ export default function App() {
                 </section>
               )}
 
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'vin') && (
+                <section id="vin-checker" className="scroll-mt-24">
+                  <VINRecallWidget />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'quote') && (
+                <section id="quote-auditor" className="scroll-mt-24">
+                  <DealerQuoteAuditorWidget />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'state-fees') && (
+                <section id="state-fees" className="scroll-mt-24">
+                  <StateFeeGuideWidget />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'lease') && (
+                <section id="lease-vs-finance" className="scroll-mt-24">
+                  <LeaseVsFinanceWidget />
+                </section>
+              )}
+
               {(activeToolkitFilter === 'all' || activeToolkitFilter === 'tco') && (
                 <section id="tco-calculator" className="scroll-mt-24">
                   <TCOCalculator />
@@ -609,6 +649,18 @@ export default function App() {
               {(activeToolkitFilter === 'all' || activeToolkitFilter === 'loan') && (
                 <section id="loan-calculator" className="scroll-mt-24">
                   <EstimateBudgetSection />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'dossier') && (
+                <section id="test-drive-dossier" className="scroll-mt-24">
+                  <TestDriveDossierWidget />
+                </section>
+              )}
+
+              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'depreciation') && (
+                <section id="depreciation-curve" className="scroll-mt-24">
+                  <DepreciationPredictorWidget />
                 </section>
               )}
 
