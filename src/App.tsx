@@ -6,7 +6,7 @@ import {
   RefreshCw, Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, Compass, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
-  Menu, X
+  Menu, X, ChevronRight
 } from 'lucide-react';
 import SearchPage from './SearchPage';
 import TCOCalculator from './TCOCalculator';
@@ -99,6 +99,141 @@ const NavBar = ({
     }
   };
 
+  const mobileTools = [
+    {
+      id: 'ai-advisor',
+      name: 'AI Advisor',
+      tag: 'COPILOT',
+      desc: 'Deal negotiation copilot',
+      icon: Bot,
+      gradient: 'from-[#29abe2]/30 via-sky-500/15 to-transparent',
+      border: 'border-[#29abe2]/40',
+      glow: 'rgba(41,171,226,0.35)',
+      color: 'text-[#29abe2]'
+    },
+    {
+      id: 'vin-checker',
+      name: 'VIN & Recall',
+      tag: 'NHTSA',
+      desc: 'NHTSA factory records',
+      icon: Search,
+      gradient: 'from-blue-500/30 via-blue-600/15 to-transparent',
+      border: 'border-blue-400/40',
+      glow: 'rgba(59,130,246,0.35)',
+      color: 'text-blue-400'
+    },
+    {
+      id: 'quote-auditor',
+      name: 'Quote Auditor',
+      tag: 'AUDIT',
+      desc: 'Junk fee detector & script',
+      icon: FileSearch,
+      gradient: 'from-indigo-500/30 via-indigo-600/15 to-transparent',
+      border: 'border-indigo-400/40',
+      glow: 'rgba(99,102,241,0.35)',
+      color: 'text-indigo-400'
+    },
+    {
+      id: 'state-fees',
+      name: 'State Fee Guide',
+      tag: '50-STATE',
+      desc: 'Doc fee caps & tax rules',
+      icon: Scale,
+      gradient: 'from-emerald-500/30 via-emerald-600/15 to-transparent',
+      border: 'border-emerald-400/40',
+      glow: 'rgba(16,185,129,0.35)',
+      color: 'text-emerald-400'
+    },
+    {
+      id: 'lease-vs-finance',
+      name: 'Lease vs. Buy',
+      tag: 'COMPARE',
+      desc: '3-yr cashflow vs equity',
+      icon: ArrowLeftRight,
+      gradient: 'from-violet-500/30 via-violet-600/15 to-transparent',
+      border: 'border-violet-400/40',
+      glow: 'rgba(139,92,246,0.35)',
+      color: 'text-violet-400'
+    },
+    {
+      id: 'tco-calculator',
+      name: '5-Year TCO',
+      tag: '5-YEAR',
+      desc: 'Full ownership projection',
+      icon: Calculator,
+      gradient: 'from-teal-500/30 via-teal-600/15 to-transparent',
+      border: 'border-teal-400/40',
+      glow: 'rgba(20,184,166,0.35)',
+      color: 'text-teal-400'
+    },
+    {
+      id: 'loan-calculator',
+      name: 'Loan & Budget',
+      tag: 'FINANCE',
+      desc: 'Payment & interest math',
+      icon: SlidersHorizontal,
+      gradient: 'from-amber-500/30 via-amber-600/15 to-transparent',
+      border: 'border-amber-400/40',
+      glow: 'rgba(245,158,11,0.35)',
+      color: 'text-amber-400'
+    },
+    {
+      id: 'test-drive-dossier',
+      name: 'Test Dossier',
+      tag: 'PRINT',
+      desc: '1-click printable sheet',
+      icon: Printer,
+      gradient: 'from-rose-500/30 via-rose-600/15 to-transparent',
+      border: 'border-rose-400/40',
+      glow: 'rgba(244,63,94,0.35)',
+      color: 'text-rose-400'
+    },
+    {
+      id: 'depreciation-curve',
+      name: 'Value Curve',
+      tag: '7-YEAR',
+      desc: '7-yr value sweet spot',
+      icon: TrendingDown,
+      gradient: 'from-cyan-500/30 via-cyan-600/15 to-transparent',
+      border: 'border-cyan-400/40',
+      glow: 'rgba(6,182,212,0.35)',
+      color: 'text-cyan-400'
+    },
+    {
+      id: 'valuation-estimator',
+      name: 'Live Valuation',
+      tag: 'LIVE',
+      desc: 'Trade-in & market pricing',
+      icon: DollarSign,
+      gradient: 'from-yellow-500/30 via-amber-500/15 to-transparent',
+      border: 'border-yellow-400/40',
+      glow: 'rgba(234,179,8,0.35)',
+      color: 'text-yellow-400'
+    },
+    {
+      id: 'ev-comparison',
+      name: 'EV vs Gas',
+      tag: 'GREEN',
+      desc: 'Fuel & charger savings',
+      icon: Zap,
+      gradient: 'from-green-500/30 via-emerald-600/15 to-transparent',
+      border: 'border-green-400/40',
+      glow: 'rgba(34,197,94,0.35)',
+      color: 'text-green-400'
+    },
+    {
+      id: 'inspection-checklist',
+      name: 'Inspection List',
+      tag: 'CHECK',
+      desc: 'Pre-purchase detector',
+      icon: ShieldCheck,
+      gradient: 'from-orange-500/30 via-orange-600/15 to-transparent',
+      border: 'border-orange-400/40',
+      glow: 'rgba(249,115,22,0.35)',
+      color: 'text-orange-400'
+    }
+  ];
+
   return (
     <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -162,7 +297,11 @@ const NavBar = ({
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-11 h-11 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200/80 text-slate-800 flex items-center justify-center transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-[#29abe2]"
+              className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-[#29abe2] ${
+                mobileMenuOpen 
+                  ? "bg-slate-900 text-white border border-slate-700 shadow-lg shadow-black/20" 
+                  : "bg-slate-100 hover:bg-slate-200/80 active:scale-95 border border-slate-200/80 text-slate-800"
+              }`}
               aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={mobileMenuOpen}
             >
@@ -175,194 +314,112 @@ const NavBar = ({
       {/* Mobile Drawer / Overlay */}
       {mobileMenuOpen && (
         <>
-          {/* Backdrop */}
+          {/* Frosted Dark Backdrop */}
           <div 
-            className="fixed inset-0 top-[72px] sm:top-[85px] z-40 bg-slate-950/60 backdrop-blur-sm lg:hidden transition-opacity"
+            className="fixed inset-0 top-[72px] sm:top-[85px] z-40 bg-black/75 backdrop-blur-md lg:hidden transition-opacity"
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          {/* Drawer Menu */}
-          <div className="fixed top-[72px] sm:top-[85px] left-0 right-0 z-50 bg-white/95 backdrop-blur-2xl border-b border-slate-200/90 shadow-2xl p-4 sm:p-6 max-h-[calc(100vh-72px)] sm:max-h-[calc(100vh-85px)] overflow-y-auto lg:hidden">
-            <div className="max-w-md mx-auto space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  Car Buyer Intelligence Suite
-                </span>
-                <span className="text-[10px] font-extrabold text-[#29abe2] bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-100">
+          {/* Luxury Glassmorphic Drawer Menu */}
+          <div className="fixed top-[72px] sm:top-[85px] left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] p-4 sm:p-6 max-h-[calc(100vh-72px)] sm:max-h-[calc(100vh-85px)] overflow-y-auto lg:hidden text-white relative">
+            {/* Ambient background glows */}
+            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-80 h-32 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 -right-20 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+            
+            {/* Subtle grid texture */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] pointer-events-none opacity-40" />
+
+            <div className="max-w-md mx-auto space-y-4 relative z-10">
+              {/* Header Badge */}
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#29abe2] animate-pulse" />
+                  <span className="text-[11px] font-black uppercase tracking-widest text-slate-300">
+                    Car Buyer Intelligence Suite
+                  </span>
+                </div>
+                <span className="text-[10px] font-extrabold text-[#29abe2] bg-[#29abe2]/10 border border-[#29abe2]/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
                   100% Free
                 </span>
               </div>
 
-              {/* Tool Links Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <button
-                  onClick={() => handleNavClick('ai-advisor')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-[#29abe2]/10 text-[#29abe2] flex items-center justify-center shrink-0">
-                    <Bot size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">AI Advisor</div>
-                    <div className="text-[10px] text-slate-400">Deal negotiation copilot</div>
-                  </div>
-                </button>
+              {/* Tool Links Grid (Hero Section Glassmorphism) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {mobileTools.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <button
+                      key={tool.id}
+                      onClick={() => handleNavClick(tool.id)}
+                      className="group relative flex items-center gap-3.5 p-3 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-b from-white/[0.08] via-white/[0.04] to-transparent hover:from-white/[0.14] hover:via-white/[0.08] hover:to-white/[0.03] border-white/[0.12] hover:border-[#29abe2]/50 shadow-[0_4px_16px_0_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.12)] active:scale-[0.98] text-left"
+                    >
+                      {/* Specular top light ray */}
+                      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
-                <button
-                  onClick={() => handleNavClick('vin-checker')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
-                    <Search size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">VIN & Recall Scanner</div>
-                    <div className="text-[10px] text-slate-400">NHTSA factory records</div>
-                  </div>
-                </button>
+                      {/* Frosted jewel icon pedestal */}
+                      <div
+                        className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 shadow-inner border relative bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.color} group-hover:scale-105 group-hover:shadow-[0_0_16px_${tool.glow}] group-hover:border-white/40`}
+                      >
+                        <Icon size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
+                      </div>
 
-                <button
-                  onClick={() => handleNavClick('quote-auditor')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 flex items-center justify-center shrink-0">
-                    <FileSearch size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">Dealer Quote Auditor</div>
-                    <div className="text-[10px] text-slate-400">Junk fee detector & script</div>
-                  </div>
-                </button>
+                      {/* Text info */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="text-[8.5px] font-black uppercase tracking-widest text-slate-400/90 group-hover:text-slate-300 transition-colors">
+                            {tool.tag}
+                          </span>
+                        </div>
+                        <div className="text-[12.5px] font-bold text-white tracking-tight leading-snug group-hover:text-[#29abe2] transition-colors truncate">
+                          {tool.name}
+                        </div>
+                        <div className="text-[10.5px] text-slate-400 font-medium truncate leading-tight">
+                          {tool.desc}
+                        </div>
+                      </div>
 
-                <button
-                  onClick={() => handleNavClick('state-fees')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
-                    <Scale size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">50-State Fee Guide</div>
-                    <div className="text-[10px] text-slate-400">Doc fee caps & tax rules</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('lease-vs-finance')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center shrink-0">
-                    <ArrowLeftRight size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">Lease vs. Buy</div>
-                    <div className="text-[10px] text-slate-400">3-yr cashflow vs equity</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('tco-calculator')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-600 flex items-center justify-center shrink-0">
-                    <Calculator size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">5-Year TCO</div>
-                    <div className="text-[10px] text-slate-400">Full ownership projection</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('loan-calculator')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
-                    <SlidersHorizontal size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">Loan & Budget</div>
-                    <div className="text-[10px] text-slate-400">Payment & interest math</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('test-drive-dossier')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0">
-                    <Printer size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">Test-Drive Dossier</div>
-                    <div className="text-[10px] text-slate-400">1-click printable sheet</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('depreciation-curve')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-600 flex items-center justify-center shrink-0">
-                    <TrendingDown size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">Depreciation Curve</div>
-                    <div className="text-[10px] text-slate-400">7-yr value sweet spot</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('valuation-estimator')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-yellow-500/10 text-yellow-600 flex items-center justify-center shrink-0">
-                    <DollarSign size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">Live Valuation</div>
-                    <div className="text-[10px] text-slate-400">Trade-in & market pricing</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('ev-comparison')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
-                    <Zap size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">EV vs Gas</div>
-                    <div className="text-[10px] text-slate-400">Fuel & charger savings</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleNavClick('inspection-checklist')}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-600 flex items-center justify-center shrink-0">
-                    <ShieldCheck size={16} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold leading-snug">Inspection Checklist</div>
-                    <div className="text-[10px] text-slate-400">Pre-purchase detector</div>
-                  </div>
-                </button>
+                      {/* Right indicator */}
+                      <div className="opacity-30 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-slate-400 group-hover:text-[#29abe2] shrink-0 pr-0.5">
+                        <ChevronRight size={16} />
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* Market Pulse Link */}
-              <div className="pt-2 border-t border-slate-100">
+              {/* Market Pulse Link - Elevated Luxury Glass Banner */}
+              <div className="pt-2 border-t border-white/10">
                 <button
                   onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }}
-                  className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors cursor-pointer shadow-sm"
+                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-[#29abe2]/10 to-white/[0.04] hover:from-[#29abe2]/20 hover:via-sky-500/15 hover:to-white/[0.08] border-[#29abe2]/40 hover:border-[#29abe2]/70 shadow-[0_4px_20px_0_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.2)] active:scale-[0.99] text-left"
                 >
-                  <div className="flex items-center gap-2">
-                    <TrendingUp size={15} className="text-[#29abe2]" />
-                    <span>Consumer Market Pulse</span>
+                  {/* Specular top light ray */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+
+                  <div className="flex items-center gap-3.5">
+                    {/* Jewel Icon Pedestal */}
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-sky-300/40 bg-gradient-to-br from-sky-400/30 via-blue-500/15 to-transparent text-sky-300 group-hover:scale-105 group-hover:shadow-[0_0_16px_rgba(56,189,248,0.4)] transition-all">
+                      <TrendingUp size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-[8.5px] font-black uppercase tracking-widest text-[#29abe2]">
+                          INDEX • LIVE FEED
+                        </span>
+                      </div>
+                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-[#29abe2] transition-colors">
+                        Consumer Market Pulse
+                      </div>
+                      <div className="text-[10.5px] text-slate-400 font-medium">
+                        Real-time inventory, pricing index & macro analysis
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-semibold uppercase">View Feed →</span>
+
+                  <div className="flex items-center gap-1 text-[11px] font-bold text-[#29abe2] shrink-0 pl-2">
+                    <span>Open</span>
+                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
                 </button>
               </div>
             </div>
