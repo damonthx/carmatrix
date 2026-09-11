@@ -850,8 +850,6 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
             <li><button onClick={() => onNavigate('privacy')} className="hover:text-white cursor-pointer">Privacy Policy</button></li>
             <li><button onClick={() => onNavigate('terms')} className="hover:text-white cursor-pointer">Terms of Service</button></li>
             <li><button onClick={() => onNavigate('vision')} className="hover:text-white cursor-pointer">Company Vision</button></li>
-            <li><button onClick={() => onNavigate('dealers')} className="hover:text-white cursor-pointer">Dealer Network</button></li>
-            <li><button onClick={() => onNavigate('contact')} className="hover:text-white cursor-pointer">Contact Compliance</button></li>
           </ul>
         </div>
       </div>
