@@ -67,12 +67,12 @@ const NavBar = ({
 }) => (
   <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-[88px]">
+      <div className="flex justify-between items-center h-[85px]">
         <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
           <img 
             src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
             alt="CarMatrix Logo" 
-            className="h-[65px] w-auto object-contain"
+            className="h-[81px] w-auto object-contain"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -152,7 +152,7 @@ const ToolkitHeroHeader = ({
   ];
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white py-18 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80">
+    <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white py-[60px] px-4 sm:px-6 lg:px-8 border-b border-slate-800/80">
       {/* Ambient background glows */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#29abe2]/20 via-sky-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 -left-32 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
