@@ -60,12 +60,12 @@ const NavBar = ({
 }) => (
   <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-20">
+      <div className="flex justify-between items-center h-[88px]">
         <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
           <img 
             src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
             alt="CarMatrix Logo" 
-            className="h-12 w-auto object-contain"
+            className="h-[65px] w-auto object-contain"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -415,14 +415,13 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
         <div className="col-span-2 space-y-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
               alt="CarMatrix Logo" 
               className="h-11 w-auto object-contain brightness-0 invert"
               referrerPolicy="no-referrer"
             />
-            <span className="text-sm font-black text-white">CarMatrix</span>
           </div>
           <p className="text-slate-400 text-xs max-w-sm leading-relaxed">
             Empowering smart vehicle buyers with unbiased research tools, transparent 5-year ownership projections, and real-time market data.
