@@ -62,16 +62,13 @@ const NavBar = ({
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-18 py-2">
         <div className="flex items-center gap-8">
-          <div className="cursor-pointer flex items-center gap-3 shrink-0" onClick={onHomeClick}>
+          <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
               alt="CarMeta Logo" 
               className="h-12 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
-            <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider bg-sky-100 text-[#29abe2] rounded-full border border-sky-200">
-              Research Toolkit
-            </span>
           </div>
           
           <nav className="hidden md:flex gap-6 text-[13px] font-bold text-gray-800">
