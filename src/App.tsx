@@ -64,9 +64,9 @@ const NavBar = ({
         <div className="flex items-center gap-8">
           <div className="cursor-pointer flex items-center gap-2.5 shrink-0" onClick={onHomeClick}>
             <img 
-              src="https://www.image2url.com/r2/default/images/1777060703818-28c3abbb-38ac-4291-b8f5-fd07d1cbb81e.png" 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
               alt="CarMeta Logo" 
-              className="h-7 w-auto object-contain"
+              className="h-8 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
             <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider bg-sky-100 text-[#29abe2] rounded-full border border-sky-200">
@@ -442,9 +442,9 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         <div className="col-span-2 space-y-3">
           <div className="flex items-center gap-2">
             <img 
-              src="https://www.image2url.com/r2/default/images/1777060703818-28c3abbb-38ac-4291-b8f5-fd07d1cbb81e.png" 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
               alt="CarMeta Logo" 
-              className="h-6 w-auto object-contain brightness-200"
+              className="h-7 w-auto object-contain brightness-0 invert"
               referrerPolicy="no-referrer"
             />
             <span className="text-sm font-black text-white">CarMeta</span>

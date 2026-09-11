@@ -65,9 +65,9 @@ export default function SignIn({
         <div className="light-glass-card rounded-3xl p-8 shadow-xl border border-white/20">
           <div className="text-center mb-8">
             <img 
-              src="https://www.image2url.com/r2/default/images/1777060703818-28c3abbb-38ac-4291-b8f5-fd07d1cbb81e.png" 
-              alt="CarGurus Logo" 
-              className="h-8 mx-auto mb-6"
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+              alt="CarMeta Logo" 
+              className="h-10 mx-auto mb-6 object-contain"
               referrerPolicy="no-referrer"
             />
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Welcome back</h1>

@@ -269,7 +269,7 @@ export default function VehicleDetailPage({
           <div className="bg-white rounded-[24px] shadow-sm border border-slate-200/50 p-6 md:p-8">
              <div className="flex justify-between items-center mb-8">
                <h2 className="text-[20px] font-extrabold text-slate-900">Pricing</h2>
-               <img src="https://www.image2url.com/r2/default/images/1777060703818-28c3abbb-38ac-4291-b8f5-fd07d1cbb81e.png" alt="CarGurus" className="h-4" referrerPolicy="no-referrer" />
+                <img src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" alt="CarMeta" className="h-5 object-contain" referrerPolicy="no-referrer" />
              </div>
              
              <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-8">
