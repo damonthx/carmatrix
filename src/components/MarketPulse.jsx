@@ -1,7 +1,7 @@
 // MarketPulse.jsx
-// CarMeta "Market Pulse" card strip — reads /api/market-pulse (BLS CPI data).
+// CarMatrix "Market Pulse" card strip — reads /api/market-pulse (BLS CPI data).
 // Stack assumptions: React, Tailwind v4, lucide-react, Barlow loaded globally.
-// Brand: CarMeta Blue #29abe2 on dark surfaces.
+// Brand: CarMatrix Blue #29abe2 on dark surfaces.
 
 import { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';

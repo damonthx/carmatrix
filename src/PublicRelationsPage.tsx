@@ -12,7 +12,7 @@ export default function PublicRelationsPage() {
           Media Inquiries & PR
         </h1>
         <p className="text-xl text-slate-600 font-medium max-w-[600px] mx-auto leading-relaxed">
-          For journalists, analysts, and media professionals looking to connect with the CarMeta communications team.
+          For journalists, analysts, and media professionals looking to connect with the CarMatrix communications team.
         </p>
       </div>
 

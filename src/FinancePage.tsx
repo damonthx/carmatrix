@@ -59,7 +59,7 @@ export default function FinancePage() {
           {/* Hero Left */}
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-xs font-bold tracking-widest uppercase mb-6">
-              <Sparkles size={13} /> CarMeta Finance
+              <Sparkles size={13} /> CarMatrix Finance
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
               Shop with <span className="text-[#29abe2]">real rates</span> in hand
@@ -273,7 +273,7 @@ export default function FinancePage() {
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center relative z-10">
           <div className="md:col-span-5">
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4">
-              How financing with CarMeta works
+              How financing with CarMatrix works
             </h2>
             <p className="text-slate-400 font-medium leading-relaxed max-w-[400px]">
               You're just three simple steps away from driving off the lot in your new car.

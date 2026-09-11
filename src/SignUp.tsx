@@ -41,12 +41,12 @@ export default function SignUp({ onBack, onSignIn, onSuccess }: { onBack: () => 
           <div className="text-center mb-8">
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
-              alt="CarMeta Logo" 
+              alt="CarMatrix Logo" 
               className="h-[60px] mx-auto mb-6 object-contain"
               referrerPolicy="no-referrer"
             />
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Create account</h1>
-            <p className="text-slate-500 text-sm mt-2 font-medium">Join CarMeta for a better car buying experience</p>
+            <p className="text-slate-500 text-sm mt-2 font-medium">Join CarMatrix for a better car buying experience</p>
           </div>
 
           <form onSubmit={handleSignUp} className="space-y-5">

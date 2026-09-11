@@ -3,9 +3,9 @@ import { Newspaper, ArrowUpRight, Download } from 'lucide-react';
 
 export default function PressPage() {
   const pressReleases = [
-    { date: 'May 18, 2026', title: 'CarMeta Launches Next-Gen AI Matchmaker for Car Buyers' },
-    { date: 'March 12, 2026', title: 'CarMeta Secures Series A Funding to Expand Automotive Database' },
-    { date: 'January 05, 2026', title: 'CarMeta Partners with NHTSA for Enhanced Vehicle Taxonomy' },
+    { date: 'May 18, 2026', title: 'CarMatrix Launches Next-Gen AI Matchmaker for Car Buyers' },
+    { date: 'March 12, 2026', title: 'CarMatrix Secures Series A Funding to Expand Automotive Database' },
+    { date: 'January 05, 2026', title: 'CarMatrix Partners with NHTSA for Enhanced Vehicle Taxonomy' },
   ];
 
   return (
@@ -18,7 +18,7 @@ export default function PressPage() {
           Latest News & Announcements
         </h1>
         <p className="text-xl text-slate-600 font-medium max-w-[600px] mx-auto leading-relaxed">
-          Stay up to date with the latest product releases, company milestones, and industry news from CarMeta.
+          Stay up to date with the latest product releases, company milestones, and industry news from CarMatrix.
         </p>
       </div>
 
@@ -46,7 +46,7 @@ export default function PressPage() {
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Download Assets</h3>
             <p className="text-sm text-slate-600 font-medium mb-6">
-              Get official CarMeta logos, brand guidelines, and high-resolution product screenshots.
+              Get official CarMatrix logos, brand guidelines, and high-resolution product screenshots.
             </p>
             <button className="w-full bg-[#29abe2] text-white py-3 rounded-full font-bold hover:bg-[#2089b5] transition-colors">
               Download Kit (.ZIP)

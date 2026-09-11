@@ -426,7 +426,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
             <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none scale-[1.45] -translate-y-16 z-0">
               <img
                 src={logoMark}
-                alt="CarMeta Speed-Stripes Logo"
+                alt="CarMatrix Speed-Stripes Logo"
                 className="w-full max-w-[420px] h-auto object-contain"
               />
             </div>

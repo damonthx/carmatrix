@@ -91,7 +91,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-bold text-slate-900 mb-1">Email Us</h4>
                   <p className="text-xs text-slate-500 mb-2">We'll respond within 24hrs</p>
-                  <a href="mailto:support@carmeta.com" className="text-sm md:text-base font-bold text-[#29abe2] hover:text-[#2089b5] transition-colors break-all">support@carmeta.com</a>
+                  <a href="mailto:support@carmatrix.com" className="text-sm md:text-base font-bold text-[#29abe2] hover:text-[#2089b5] transition-colors break-all">support@carmatrix.com</a>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ export default function ContactPage() {
                 <Briefcase size={20} className="text-slate-400 mt-1" />
                 <div>
                   <h4 className="font-bold text-slate-900">Dealership Partnerships</h4>
-                  <p className="text-sm text-slate-500">dealers@carmeta.com</p>
+                  <p className="text-sm text-slate-500">dealers@carmatrix.com</p>
                 </div>
               </div>
               <div className="w-full h-px bg-slate-100"></div>
@@ -113,7 +113,7 @@ export default function ContactPage() {
                 <MessageSquare size={20} className="text-slate-400 mt-1" />
                 <div>
                   <h4 className="font-bold text-slate-900">Press & Public Relations</h4>
-                  <p className="text-sm text-slate-500">press@carmeta.com</p>
+                  <p className="text-sm text-slate-500">press@carmatrix.com</p>
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ export default function ContactPage() {
               <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center mb-3 text-white shadow-lg shadow-black/20">
                 <MapPin size={20} />
               </div>
-              <h3 className="text-lg font-bold text-slate-900">CarMeta Headquarters</h3>
+              <h3 className="text-lg font-bold text-slate-900">CarMatrix Headquarters</h3>
               <p className="text-sm font-medium text-slate-600 mt-1">123 Innovation Drive, Austin, TX 78701</p>
             </div>
           </div>

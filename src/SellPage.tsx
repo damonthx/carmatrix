@@ -67,7 +67,7 @@ export default function SellPage() {
   const faqs = [
     { 
       q: "What are my options to sell my car?", 
-      a: "With CarMeta, you can sell your car to a local dealer in four easy steps.\n1. Enter your car's details - License plate, VIN, mileage, etc.\n2. Get instant offers - View the best prices from local dealers.\n3. Choose the best offer - Bring it to the dealer along with your ID and supporting documents.\n4. Get paid right away - The dealer will inspect your car, verify the offer, and pay you the same day." 
+      a: "With CarMatrix, you can sell your car to a local dealer in four easy steps.\n1. Enter your car's details - License plate, VIN, mileage, etc.\n2. Get instant offers - View the best prices from local dealers.\n3. Choose the best offer - Bring it to the dealer along with your ID and supporting documents.\n4. Get paid right away - The dealer will inspect your car, verify the offer, and pay you the same day." 
     },
     { 
       q: "How does the offer process work?", 
@@ -81,7 +81,7 @@ export default function SellPage() {
     { q: "Can I sell a car without a title?", a: "Typically, a clear title is required to complete the sale. If you've lost it, you may need to apply for a duplicate from your state's DMV prior to selling." },
     { q: "Will I pay taxes if I sell a car?", a: "Taxes depend on your state and whether you are making a profit on the sale. If you trade in your vehicle, many states offer a tax credit towards your new purchase." },
     { q: "Will selling a financed car hurt my credit?", a: "No, typically selling a financed car and paying off the loan results in a closed account in good standing, which may actually improve your credit profile over time." },
-    { q: "Can I sell my car privately on CarMeta?", a: "Currently, our Instant Cash Offer connects you directly with certified local dealerships to ensure a fast, safe, and guaranteed transaction." }
+    { q: "Can I sell my car privately on CarMatrix?", a: "Currently, our Instant Cash Offer connects you directly with certified local dealerships to ensure a fast, safe, and guaranteed transaction." }
   ];
 
   const states = [
@@ -271,7 +271,7 @@ export default function SellPage() {
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 mb-24 py-12 border-t border-slate-200">
         <div className="grid md:grid-cols-[1fr_2fr] gap-12 items-start">
           <div>
-            <h2 className="text-4xl font-extrabold text-slate-900 leading-tight">Why sell with<br/>CarMeta?</h2>
+            <h2 className="text-4xl font-extrabold text-slate-900 leading-tight">Why sell with<br/>CarMatrix?</h2>
             <button className="mt-8 bg-[#29abe2] hover:bg-[#2089b5] text-white font-bold rounded-full px-8 py-3 transition-colors">
               Get your offers
             </button>

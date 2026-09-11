@@ -66,12 +66,12 @@ export default function SignIn({
           <div className="text-center mb-8">
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
-              alt="CarMeta Logo" 
+              alt="CarMatrix Logo" 
               className="h-[60px] mx-auto mb-6 object-contain"
               referrerPolicy="no-referrer"
             />
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Welcome back</h1>
-            <p className="text-slate-500 text-sm mt-2 font-medium">Log in to your CarMeta account</p>
+            <p className="text-slate-500 text-sm mt-2 font-medium">Log in to your CarMatrix account</p>
           </div>
 
           <form onSubmit={handleSignIn} className="space-y-5">

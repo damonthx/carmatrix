@@ -53,7 +53,7 @@ export default function InfluencersPage() {
           </h1>
           
           <p className="text-base md:text-xl text-slate-400 font-medium max-w-[700px] mx-auto mb-10 leading-relaxed">
-            CarMeta is merging AI diagnostics and blockchain authentication to build the ultimate trust-first automotive platform. We are looking for foundational creators to pilot our launch.
+            CarMatrix is merging AI diagnostics and blockchain authentication to build the ultimate trust-first automotive platform. We are looking for foundational creators to pilot our launch.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -78,7 +78,7 @@ export default function InfluencersPage() {
       <div id="value-prop" className="max-w-[1100px] mx-auto px-4 mt-28">
         <div className="text-center mb-16">
           <span className="text-[#29abe2] font-black text-xs uppercase tracking-widest">Co-Creators, Not Just Affiliates</span>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight mt-3 text-white">Why partner with CarMeta?</h2>
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight mt-3 text-white">Why partner with CarMatrix?</h2>
           <div className="w-16 h-1 bg-[#29abe2] mx-auto mt-6 rounded-full"></div>
         </div>
 
@@ -103,7 +103,7 @@ export default function InfluencersPage() {
             </div>
             <h3 className="text-xl font-bold text-white mb-3">Foundational Authority</h3>
             <p className="text-slate-400 text-sm font-medium leading-relaxed">
-              Be established as a verified CarMeta Automotive Advisor. Review and display your expert content badges directly on vehicle detail pages to drive high-conversion views to your channel.
+              Be established as a verified CarMatrix Automotive Advisor. Review and display your expert content badges directly on vehicle detail pages to drive high-conversion views to your channel.
             </p>
           </div>
 
@@ -253,7 +253,7 @@ export default function InfluencersPage() {
               <span className="text-[#29abe2] font-black text-xs uppercase tracking-widest">Alignment Profile</span>
               <h2 className="text-3xl font-black text-white mt-2 mb-6">Who we're looking for</h2>
               <p className="text-slate-450 font-medium text-sm leading-relaxed mb-6">
-                CarMeta creators are objective, technically curious, and highly valued by their audiences. We partner with:
+                CarMatrix creators are objective, technically curious, and highly valued by their audiences. We partner with:
               </p>
               
               <div className="space-y-4">
@@ -288,7 +288,7 @@ export default function InfluencersPage() {
                   </div>
                   <h4 className="text-sm font-bold text-white mb-1">[Creator Testimonial Video]</h4>
                   <p className="text-[10px] text-slate-400 max-w-[280px] mx-auto leading-relaxed">
-                    "Partnering with CarMeta added incredible transparency to my builds and unlocked massive revenue streams."
+                    "Partnering with CarMatrix added incredible transparency to my builds and unlocked massive revenue streams."
                   </p>
                   <span className="inline-block mt-3 text-[10px] font-black uppercase text-[#29abe2] tracking-wider">@AutomotiveVlogs (450k Subs)</span>
                 </div>
@@ -303,7 +303,7 @@ export default function InfluencersPage() {
       <div id="apply-form" className="max-w-[850px] mx-auto px-4 mt-28">
         <div className="bg-[#0b0f19] border border-white/5 rounded-[32px] p-8 md:p-12 shadow-2xl relative">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-black text-white">Join the CarMeta Network</h2>
+            <h2 className="text-3xl font-black text-white">Join the CarMatrix Network</h2>
             <p className="text-slate-450 font-semibold text-xs mt-1">Submit your partnership credentials below. Access is strictly limited.</p>
           </div>
 
@@ -394,7 +394,7 @@ export default function InfluencersPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2 tracking-wide">Why do you fit the CarMeta brand?</label>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2 tracking-wide">Why do you fit the CarMatrix brand?</label>
                 <textarea 
                   required
                   rows={4}

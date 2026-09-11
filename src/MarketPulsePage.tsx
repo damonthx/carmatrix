@@ -224,7 +224,7 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
                   <div className="absolute top-0 right-0 w-32 h-32 bg-[#29abe2]/5 rounded-full filter blur-xl transition-all group-hover:bg-[#29abe2]/10" />
                   <h3 className="text-[18px] font-bold text-white mb-4 flex items-center gap-2">
                     <BookOpen size={18} className="text-[#29abe2]" />
-                    CarMeta Market Analysis & Advice
+                    CarMatrix Market Analysis & Advice
                   </h3>
                   <div className="bg-[#161d26] border border-[#232c38] rounded-xl p-5">
                     <p className="text-[14px] leading-relaxed text-[#c9c9c9] font-medium">

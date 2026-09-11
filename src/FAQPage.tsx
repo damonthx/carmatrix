@@ -17,12 +17,12 @@ export default function FAQPage() {
     },
     {
       category: 'Buying',
-      question: 'Are the prices shown on CarMeta negotiable?',
-      answer: 'The prices listed on CarMeta are set directly by the dealers or private sellers. While CarMeta focuses on radical transparency to ensure you see fair market value upfront, the final price is negotiated between you and the seller.'
+      question: 'Are the prices shown on CarMatrix negotiable?',
+      answer: 'The prices listed on CarMatrix are set directly by the dealers or private sellers. While CarMatrix focuses on radical transparency to ensure you see fair market value upfront, the final price is negotiated between you and the seller.'
     },
     {
       category: 'Selling',
-      question: 'How much does it cost to list my car on CarMeta?',
+      question: 'How much does it cost to list my car on CarMatrix?',
       answer: 'Basic listings for private sellers are completely free. We also offer premium listing options that boost your vehicles visibility and provide detailed analytics on buyer engagement for a small flat fee.'
     },
     {
@@ -33,7 +33,7 @@ export default function FAQPage() {
     {
       category: 'Financing',
       question: 'Does getting pre-qualified affect my credit score?',
-      answer: 'No. Getting pre-qualified through CarMeta uses a "soft pull" on your credit report, which does not impact your credit score. A "hard pull" will only occur when you formally apply for the loan with the lender.'
+      answer: 'No. Getting pre-qualified through CarMatrix uses a "soft pull" on your credit report, which does not impact your credit score. A "hard pull" will only occur when you formally apply for the loan with the lender.'
     },
     {
       category: 'Account',

@@ -9,7 +9,7 @@ export default function TeamPage() {
           <Users size={14} /> The Team
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
-          Meet the minds behind CarMeta
+          Meet the minds behind CarMatrix
         </h1>
         <p className="text-xl text-slate-600 font-medium max-w-[600px] mx-auto leading-relaxed">
           We are a team of AI engineers, automotive enthusiasts, and data scientists dedicated to transforming how the world buys cars.

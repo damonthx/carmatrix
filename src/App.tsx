@@ -64,7 +64,7 @@ const NavBar = ({
         <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
           <img 
             src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
-            alt="CarMeta Logo" 
+            alt="CarMatrix Logo" 
             className="h-12 w-auto object-contain"
             referrerPolicy="no-referrer"
           />
@@ -144,11 +144,6 @@ const ToolkitHeroHeader = ({
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-[1100px] mx-auto text-center relative z-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-sky-500/10 border border-sky-400/30 rounded-full text-[#29abe2] text-xs font-bold mb-4">
-          <Sparkles size={14} />
-          <span>Car Buyer Intelligence Suite</span>
-        </div>
-
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight mb-4">
           Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] to-emerald-400">buy smarter</span>.
         </h1>
@@ -412,11 +407,11 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
           <div className="flex items-center gap-2">
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
-              alt="CarMeta Logo" 
+              alt="CarMatrix Logo" 
               className="h-11 w-auto object-contain brightness-0 invert"
               referrerPolicy="no-referrer"
             />
-            <span className="text-sm font-black text-white">CarMeta</span>
+            <span className="text-sm font-black text-white">CarMatrix</span>
           </div>
           <p className="text-slate-400 text-xs max-w-sm leading-relaxed">
             Empowering smart vehicle buyers with unbiased research tools, transparent 5-year ownership projections, and real-time market data.
@@ -456,7 +451,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
       </div>
 
       <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
-        <span>© 2026 CarMeta Inc. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
+        <span>© 2026 CarMatrix Inc. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
         <div className="flex gap-4">
           <button onClick={() => onNavigate('faq')} className="hover:text-slate-400 cursor-pointer">FAQ</button>
           <button onClick={() => onNavigate('pr')} className="hover:text-slate-400 cursor-pointer">Press & PR</button>

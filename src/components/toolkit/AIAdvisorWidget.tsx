@@ -27,7 +27,7 @@ export default function AIAdvisorWidget() {
         const ai = new GoogleGenAI({ apiKey });
         const res = await ai.models.generateContent({
           model: 'gemini-2.5-flash',
-          contents: 'You are the CarMeta Expert Car Buyer Advisor. The user is asking: "' + textToRun + '". ' +
+          contents: 'You are the CarMatrix Expert Car Buyer Advisor. The user is asking: "' + textToRun + '". ' +
             'Provide a clear, structured, actionable response formatted in concise markdown with: ' +
             '1. Top Vehicle Recommendations or Direct Answer\n' +
             '2. Fair Market Price Range & Ownership Cost Watchouts\n' +
@@ -37,7 +37,7 @@ export default function AIAdvisorWidget() {
         });
         setResponse(res.text || 'Unable to generate response.');
       } else {
-        setResponse('### 🚗 CarMeta Expert Recommendation: ' + textToRun + '\n\n' +
+        setResponse('### 🚗 CarMatrix Expert Recommendation: ' + textToRun + '\n\n' +
           '**1. Top Recommendations:**\n' +
           '- **Toyota RAV4 (2020-2022)**: Renowned for class-leading reliability, standard Toyota Safety Sense 2.0, and 30+ MPG highway. Retains over 68% residual value after 3 years.\n' +
           '- **Honda CR-V (2020-2021)**: Superior cabin ergonomics, cavernous cargo room (39.2 cu ft), and smooth CVT transmission.\n' +
@@ -53,11 +53,11 @@ export default function AIAdvisorWidget() {
       }
     } catch (err) {
       console.warn('AI Advisor query fallback:', err);
-      setResponse('### 🚗 CarMeta Buying Advisor Insights: ' + textToRun + '\n\n' +
+      setResponse('### 🚗 CarMatrix Buying Advisor Insights: ' + textToRun + '\n\n' +
         '**Key Market Takeaways:**\n' +
         '- **Reliability Pick**: Look for 2020-2022 models with verifiable 1-owner CARFAX and complete service history.\n' +
         '- **Price Target**: Target 4-8% below dealer asking price for clean private party / no-accident units.\n' +
-        '- **Next Steps**: Use the CarMeta TCO Calculator above to verify 5-year maintenance and insurance estimates.');
+        '- **Next Steps**: Use the CarMatrix TCO Calculator above to verify 5-year maintenance and insurance estimates.');
     } finally {
       setLoading(false);
     }
@@ -70,11 +70,7 @@ export default function AIAdvisorWidget() {
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-500/20 border border-sky-400/30 rounded-full text-[#29abe2] text-xs font-bold mb-2">
-              <Sparkles size={14} />
-              <span>Gemini AI Buying Advisor</span>
-            </div>
-            <h3 className="text-2xl font-extrabold text-white tracking-tight">Ask CarMeta AI Anything About Buying</h3>
+            <h3 className="text-2xl font-extrabold text-white tracking-tight">Ask CarMatrix AI Anything About Buying</h3>
             <p className="text-slate-400 text-sm mt-1">Get unbiased car recommendations, pricing sanity checks, and dealer negotiation tactics.</p>
           </div>
         </div>
@@ -123,7 +119,7 @@ export default function AIAdvisorWidget() {
             <div className="mt-6 p-6 bg-slate-800/70 border border-slate-700/80 rounded-2xl animate-in fade-in duration-300">
               <div className="flex items-center gap-2 mb-3 text-xs font-bold text-emerald-400">
                 <Bot size={16} />
-                <span>CarMeta AI Research Analysis</span>
+                <span>CarMatrix AI Research Analysis</span>
               </div>
               <div className="text-slate-200 text-xs leading-relaxed space-y-2">
                 {response.split('\n').map((line, i) => {

@@ -61,13 +61,13 @@ export default function DealersPage() {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-15 mix-blend-overlay"></div>
         <div className="max-w-[1200px] mx-auto relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-white/90 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md">
-            <Activity size={14} className="text-[#29abe2]" /> CarMeta for Dealers
+            <Activity size={14} className="text-[#29abe2]" /> CarMatrix for Dealers
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-[1.1] max-w-[900px] mx-auto">
             More shoppers. <span className="text-[#29abe2]">More intelligence.</span> More sales.
           </h1>
           <p className="text-lg md:text-xl text-slate-300 font-medium max-w-[750px] mx-auto mb-10 leading-relaxed">
-            Reaching the largest audience of ready-to-buy automotive shoppers is just the start. Fuel your dealership's growth with CarMeta's AI-driven platform.
+            Reaching the largest audience of ready-to-buy automotive shoppers is just the start. Fuel your dealership's growth with CarMatrix's AI-driven platform.
           </p>
           <a 
             href="#inquiry-form" 
@@ -96,7 +96,7 @@ export default function DealersPage() {
                   </span>
                 </div>
                 <div className="text-3xl font-black text-slate-900 tracking-tight">$32,583</div>
-                <div className="text-[11px] text-slate-500 font-bold mt-1">CarMeta Instant Offer Valuation</div>
+                <div className="text-[11px] text-slate-500 font-bold mt-1">CarMatrix Instant Offer Valuation</div>
               </div>
               <img 
                 src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80" 
@@ -172,7 +172,7 @@ export default function DealersPage() {
       <div className="max-w-[1100px] mx-auto px-4 mt-28">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Solutions to fuel your growth and success</h2>
-          <p className="text-slate-600 font-medium text-sm mt-3">CarMeta is here to help your dealership find success at every step of the lifecycle.</p>
+          <p className="text-slate-600 font-medium text-sm mt-3">CarMatrix is here to help your dealership find success at every step of the lifecycle.</p>
           <div className="w-16 h-1 bg-[#29abe2] mx-auto mt-6 rounded-full"></div>
         </div>
 
@@ -252,7 +252,7 @@ export default function DealersPage() {
                   <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-                  <span className="text-[10px] text-slate-500 font-bold ml-4">CarMeta Partner Portal - Insights Dashboard</span>
+                  <span className="text-[10px] text-slate-500 font-bold ml-4">CarMatrix Partner Portal - Insights Dashboard</span>
                 </div>
                 {/* Screenshot Image representing turn times, margins, charts */}
                 <img 
@@ -319,7 +319,7 @@ export default function DealersPage() {
               {[...Array(5)].map((_, i) => <Star key={i} size={20} fill="currentColor" stroke="none" />)}
             </div>
             <p className="text-xl md:text-2xl font-bold leading-relaxed italic mb-8">
-              "CarMeta has been the best investment for our dealership! The lead quality from the AI Matchmaker is exceptional, their support team is amazing, and their real-time market data lets us price vehicles with absolute confidence."
+              "CarMatrix has been the best investment for our dealership! The lead quality from the AI Matchmaker is exceptional, their support team is amazing, and their real-time market data lets us price vehicles with absolute confidence."
             </p>
             <div className="font-extrabold text-lg text-white">Kevin Wood</div>
             <div className="text-slate-300 text-xs font-semibold mt-0.5">Director of Operations • Apex Automotive</div>
@@ -342,7 +342,7 @@ export default function DealersPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {
-              title: "CarMeta Dealer Intelligence Report: Q2 2026",
+              title: "CarMatrix Dealer Intelligence Report: Q2 2026",
               category: "Industry Report",
               image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=400&q=80"
             },
@@ -386,7 +386,7 @@ export default function DealersPage() {
         <div className="bg-white border border-slate-100 rounded-[32px] p-8 md:p-12 shadow-xl shadow-slate-200/50 flex flex-col md:flex-row gap-12 items-center">
           
           <div className="w-full md:w-2/5">
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-4">Sell more cars with CarMeta</h2>
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-4">Sell more cars with CarMatrix</h2>
             <p className="text-slate-600 font-semibold text-sm leading-relaxed mb-6">
               Let us help you connect with high-intent shoppers, streamline transactions, and maximize your profitability.
             </p>
@@ -408,7 +408,7 @@ export default function DealersPage() {
               <div className="text-center py-10 bg-emerald-50 rounded-2xl border border-emerald-100 p-6 flex flex-col items-center">
                 <CheckCircle size={48} className="text-emerald-500 mb-3" />
                 <h3 className="text-xl font-bold text-slate-900 mb-1">Inquiry Submitted!</h3>
-                <p className="text-slate-600 font-semibold text-sm">Thank you for your interest. A CarMeta Partnerships manager will reach out within 1 business day.</p>
+                <p className="text-slate-600 font-semibold text-sm">Thank you for your interest. A CarMatrix Partnerships manager will reach out within 1 business day.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">

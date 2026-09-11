@@ -269,7 +269,7 @@ export default function VehicleDetailPage({
           <div className="bg-white rounded-[24px] shadow-sm border border-slate-200/50 p-6 md:p-8">
              <div className="flex justify-between items-center mb-8">
                <h2 className="text-[20px] font-extrabold text-slate-900">Pricing</h2>
-                <img src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" alt="CarMeta" className="h-8 object-contain" referrerPolicy="no-referrer" />
+                <img src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" alt="CarMatrix" className="h-8 object-contain" referrerPolicy="no-referrer" />
              </div>
              
              <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-8">
@@ -299,7 +299,7 @@ export default function VehicleDetailPage({
                  <div>
                     <h4 className="text-[14px] font-bold text-slate-900 mb-0.5">Pricing</h4>
                     <p className="text-[12px] text-slate-500 leading-relaxed">
-                      Contact the dealer for pricing details. Due to Texas Department of Motor Vehicle regulations CarMeta is unable to show the exact IMV or price history for this car.
+                      Contact the dealer for pricing details. Due to Texas Department of Motor Vehicle regulations CarMatrix is unable to show the exact IMV or price history for this car.
                     </p>
                  </div>
                </div>
