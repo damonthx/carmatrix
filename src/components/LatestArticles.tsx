@@ -118,7 +118,7 @@ export default function LatestArticles() {
     <section className="w-full bg-[#0d1117] border-t border-slate-800 py-20 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-[1200px] mx-auto">
         <div className="mb-12 md:mb-16">
-          <h2 className="text-[#e8edf2] text-[13px] md:text-[14px] tracking-[0.15em] font-bold uppercase mb-3">
+          <h2 className="text-[#e8edf2] text-[15px] md:text-[16px] tracking-[0.15em] font-bold uppercase mb-3">
             Latest From The Auto World
           </h2>
           <p className="text-[#8b95a3] text-[16px] md:text-[18px] font-medium max-w-[600px] leading-relaxed">

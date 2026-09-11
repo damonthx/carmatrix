@@ -115,7 +115,7 @@ export default function ExpertAdviceFeeds() {
         <div className="mb-12 md:mb-16">
           <div className="flex items-center gap-2 mb-3">
             <ShieldCheck size={20} className="text-[#29abe2]" />
-            <h2 className="text-[#e8edf2] text-[13px] md:text-[14px] tracking-[0.15em] font-bold uppercase">
+            <h2 className="text-[#e8edf2] text-[15px] md:text-[16px] tracking-[0.15em] font-bold uppercase">
               Smart Shopping Insights
             </h2>
           </div>
