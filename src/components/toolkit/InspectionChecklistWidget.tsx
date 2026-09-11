@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Circle, AlertTriangle, ShieldCheck, Check } from 'lucide-react';
+import { CheckCircle2, Circle, AlertTriangle, ShieldCheck, Check, ChevronDown } from 'lucide-react';
 
 interface ChecklistItem {
   id: string;
@@ -30,7 +30,8 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   { id: 'drv-suspension', category: 'Test Drive', title: 'Suspension Noise & Steering Play', detail: 'Listen for clunks over speed bumps and verify tight, responsive steering on center.' }
 ];
 
-export default function InspectionChecklistWidget() {
+export default function InspectionChecklistWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<'checklist' | 'fee-detector'>('checklist');
 
@@ -57,40 +58,59 @@ export default function InspectionChecklistWidget() {
   const outTheDoorTotal = legitTotal + junkTotal;
 
   return (
-    <div className="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-200/40 p-6 md:p-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+    <div className="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-200/40 p-6 md:p-8 transition-all">
+      <div 
+        className={"flex flex-col md:flex-row md:items-center justify-between gap-4 select-none cursor-pointer " + (isOpen ? "pb-6 border-b border-slate-100" : "")}
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200/60 rounded-full text-amber-800 text-xs font-bold mb-2">
             <ShieldCheck size={14} className="text-amber-600" />
             <span>Buyer Protection Guide</span>
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Pre-Purchase Inspection & Fee Detector</h3>
+          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+            <span>Pre-Purchase Inspection & Fee Detector</span>
+          </h3>
           <p className="text-slate-500 text-sm mt-1">Interactive inspection tool for used cars and dealer fee analyzer to prevent thousands in junk add-ons.</p>
         </div>
 
-        <div className="flex bg-slate-100 p-1 rounded-2xl shrink-0 self-start md:self-auto">
+        <div className="flex items-center gap-3 shrink-0 self-start md:self-auto" onClick={(e) => e.stopPropagation()}>
+          {isOpen && (
+            <div className="flex bg-slate-100 p-1 rounded-2xl">
+              <button
+                onClick={() => setActiveTab('checklist')}
+                className={
+                  "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer " +
+                  (activeTab === 'checklist' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900')
+                }
+              >
+                {"Inspection Checklist (" + progressPercent + "%)"}
+              </button>
+              <button
+                onClick={() => setActiveTab('fee-detector')}
+                className={
+                  "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer " +
+                  (activeTab === 'fee-detector' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900')
+                }
+              >
+                Hidden Fee Detector
+              </button>
+            </div>
+          )}
+
           <button
-            onClick={() => setActiveTab('checklist')}
-            className={
-              "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer " +
-              (activeTab === 'checklist' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900')
-            }
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80"
           >
-            {"Inspection Checklist (" + progressPercent + "%)"}
-          </button>
-          <button
-            onClick={() => setActiveTab('fee-detector')}
-            className={
-              "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer " +
-              (activeTab === 'fee-detector' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900')
-            }
-          >
-            Hidden Fee Detector
+            <span>{isOpen ? 'Collapse' : 'Expand Tool'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </div>
 
-      {activeTab === 'checklist' ? (
+      {isOpen && (
+        <>
+          {activeTab === 'checklist' ? (
         <div className="mt-6 space-y-6">
           <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/70 flex items-center justify-between gap-4">
             <div className="flex-1">
@@ -276,6 +296,8 @@ export default function InspectionChecklistWidget() {
             </div>
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

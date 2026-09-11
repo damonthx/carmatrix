@@ -413,7 +413,7 @@ const ResearchAndReviews = () => {
 const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
   <footer className="bg-slate-950 text-slate-400 text-xs py-14 border-t border-slate-800 mt-20">
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
         <div className="col-span-2 space-y-3">
           <div className="flex items-center">
             <img 
@@ -436,16 +436,6 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">EV vs Gas Simulator</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Valuation & Trade-In</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Inspection Checklist</button></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Marketplace</h4>
-          <ul className="space-y-2">
-            <li><button onClick={() => onNavigate('search')} className="hover:text-white cursor-pointer">Search Inventory</button></li>
-            <li><button onClick={() => onNavigate('sell')} className="hover:text-white cursor-pointer">Sell Your Car</button></li>
-            <li><button onClick={() => onNavigate('market_pulse')} className="hover:text-white cursor-pointer">Market Pulse Trends</button></li>
-            <li><button onClick={() => onNavigate('finance')} className="hover:text-white cursor-pointer">Financing Portal</button></li>
           </ul>
         </div>
 
