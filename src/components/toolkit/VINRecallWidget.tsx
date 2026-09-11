@@ -125,7 +125,7 @@ export default function VINRecallWidget() {
             e.preventDefault();
             handleLookup();
           }}
-          className="relative max-w-2xl"
+          className="relative max-w-2xl flex flex-col sm:block"
         >
           <input
             type="text"
@@ -135,13 +135,13 @@ export default function VINRecallWidget() {
               setError(null);
             }}
             maxLength={17}
-            placeholder="Enter 17-character VIN (e.g. 1FTFW1ED5MFA12345)..."
-            className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl pl-4 pr-32 py-3.5 text-sm text-slate-900 font-mono tracking-wider placeholder:tracking-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/40 focus:border-[#29abe2] transition-all uppercase"
+            placeholder="Enter 17-character VIN..."
+            className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl pl-4 pr-4 sm:pr-32 py-3.5 text-sm text-slate-900 font-mono tracking-wider placeholder:tracking-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/40 focus:border-[#29abe2] transition-all uppercase"
           />
           <button
             type="submit"
             disabled={loading || vinInput.length !== 17}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#29abe2] hover:bg-[#2089b5] text-white px-5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40 cursor-pointer flex items-center gap-1.5"
+            className="w-full sm:w-auto mt-2 sm:mt-0 sm:absolute sm:right-2 sm:top-1/2 sm:-translate-y-1/2 bg-[#29abe2] hover:bg-[#2089b5] text-white px-5 py-3 sm:py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40 cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
           >
             {loading ? <Loader2 size={15} className="animate-spin" /> : <Search size={15} />}
             <span>Decode VIN</span>

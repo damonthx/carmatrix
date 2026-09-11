@@ -5,7 +5,8 @@ import {
   AlertTriangle, AlertCircle, ArrowUpCircle, ArrowDownLeft,
   RefreshCw, Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, Compass, HelpCircle, Layers, SlidersHorizontal,
-  FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown
+  FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
+  Menu, X
 } from 'lucide-react';
 import SearchPage from './SearchPage';
 import TCOCalculator from './TCOCalculator';
@@ -64,66 +65,313 @@ const NavBar = ({
   onFinanceClick: () => void; 
   onScrollToTool?: (toolId: string) => void;
   session: any 
-}) => (
-  <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
-    <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-[85px]">
-        <div className="cursor-pointer flex items-center shrink-0" onClick={onHomeClick}>
-          <img 
-            src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
-            alt="CarMatrix Logo" 
-            className="h-[81px] w-auto object-contain"
-            referrerPolicy="no-referrer"
-          />
+}) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Prevent background body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  const handleNavClick = (toolId?: string) => {
+    setMobileMenuOpen(false);
+    onHomeClick();
+    if (toolId && onScrollToTool) {
+      setTimeout(() => {
+        onScrollToTool(toolId);
+      }, 50);
+    }
+  };
+
+  return (
+    <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-[72px] sm:h-[85px]">
+          {/* Logo */}
+          <div className="cursor-pointer flex items-center shrink-0" onClick={() => handleNavClick()}>
+            <img 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+              alt="CarMatrix Logo" 
+              className="h-[54px] sm:h-[68px] lg:h-[81px] w-auto object-contain transition-all"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-6 sm:gap-8 text-[13.5px] font-semibold text-slate-600">
+            <button 
+              onClick={() => handleNavClick('ai-advisor')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+            >
+              AI Advisor
+            </button>
+
+            <button 
+              onClick={() => handleNavClick('tco-calculator')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+            >
+              5-Year TCO
+            </button>
+
+            <button 
+              onClick={() => handleNavClick('valuation-estimator')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+            >
+              Valuation
+            </button>
+
+            <button 
+              onClick={() => handleNavClick('ev-comparison')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+            >
+              EV vs Gas
+            </button>
+
+            <button 
+              onClick={() => handleNavClick('inspection-checklist')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+            >
+              Fee & Inspection
+            </button>
+
+            <button 
+              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }} 
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+            >
+              Market Pulse
+            </button>
+          </nav>
+
+          {/* Mobile Hamburger Button */}
+          <div className="lg:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="w-11 h-11 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200/80 text-slate-800 flex items-center justify-center transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-[#29abe2]"
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </div>
-        
-        <nav className="flex items-center gap-6 sm:gap-8 text-[13.5px] font-semibold text-slate-600">
-          <button 
-            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ai-advisor'); }}
-            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-          >
-            AI Advisor
-          </button>
-
-          <button 
-            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('tco-calculator'); }}
-            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-          >
-            5-Year TCO
-          </button>
-
-          <button 
-            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('valuation-estimator'); }}
-            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-          >
-            Valuation
-          </button>
-
-          <button 
-            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('ev-comparison'); }}
-            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-          >
-            EV vs Gas
-          </button>
-
-          <button 
-            onClick={() => { onHomeClick(); onScrollToTool && onScrollToTool('inspection-checklist'); }}
-            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-          >
-            Fee & Inspection
-          </button>
-
-          <button 
-            onClick={(e) => { e.preventDefault(); onMarketPulseClick(); }} 
-            className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-          >
-            Market Pulse
-          </button>
-        </nav>
       </div>
-    </div>
-  </header>
-);
+
+      {/* Mobile Drawer / Overlay */}
+      {mobileMenuOpen && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 top-[72px] sm:top-[85px] z-40 bg-slate-950/60 backdrop-blur-sm lg:hidden transition-opacity"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* Drawer Menu */}
+          <div className="fixed top-[72px] sm:top-[85px] left-0 right-0 z-50 bg-white/95 backdrop-blur-2xl border-b border-slate-200/90 shadow-2xl p-4 sm:p-6 max-h-[calc(100vh-72px)] sm:max-h-[calc(100vh-85px)] overflow-y-auto lg:hidden">
+            <div className="max-w-md mx-auto space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  Car Buyer Intelligence Suite
+                </span>
+                <span className="text-[10px] font-extrabold text-[#29abe2] bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-100">
+                  100% Free
+                </span>
+              </div>
+
+              {/* Tool Links Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  onClick={() => handleNavClick('ai-advisor')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-[#29abe2]/10 text-[#29abe2] flex items-center justify-center shrink-0">
+                    <Bot size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">AI Advisor</div>
+                    <div className="text-[10px] text-slate-400">Deal negotiation copilot</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('vin-checker')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
+                    <Search size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">VIN & Recall Scanner</div>
+                    <div className="text-[10px] text-slate-400">NHTSA factory records</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('quote-auditor')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 flex items-center justify-center shrink-0">
+                    <FileSearch size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">Dealer Quote Auditor</div>
+                    <div className="text-[10px] text-slate-400">Junk fee detector & script</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('state-fees')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+                    <Scale size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">50-State Fee Guide</div>
+                    <div className="text-[10px] text-slate-400">Doc fee caps & tax rules</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('lease-vs-finance')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center shrink-0">
+                    <ArrowLeftRight size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">Lease vs. Buy</div>
+                    <div className="text-[10px] text-slate-400">3-yr cashflow vs equity</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('tco-calculator')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-600 flex items-center justify-center shrink-0">
+                    <Calculator size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">5-Year TCO</div>
+                    <div className="text-[10px] text-slate-400">Full ownership projection</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('loan-calculator')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
+                    <SlidersHorizontal size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">Loan & Budget</div>
+                    <div className="text-[10px] text-slate-400">Payment & interest math</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('test-drive-dossier')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0">
+                    <Printer size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">Test-Drive Dossier</div>
+                    <div className="text-[10px] text-slate-400">1-click printable sheet</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('depreciation-curve')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-600 flex items-center justify-center shrink-0">
+                    <TrendingDown size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">Depreciation Curve</div>
+                    <div className="text-[10px] text-slate-400">7-yr value sweet spot</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('valuation-estimator')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-yellow-500/10 text-yellow-600 flex items-center justify-center shrink-0">
+                    <DollarSign size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">Live Valuation</div>
+                    <div className="text-[10px] text-slate-400">Trade-in & market pricing</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('ev-comparison')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+                    <Zap size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">EV vs Gas</div>
+                    <div className="text-[10px] text-slate-400">Fuel & charger savings</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleNavClick('inspection-checklist')}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/70 text-slate-800 hover:text-[#29abe2] transition-all text-left cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-600 flex items-center justify-center shrink-0">
+                    <ShieldCheck size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold leading-snug">Inspection Checklist</div>
+                    <div className="text-[10px] text-slate-400">Pre-purchase detector</div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Market Pulse Link */}
+              <div className="pt-2 border-t border-slate-100">
+                <button
+                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }}
+                  className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors cursor-pointer shadow-sm"
+                >
+                  <div className="flex items-center gap-2">
+                    <TrendingUp size={15} className="text-[#29abe2]" />
+                    <span>Consumer Market Pulse</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-semibold uppercase">View Feed →</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </header>
+  );
+};
 
 const ToolkitHeroHeader = ({ 
   activeFilter, 

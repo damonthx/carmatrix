@@ -15,7 +15,8 @@
 }
 
 @layer base {
-  body {
-    @apply bg-[#F9FAFB] text-slate-900 antialiased;
+  html, body {
+    @apply bg-[#F9FAFB] text-slate-900 antialiased overflow-x-hidden;
+    max-width: 100vw;
   }
 }
