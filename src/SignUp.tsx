@@ -42,7 +42,7 @@ export default function SignUp({ onBack, onSignIn, onSuccess }: { onBack: () => 
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
               alt="CarMeta Logo" 
-              className="h-10 mx-auto mb-6 object-contain"
+              className="h-[60px] mx-auto mb-6 object-contain"
               referrerPolicy="no-referrer"
             />
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Create account</h1>
