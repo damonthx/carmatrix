@@ -128,14 +128,14 @@ const ToolkitHeroHeader = ({
   onScrollToTool: (toolId: string) => void;
 }) => {
   const tools = [
-    { id: 'all', name: 'All Tools', icon: Layers },
-    { id: 'ai', name: 'AI Buyer Advisor', icon: Bot, target: 'ai-advisor' },
-    { id: 'tco', name: '5-Yr Ownership TCO', icon: Calculator, target: 'tco-calculator' },
-    { id: 'loan', name: 'Auto Loan & Budget', icon: SlidersHorizontal, target: 'loan-calculator' },
-    { id: 'ev', name: 'EV vs Gas Simulator', icon: Zap, target: 'ev-comparison' },
-    { id: 'valuation', name: 'Trade-In & Valuation', icon: DollarSign, target: 'valuation-estimator' },
-    { id: 'inspection', name: 'Inspection & Fees', icon: ShieldCheck, target: 'inspection-checklist' },
-    { id: 'market', name: 'Market Pulse Trends', icon: TrendingUp, target: 'market-trends' },
+    { id: 'all', name: 'All Tools', icon: Layers, color: 'text-sky-400', bg: 'bg-sky-400/10' },
+    { id: 'ai', name: 'AI Advisor', icon: Bot, target: 'ai-advisor', color: 'text-[#29abe2]', bg: 'bg-sky-500/10' },
+    { id: 'tco', name: '5-Yr TCO', icon: Calculator, target: 'tco-calculator', color: 'text-indigo-400', bg: 'bg-indigo-400/10' },
+    { id: 'loan', name: 'Loan & Budget', icon: SlidersHorizontal, target: 'loan-calculator', color: 'text-violet-400', bg: 'bg-violet-400/10' },
+    { id: 'ev', name: 'EV vs Gas', icon: Zap, target: 'ev-comparison', color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
+    { id: 'valuation', name: 'Valuation', icon: DollarSign, target: 'valuation-estimator', color: 'text-amber-400', bg: 'bg-amber-400/10' },
+    { id: 'inspection', name: 'Inspection', icon: ShieldCheck, target: 'inspection-checklist', color: 'text-teal-400', bg: 'bg-teal-400/10' },
+    { id: 'market', name: 'Market Trends', icon: TrendingUp, target: 'market-trends', color: 'text-cyan-400', bg: 'bg-cyan-400/10' },
   ];
 
   return (
@@ -143,16 +143,16 @@ const ToolkitHeroHeader = ({
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="max-w-[1100px] mx-auto text-center relative z-10">
+      <div className="max-w-[1140px] mx-auto text-center relative z-10">
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight mb-4">
           Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] to-emerald-400">buy smarter</span>.
         </h1>
 
-        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed mb-8">
+        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed mb-10">
           Unbiased calculators, 5-year ownership cost projections, live market valuations, and AI negotiation research designed to save you thousands.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-slate-800/80 backdrop-blur-md rounded-2xl border border-slate-700/80 max-w-4xl mx-auto shadow-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-3.5 max-w-5xl mx-auto">
           {tools.map((t) => {
             const Icon = t.icon;
             const isSelected = activeFilter === t.id;
@@ -166,14 +166,25 @@ const ToolkitHeroHeader = ({
                   }
                 }}
                 className={
-                  "flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer " +
+                  "group relative aspect-square flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border " +
                   (isSelected
-                    ? "bg-[#29abe2] text-white shadow-lg shadow-sky-500/25"
-                    : "text-slate-300 hover:text-white hover:bg-slate-700/60")
+                    ? "bg-gradient-to-b from-[#29abe2]/25 to-sky-600/15 border-[#29abe2] text-white shadow-[0_0_24px_rgba(41,171,226,0.35)] scale-[1.02] ring-1 ring-[#29abe2]/50"
+                    : "bg-white/[0.04] hover:bg-white/[0.09] border-white/10 hover:border-white/20 text-slate-300 hover:text-white shadow-lg shadow-black/20 hover:-translate-y-1")
                 }
               >
-                <Icon size={14} className={isSelected ? "text-white" : "text-slate-400"} />
-                <span>{t.name}</span>
+                <div
+                  className={
+                    "w-10 h-10 rounded-xl flex items-center justify-center mb-2.5 transition-all duration-200 " +
+                    (isSelected
+                      ? "bg-[#29abe2] text-white shadow-md shadow-sky-500/40"
+                      : `${t.bg} ${t.color} group-hover:scale-110 group-hover:bg-white/15`)
+                  }
+                >
+                  <Icon size={20} strokeWidth={2} />
+                </div>
+                <span className="text-[11.5px] font-bold tracking-tight text-center leading-tight">
+                  {t.name}
+                </span>
               </button>
             );
           })}
