@@ -15,10 +15,10 @@ const FALLBACK_THUMBNAIL = "https://images.unsplash.com/photo-1549317661-bd32c8c
 const curatedVideos: VideoAdviceItem[] = [
   {
     id: "curated-001",
-    title: "How to Negotiate Like a Pro at the Dealership",
-    sourceUrl: "https://res.cloudinary.com/yrhldsmj/image/upload/v1789045711/mesa-floating-rock_wmbzsg.png",
-    imageUrl: "https://res.cloudinary.com/yrhldsmj/image/upload/v1789045711/mesa-floating-rock_wmbzsg.png",
-    sourceName: "CarMatrix Guide",
+    title: "How to Negotiate Like a PRO at a Dealership",
+    sourceUrl: "https://youtu.be/iZLflOeCCyU?si=yDOMe1OmiIl0rM85",
+    imageUrl: "https://img.youtube.com/vi/iZLflOeCCyU/maxresdefault.jpg",
+    sourceName: "Inside Car Guys",
     publishedAt: "2026-06-20"
   },
   {
