@@ -1,33 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Search, MapPin, Heart, User, ChevronDown, 
-  ArrowUpRight, CarFront, Sparkles, CheckCircle2, 
-  AlertTriangle, AlertCircle, ArrowUpCircle, ArrowDownLeft,
-  RefreshCw, Calculator, Zap, DollarSign, ShieldCheck,
-  TrendingUp, Bot, Compass, HelpCircle, Layers, SlidersHorizontal,
+  Search, ChevronDown, ArrowUpRight, 
+  Calculator, Zap, DollarSign, ShieldCheck,
+  TrendingUp, Bot, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
   Menu, X, ChevronRight
 } from 'lucide-react';
-import SearchPage from './SearchPage';
 import TCOCalculator from './TCOCalculator';
-import SellMyCar from './pages/SellMyCar';
-import VehicleDetailPage from './VehicleDetailPage';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import Dashboard from './Dashboard';
 import VisionPage from './VisionPage';
 import TeamPage from './TeamPage';
 import PressPage from './PressPage';
 import PublicRelationsPage from './PublicRelationsPage';
 import FAQPage from './FAQPage';
 import ContactPage from './ContactPage';
-import DealersPage from './DealersPage';
 import InfluencersPage from './InfluencersPage';
-import { MarketCheckCar } from './services/marketcheck';
-import { supabase } from './supabaseClient';
 import MarketPulse from './components/MarketPulse';
 import MarketPulsePage from './MarketPulsePage';
-import OnboardingPage from '../app/admin/onboarding/page';
 import LatestArticles from './components/LatestArticles';
 import ExpertAdviceFeeds from './components/ExpertAdviceFeeds';
 import FeaturedInfluencerFeeds from './components/FeaturedInfluencerFeeds';
@@ -47,25 +35,13 @@ import TestDriveDossierWidget from './components/toolkit/TestDriveDossierWidget'
 import DepreciationPredictorWidget from './components/toolkit/DepreciationPredictorWidget';
 
 const NavBar = ({ 
-  onSearchClick, 
-  onSellClick, 
   onHomeClick, 
-  onSignInClick, 
-  onDashboardClick, 
   onMarketPulseClick, 
-  onFinanceClick, 
   onScrollToTool,
-  session 
 }: { 
-  onSearchClick: () => void; 
-  onSellClick: () => void; 
   onHomeClick: () => void; 
-  onSignInClick: () => void; 
-  onDashboardClick: () => void; 
   onMarketPulseClick: () => void; 
-  onFinanceClick: () => void; 
   onScrollToTool?: (toolId: string) => void;
-  session: any 
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -250,7 +226,7 @@ const NavBar = ({
           </div>
           
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 sm:gap-8 text-[13.5px] font-semibold text-slate-600">
+          <nav className="hidden lg:flex items-center gap-6 sm:gap-8 text-[15px] font-medium font-poppins text-slate-600">
             <button 
               onClick={() => handleNavClick('ai-advisor')}
               className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
@@ -556,7 +532,7 @@ const EstimateBudgetSection = () => {
   const totalInterestPaid = Math.max(0, totalLoanRepayment - Math.round(maxLoanAmount));
 
   return (
-    <div className="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-200/40 p-6 md:p-8">
+    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
@@ -719,7 +695,7 @@ const ResearchAndReviews = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {reviews.map((item, idx) => (
-            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-200/80 rounded-2xl p-3 hover:shadow-lg transition-all">
+            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-300/80 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
               <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
                 <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <span className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -741,7 +717,7 @@ const ResearchAndReviews = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {guides.map((item, idx) => (
-            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-200/80 rounded-2xl p-3 hover:shadow-lg transition-all">
+            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-300/80 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
               <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
                 <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
               </div>
@@ -870,31 +846,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>('home');
-  const [session, setSession] = useState<any>(null);
-  const [selectedVehicle, setSelectedVehicle] = useState<MarketCheckCar | null>(null);
-  const [signupEmail, setSignupEmail] = useState('');
-  const [showSignupSuccess, setShowSignupSuccess] = useState(false);
-  const [searchFilters, setSearchFilters] = useState<any>(null);
   const [activeToolkitFilter, setActiveToolkitFilter] = useState<string>('all');
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleSelectVehicle = (vehicle: MarketCheckCar) => {
-    setSelectedVehicle(vehicle);
-    setCurrentPath('vehicle_detail');
-  };
 
   const scrollToTool = (toolId: string) => {
     setTimeout(() => {
@@ -906,69 +858,29 @@ export default function App() {
   };
 
   const navigateTo = (path: string) => {
-    const protectedPaths = ['dashboard'];
-    if (protectedPaths.includes(path) && !session) {
-      setCurrentPath('signin');
-    } else {
-      setCurrentPath(path);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    setCurrentPath(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="font-sans text-slate-900 min-h-screen selection:bg-[#29abe2]/20 relative flex flex-col bg-slate-50/50">
+    <div className="font-sans text-slate-900 min-h-screen selection:bg-[#29abe2]/20 relative flex flex-col bg-[#DDE3EA]">
       <NavBar 
-        onSearchClick={() => navigateTo('search')}
-        onSellClick={() => navigateTo('sell')}
         onHomeClick={() => navigateTo('home')}
-        onSignInClick={() => navigateTo('signin')}
-        onDashboardClick={() => navigateTo('dashboard')}
         onMarketPulseClick={() => navigateTo('market_pulse')}
-        onFinanceClick={() => navigateTo('finance')}
         onScrollToTool={scrollToTool}
-        session={session}
       />
       
       <div className="flex-1">
-        {currentPath === 'search' ? (
-          <SearchPage 
-            onClose={() => navigateTo('home')} 
-            onSelectVehicle={handleSelectVehicle}
-            initialFilters={searchFilters}
-          />
-        ) : currentPath === 'sell' ? (
-          <SellMyCar />
-        ) : currentPath === 'dashboard' ? (
-          <Dashboard onBack={() => navigateTo('home')} />
-        ) : currentPath === 'signin' ? (
-          <SignIn 
-            onBack={() => navigateTo('home')} 
-            onSignUp={() => {
-              setShowSignupSuccess(false);
-              navigateTo('signup');
-            }}
-            onSuccess={() => {
-              setShowSignupSuccess(false);
-              navigateTo('home');
-            }}
-            initialEmail={signupEmail}
-            signupSuccess={showSignupSuccess}
-          />
-        ) : currentPath === 'signup' ? (
-          <SignUp 
-            onBack={() => navigateTo('home')} 
-            onSignIn={() => navigateTo('signin')}
-            onSuccess={(email) => {
-              setSignupEmail(email);
-              setShowSignupSuccess(true);
-              navigateTo('signin');
-            }}
-          />
-        ) : currentPath === 'vehicle_detail' && selectedVehicle ? (
-          <VehicleDetailPage 
-            vehicle={selectedVehicle} 
-            onBack={() => navigateTo('search')} 
-          />
+        {currentPath === 'market_pulse' ? (
+          <MarketPulsePage onBack={() => navigateTo('home')} />
+        ) : currentPath === 'finance' ? (
+          <FinancePage />
+        ) : currentPath === 'affiliate_disclosure' || currentPath === 'legal' ? (
+          <LegalCompliancePage initialTab="affiliate" onBack={() => navigateTo('home')} />
+        ) : currentPath === 'privacy' ? (
+          <LegalCompliancePage initialTab="privacy" onBack={() => navigateTo('home')} />
+        ) : currentPath === 'terms' ? (
+          <LegalCompliancePage initialTab="terms" onBack={() => navigateTo('home')} />
         ) : currentPath === 'vision' ? (
           <VisionPage />
         ) : currentPath === 'team' ? (
@@ -981,22 +893,8 @@ export default function App() {
           <FAQPage />
         ) : currentPath === 'contact' ? (
           <ContactPage />
-        ) : currentPath === 'dealers' ? (
-          <DealersPage />
         ) : currentPath === 'influencers' ? (
           <InfluencersPage />
-        ) : currentPath === 'market_pulse' ? (
-          <MarketPulsePage onBack={() => navigateTo('home')} />
-        ) : currentPath === 'admin_onboarding' ? (
-          <OnboardingPage />
-        ) : currentPath === 'finance' ? (
-          <FinancePage />
-        ) : currentPath === 'affiliate_disclosure' || currentPath === 'legal' ? (
-          <LegalCompliancePage initialTab="affiliate" onBack={() => navigateTo('home')} />
-        ) : currentPath === 'privacy' ? (
-          <LegalCompliancePage initialTab="privacy" onBack={() => navigateTo('home')} />
-        ) : currentPath === 'terms' ? (
-          <LegalCompliancePage initialTab="terms" onBack={() => navigateTo('home')} />
         ) : (
           <>
             <ToolkitHeroHeader 
@@ -1080,7 +978,7 @@ export default function App() {
               )}
 
               {(activeToolkitFilter === 'all' || activeToolkitFilter === 'market') && (
-                <section id="market-trends" className="scroll-mt-24 bg-white rounded-3xl border border-slate-200/80 shadow-xl p-6 md:p-8">
+                <section id="market-trends" className="scroll-mt-24 bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
                   <div className="mb-6">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
                       <TrendingUp size={14} className="text-[#29abe2]" />
@@ -1089,7 +987,7 @@ export default function App() {
                     <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Market Trends & Price Index</h3>
                     <p className="text-slate-500 text-sm mt-1">Track real-time inventory days-supply, wholesale price trajectory, and regional price adjustments.</p>
                   </div>
-                  <MarketPulse onSearchClick={() => navigateTo('search')} />
+                  <MarketPulse />
                 </section>
               )}
 

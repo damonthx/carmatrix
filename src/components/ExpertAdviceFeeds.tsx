@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { PlayCircle, ExternalLink, ShieldCheck, Clock } from 'lucide-react';
 
 export interface VideoAdviceItem {
@@ -12,38 +12,38 @@ export interface VideoAdviceItem {
 
 const FALLBACK_THUMBNAIL = "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80";
 
-const mockVideos: VideoAdviceItem[] = [
+const curatedVideos: VideoAdviceItem[] = [
   {
-    id: "vid-001",
+    id: "curated-001",
     title: "How to Negotiate Like a Pro at the Dealership",
-    sourceUrl: "https://youtube.com",
-    imageUrl: FALLBACK_THUMBNAIL,
-    sourceName: "CarEdge Advice",
-    publishedAt: "2026-06-23 12:00:00"
+    sourceUrl: "https://res.cloudinary.com/yrhldsmj/image/upload/v1789045711/mesa-floating-rock_wmbzsg.png",
+    imageUrl: "https://res.cloudinary.com/yrhldsmj/image/upload/v1789045711/mesa-floating-rock_wmbzsg.png",
+    sourceName: "CarMatrix Guide",
+    publishedAt: "2026-06-20"
   },
   {
-    id: "vid-002",
-    title: "Hidden Fees to Watch Out For When Buying Used",
-    sourceUrl: "https://youtube.com",
-    imageUrl: FALLBACK_THUMBNAIL,
-    sourceName: "CarEdge Advice",
-    publishedAt: "2026-06-23 12:00:00"
+    id: "curated-002",
+    title: "The $3,000 Trick Dealers Use on Every Buyer",
+    sourceUrl: "https://youtu.be/WPrUW148vvg?si=rKWkgz_XLijQvGir",
+    imageUrl: "https://img.youtube.com/vi/WPrUW148vvg/maxresdefault.jpg",
+    sourceName: "Webb Finance",
+    publishedAt: "2026-04-24T13:30:05-07:00"
   },
   {
-    id: "vid-003",
-    title: "The Most Reliable Used Cars Under $15,000",
-    sourceUrl: "https://youtube.com",
-    imageUrl: FALLBACK_THUMBNAIL,
-    sourceName: "CarEdge Advice",
-    publishedAt: "2026-06-23 12:00:00"
+    id: "curated-003",
+    title: "Never Trade Your Car Without Watching This",
+    sourceUrl: "https://www.youtube.com/watch?v=sW6px6cYZKI",
+    imageUrl: "https://img.youtube.com/vi/sW6px6cYZKI/maxresdefault.jpg",
+    sourceName: "The Car Guy Chronicles",
+    publishedAt: "2026-06-28T16:30:36-07:00"
   },
   {
-    id: "vid-004",
-    title: "How to Avoid the Biggest Depreciation Traps",
-    sourceUrl: "https://youtube.com",
-    imageUrl: FALLBACK_THUMBNAIL,
-    sourceName: "CarEdge Advice",
-    publishedAt: "2026-06-23 12:00:00"
+    id: "curated-004",
+    title: "I Sold Cars for 15 Years — These 5 Fees Are Designed to Trick You",
+    sourceUrl: "https://www.youtube.com/watch?v=ouuyY7o7Nxc",
+    imageUrl: "https://img.youtube.com/vi/ouuyY7o7Nxc/maxresdefault.jpg",
+    sourceName: "Auto Insider",
+    publishedAt: "2026-06-16T12:56:42-07:00"
   }
 ];
 
@@ -51,63 +51,16 @@ const mockVideos: VideoAdviceItem[] = [
 function formatPubDate(dateStr: string) {
   try {
     const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return "Recently";
+    if (isNaN(d.getTime())) return dateStr || "Recently";
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   } catch (e) {
-    return "Recently";
+    return dateStr || "Recently";
   }
 }
 
-// Helper to strip HTML just in case
-function stripHtml(html: string) {
-  const tmp = document.createElement('DIV');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
-}
-
 export default function ExpertAdviceFeeds() {
-  const [videos, setVideos] = useState<VideoAdviceItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=UCBRFVQTWUxAph85lUvklzKg');
-        if (!res.ok) throw new Error("Network response was not ok");
-        
-        const data = await res.json();
-        
-        if (data.status !== "ok" || !data.items || data.items.length === 0) {
-          throw new Error("Invalid feed structure or no items");
-        }
-
-        // Force the layout to map directly to the specific video URL
-        const articles = data.items.slice(0, 4).map((item: any) => ({
-          id: item.guid, // YouTube video IDs are stored here
-          title: stripHtml(item.title),
-          // Ensure it targets the specific video watch page, not the channel profile
-          sourceUrl: item.link, 
-          imageUrl: item.thumbnail || FALLBACK_THUMBNAIL,
-          sourceName: "CarEdge Advice",
-          publishedAt: item.pubDate
-        }));
-
-        setVideos(articles);
-      } catch (err) {
-        console.error("Failed to load YouTube feed, falling back to static data.", err);
-        setHasError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchVideos();
-  }, []);
-
-  const displayVideos = (hasError || videos.length === 0) && !isLoading 
-    ? mockVideos 
-    : videos;
+  const displayVideos = curatedVideos;
+  const isLoading = false;
 
   return (
     <section className="w-full bg-[#0a0f16] py-20 px-4 sm:px-6 lg:px-8 font-sans border-t border-slate-800/60">

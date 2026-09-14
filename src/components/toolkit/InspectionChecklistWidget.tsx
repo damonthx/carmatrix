@@ -58,7 +58,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
   const outTheDoorTotal = legitTotal + junkTotal;
 
   return (
-    <div className="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-200/40 p-6 md:p-8 transition-all">
+    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8 transition-all">
       <div 
         className={"flex flex-col md:flex-row md:items-center justify-between gap-4 select-none cursor-pointer " + (isOpen ? "pb-6 border-b border-slate-100" : "")}
         onClick={() => setIsOpen(!isOpen)}

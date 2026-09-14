@@ -1,5 +1,5 @@
 -- ============================================================
--- CarMeta — Vehicle Inventory Schema Setup
+-- CarMatrix Code — Vehicle Inventory Schema Setup
 --
 -- Run this ONCE against your Supabase project via:
 --   Supabase Dashboard -> SQL Editor -> New query -> paste this -> Run

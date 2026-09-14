@@ -193,7 +193,7 @@ export default function TCOCalculator() {
   );
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-[24px] overflow-hidden shadow-lg shadow-slate-200/50 my-16 relative">
+    <div className="bg-white border border-slate-300/80 rounded-3xl overflow-hidden shadow-[0_12px_32px_rgba(15,23,42,0.08)] my-16 relative">
       
       {isLoading && (
         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
