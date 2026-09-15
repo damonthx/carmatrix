@@ -5,26 +5,23 @@ export default function TeamPage() {
   const teamMembers = [
     {
       name: 'Damon Perry',
-      role: 'Founder & Chief Product Architect',
-      entity: 'Defiant Digital Holdings LLC',
-      bio: 'Visionary behind CarMatrix. Focused on dismantling opaque automotive dealer practices through consumer-facing AI tooling, real-time market data pipelines, and algorithmic negotiation transparency.',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
-      badges: ['Product Architecture', 'Automotive AI', 'Executive']
+      role: 'Founder & Creative Technologist',
+      initials: 'DP',
+      bio: 'The creative technologist behind CarMatrix. Focused on empowering buyers to get the best deal they can, without getting taken advantage of by unscrupulous salesmen and dealership practices. An ex-Turo business owner, he has friends and family in the industry and understands the way they operate. This platform gives real-time data and advice from industry insiders and experts.',
+      badges: ['Creative Technologist', 'Automotive AI', 'Executive']
     },
     {
       name: 'Automotive Intelligence Desk',
       role: 'Quantitative Valuation & Market Pulse',
-      entity: 'CarMatrix Research Labs',
+      initials: 'CM',
       bio: 'Specialized analysts tracking national wholesale auto auction indices, BLS CPI automotive metrics, statutory doc fee caps, and depreciation modeling across all 50 states.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
       badges: ['Data Science', 'Market Analytics', '50-State Audit']
     },
     {
       name: 'Consumer Advocacy & Compliance',
       role: 'Editorial Standards & Regulatory Integrity',
-      entity: 'Defiant Digital Holdings LLC',
+      initials: 'CA',
       bio: 'Ensuring 100% adherence to FTC 16 CFR Part 255 endorsement guidelines, strict separation between commercial affiliate partnerships and editorial algorithmic valuations.',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400',
       badges: ['FTC Compliance', 'Consumer Advocacy', 'Editorial']
     }
   ];
@@ -39,8 +36,8 @@ export default function TeamPage() {
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
           The minds behind CarMatrix
         </h1>
-        <p className="text-xl text-slate-600 font-medium max-w-[650px] mx-auto leading-relaxed">
-          We are software engineers, automotive market analysts, and consumer advocates committed to bringing total transparency to vehicle shopping.
+        <p className="text-xl text-slate-600 font-medium max-w-[720px] mx-auto leading-relaxed">
+          The combination of a Creative Technologist, custom AI Agents, automotive market analysts, and consumer advocates committed to bringing total transparency to vehicle shopping.
         </p>
       </div>
 
@@ -51,10 +48,7 @@ export default function TeamPage() {
             <div key={i} className="bg-white rounded-[28px] p-8 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
               <div>
                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#29abe2] to-sky-700 flex items-center justify-center text-white font-black text-2xl mb-6 shadow-md shadow-sky-500/20">
-                  {member.name.substring(0, 2).toUpperCase()}
-                </div>
-                <div className="text-xs font-bold text-[#29abe2] uppercase tracking-wider mb-1">
-                  {member.entity}
+                  {member.initials}
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-1 tracking-tight">
                   {member.name}
