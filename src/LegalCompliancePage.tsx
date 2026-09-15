@@ -159,9 +159,12 @@ export default function LegalCompliancePage({
               </section>
 
               <section className="space-y-3">
-                <h2 className="text-xl font-bold text-white tracking-tight">4. Affiliate Networks</h2>
+                <h2 className="text-xl font-bold text-white tracking-tight">4. Affiliate Networks & Amazon Associates Notice</h2>
                 <p>
-                  Tracking links on our platform may be served or managed through verified affiliate marketing networks including <strong className="text-white">Impact.com (Impact Radius)</strong>, <strong className="text-white">CJ Affiliate (Commission Junction)</strong>, <strong className="text-white">ShareASale</strong>, and direct enterprise partner integrations.
+                  Tracking links on our platform may be served or managed through verified affiliate marketing networks including <strong className="text-white">Amazon Associates</strong>, <strong className="text-white">Impact.com (Impact Radius)</strong>, <strong className="text-white">CJ Affiliate (Commission Junction)</strong>, <strong className="text-white">ShareASale</strong>, and direct enterprise partner integrations.
+                </p>
+                <p>
+                  CarMatrix (operated by Defiant Digital Holdings LLC) is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. <strong className="text-white">As an Amazon Associate, CarMatrix earns from qualifying purchases.</strong>
                 </p>
               </section>
 

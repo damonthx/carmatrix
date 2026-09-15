@@ -4,7 +4,7 @@ import {
   Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
-  Menu, X, ChevronRight, Cpu
+  Menu, X, ChevronRight, Cpu, ShoppingBag
 } from 'lucide-react';
 import TCOCalculator from './TCOCalculator';
 import VisionPage from './VisionPage';
@@ -14,6 +14,7 @@ import PublicRelationsPage from './PublicRelationsPage';
 import FAQPage from './FAQPage';
 import ContactPage from './ContactPage';
 import InfluencersPage from './InfluencersPage';
+import GearGuidePage from './GearGuidePage';
 import MarketPulse from './components/MarketPulse';
 import MarketPulsePage from './MarketPulsePage';
 import LatestArticles from './components/LatestArticles';
@@ -38,10 +39,12 @@ import DepreciationPredictorWidget from './components/toolkit/DepreciationPredic
 const NavBar = ({ 
   onHomeClick, 
   onMarketPulseClick, 
+  onGearClick,
   onScrollToTool,
 }: { 
   onHomeClick: () => void; 
   onMarketPulseClick: () => void; 
+  onGearClick?: () => void;
   onScrollToTool?: (toolId: string) => void;
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -269,6 +272,14 @@ const NavBar = ({
             >
               Market Pulse
             </button>
+
+            <button 
+              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onGearClick?.(); }} 
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5 font-semibold text-sky-600"
+            >
+              <ShoppingBag size={15} className="text-[#29abe2]" />
+              <span>Buyer's Gear</span>
+            </button>
           </nav>
 
           {/* Mobile Hamburger Button */}
@@ -396,6 +407,38 @@ const NavBar = ({
 
                   <div className="flex items-center gap-1 text-[11px] font-bold text-[#29abe2] shrink-0 pl-2">
                     <span>Open</span>
+                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
+                </button>
+              </div>
+
+              {/* Buyer's Gear Guide Link - Mobile Glass Banner */}
+              <div className="pt-2">
+                <button
+                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onGearClick?.(); }}
+                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-amber-500/10 to-white/[0.04] hover:from-amber-500/20 hover:to-white/[0.08] border-amber-400/40 shadow-[0_4px_20px_0_rgba(0,0,0,0.4)] active:scale-[0.99] text-left"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-amber-300/40 bg-gradient-to-br from-amber-400/30 via-orange-500/15 to-transparent text-amber-300 group-hover:scale-105 transition-all">
+                      <ShoppingBag size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-[8.5px] font-black uppercase tracking-widest text-amber-400">
+                          ESSENTIALS • BUYER GEAR
+                        </span>
+                      </div>
+                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-amber-400 transition-colors">
+                        Buyer's Gear Guide
+                      </div>
+                      <div className="text-[10.5px] text-slate-400 font-medium">
+                        OBD2 scanners, jump starters & emergency tech
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-[11px] font-bold text-amber-400 shrink-0 pl-2">
+                    <span>View</span>
                     <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
                 </button>
@@ -810,6 +853,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
           <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Research Tools</h4>
           <ul className="space-y-2">
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">AI Buying Advisor</button></li>
+            <li><button onClick={() => onNavigate('gear')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><ShoppingBag size={13} /> Buyer's Gear Guide</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">VIN & Recall Scanner</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Dealer Quote Auditor</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">State Doc Fee Guide</button></li>
@@ -838,6 +882,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
       <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
         <span>© 2026 CarMatrix — Defiant Digital Holdings LLC. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
         <div className="flex flex-wrap items-center gap-4">
+          <button onClick={() => onNavigate('gear')} className="hover:text-slate-300 cursor-pointer text-[#29abe2]">Gear Guide</button>
           <button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-slate-300 cursor-pointer text-[#29abe2]">Affiliate Disclosure</button>
           <button onClick={() => onNavigate('privacy')} className="hover:text-slate-300 cursor-pointer">Privacy Policy</button>
           <button onClick={() => onNavigate('terms')} className="hover:text-slate-300 cursor-pointer">Terms</button>
@@ -874,12 +919,15 @@ export default function App() {
       <NavBar 
         onHomeClick={() => navigateTo('home')}
         onMarketPulseClick={() => navigateTo('market_pulse')}
+        onGearClick={() => navigateTo('gear')}
         onScrollToTool={scrollToTool}
       />
       
       <div className="flex-1">
         {currentPath === 'market_pulse' ? (
           <MarketPulsePage onBack={() => navigateTo('home')} />
+        ) : currentPath === 'gear' ? (
+          <GearGuidePage onNavigate={navigateTo} />
         ) : currentPath === 'finance' ? (
           <FinancePage />
         ) : currentPath === 'affiliate_disclosure' || currentPath === 'legal' ? (
