@@ -48,9 +48,14 @@ export default function PressPage() {
             <p className="text-sm text-slate-600 font-medium mb-6">
               Get official CarMatrix logos, brand guidelines, and high-resolution product screenshots.
             </p>
-            <button className="w-full bg-[#29abe2] text-white py-3 rounded-full font-bold hover:bg-[#2089b5] transition-colors">
-              Download Kit (.ZIP)
-            </button>
+            <a 
+              href="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block w-full bg-[#29abe2] text-white py-3 rounded-full font-bold hover:bg-[#2089b5] transition-colors text-center cursor-pointer"
+            >
+              Download Brand Assets
+            </a>
           </div>
         </div>
       </div>

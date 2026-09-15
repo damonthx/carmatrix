@@ -21,6 +21,7 @@ import ExpertAdviceFeeds from './components/ExpertAdviceFeeds';
 import FeaturedInfluencerFeeds from './components/FeaturedInfluencerFeeds';
 import FinancePage from './FinancePage';
 import LegalCompliancePage from './LegalCompliancePage';
+import CookieConsentBanner from './components/CookieConsentBanner';
 
 // Toolkit Widgets
 import EVComparisonWidget from './components/toolkit/EVComparisonWidget';
@@ -820,12 +821,16 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         </div>
 
         <div>
-          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Trust & Legal</h4>
+          <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Trust & Compliance</h4>
           <ul className="space-y-2">
             <li><button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold">Affiliate Disclosure</button></li>
             <li><button onClick={() => onNavigate('privacy')} className="hover:text-white cursor-pointer">Privacy Policy</button></li>
             <li><button onClick={() => onNavigate('terms')} className="hover:text-white cursor-pointer">Terms of Service</button></li>
             <li><button onClick={() => onNavigate('vision')} className="hover:text-white cursor-pointer">Company Vision</button></li>
+            <li><button onClick={() => onNavigate('team')} className="hover:text-white cursor-pointer">Leadership & Editorial</button></li>
+            <li><button onClick={() => onNavigate('contact')} className="hover:text-white cursor-pointer">Contact & Support Desk</button></li>
+            <li><button onClick={() => onNavigate('faq')} className="hover:text-white cursor-pointer">FAQ & Knowledge Base</button></li>
+            <li><button onClick={() => onNavigate('pr')} className="hover:text-white cursor-pointer">Press & Media Inquiries</button></li>
           </ul>
         </div>
       </div>
@@ -833,11 +838,13 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
       <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
         <span>© 2026 CarMatrix — Defiant Digital Holdings LLC. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
         <div className="flex flex-wrap items-center gap-4">
-          <button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-slate-300 cursor-pointer">Affiliate Disclosure</button>
+          <button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-slate-300 cursor-pointer text-[#29abe2]">Affiliate Disclosure</button>
           <button onClick={() => onNavigate('privacy')} className="hover:text-slate-300 cursor-pointer">Privacy Policy</button>
-          <button onClick={() => onNavigate('terms')} className="hover:text-slate-300 cursor-pointer">Terms of Service</button>
+          <button onClick={() => onNavigate('terms')} className="hover:text-slate-300 cursor-pointer">Terms</button>
+          <button onClick={() => onNavigate('team')} className="hover:text-slate-300 cursor-pointer">Team</button>
+          <button onClick={() => onNavigate('contact')} className="hover:text-slate-300 cursor-pointer">Contact</button>
           <button onClick={() => onNavigate('faq')} className="hover:text-slate-300 cursor-pointer">FAQ</button>
-          <button onClick={() => onNavigate('pr')} className="hover:text-slate-300 cursor-pointer">Press & PR</button>
+          <button onClick={() => onNavigate('pr')} className="hover:text-slate-300 cursor-pointer">Press</button>
         </div>
       </div>
     </div>
@@ -890,7 +897,7 @@ export default function App() {
         ) : currentPath === 'pr' ? (
           <PublicRelationsPage />
         ) : currentPath === 'faq' ? (
-          <FAQPage />
+          <FAQPage onNavigate={navigateTo} />
         ) : currentPath === 'contact' ? (
           <ContactPage />
         ) : currentPath === 'influencers' ? (
@@ -1004,6 +1011,7 @@ export default function App() {
       </div>
       
       <Footer onNavigate={navigateTo} />
+      <CookieConsentBanner onNavigate={navigateTo} />
     </div>
   );
 }

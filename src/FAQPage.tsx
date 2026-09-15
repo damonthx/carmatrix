@@ -1,44 +1,53 @@
 import React, { useState } from 'react';
-import { HelpCircle, ChevronDown, MessageCircle, PhoneCall, Search } from 'lucide-react';
+import { HelpCircle, ChevronDown, MessageCircle, Mail, Search, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-export default function FAQPage() {
+interface FAQPageProps {
+  onNavigate?: (path: string) => void;
+}
+
+export default function FAQPage({ onNavigate }: FAQPageProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = ['All', 'Buying', 'Selling', 'Financing', 'Account'];
+  const categories = ['All', 'Research Tools', 'Data & Recalls', 'Affiliate & Pricing', 'Consumer Rights'];
 
   const faqs = [
     {
-      category: 'Buying',
-      question: 'How does the AI Matchmaker work?',
-      answer: 'Our AI Matchmaker uses advanced natural language processing to understand your unique lifestyle needs, budget constraints, and preferences. It then cross-references our comprehensive database of vehicles to recommend the perfect matches, explaining exactly why each car was chosen.'
+      category: 'Research Tools',
+      question: 'How does the Automotive Knowledge Engine work?',
+      answer: 'Our Automotive Knowledge Engine runs on specialized AI models trained on institutional vehicle specifications, historical depreciation curves, and dealer negotiation tactics. You can ask complex multi-variable questions—such as comparing hybrid battery warranties, analyzing out-the-door lease fees, or understanding real-world maintenance costs.'
     },
     {
-      category: 'Buying',
-      question: 'Are the prices shown on CarMatrix negotiable?',
-      answer: 'The prices listed on CarMatrix are set directly by the dealers or private sellers. While CarMatrix focuses on radical transparency to ensure you see fair market value upfront, the final price is negotiated between you and the seller.'
+      category: 'Research Tools',
+      question: 'How does the Dealer Quote Auditor identify junk fees?',
+      answer: 'The Auditor cross-references each line item on your dealer buyer’s order against statutory 50-state caps (like document fees) and flags questionable dealer-installed accessories (such as nitrogen tires, paint sealant, etch protection, or reconditioning fees) with recommended negotiation counter-language.'
     },
     {
-      category: 'Selling',
-      question: 'How much does it cost to list my car on CarMatrix?',
-      answer: 'Basic listings for private sellers are completely free. We also offer premium listing options that boost your vehicles visibility and provide detailed analytics on buyer engagement for a small flat fee.'
+      category: 'Data & Recalls',
+      question: 'Where does CarMatrix source vehicle safety recalls?',
+      answer: 'All recall information, safety bulletins, and factory specifications are fetched directly from the United States National Highway Traffic Safety Administration (NHTSA) VPIC databases. We present open safety campaigns cleanly without alteration or dealer filtering.'
     },
     {
-      category: 'Selling',
-      question: 'How do you calculate the estimated trade-in value?',
-      answer: 'We use real-time market data, including recent sales of similar vehicles in your area, auction data, and depreciation curves, to calculate a highly accurate trade-in estimate. This ensures you know exactly what your car is worth before stepping onto a lot.'
+      category: 'Research Tools',
+      question: 'How is the 5-Year Total Cost of Ownership (TCO) calculated?',
+      answer: 'Our TCO engine combines regional fuel economy averages, state-specific insurance rate indexes, actuarial maintenance schedules, financing interest projections, and algorithmic depreciation curves to give you the true financial impact of owning a vehicle beyond the sticker price.'
     },
     {
-      category: 'Financing',
-      question: 'Does getting pre-qualified affect my credit score?',
-      answer: 'No. Getting pre-qualified through CarMatrix uses a "soft pull" on your credit report, which does not impact your credit score. A "hard pull" will only occur when you formally apply for the loan with the lender.'
+      category: 'Affiliate & Pricing',
+      question: 'Is CarMatrix 100% free for consumers?',
+      answer: 'Yes. All calculators, VIN decoders, audit widgets, market pulse indices, and knowledge engine queries are completely free to car shoppers without paywalls or subscriptions.'
     },
     {
-      category: 'Account',
-      question: 'How do I save a vehicle to my favorites?',
-      answer: 'Simply click the heart icon on any vehicle listing. The car will be saved to your dashboard where you can track its price history, compare it side-by-side with other favorites, and receive alerts if the price drops.'
+      category: 'Affiliate & Pricing',
+      question: 'How does CarMatrix support its platform without charging users?',
+      answer: 'In compliance with FTC guidelines, we maintain transparent affiliate and referral partnerships with verified automotive service providers (such as pre-qualification lenders, insurance comparison platforms, and inspection networks). When you choose to use our partners, we may earn a referral fee at zero additional cost to you. This compensation never influences our calculations or algorithmic scores.'
+    },
+    {
+      category: 'Consumer Rights',
+      question: 'Can dealers legally force me to pay non-statutory doc fees?',
+      answer: 'Documentation fees are regulated on a state-by-state level. Over a dozen states mandate strict statutory doc fee caps, while in unregulated states, dealers can charge whatever they choose. Our State Doc Fee Guide provides state-by-state legal caps and step-by-step strategies for negotiating excessive dealer fees.'
     }
   ];
 
@@ -53,11 +62,14 @@ export default function FAQPage() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20 pt-16">
       <div className="max-w-[800px] mx-auto px-4 text-center mb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-xs font-bold tracking-widest uppercase mb-6">
-          <HelpCircle size={14} /> Knowledge Base
+          <HelpCircle size={14} /> Knowledge Base & FAQ
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
-          How can we help?
+          Frequently Asked Questions
         </h1>
+        <p className="text-xl text-slate-600 font-medium max-w-[600px] mx-auto leading-relaxed">
+          Learn how our institutional research tools, valuation models, and consumer advocacy platform operate.
+        </p>
         
         {/* Search Bar */}
         <div className="relative max-w-[600px] mx-auto mt-8">
@@ -66,10 +78,10 @@ export default function FAQPage() {
           </div>
           <input 
             type="text" 
-            placeholder="Search for answers..." 
+            placeholder="Search questions, doc fees, TCO formulas..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-full py-4 pl-12 pr-6 text-lg outline-none focus:ring-4 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all shadow-sm"
+            className="w-full bg-white border border-slate-200 rounded-full py-4 pl-12 pr-6 text-base md:text-lg outline-none focus:ring-4 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all shadow-sm"
           />
         </div>
       </div>
@@ -83,7 +95,7 @@ export default function FAQPage() {
               <li key={cat}>
                 <button 
                   onClick={() => setActiveCategory(cat)}
-                  className={`w-full text-left px-4 py-3 rounded-xl font-bold text-sm transition-colors ${
+                  className={`w-full text-left px-4 py-3 rounded-xl font-bold text-sm transition-colors cursor-pointer ${
                     activeCategory === cat 
                       ? 'bg-[#29abe2] text-white shadow-md' 
                       : 'text-slate-600 hover:bg-slate-100'
@@ -101,16 +113,16 @@ export default function FAQPage() {
           <div className="space-y-4">
             {filteredFaqs.length === 0 ? (
               <div className="text-center py-12 bg-white rounded-[24px] border border-slate-100">
-                <p className="text-slate-500 font-medium">No results found for your search.</p>
+                <p className="text-slate-500 font-medium">No results found for "{searchQuery}".</p>
               </div>
             ) : (
               filteredFaqs.map((faq, index) => (
                 <div key={index} className="bg-white border border-slate-200 rounded-[24px] overflow-hidden transition-all hover:shadow-md">
                   <button 
                     onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                    className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+                    className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none cursor-pointer"
                   >
-                    <span className="font-bold text-lg text-slate-900 pr-8">{faq.question}</span>
+                    <span className="font-bold text-base md:text-lg text-slate-900 pr-8">{faq.question}</span>
                     <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${openIndex === index ? 'bg-[#29abe2] text-white' : 'bg-slate-100 text-slate-500'}`}>
                       <ChevronDown size={18} className={`transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
                     </div>
@@ -123,7 +135,7 @@ export default function FAQPage() {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="px-6 pb-6 pt-2 text-slate-600 font-medium leading-relaxed border-t border-slate-100 mt-2">
+                        <div className="px-6 pb-6 pt-2 text-slate-600 font-medium leading-relaxed border-t border-slate-100 mt-2 text-sm md:text-base">
                           {faq.answer}
                         </div>
                       </motion.div>
@@ -137,14 +149,20 @@ export default function FAQPage() {
           {/* Still have questions CTA */}
           <div className="mt-12 light-glass-card rounded-[32px] p-8 text-center border border-white/60 bg-gradient-to-br from-blue-50 to-white backdrop-blur-md">
             <h3 className="text-2xl font-bold text-slate-900 mb-2">Still have questions?</h3>
-            <p className="text-slate-600 font-medium mb-6">Our support team is ready to help you navigate your car buying journey.</p>
+            <p className="text-slate-600 font-medium mb-6">Our research desk and consumer support team are available to help you navigate your vehicle purchase.</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button className="flex items-center justify-center gap-2 bg-[#29abe2] text-white px-8 py-3 rounded-full font-bold hover:bg-[#2089b5] transition-colors">
-                <MessageCircle size={18} /> Chat with Support
+              <button 
+                onClick={() => onNavigate ? onNavigate('contact') : window.location.href = 'mailto:support@carmatrix.online'}
+                className="flex items-center justify-center gap-2 bg-[#29abe2] text-white px-8 py-3 rounded-full font-bold hover:bg-[#2089b5] transition-colors cursor-pointer"
+              >
+                <MessageCircle size={18} /> Contact Support Desk
               </button>
-              <button className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-200 px-8 py-3 rounded-full font-bold hover:bg-slate-50 transition-colors shadow-sm">
-                <PhoneCall size={18} /> Call Us
-              </button>
+              <a 
+                href="mailto:support@carmatrix.online" 
+                className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-200 px-8 py-3 rounded-full font-bold hover:bg-slate-50 transition-colors shadow-sm cursor-pointer"
+              >
+                <Mail size={18} /> Email support@carmatrix.online
+              </a>
             </div>
           </div>
         </div>

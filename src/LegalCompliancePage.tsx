@@ -118,7 +118,7 @@ export default function LegalCompliancePage({
               <section className="space-y-3">
                 <h2 className="text-xl font-bold text-white tracking-tight">1. How CarMatrix Operates and Stays Free</h2>
                 <p>
-                  CarMatrix (<strong className="text-white">carmatrix.app</strong>) is an independent automotive intelligence and consumer advocacy platform owned and operated by <strong className="text-white">Defiant Digital Holdings LLC</strong>. Our mission is to provide car shoppers with 100% free, institutional-grade tools—including VIN decoders, 5-year total cost of ownership calculators, dealer fee auditors, and valuation models.
+                  CarMatrix (<strong className="text-white">carmatrix.online</strong>) is an independent automotive intelligence and consumer advocacy platform owned and operated by <strong className="text-white">Defiant Digital Holdings LLC</strong> (Filing ID: 2023-001373028). Our mission is to provide car shoppers with 100% free, institutional-grade tools—including VIN decoders, 5-year total cost of ownership calculators, dealer fee auditors, and valuation models.
                 </p>
                 <p>
                   To keep all tools, calculators, guides, and market reports free to consumers without paywalls, we partner with reputable third-party companies, affiliate networks, and financial institutions.
@@ -166,7 +166,7 @@ export default function LegalCompliancePage({
               </section>
 
               <div className="pt-4 border-t border-slate-800 text-xs text-slate-400">
-                Questions regarding our advertising or affiliate practices? Contact our compliance desk at <a href="mailto:affiliates@carmatrix.app" className="text-[#29abe2] underline">affiliates@carmatrix.app</a>.
+                Questions regarding our advertising or affiliate practices? Contact our compliance desk at <a href="mailto:compliance@carmatrix.online" className="text-[#29abe2] underline">compliance@carmatrix.online</a>.
               </div>
             </div>
           )}
@@ -177,14 +177,14 @@ export default function LegalCompliancePage({
               <section className="space-y-3">
                 <h2 className="text-xl font-bold text-white tracking-tight">1. Overview & Scope</h2>
                 <p>
-                  This Privacy Policy describes how <strong className="text-white">Defiant Digital Holdings LLC</strong> ("CarMatrix", "we", "us", or "our") collects, uses, and safeguards information when you visit <strong className="text-white">carmatrix.app</strong> and utilize our automotive intelligence toolbelt.
+                  This Privacy Policy describes how <strong className="text-white">Defiant Digital Holdings LLC</strong> ("CarMatrix", "we", "us", or "our") collects, uses, and safeguards information when you visit <strong className="text-white">carmatrix.online</strong> and utilize our automotive intelligence toolbelt.
                 </p>
               </section>
 
               <section className="space-y-3">
                 <h2 className="text-xl font-bold text-white tracking-tight">2. Information We Collect</h2>
                 <div className="space-y-2">
-                  <p><strong className="text-white">a. Information You Voluntarily Provide:</strong> If you sign up for price alerts, contact support, or register an account, we may collect your email address, name, and search preferences.</p>
+                  <p><strong className="text-white">a. Information You Voluntarily Provide:</strong> If you sign up for price alerts, contact support, or submit inquiries, we may collect your email address, name, and search preferences.</p>
                   <p><strong className="text-white">b. Automotive Search Queries:</strong> Vehicle Identification Numbers (VINs), vehicle years, makes, models, ZIP codes, and loan parameters you input into our calculators are processed in real time to generate calculations and fetch public NHTSA safety records. We do not correlate your public VIN lookups with personal private registered owner identities.</p>
                   <p><strong className="text-white">c. Automated Log Data & Analytics:</strong> Like most web services, we automatically log browser types, device specifications, operating systems, referring URLs, and interaction timestamps to optimize platform speed and mobile responsiveness.</p>
                 </div>
@@ -196,7 +196,7 @@ export default function LegalCompliancePage({
                   We utilize standard functional cookies to remember your preferences (such as your active toolkit filters or state selection).
                 </p>
                 <p>
-                  When you click on third-party links or affiliate partner buttons (such as insurance quote or pre-qualification tools), the destination partner and affiliate networks (such as Impact.com) may set cookies on your browser to attribute referrals and verify transactions. These cookies are subject to the privacy policies of the respective third-party providers.
+                  When you click on third-party links or affiliate partner buttons (such as insurance quote, financing pre-qualification, or inspection tools), the destination partner and affiliate networks (such as Impact.com) may set cookies on your browser to attribute referrals and verify transactions. These cookies are subject to the privacy policies of the respective third-party providers.
                 </p>
               </section>
 
@@ -210,12 +210,12 @@ export default function LegalCompliancePage({
               <section className="space-y-3">
                 <h2 className="text-xl font-bold text-white tracking-tight">5. Your Rights (CCPA / GDPR)</h2>
                 <p>
-                  Depending on your state or jurisdiction, you have the right to request access to, correction of, or deletion of any personal data we maintain. To exercise any data privacy rights, please submit a request to <a href="mailto:privacy@carmatrix.app" className="text-[#29abe2] underline">privacy@carmatrix.app</a>.
+                  Depending on your state or jurisdiction, you have the right to request access to, correction of, or deletion of any personal data we maintain. To exercise any data privacy rights, please submit a request to <a href="mailto:privacy@carmatrix.online" className="text-[#29abe2] underline">privacy@carmatrix.online</a>.
                 </p>
               </section>
 
               <div className="pt-4 border-t border-slate-800 text-xs text-slate-400">
-                Entity: Defiant Digital Holdings LLC • Contact: <a href="mailto:privacy@carmatrix.app" className="text-[#29abe2] underline">privacy@carmatrix.app</a>.
+                Entity: Defiant Digital Holdings LLC • Contact: <a href="mailto:privacy@carmatrix.online" className="text-[#29abe2] underline">privacy@carmatrix.online</a>.
               </div>
             </div>
           )}
@@ -226,7 +226,7 @@ export default function LegalCompliancePage({
               <section className="space-y-3">
                 <h2 className="text-xl font-bold text-white tracking-tight">1. Acceptance of Terms</h2>
                 <p>
-                  By accessing or using <strong className="text-white">carmatrix.app</strong>, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you are prohibited from using the platform.
+                  By accessing or using <strong className="text-white">carmatrix.online</strong>, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you are prohibited from using the platform.
                 </p>
               </section>
 
@@ -267,7 +267,7 @@ export default function LegalCompliancePage({
               </section>
 
               <div className="pt-4 border-t border-slate-800 text-xs text-slate-400">
-                Governing Law: State of Delaware, United States • Corporate Inquiries: <a href="mailto:legal@carmatrix.app" className="text-[#29abe2] underline">legal@carmatrix.app</a>.
+                Governing Law: United States • Corporate Entity: Defiant Digital Holdings LLC • Inquiries: <a href="mailto:legal@carmatrix.online" className="text-[#29abe2] underline">legal@carmatrix.online</a>.
               </div>
             </div>
           )}
