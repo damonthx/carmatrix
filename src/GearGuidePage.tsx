@@ -14,6 +14,7 @@ export default function GearGuidePage({ onNavigate }: GearGuidePageProps) {
   const categories = [
     { id: 'all', label: 'All Recommended Gear' },
     { id: 'inspection', label: 'Inspection & Diagnostics' },
+    { id: 'performance', label: 'Performance & Additives' },
     { id: 'safety', label: 'Emergency & Safety' },
     { id: 'dashcam', label: 'Dash Cams & Security' },
     { id: 'cabin', label: 'Tech & Interior Protection' },
@@ -50,6 +51,28 @@ export default function GearGuidePage({ onNavigate }: GearGuidePageProps) {
       description: 'Never sign a purchase order without inspecting underneath the vehicle. This 360-degree pivoting mirror with ultra-bright LED lighting lets you inspect cv boots, steering rack leaks, and frame corrosion without lifting the car.',
       amazonUrl: 'https://www.amazon.com/s?k=telescoping+inspection+mirror+with+led+light&tag=carmatrix02-20',
       specs: ['360° Swivel Joint', 'Extends to 34 inches', 'High-Output LED', 'Magnetic Pickup Base']
+    },
+
+    // Performance & Additives
+    {
+      id: 'rislone-def-cleaner',
+      category: 'performance',
+      title: 'Rislone DEF Crystal Clean Diesel Emissions System Cleaner',
+      badge: 'DEF & Emissions Fix',
+      bestFor: 'Dissolving crystallized DEF deposits & clearing SCR/catalyst warning lights',
+      description: 'Modern diesel emissions systems suffer from crystallized urea buildup that clogs injectors, pumps, and SCR catalysts—often leading to $2,000+ dealer replacement quotes. This proprietary formula safely dissolves crystallized DEF deposits across the entire doser system and restores optimal spray patterns.',
+      amazonUrl: 'https://www.amazon.com/dp/B0BS49X7N5?tag=carmatrix02-20',
+      specs: ['Clears DEF Warning Codes', 'Dissolves Urea Crystals', 'Safe for All SCR Systems', 'Prevents Dosing Failure']
+    },
+    {
+      id: 'liquimoly-cera-tec',
+      category: 'performance',
+      title: 'Liqui Moly 3721 Cera Tec Micro-Ceramic Engine Oil Additive',
+      badge: 'Engine Protection & Friction Reduction',
+      bestFor: 'Decreasing engine friction, lowering operating temps & extending motor longevity',
+      description: 'Engineered in Germany with micro-ceramic solid lubricants that chemically bond to internal metal friction surfaces. Provides extreme high-load wear resistance, reduces internal friction by up to 50%, smooths rough engine idle, and protects motors for up to 30,000 miles.',
+      amazonUrl: 'https://www.amazon.com/dp/B01KGHA43Y?tag=carmatrix02-20',
+      specs: ['German Engineered', 'Lasts up to 30,000 Miles', 'Reduces Friction & Wear', 'Safe for Turbochargers']
     },
 
     // Emergency & Safety
