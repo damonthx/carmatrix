@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, TrendingDown, Minus, ArrowLeft, 
-  HelpCircle, ShieldCheck, Wrench, Car, Sparkles, BookOpen 
+  HelpCircle, ShieldCheck, Wrench, Car, CarFront, BookOpen 
 } from 'lucide-react';
 
 interface Metric {
@@ -47,13 +47,41 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
 
   const selectedMetric = data?.metrics.find((m) => m.key === selectedKey);
 
-  const getMetricIcon = (key: string) => {
+  const getMetricStyle = (key: string, isActive = false) => {
     switch (key) {
-      case 'usedCars': return <Car className="text-[#29abe2]" size={20} />;
-      case 'newVehicles': return <Sparkles className="text-amber-400" size={20} />;
-      case 'repairs': return <Wrench className="text-emerald-400" size={20} />;
-      case 'insurance': return <ShieldCheck className="text-indigo-400" size={20} />;
-      default: return <Car className="text-[#29abe2]" size={20} />;
+      case 'usedCars':
+        return {
+          icon: <Car size={isActive ? 22 : 20} className={isActive ? "text-white" : "text-[#29abe2]"} />,
+          glassBox: isActive
+            ? "bg-gradient-to-br from-[#29abe2] to-sky-600 text-white border-white/30 shadow-[0_4px_20px_rgba(41,171,226,0.45)]"
+            : "bg-gradient-to-br from-[#29abe2]/25 via-sky-500/15 to-transparent border-[#29abe2]/40 text-[#29abe2] shadow-[0_4px_16px_rgba(41,171,226,0.2)]"
+        };
+      case 'newVehicles':
+        return {
+          icon: <CarFront size={isActive ? 22 : 20} className={isActive ? "text-white" : "text-amber-400"} />,
+          glassBox: isActive
+            ? "bg-gradient-to-br from-amber-400 to-amber-600 text-white border-white/30 shadow-[0_4px_20px_rgba(251,191,36,0.45)]"
+            : "bg-gradient-to-br from-amber-400/25 via-amber-500/15 to-transparent border-amber-400/40 text-amber-400 shadow-[0_4px_16px_rgba(251,191,36,0.2)]"
+        };
+      case 'repairs':
+        return {
+          icon: <Wrench size={isActive ? 22 : 20} className={isActive ? "text-white" : "text-emerald-400"} />,
+          glassBox: isActive
+            ? "bg-gradient-to-br from-emerald-400 to-emerald-600 text-white border-white/30 shadow-[0_4px_20px_rgba(52,211,153,0.45)]"
+            : "bg-gradient-to-br from-emerald-400/25 via-emerald-500/15 to-transparent border-emerald-400/40 text-emerald-400 shadow-[0_4px_16px_rgba(52,211,153,0.2)]"
+        };
+      case 'insurance':
+        return {
+          icon: <ShieldCheck size={isActive ? 22 : 20} className={isActive ? "text-white" : "text-indigo-400"} />,
+          glassBox: isActive
+            ? "bg-gradient-to-br from-indigo-500 to-purple-600 text-white border-white/30 shadow-[0_4px_20px_rgba(129,140,248,0.45)]"
+            : "bg-gradient-to-br from-indigo-400/25 via-purple-500/15 to-transparent border-indigo-400/40 text-indigo-400 shadow-[0_4px_16px_rgba(129,140,248,0.2)]"
+        };
+      default:
+        return {
+          icon: <Car size={20} className="text-[#29abe2]" />,
+          glassBox: "bg-gradient-to-br from-[#29abe2]/20 to-transparent border-[#29abe2]/30 text-[#29abe2]"
+        };
     }
   };
 
@@ -158,9 +186,9 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
               {selectedMetric && (
                 <div className="relative overflow-hidden backdrop-blur-2xl bg-slate-900/80 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/40 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-[#29abe2]/40 before:to-transparent">
                   <div className="flex justify-between items-start mb-6">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[#29abe2]/15 border border-[#29abe2]/30 text-[#29abe2] shadow-inner shrink-0">
-                        {getMetricIcon(selectedMetric.key)}
+                    <div className="flex items-center gap-4">
+                      <div className={`w-13 h-13 rounded-[18px] flex items-center justify-center shrink-0 backdrop-blur-xl border transition-all duration-300 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-white/40 ${getMetricStyle(selectedMetric.key, false).glassBox}`}>
+                        {getMetricStyle(selectedMetric.key, false).icon}
                       </div>
                       <div>
                         <h2 className="text-[22px] font-black text-white tracking-tight">{selectedMetric.label}</h2>
@@ -274,12 +302,8 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
                       }`}
                     >
                       <div className="flex items-center gap-3.5">
-                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all shrink-0 ${
-                          isActive 
-                            ? 'bg-[#29abe2] text-white shadow-md shadow-sky-500/40' 
-                            : 'bg-white/[0.05] border border-white/10 group-hover:bg-white/10 group-hover:scale-105'
-                        }`}>
-                          {getMetricIcon(m.key)}
+                        <div className={`w-11 h-11 rounded-[16px] flex items-center justify-center shrink-0 backdrop-blur-xl border transition-all duration-300 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-white/40 group-hover:scale-105 ${getMetricStyle(m.key, isActive).glassBox}`}>
+                          {getMetricStyle(m.key, isActive).icon}
                         </div>
                         <div>
                           <h4 className="text-[14.5px] font-bold text-white leading-snug">{m.label}</h4>

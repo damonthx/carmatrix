@@ -1,12 +1,42 @@
-// MarketPulse.jsx
-// CarMatrix "Market Pulse" card strip — reads /api/market-pulse (BLS CPI data).
-// Stack assumptions: React, Tailwind v4, lucide-react, Barlow loaded globally.
-// Brand: CarMatrix Blue #29abe2 on dark surfaces.
-
 import { useEffect, useState } from 'react';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Car, CarFront, Wrench, ShieldCheck } from 'lucide-react';
 
 const BRAND = '#29abe2';
+
+const METRIC_STYLES = {
+  usedCars: {
+    icon: Car,
+    label: 'Used cars & trucks',
+    gradient: 'from-[#29abe2]/25 via-sky-500/15 to-transparent',
+    border: 'border-[#29abe2]/40',
+    color: 'text-[#29abe2]',
+    glow: 'shadow-[0_4px_16px_rgba(41,171,226,0.25)]'
+  },
+  newVehicles: {
+    icon: CarFront,
+    label: 'New vehicles',
+    gradient: 'from-amber-400/25 via-amber-500/15 to-transparent',
+    border: 'border-amber-400/40',
+    color: 'text-amber-400',
+    glow: 'shadow-[0_4px_16px_rgba(251,191,36,0.25)]'
+  },
+  repairs: {
+    icon: Wrench,
+    label: 'Maintenance & repair',
+    gradient: 'from-emerald-400/25 via-emerald-500/15 to-transparent',
+    border: 'border-emerald-400/40',
+    color: 'text-emerald-400',
+    glow: 'shadow-[0_4px_16px_rgba(52,211,153,0.25)]'
+  },
+  insurance: {
+    icon: ShieldCheck,
+    label: 'Vehicle insurance',
+    gradient: 'from-indigo-400/25 via-purple-500/15 to-transparent',
+    border: 'border-indigo-400/40',
+    color: 'text-indigo-400',
+    glow: 'shadow-[0_4px_16px_rgba(129,140,248,0.25)]'
+  }
+};
 
 export default function MarketPulse() {
   const [data, setData] = useState(null);
@@ -23,9 +53,9 @@ export default function MarketPulse() {
 
   return (
     <section className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 border border-slate-800/80 backdrop-blur-2xl p-6 md:p-7 shadow-2xl before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-sky-400/30 before:to-transparent">
-      <div className="mb-4 flex items-baseline justify-between">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#29abe2] animate-pulse"></span>
+      <div className="mb-5 flex items-baseline justify-between">
+        <div className="flex items-center gap-2.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#29abe2] animate-pulse shadow-[0_0_10px_#29abe2]"></span>
           <h2 className="text-[14px] font-extrabold tracking-wider uppercase text-white">
             Consumer Market Pulse
           </h2>
@@ -35,7 +65,7 @@ export default function MarketPulse() {
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         {(data?.metrics ?? Array.from({ length: 4 })).map((m, i) =>
           m ? <PulseCard key={m.key} metric={m} /> : <SkeletonCard key={i} />
         )}
@@ -51,14 +81,23 @@ export default function MarketPulse() {
 }
 
 function PulseCard({ metric }) {
-  const { label, mom, yoy, sparkline } = metric;
+  const { label, mom, yoy, sparkline, key } = metric;
+  const style = METRIC_STYLES[key] || METRIC_STYLES.usedCars;
+  const IconComponent = style.icon;
   // Lead with MoM for vehicle prices; YoY reads better for slow movers
-  // like insurance/repairs — show both, headline the MoM.
   const headline = mom ?? yoy;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 hover:border-[#29abe2]/50 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl px-4 py-3.5 transition-all duration-200 hover:-translate-y-1 shadow-lg shadow-black/25 group before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent">
-      <div className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors truncate">{label}</div>
+    <div className="relative overflow-hidden rounded-2xl border border-white/10 hover:border-[#29abe2]/50 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl p-4 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/25 group before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
+      {/* Top row: Glassmorphic Curved Square Icon Box + Label */}
+      <div className="flex items-center gap-2.5 mb-3">
+        <div className={`w-9 h-9 rounded-[14px] flex items-center justify-center shrink-0 backdrop-blur-xl bg-gradient-to-br ${style.gradient} border ${style.border} ${style.color} ${style.glow} group-hover:scale-105 group-hover:border-white/50 transition-all duration-300 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-white/40`}>
+          <IconComponent size={18} className="drop-shadow-sm" />
+        </div>
+        <div className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors truncate">
+          {label}
+        </div>
+      </div>
 
       <div className="my-2 flex items-baseline gap-2">
         <span className="text-2xl font-black text-white tracking-tight">
@@ -69,7 +108,7 @@ function PulseCard({ metric }) {
 
       <Sparkline values={sparkline} />
 
-      <div className="mt-2 flex justify-between text-[11px] font-medium text-slate-400">
+      <div className="mt-2.5 flex justify-between text-[11px] font-medium text-slate-400">
         <span>vs. last month</span>
         <span className="font-bold text-slate-200">{fmtPct(yoy)} YoY</span>
       </div>
@@ -128,7 +167,7 @@ function Sparkline({ values = [] }) {
 
 function SkeletonCard() {
   return (
-    <div className="h-[108px] animate-pulse rounded-xl border-[0.5px] border-[#232c38] bg-[#161d26]" />
+    <div className="h-[124px] animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]" />
   );
 }
 
@@ -137,3 +176,4 @@ function fmtPct(n) {
   const sign = n > 0 ? '+' : n < 0 ? '−' : '';
   return `${sign}${Math.abs(n).toFixed(1)}%`;
 }
+
