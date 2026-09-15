@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Sparkles, Send, Loader2, Bot } from 'lucide-react';
+import { Sparkles, Send, Loader2, Cpu, CheckCircle2 } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
+import { queryAutomotiveKnowledgeEngine } from '../../utils/automotiveKnowledgeEngine';
 
 const PRESET_PROMPTS = [
   'Best reliable compact SUV under $28,000 with AWD and low maintenance',
-  '2021 Toyota RAV4 vs. 2021 Honda CR-V: Which holds value better?',
   'What hidden mechanical issues to check on a 2020 BMW 330i with 55k miles?',
-  'Give me 5 practical negotiation scripts to waive dealer doc fees'
+  'Give me 5 practical negotiation scripts to waive dealer doc fees',
+  'Ford F-150 vs. Silverado 1500 vs. Ram 1500: Reliability and transmission gotchas',
+  'Lease vs Finance: How to avoid the 72-month loan trap and dealer markup',
+  'Used Tesla Model 3 under $25,000: How to qualify for the $4,000 EV Tax Credit'
 ];
 
 export default function AIAdvisorWidget() {
@@ -22,12 +25,14 @@ export default function AIAdvisorWidget() {
     setResponse(null);
 
     try {
-      const apiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+      const apiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || 
+        (typeof process !== 'undefined' ? process.env?.GEMINI_API_KEY : undefined);
+      
       if (apiKey) {
         const ai = new GoogleGenAI({ apiKey });
         const res = await ai.models.generateContent({
           model: 'gemini-2.5-flash',
-          contents: 'You are the CarMatrix Expert Car Buyer Advisor. The user is asking: "' + textToRun + '". ' +
+          contents: 'You are the CarMatrix Automotive Knowledge Engine. The user is asking: "' + textToRun + '". ' +
             'Provide a clear, structured, actionable response formatted in concise markdown with: ' +
             '1. Top Vehicle Recommendations or Direct Answer\n' +
             '2. Fair Market Price Range & Ownership Cost Watchouts\n' +
@@ -35,32 +40,28 @@ export default function AIAdvisorWidget() {
             '4. Dealer Negotiation Tip.\n' +
             'Keep it practical, highly readable, and buyer-friendly.'
         });
-        setResponse(res.text || 'Unable to generate response.');
+        setResponse(res.text || queryAutomotiveKnowledgeEngine(textToRun));
       } else {
-        setResponse('### 🚗 CarMatrix Expert Recommendation: ' + textToRun + '\n\n' +
-          '**1. Top Recommendations:**\n' +
-          '- **Toyota RAV4 (2020-2022)**: Renowned for class-leading reliability, standard Toyota Safety Sense 2.0, and 30+ MPG highway. Retains over 68% residual value after 3 years.\n' +
-          '- **Honda CR-V (2020-2021)**: Superior cabin ergonomics, cavernous cargo room (39.2 cu ft), and smooth CVT transmission.\n' +
-          '- **Mazda CX-5 (2021-2023)**: Premium interior feel, refined 6-speed automatic transmission (no CVT), and standard i-Activ AWD.\n\n' +
-          '**2. Fair Market Price Range:**\n' +
-          '- **Good Condition (35k-50k mi)**: $24,500 - $27,800\n' +
-          '- **Certified Pre-Owned (CPO)**: $26,200 - $29,000\n\n' +
-          '**3. Reliability & Inspection Gotchas:**\n' +
-          '- Inspect front strut bushings and rear brake pad wear (common wear items at 40k+ mi).\n' +
-          '- Confirm all open safety recalls (fuel pump, brake boosters) are closed on NHTSA.gov.\n\n' +
-          '**4. 💡 Negotiation Strategy:**\n' +
-          'Always negotiate the **Out-The-Door (OTD)** figure exclusively before discussing financing, trade-in, or warranties. Decline pre-printed dealer accessory add-ons.');
+        // Fast, high-accuracy offline automotive knowledge engine
+        const answer = queryAutomotiveKnowledgeEngine(textToRun);
+        setResponse(answer);
       }
     } catch (err) {
-      console.warn('AI Advisor query fallback:', err);
-      setResponse('### 🚗 CarMatrix Buying Advisor Insights: ' + textToRun + '\n\n' +
-        '**Key Market Takeaways:**\n' +
-        '- **Reliability Pick**: Look for 2020-2022 models with verifiable 1-owner CARFAX and complete service history.\n' +
-        '- **Price Target**: Target 4-8% below dealer asking price for clean private party / no-accident units.\n' +
-        '- **Next Steps**: Use the CarMatrix TCO Calculator above to verify 5-year maintenance and insurance estimates.');
+      console.warn('Live API query fallback to Automotive Knowledge Engine:', err);
+      setResponse(queryAutomotiveKnowledgeEngine(textToRun));
     } finally {
       setLoading(false);
     }
+  };
+
+  const renderFormattedText = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
   };
 
   return (
@@ -70,8 +71,12 @@ export default function AIAdvisorWidget() {
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
           <div>
-            <h3 className="text-2xl font-extrabold text-white tracking-tight">Ask CarMatrix AI Anything About Buying</h3>
-            <p className="text-slate-400 text-sm mt-1">Get unbiased car recommendations, pricing sanity checks, and dealer negotiation tactics.</p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#29abe2]/15 border border-[#29abe2]/30 rounded-full text-[#29abe2] text-xs font-bold mb-2">
+              <Cpu size={14} />
+              <span>Consumer Intelligence System</span>
+            </div>
+            <h3 className="text-2xl font-extrabold text-white tracking-tight">Automotive Knowledge Engine</h3>
+            <p className="text-slate-400 text-sm mt-1">Instant expert vehicle benchmarks, mechanical watchouts, pricing sanity checks, and dealer negotiation scripts.</p>
           </div>
         </div>
 
@@ -87,7 +92,7 @@ export default function AIAdvisorWidget() {
               type="text"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Ask anything: e.g. Best 3-row family SUV under $35k with low maintenance..."
+              placeholder="Ask anything: e.g. BMW 330i reliability at 55k miles, waiving dealer doc fees, F-150 transmission gotchas..."
               className="w-full bg-slate-800/90 border border-slate-700/80 rounded-2xl pl-4 pr-12 py-3.5 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 focus:border-[#29abe2] transition-all shadow-inner"
             />
             <button
@@ -116,23 +121,48 @@ export default function AIAdvisorWidget() {
           </div>
 
           {response && (
-            <div className="mt-6 p-6 bg-slate-800/70 border border-slate-700/80 rounded-2xl animate-in fade-in duration-300">
-              <div className="flex items-center gap-2 mb-3 text-xs font-bold text-emerald-400">
-                <Bot size={16} />
-                <span>CarMatrix AI Research Analysis</span>
+            <div className="mt-6 p-6 md:p-8 bg-slate-800/70 border border-slate-700/80 rounded-2xl animate-in fade-in duration-300">
+              <div className="flex items-center gap-2 mb-3 text-xs font-bold text-cyan-400">
+                <Cpu size={16} />
+                <span>CarMatrix Automotive Knowledge Engine</span>
               </div>
-              <div className="text-slate-200 text-xs leading-relaxed space-y-2">
+              <div className="text-slate-200 text-xs leading-relaxed space-y-1.5">
                 {response.split('\n').map((line, i) => {
-                  if (line.startsWith('###')) {
-                    return <h4 key={i} className="text-sm font-bold text-white mt-3 mb-1">{line.replace('###', '')}</h4>;
+                  const trimmed = line.trim();
+                  if (!trimmed) return <div key={i} className="h-1.5" />;
+                  if (trimmed.startsWith('###')) {
+                    return (
+                      <h4 key={i} className="text-base font-extrabold text-white mt-4 mb-2 flex items-center gap-2 border-b border-slate-700/60 pb-2">
+                        {trimmed.replace(/^###\s*/, '')}
+                      </h4>
+                    );
                   }
-                  if (line.startsWith('**') && line.endsWith('**')) {
-                    return <p key={i} className="font-bold text-white mt-2 mb-0.5">{line.replaceAll('**', '')}</p>;
+                  if (/^\d+\.\s+\*\*/.test(trimmed) || (trimmed.startsWith('**') && trimmed.endsWith('**'))) {
+                    return (
+                      <p key={i} className="font-extrabold text-sm text-[#29abe2] mt-3 mb-1">
+                        {renderFormattedText(trimmed)}
+                      </p>
+                    );
                   }
-                  if (line.startsWith('- ')) {
-                    return <li key={i} className="ml-4 list-disc text-slate-300 my-0.5">{line.replace('- ', '')}</li>;
+                  if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+                    return (
+                      <li key={i} className="ml-4 list-disc text-slate-300 my-1 leading-relaxed pl-1">
+                        {renderFormattedText(trimmed.replace(/^[-*]\s+/, ''))}
+                      </li>
+                    );
                   }
-                  return <p key={i} className="text-slate-300 my-1">{line}</p>;
+                  if (/^\d+\.\s+/.test(trimmed)) {
+                    return (
+                      <div key={i} className="text-slate-200 my-1.5 pl-3 border-l-2 border-[#29abe2]/50 bg-slate-800/50 p-2.5 rounded-r-xl font-medium text-xs leading-relaxed">
+                        {renderFormattedText(trimmed)}
+                      </div>
+                    );
+                  }
+                  return (
+                    <p key={i} className="text-slate-300 my-1 leading-relaxed">
+                      {renderFormattedText(trimmed)}
+                    </p>
+                  );
                 })}
               </div>
             </div>

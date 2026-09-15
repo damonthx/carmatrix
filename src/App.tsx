@@ -4,7 +4,7 @@ import {
   Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
-  Menu, X, ChevronRight
+  Menu, X, ChevronRight, Cpu
 } from 'lucide-react';
 import TCOCalculator from './TCOCalculator';
 import VisionPage from './VisionPage';
@@ -79,10 +79,10 @@ const NavBar = ({
   const mobileTools = [
     {
       id: 'ai-advisor',
-      name: 'AI Advisor',
-      tag: 'COPILOT',
-      desc: 'Deal negotiation copilot',
-      icon: Bot,
+      name: 'Knowledge Engine',
+      tag: 'ENGINE',
+      desc: 'Vehicle & deal intelligence',
+      icon: Cpu,
       gradient: 'from-[#29abe2]/30 via-sky-500/15 to-transparent',
       border: 'border-[#29abe2]/40',
       glow: 'rgba(41,171,226,0.35)',
@@ -231,7 +231,7 @@ const NavBar = ({
               onClick={() => handleNavClick('ai-advisor')}
               className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
-              AI Advisor
+              Knowledge Engine
             </button>
 
             <button 
@@ -418,7 +418,7 @@ const ToolkitHeroHeader = ({
 }) => {
   const tools = [
     { id: 'all', name: 'All Tools', tag: 'SUITE', icon: Layers, target: '', gradient: 'from-sky-400/20 via-slate-400/10 to-transparent', border: 'border-sky-300/30', glow: 'rgba(56,189,248,0.25)', color: 'text-sky-300' },
-    { id: 'ai', name: 'AI Advisor', tag: 'COPILOT', icon: Bot, target: 'ai-advisor', gradient: 'from-[#29abe2]/30 via-sky-500/15 to-transparent', border: 'border-[#29abe2]/40', glow: 'rgba(41,171,226,0.35)', color: 'text-[#29abe2]' },
+    { id: 'ai', name: 'Knowledge Engine', tag: 'ENGINE', icon: Cpu, target: 'ai-advisor', gradient: 'from-[#29abe2]/30 via-sky-500/15 to-transparent', border: 'border-[#29abe2]/40', glow: 'rgba(41,171,226,0.35)', color: 'text-[#29abe2]' },
     { id: 'vin', name: 'VIN & Recall', tag: 'NHTSA', icon: Search, target: 'vin-checker', gradient: 'from-blue-500/30 via-blue-600/15 to-transparent', border: 'border-blue-400/40', glow: 'rgba(59,130,246,0.35)', color: 'text-blue-400' },
     { id: 'quote', name: 'Quote Auditor', tag: 'AUDIT', icon: FileSearch, target: 'quote-auditor', gradient: 'from-indigo-500/30 via-indigo-600/15 to-transparent', border: 'border-indigo-400/40', glow: 'rgba(99,102,241,0.35)', color: 'text-indigo-400' },
     { id: 'state-fees', name: 'State Fees', tag: '50-STATE', icon: Scale, target: 'state-fees', gradient: 'from-emerald-500/30 via-emerald-600/15 to-transparent', border: 'border-emerald-400/40', glow: 'rgba(16,185,129,0.35)', color: 'text-emerald-400' },
