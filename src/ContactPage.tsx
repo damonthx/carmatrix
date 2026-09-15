@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Clock, MapPin, MessageSquare, Briefcase, Globe, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Mail, Clock, MapPin, MessageSquare, Briefcase, Globe, CheckCircle2 } from 'lucide-react';
 
 export default function ContactPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -174,17 +174,7 @@ export default function ContactPage() {
                 <Briefcase size={20} className="text-slate-400 mt-1" />
                 <div>
                   <h4 className="font-bold text-slate-900">Commercial & Affiliate Partnerships</h4>
-                  <p className="text-xs text-slate-500 mb-1">Impact.com, network integrations & lender syndication</p>
-                  <a href="mailto:partners@carmatrix.online" className="text-sm font-semibold text-[#29abe2] hover:underline">partners@carmatrix.online</a>
-                </div>
-              </div>
-              <div className="w-full h-px bg-slate-100"></div>
-              <div className="flex items-start gap-4">
-                <ShieldCheck size={20} className="text-slate-400 mt-1" />
-                <div>
-                  <h4 className="font-bold text-slate-900">Legal & Regulatory Compliance</h4>
-                  <p className="text-xs text-slate-500 mb-1">FTC disclosure inquiries & data privacy</p>
-                  <a href="mailto:compliance@carmatrix.online" className="text-sm font-semibold text-[#29abe2] hover:underline">compliance@carmatrix.online</a>
+                  <a href="mailto:support@carmatrix.online" className="text-sm font-semibold text-[#29abe2] hover:underline">support@carmatrix.online</a>
                 </div>
               </div>
               <div className="w-full h-px bg-slate-100"></div>
@@ -193,13 +183,13 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-bold text-slate-900">Press & Editorial Relations</h4>
                   <p className="text-xs text-slate-500 mb-1">Media requests & market data citations</p>
-                  <a href="mailto:press@carmatrix.online" className="text-sm font-semibold text-[#29abe2] hover:underline">press@carmatrix.online</a>
+                  <a href="mailto:dperry@carmatrix.online" className="text-sm font-semibold text-[#29abe2] hover:underline">dperry@carmatrix.online</a>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Operating Entity & Registered Address */}
+          {/* Operating Entity & Office */}
           <div className="bg-slate-900 text-white rounded-[24px] p-8 border border-slate-800 shadow-lg">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-[#29abe2]">
@@ -213,12 +203,7 @@ export default function ContactPage() {
             <div className="space-y-3 text-xs text-slate-300 border-t border-slate-800 pt-4">
               <div>
                 <p className="text-slate-500 font-semibold uppercase tracking-wider text-[10px]">Operations & Editorial Office</p>
-                <p className="font-medium text-slate-200 mt-0.5">Dallas-Fort Worth Metroplex, Texas, United States</p>
-              </div>
-              <div>
-                <p className="text-slate-500 font-semibold uppercase tracking-wider text-[10px]">Corporate Entity Registration</p>
-                <p className="font-medium text-slate-200 mt-0.5">Defiant Digital Holdings LLC • Filing ID: 2023-001373028</p>
-                <p className="text-slate-400 mt-0.5">30 N Gould St Ste R, Sheridan, WY 82801</p>
+                <p className="font-medium text-slate-200 mt-0.5">Plano, TX</p>
               </div>
             </div>
           </div>
