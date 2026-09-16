@@ -280,8 +280,50 @@ export default function GearGuidePage({ onNavigate }: GearGuidePageProps) {
     return list;
   }, [products, activeCategory, searchQuery, sortBy]);
 
+  // JSON-LD ItemList Schema for Google Search Rich Snippets
+  const itemListSchema = useMemo(() => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "CarMatrix Automotive Equipment & Buyer Toolkit",
+      "description": "Expert-verified automotive diagnostic scanners, safety tools, and performance additives recommended by CarMatrix.",
+      "numberOfItems": products.length,
+      "itemListElement": products.map((product, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Product",
+          "name": product.title,
+          "image": product.image,
+          "description": product.description,
+          "brand": {
+            "@type": "Brand",
+            "name": product.brand
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": product.rating.toString(),
+            "reviewCount": product.reviewsCount.replace(/[^0-9]/g, '') || "100"
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": product.amazonUrl,
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "USD"
+          }
+        }
+      }))
+    };
+  }, [products]);
+
   return (
     <div className="min-h-screen bg-[#F4F6F8] font-sans text-slate-900 pb-24">
+      {/* Dynamic ItemList Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+
       {/* Store Header / Hero Bar */}
       <div className="bg-slate-900 text-white pt-16 pb-12 px-4 border-b border-slate-800">
         <div className="max-w-[1200px] mx-auto">

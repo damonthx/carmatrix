@@ -28,13 +28,166 @@
     <meta name="twitter:title" content="CarMatrix | Automotive Intelligence" />
     <meta name="twitter:description" content="Empowering vehicle buyers with radical transparency, live market indices, and institutional data." />
 
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta property="og:image" content="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" />
+    <meta property="og:image:alt" content="CarMatrix Automotive Intelligence Platform" />
+    <meta name="twitter:image" content="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>CarMatrix | Automotive Intelligence & Car Buying Knowledge Engine</title>
+
+    <!-- Schema.org Multi-Entity JSON-LD: Organization, WebApplication, FAQPage, WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.carmatrix.online/#organization",
+          "name": "CarMatrix",
+          "url": "https://www.carmatrix.online/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png",
+            "caption": "CarMatrix Logo"
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Damon Perry",
+            "jobTitle": "Founder & Creative Technologist"
+          },
+          "parentOrganization": {
+            "@type": "Organization",
+            "name": "Defiant Digital Holdings LLC",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Plano",
+              "addressRegion": "TX",
+              "addressCountry": "US"
+            }
+          },
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "email": "support@carmatrix.online",
+              "contactType": "Customer Support",
+              "availableLanguage": ["English"]
+            },
+            {
+              "@type": "ContactPoint",
+              "email": "dperry@carmatrix.online",
+              "contactType": "Press & Editorial",
+              "availableLanguage": ["English"]
+            }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.carmatrix.online/#website",
+          "url": "https://www.carmatrix.online/",
+          "name": "CarMatrix",
+          "publisher": {
+            "@id": "https://www.carmatrix.online/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.carmatrix.online/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://www.carmatrix.online/#app",
+          "name": "CarMatrix Automotive Knowledge Engine",
+          "url": "https://www.carmatrix.online/",
+          "applicationCategory": "FinanceApplication, UtilitiesApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "Federal NHTSA VIN & Active Safety Recall Scanner",
+            "Live Automotive Market Pulse & Depreciation Index",
+            "50-State Statutory Dealer Documentation Fee Guide",
+            "Dealer Fee & Add-On Elimination Auditor",
+            "5-Year Total Cost of Ownership (TCO) Calculator",
+            "Loan vs Lease Financial Comparison Tool",
+            "40-Point Pre-Purchase Inspection (PPI) Checklist",
+            "Negative Equity & Trade-In Payoff Evaluator"
+          ],
+          "provider": {
+            "@id": "https://www.carmatrix.online/#organization"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://www.carmatrix.online/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is a dealer documentation fee (doc fee)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A dealer documentation fee is charged by car dealerships to process buyer sales contracts, state title transfers, and registration. Certain states cap doc fees by law (e.g., California caps at $85, New York at $175, and Minnesota at $125), whereas unregulated states like Florida and Colorado often feature dealer fees exceeding $995 to $1,400."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are dealer add-on fees negotiable?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Dealer-installed accessories such as nitrogen tires, paint sealant, ceramic protection, fabric guard, and VIN glass etching carry 80% to 90% profit margins and are legally optional. CarMatrix provides itemized counter-negotiation language to remove unauthorized dealer add-ons."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does CarMatrix verify vehicle recall information?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "CarMatrix queries the official National Highway Traffic Safety Administration (NHTSA) VPIC API directly using the vehicle's 17-digit VIN to surface uncompleted manufacturer safety campaigns, defect recall codes, and federal safety remedy statuses in real time."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What factors are included in the 5-Year Total Cost of Ownership (TCO)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The CarMatrix 5-year TCO calculator models true vehicle ownership expenses by factoring annual straight-line and curved depreciation, real-world fuel/energy consumption, insurance risk premiums, scheduled preventative maintenance, financing interest, and state sales taxes."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
+    <!-- Fallback Semantic Content for Non-JS AI Scrapers & Web Crawlers -->
+    <noscript>
+      <header>
+        <h1>CarMatrix | Institutional Automotive Intelligence & Car Buying Knowledge Engine</h1>
+        <p>CarMatrix is an independent automotive intelligence platform delivering real-time vehicle market data, dealer fee audits, statutory doc fee limits, and NHTSA safety recall lookups.</p>
+      </header>
+      <main>
+        <h2>Automotive Analysis & Research Suite</h2>
+        <ul>
+          <li><strong>VIN & Safety Recall Scanner:</strong> Instant verification of active open recalls directly from the federal NHTSA database.</li>
+          <li><strong>Live Market Pulse:</strong> Tracking real-time automotive retail pricing trends, days on market, and supply ratios.</li>
+          <li><strong>50-State Statutory Doc Fee Guide:</strong> Legal caps and average dealer fees across all fifty US states.</li>
+          <li><strong>Dealer Fee & Add-On Auditor:</strong> Identify and eliminate bogus dealer add-ons (nitrogen, etch, prep fees) from buyer orders.</li>
+          <li><strong>5-Year Total Cost of Ownership (TCO):</strong> Complete financial modeling of depreciation, fuel, maintenance, and insurance.</li>
+          <li><strong>Loan vs. Lease Comparison:</strong> Comprehensive comparison of interest, money factors, and residual values.</li>
+          <li><strong>Curated Gear & Inspection Tools:</strong> Professional OBD2 diagnostic scanners, tire tread gauges, and vehicle emergency gear.</li>
+        </ul>
+        <p>Published by Defiant Digital Holdings LLC | Plano, TX | Contact: support@carmatrix.online</p>
+      </main>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

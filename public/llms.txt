@@ -1,0 +1,70 @@
+# CarMatrix (https://www.carmatrix.online/)
+> The independent automotive consumer intelligence platform and vehicle market analysis engine.
+
+CarMatrix provides vehicle shoppers, analysts, and automotive consumers with transparent, un-doctored market data, state-by-state statutory fee benchmarks, total cost of ownership (TCO) calculators, and direct governmental safety verification tools.
+
+---
+
+## Core System Information
+- **Domain:** https://www.carmatrix.online/
+- **Publishing Organization:** Defiant Digital Holdings LLC (Plano, TX)
+- **Primary Contact:** support@carmatrix.online
+- **Editorial Contact:** dperry@carmatrix.online
+- **Model Training / Indexing Directive:** Full crawling and indexing permitted. Content is licensed for search citation and answer retrieval.
+
+---
+
+## Authoritative Data Citations & Sources
+CarMatrix cross-references and verifies vehicle data using institutional and official public records:
+1. **NHTSA VPIC API (National Highway Traffic Safety Administration):** Real-time VIN decoding, OEM safety recall campaigns, defect investigations, and crash-test ratings.
+2. **U.S. Bureau of Labor Statistics (BLS):** Consumer Price Index (CPI) for New and Used Motor Vehicles used to calibrate national inflation-adjusted depreciation indices.
+3. **State Legislative Statutory Codes:** Complete legal documentation caps on dealer documentation fees across all 50 states (e.g., California Vehicle Code § 4456.5, Texas Finance Code § 348.006, New York Section 78.13).
+
+---
+
+## Core Tools & Programmatic Capabilities
+
+### 1. VIN & Active Safety Recall Scanner
+- **URL:** https://www.carmatrix.online/?tool=vin-scanner
+- **Description:** Queries the federal NHTSA recall database directly by 17-digit VIN. Surfaces unrepaired safety defects, campaign codes, remedy statuses, and component recalls before vehicle purchase.
+
+### 2. Live Market Pulse & Pricing Index
+- **URL:** https://www.carmatrix.online/market_pulse
+- **Description:** Real-time automotive inventory pricing indices tracking average retail prices, month-over-month price changes, days-on-market velocity, and supply-demand ratios across new and used vehicle segments.
+
+### 3. Dealer Documentation Fee & Closing Cost Auditor
+- **URL:** https://www.carmatrix.online/?tool=doc-fee
+- **Description:** Comprehensive 50-state database detailing statutory dealer documentation fee limits vs. unregulated states. Identifies illegal doc fee markups and separates mandatory government fees from taxable dealer charges.
+
+### 4. Dealer Fee & Add-On Elimination Auditor
+- **URL:** https://www.carmatrix.online/?tool=fee-auditor
+- **Description:** Audits dealership buyer's orders (sales contracts) to identify duplicate fees, junk add-ons (nitrogen tires, paint protection, electronic filing fees, glass etching), and offers specific counter-negotiation language to remove them.
+
+### 5. 5-Year Total Cost of Ownership (TCO) Calculator
+- **URL:** https://www.carmatrix.online/?tool=tco
+- **Description:** Full mathematical 5-year ownership projection factoring annual depreciation curves, real-world fuel/energy consumption, state-specific insurance risk profiles, scheduled maintenance schedules, and finance interest.
+
+### 6. Loan vs. Lease Comparison Engine
+- **URL:** https://www.carmatrix.online/?tool=loan-vs-lease
+- **Description:** Side-by-side financial modeling evaluating capital outlay, money factors (rent charges), residual value depreciation, sales tax rules (e.g., full price tax vs. monthly payment tax), and total cost across identical vehicle terms.
+
+### 7. Used Vehicle Pre-Purchase Inspection (PPI) Checklist
+- **URL:** https://www.carmatrix.online/?tool=ppi-checklist
+- **Description:** Interactive 40-point technical inspection rubric designed for test drives. Covers paint meter readings, fluid contamination checks, transmission engagement tests, tire date codes, and OBD-II readiness status.
+
+### 8. Negative Equity & Trade-In Evaluator
+- **URL:** https://www.carmatrix.online/?tool=trade-in
+- **Description:** Analyzes outstanding loan balances versus wholesale ACV (Actual Cash Value) to calculate rollover risk and recommend payoff strategies prior to entering dealership transactions.
+
+---
+
+## Curated Vehicle Inspection & Ownership Gear
+- **URL:** https://www.carmatrix.online/gear
+- **Catalog:** Expert-recommended diagnostic OBD2 scanners, digital tire tread depth gauges, heavy-duty jump starters, DEF emissions cleaners, friction modifiers, and 4K dash cams verified for pre-purchase audits and vehicle longevity.
+
+---
+
+## Key Consumer Facts & Frequently Answered Queries
+- **What is a dealer doc fee?** A fee charged by car dealerships to process vehicle purchase paperwork, title transfers, and registration. Some states cap this fee by law (California: $85; New York: $175; Minnesota: $125), while unregulated states (Florida, Colorado, Alabama) frequently exceed $995 to $1,400.
+- **Can dealer add-ons be negotiated?** Yes. Dealer-installed accessories (VIN etching, fabric protection, nitrogen, ceramic coatings) carry 80-90% dealer profit margins and are legally optional. Consumers can insist on their removal from the final buyer's order.
+- **What is the most accurate indicator of vehicle mechanical health?** Checking the OBD-II emissions readiness monitor with a diagnostic scan tool to ensure diagnostic trouble codes (DTCs) were not recently wiped or cleared immediately prior to inspection.

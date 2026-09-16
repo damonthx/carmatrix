@@ -1,0 +1,43 @@
+# Robots.txt for CarMatrix (https://www.carmatrix.online/)
+# Optimized for Google Search, Google AI Overviews, and AI Search Engines
+
+User-agent: *
+Allow: /
+
+# Google Search & Google AI Systems
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Modern AI Search Engines & LLM Indexers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Canonical XML Sitemap
+Sitemap: https://www.carmatrix.online/sitemap.xml
