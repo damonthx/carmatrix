@@ -49,7 +49,7 @@ export default function PressPage() {
               Get official CarMatrix logos, brand guidelines, and high-resolution product screenshots.
             </p>
             <a 
-              href="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+              href="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               target="_blank" 
               rel="noopener noreferrer"
               className="block w-full bg-[#29abe2] text-white py-3 rounded-full font-bold hover:bg-[#2089b5] transition-colors text-center cursor-pointer"

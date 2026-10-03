@@ -40,7 +40,7 @@ export default function SignUp({ onBack, onSignIn, onSuccess }: { onBack: () => 
         <div className="light-glass-card rounded-3xl p-8 shadow-xl border border-white/20">
           <div className="text-center mb-8">
             <img 
-              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               alt="CarMatrix Logo" 
               className="h-[60px] mx-auto mb-6 object-contain"
               referrerPolicy="no-referrer"

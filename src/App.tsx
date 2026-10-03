@@ -222,9 +222,10 @@ const NavBar = ({
           {/* Logo */}
           <div className="cursor-pointer flex items-center shrink-0" onClick={() => handleNavClick()}>
             <img 
-              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               alt="CarMatrix Logo" 
-              className="h-[54px] sm:h-[68px] lg:h-[81px] w-auto object-contain transition-all"
+              className="w-[225px] h-auto object-contain transition-all"
+              style={{ width: '225px' }}
               referrerPolicy="no-referrer"
             />
           </div>
@@ -792,7 +793,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         <div className="col-span-2 space-y-3">
           <div className="flex items-center">
             <img 
-              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1789086556/Logo-CarMatrix_avzdkk.png" 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               alt="CarMatrix Logo" 
               className="h-11 w-auto object-contain brightness-0 invert"
               referrerPolicy="no-referrer"
