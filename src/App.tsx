@@ -4,7 +4,7 @@ import {
   Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
-  Menu, X, ChevronRight, Cpu, ShoppingBag
+  Menu, X, ChevronRight, Cpu, ShoppingBag, Terminal, Activity, AlertTriangle
 } from 'lucide-react';
 import TCOCalculator from './TCOCalculator';
 import VisionPage from './VisionPage';
@@ -216,7 +216,7 @@ const NavBar = ({
   ];
 
   return (
-    <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60">
+    <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60 font-poppins">
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-[72px] sm:h-[85px]">
           {/* Logo */}
@@ -224,47 +224,36 @@ const NavBar = ({
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               alt="CarMatrix Logo" 
-              className="w-[225px] h-auto object-contain transition-all"
+              className="w-[195px] sm:w-[225px] h-auto object-contain transition-all"
               style={{ width: '225px' }}
               referrerPolicy="no-referrer"
             />
           </div>
           
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 sm:gap-8 text-[15px] font-medium font-poppins text-slate-600">
+          {/* Desktop Navigation Grouped by the 3 Distinct Categories */}
+          <nav className="hidden lg:flex items-center gap-5 sm:gap-7 text-[14.5px] font-medium font-poppins text-slate-600">
             <button 
-              onClick={() => handleNavClick('ai-advisor')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+              onClick={() => handleNavClick('vin-checker')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5"
             >
-              Knowledge Engine
+              <span className="text-[10px] text-[#29abe2] font-bold px-1.5 py-0.5 rounded bg-sky-50 border border-sky-200">01</span>
+              <span>Pre-Lot Recon</span>
             </button>
 
             <button 
-              onClick={() => handleNavClick('tco-calculator')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+              onClick={() => handleNavClick('loan-calculator')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5"
             >
-              5-Year TCO
+              <span className="text-[10px] text-amber-600 font-bold px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200">02</span>
+              <span>Finance Traps</span>
             </button>
 
             <button 
-              onClick={() => handleNavClick('valuation-estimator')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+              onClick={() => handleNavClick('quote-auditor')}
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5"
             >
-              Valuation
-            </button>
-
-            <button 
-              onClick={() => handleNavClick('ev-comparison')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              EV vs Gas
-            </button>
-
-            <button 
-              onClick={() => handleNavClick('inspection-checklist')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
-            >
-              Fee & Inspection
+              <span className="text-[10px] text-emerald-600 font-bold px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-200">03</span>
+              <span>The Closing Table</span>
             </button>
 
             <button 
@@ -461,108 +450,236 @@ const ToolkitHeroHeader = ({
   setActiveFilter: (f: string) => void; 
   onScrollToTool: (toolId: string) => void;
 }) => {
-  const tools = [
-    { id: 'all', name: 'All Tools', tag: 'SUITE', icon: Layers, target: '', gradient: 'from-sky-400/20 via-slate-400/10 to-transparent', border: 'border-sky-300/30', glow: 'rgba(56,189,248,0.25)', color: 'text-sky-300' },
-    { id: 'ai', name: 'Knowledge Engine', tag: 'ENGINE', icon: Cpu, target: 'ai-advisor', gradient: 'from-[#29abe2]/30 via-sky-500/15 to-transparent', border: 'border-[#29abe2]/40', glow: 'rgba(41,171,226,0.35)', color: 'text-[#29abe2]' },
-    { id: 'vin', name: 'VIN & Recall', tag: 'NHTSA', icon: Search, target: 'vin-checker', gradient: 'from-blue-500/30 via-blue-600/15 to-transparent', border: 'border-blue-400/40', glow: 'rgba(59,130,246,0.35)', color: 'text-blue-400' },
-    { id: 'quote', name: 'Quote Auditor', tag: 'AUDIT', icon: FileSearch, target: 'quote-auditor', gradient: 'from-indigo-500/30 via-indigo-600/15 to-transparent', border: 'border-indigo-400/40', glow: 'rgba(99,102,241,0.35)', color: 'text-indigo-400' },
-    { id: 'state-fees', name: 'State Fees', tag: '50-STATE', icon: Scale, target: 'state-fees', gradient: 'from-emerald-500/30 via-emerald-600/15 to-transparent', border: 'border-emerald-400/40', glow: 'rgba(16,185,129,0.35)', color: 'text-emerald-400' },
-    { id: 'lease', name: 'Lease vs Buy', tag: 'COMPARE', icon: ArrowLeftRight, target: 'lease-vs-finance', gradient: 'from-violet-500/30 via-violet-600/15 to-transparent', border: 'border-violet-400/40', glow: 'rgba(139,92,246,0.35)', color: 'text-violet-400' },
-    { id: 'tco', name: '5-Yr TCO', tag: '5-YEAR', icon: Calculator, target: 'tco-calculator', gradient: 'from-teal-500/30 via-teal-600/15 to-transparent', border: 'border-teal-400/40', glow: 'rgba(20,184,166,0.35)', color: 'text-teal-400' },
-    { id: 'loan', name: 'Loan & Budget', tag: 'FINANCE', icon: SlidersHorizontal, target: 'loan-calculator', gradient: 'from-amber-500/30 via-amber-600/15 to-transparent', border: 'border-amber-400/40', glow: 'rgba(245,158,11,0.35)', color: 'text-amber-400' },
-    { id: 'dossier', name: 'Test Dossier', tag: 'PRINT', icon: Printer, target: 'test-drive-dossier', gradient: 'from-rose-500/30 via-rose-600/15 to-transparent', border: 'border-rose-400/40', glow: 'rgba(244,63,94,0.35)', color: 'text-rose-400' },
-    { id: 'depreciation', name: 'Value Curve', tag: '7-YEAR', icon: TrendingDown, target: 'depreciation-curve', gradient: 'from-cyan-500/30 via-cyan-600/15 to-transparent', border: 'border-cyan-400/40', glow: 'rgba(6,182,212,0.35)', color: 'text-cyan-400' },
-    { id: 'valuation', name: 'Valuation', tag: 'LIVE', icon: DollarSign, target: 'valuation-estimator', gradient: 'from-yellow-500/30 via-amber-500/15 to-transparent', border: 'border-yellow-400/40', glow: 'rgba(234,179,8,0.35)', color: 'text-yellow-400' },
-    { id: 'ev', name: 'EV vs Gas', tag: 'GREEN', icon: Zap, target: 'ev-comparison', gradient: 'from-green-500/30 via-emerald-600/15 to-transparent', border: 'border-green-400/40', glow: 'rgba(34,197,94,0.35)', color: 'text-green-400' },
-    { id: 'inspection', name: 'Inspection', tag: 'CHECK', icon: ShieldCheck, target: 'inspection-checklist', gradient: 'from-orange-500/30 via-orange-600/15 to-transparent', border: 'border-orange-400/40', glow: 'rgba(249,115,22,0.35)', color: 'text-orange-400' },
-    { id: 'market', name: 'Market Trends', tag: 'INDEX', icon: TrendingUp, target: 'market-trends', gradient: 'from-sky-400/30 via-blue-500/15 to-transparent', border: 'border-sky-300/40', glow: 'rgba(56,189,248,0.35)', color: 'text-sky-300' },
+  const TOOLKIT_CATEGORIES = [
+    {
+      id: 'recon',
+      name: 'Pre-Lot Recon',
+      sectorCode: 'SECTOR 01',
+      badge: 'INTEL & VERIFICATION',
+      borderColor: 'border-slate-700/80 hover:border-sky-400/50',
+      panelGradients: 'from-slate-900/90 via-slate-900/70 to-slate-950',
+      glowBorder: 'shadow-[0_12px_32px_rgba(0,0,0,0.5)]',
+      badgeStyle: 'bg-sky-500/10 border-sky-400/30 text-sky-300',
+      dotColor: 'bg-[#29abe2]',
+      headingGradient: 'from-white via-slate-100 to-sky-200',
+      description: 'Audit factory build history, true 5-year depreciation, and fair market valuation before stepping on the dealer lot.',
+      tools: [
+        { id: 'vin', name: 'VIN & Recall Decoder', tag: 'NHTSA AUDIT', icon: Search, target: 'vin-checker', desc: 'Scan factory specs & open safety campaigns' },
+        { id: 'tco', name: '5-Year Ownership TCO', tag: 'DEPRECIATION', icon: Calculator, target: 'tco-calculator', desc: 'True cost of fuel, insurance & maintenance' },
+        { id: 'valuation', name: 'Live Market Valuation', tag: 'TRUE VALUE', icon: DollarSign, target: 'valuation-estimator', desc: 'Fair retail & wholesale trade equity' },
+        { id: 'inspection', name: 'Pre-Purchase Inspection', tag: '40-PT CHECK', icon: ShieldCheck, target: 'inspection-checklist', desc: 'Physical mechanical inspection checklist' },
+      ]
+    },
+    {
+      id: 'finance',
+      name: 'Finance Trap Detectors',
+      sectorCode: 'SECTOR 02',
+      badge: 'FINANCE GUARD',
+      borderColor: 'border-slate-700/80 hover:border-amber-400/50',
+      panelGradients: 'from-slate-900/90 via-slate-900/70 to-slate-950',
+      glowBorder: 'shadow-[0_12px_32px_rgba(0,0,0,0.5)]',
+      badgeStyle: 'bg-amber-500/10 border-amber-400/30 text-amber-300',
+      dotColor: 'bg-amber-400',
+      headingGradient: 'from-white via-slate-100 to-amber-200',
+      description: 'Expose backend APR markup, deceptive lease money factors, and underwater trade-in rollovers.',
+      tools: [
+        { id: 'loan', name: 'Auto Loan Calculator', tag: 'RATE SHIELD', icon: SlidersHorizontal, target: 'loan-calculator', desc: 'Purchasing power, amortized interest & terms' },
+        { id: 'lease', name: 'Lease vs. Buy Simulator', tag: 'TERMS AUDIT', icon: ArrowLeftRight, target: 'lease-vs-finance', desc: 'Compare equity accumulation vs lease cashflow traps' },
+        { id: 'depreciation', name: 'Negative Equity Check', tag: 'EQUITY TRAP', icon: TrendingDown, target: 'depreciation-curve', desc: 'Identify underwater loan risk & 7-yr depreciation curve' },
+      ]
+    },
+    {
+      id: 'closing',
+      name: 'The Closing Table',
+      sectorCode: 'SECTOR 03',
+      badge: 'ADD-ON DEFENSE',
+      borderColor: 'border-slate-700/80 hover:border-emerald-400/50',
+      panelGradients: 'from-slate-900/90 via-slate-900/70 to-slate-950',
+      glowBorder: 'shadow-[0_12px_32px_rgba(0,0,0,0.5)]',
+      badgeStyle: 'bg-emerald-500/10 border-emerald-400/30 text-emerald-300',
+      dotColor: 'bg-emerald-400',
+      headingGradient: 'from-white via-slate-100 to-emerald-200',
+      description: 'Weaponize out-the-door fee audits and AI negotiation leverage to eliminate dealer add-on junk fees at signing.',
+      tools: [
+        { id: 'quote', name: 'Out-The-Door (OTD) Calculator', tag: 'JUNK FEE AUDIT', icon: FileSearch, target: 'quote-auditor', desc: 'Separate legitimate taxes/fees from bogus dealer add-ons' },
+        { id: 'ai', name: 'AI Negotiation Research', tag: 'AI LEVERAGE', icon: Cpu, target: 'ai-advisor', desc: 'Tactical dealer counter-scripts & market intelligence' },
+        { id: 'state-fees', name: '50-State Statutory Doc Fees', tag: 'LEGAL CAPS', icon: Scale, target: 'state-fees', desc: '50-state statutory legal doc fee limits & averages' },
+      ]
+    }
   ];
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white py-[60px] px-4 sm:px-6 lg:px-8 border-b border-slate-800/80">
+    <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80 font-poppins">
       {/* Ambient background glows */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#29abe2]/20 via-sky-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 -left-32 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
       
-      {/* Subtle grid texture for high-tech depth */}
+      {/* Subtle grid texture */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b20_1px,transparent_1px),linear-gradient(to_bottom,#1e293b20_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none opacity-40" />
 
-      <div className="max-w-[1200px] mx-auto text-center relative z-10">
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight mb-4">
-          Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] via-sky-300 to-emerald-400">buy smarter</span>.
-        </h1>
+      <div className="max-w-[1240px] mx-auto relative z-10 space-y-10">
+        
+        {/* Hero Title & Subtitle */}
+        <div className="text-center space-y-3">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white leading-tight font-poppins">
+            Never Step onto a Dealership Lot <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] via-sky-300 to-emerald-400">Unarmed</span>.
+          </h1>
 
-        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed mb-12">
-          Unbiased calculators, 5-year ownership cost projections, live market valuations, and AI negotiation research designed to save you thousands.
-        </p>
-
-        {/* Elevated Luxury Glassmorphic Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-3.5 max-w-6xl mx-auto">
-          {tools.map((t) => {
-            const Icon = t.icon;
-            const isSelected = activeFilter === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => {
-                  setActiveFilter(t.id);
-                  if (t.target) {
-                    onScrollToTool(t.target);
-                  }
-                }}
-                className={
-                  "group relative aspect-square flex flex-col items-center justify-between p-3.5 rounded-2xl transition-all duration-300 cursor-pointer backdrop-blur-2xl border text-center overflow-hidden " +
-                  (isSelected
-                    ? "bg-gradient-to-b from-white/[0.14] via-white/[0.08] to-slate-900/80 border-[#29abe2] shadow-[0_0_35px_rgba(41,171,226,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] scale-[1.03] ring-1 ring-[#29abe2]/80 z-20"
-                    : "bg-gradient-to-b from-white/[0.07] via-white/[0.03] to-transparent hover:from-white/[0.12] hover:via-white/[0.06] hover:to-white/[0.02] border-white/[0.12] hover:border-white/[0.28] shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_0_0_rgba(255,255,255,0.15)] hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.25)]")
-                }
-              >
-                {/* Specular top light ray */}
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
-
-                {/* Active indicator dot */}
-                {isSelected && (
-                  <span className="absolute top-2 right-2 flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#29abe2] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#29abe2]"></span>
-                  </span>
-                )}
-
-                {/* Micro Category Tag */}
-                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400/80 group-hover:text-slate-300 transition-colors">
-                  {t.tag}
-                </span>
-
-                {/* Jewel Icon Pedestal */}
-                <div
-                  className={
-                    "w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 shadow-inner border relative " +
-                    (isSelected
-                      ? "bg-gradient-to-br from-[#29abe2] to-sky-600 text-white shadow-[0_0_20px_rgba(41,171,226,0.6)] border-white/40 scale-105"
-                      : `bg-gradient-to-br ${t.gradient} ${t.border} ${t.color} group-hover:scale-110 group-hover:shadow-[0_0_20px_${t.glow}] group-hover:border-white/30`)
-                  }
-                >
-                  <Icon size={21} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
-                </div>
-
-                {/* Card Title */}
-                <span className={"text-[11.5px] font-bold tracking-tight leading-tight transition-colors " + (isSelected ? "text-white" : "text-slate-200 group-hover:text-white")}>
-                  {t.name}
-                </span>
-              </button>
-            );
-          })}
+          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed font-poppins">
+            CarMatrix gives you the exact math, hidden-fee detectors, and negotiation scripts you need to beat the dealer.
+          </p>
         </div>
+
+        {/* The 3 Distinct Styled Categories (10 Widget Links) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {TOOLKIT_CATEGORIES.map((category) => (
+            <div 
+              key={category.id}
+              className={`flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-gradient-to-b ${category.panelGradients} border ${category.borderColor} ${category.glowBorder} transition-all duration-300 relative overflow-hidden backdrop-blur-xl`}
+            >
+              {/* Top ambient highlight */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+
+              <div>
+                <h3 className={`text-xl font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${category.headingGradient} mb-2 font-poppins`}>
+                  {category.name}
+                </h3>
+
+                <p className="text-xs text-slate-400 leading-relaxed mb-6 font-poppins">
+                  {category.description}
+                </p>
+
+                {/* Widget Links in this Category */}
+                <div className="space-y-2.5">
+                  {category.tools.map((t) => {
+                    const Icon = t.icon;
+                    const isSelected = activeFilter === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        onClick={() => {
+                          setActiveFilter(t.id);
+                          onScrollToTool(t.target);
+                        }}
+                        className={`group w-full flex items-center justify-between p-3 rounded-2xl border transition-all duration-200 cursor-pointer text-left ${
+                          isSelected
+                            ? 'bg-slate-800 border-sky-400/80 shadow-md ring-1 ring-sky-400/40 text-white'
+                            : 'bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.08] text-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          {/* Premium Jewel / Squircle Icon Pedestal */}
+                          <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 relative overflow-hidden shadow-inner ${
+                            isSelected 
+                              ? 'text-[#29abe2] border-sky-400/50 bg-gradient-to-br from-sky-400/25 via-sky-500/10 to-transparent shadow-[0_0_16px_rgba(41,171,226,0.3)]' 
+                              : 'text-slate-200 bg-gradient-to-br from-white/10 via-white/5 to-transparent border-white/15 group-hover:border-sky-400/40 group-hover:text-[#29abe2] group-hover:shadow-[0_0_14px_rgba(41,171,226,0.2)]'
+                          }`}>
+                            <div className="absolute inset-x-0 top-0 h-px bg-white/30 pointer-events-none" />
+                            <Icon size={18} strokeWidth={2.2} className="drop-shadow-xs" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="text-xs font-semibold text-white tracking-tight truncate group-hover:text-[#29abe2] transition-colors font-poppins">
+                              {t.name}
+                            </div>
+                            <div className="text-[10.5px] text-slate-400 truncate leading-tight font-poppins mt-0.5">
+                              {t.desc}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="text-slate-500 group-hover:text-[#29abe2] group-hover:translate-x-1 transition-all shrink-0 ml-2">
+                          <ChevronRight size={15} />
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Quick Jump Category Trigger */}
+              <button
+                onClick={() => {
+                  setActiveFilter(category.id);
+                  onScrollToTool(category.tools[0].target);
+                }}
+                className="mt-5 w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-xs font-semibold font-poppins text-slate-200 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <span>Explore {category.name}</span>
+                <ArrowUpRight size={14} className="text-[#29abe2]" />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Global Filter Tabs */}
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-2 font-poppins">
+          <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold mr-1">Filter Sector:</span>
+          
+          <button
+            onClick={() => setActiveFilter('all')}
+            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
+              activeFilter === 'all'
+                ? 'bg-[#29abe2] text-white border-transparent shadow-md shadow-[#29abe2]/30'
+                : 'bg-slate-900/80 text-slate-300 border-slate-700/80 hover:text-white hover:border-slate-600'
+            }`}
+          >
+            All Tools (10)
+          </button>
+
+          <button
+            onClick={() => setActiveFilter('recon')}
+            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
+              activeFilter === 'recon'
+                ? 'bg-[#29abe2] text-white border-transparent shadow-md shadow-[#29abe2]/30'
+                : 'bg-slate-900/80 text-slate-300 border-slate-700/80 hover:text-[#29abe2] hover:border-sky-500/40'
+            }`}
+          >
+            01 Pre-Lot Recon
+          </button>
+
+          <button
+            onClick={() => setActiveFilter('finance')}
+            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
+              activeFilter === 'finance'
+                ? 'bg-amber-500 text-white border-transparent shadow-md shadow-amber-500/30'
+                : 'bg-slate-900/80 text-slate-300 border-slate-700/80 hover:text-amber-400 hover:border-amber-500/40'
+            }`}
+          >
+            02 Finance Traps
+          </button>
+
+          <button
+            onClick={() => setActiveFilter('closing')}
+            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
+              activeFilter === 'closing'
+                ? 'bg-emerald-500 text-white border-transparent shadow-md shadow-emerald-500/30'
+                : 'bg-slate-900/80 text-slate-300 border-slate-700/80 hover:text-emerald-400 hover:border-emerald-500/40'
+            }`}
+          >
+            03 The Closing Table
+          </button>
+        </div>
+
       </div>
     </div>
   );
 };
 
+// =========================================================================
+// AFFILIATE TRACKING LINK PLACEHOLDERS (Auto Loan Pre-Qualification & Refinance)
+// Replace with your approved affiliate tracking URL from Impact, CJ, or direct network
+// =========================================================================
+const AUTO_REFINANCE_AFFILIATE_URL = "https://www.myautoloan.com/?aff_id=YOUR_MYAUTOLOAN_ID";
+// Alternative Partner Placeholders:
+// const LENDINGTREE_AFFILIATE_URL = "https://www.lendingtree.com/?aff_id=YOUR_LENDINGTREE_ID";
+// const RATEGENIUS_AFFILIATE_URL = "https://www.rategenius.com/?aff_id=YOUR_RATEGENIUS_ID";
+
 const EstimateBudgetSection = () => {
   const [downPayment, setDownPayment] = React.useState(2350);
   const [loanTerm, setLoanTerm] = React.useState(60);
   const [apr, setApr] = React.useState(0.0979); 
+  const [isCustomApr, setIsCustomApr] = React.useState(false);
   const [monthlyPayment, setMonthlyPayment] = React.useState(418);
   const [includeTradeIn, setIncludeTradeIn] = React.useState(false);
   const [tradeInAmount, setTradeInAmount] = React.useState(0);
@@ -577,23 +694,25 @@ const EstimateBudgetSection = () => {
   const totalInterestPaid = Math.max(0, totalLoanRepayment - Math.round(maxLoanAmount));
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
-            <SlidersHorizontal size={14} className="text-[#29abe2]" />
-            <span>Financing & Budget Engine</span>
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 font-poppins relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-transparent border border-amber-300/40 shadow-[0_4px_16px_rgba(245,158,11,0.18)] flex items-center justify-center text-amber-500 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <SlidersHorizontal size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Auto Loan & Affordability Calculator</h3>
-          <p className="text-slate-500 text-sm mt-1">Calculate purchasing power, down payment leverage, and total interest amortization.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Auto Loan &amp; Affordability Calculator</h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Calculate purchasing power, down payment leverage, and total interest amortization.</p>
+          </div>
         </div>
 
-        <div className="bg-[#29abe2] text-white p-4 rounded-2xl shrink-0 min-w-[200px]">
+        <div className="bg-[#29abe2] text-white p-4 rounded-2xl shrink-0 min-w-[200px] shadow-sm">
           <span className="text-[11px] font-semibold text-sky-100 uppercase tracking-wider block">Estimated Max Vehicle Price</span>
-          <span className="text-3xl font-black text-white leading-none block mt-1">
+          <span className="text-3xl font-black text-white leading-none block mt-1 font-poppins">
             {"$" + totalBudget.toLocaleString()}
           </span>
-          <span className="text-[11px] text-sky-100 block mt-1 font-medium">with {((apr || 0) * 100).toFixed(2)}% APR</span>
+          <span className="text-[11px] text-sky-100 block mt-1 font-medium font-poppins">with {((apr || 0) * 100).toFixed(2)}% APR</span>
         </div>
       </div>
 
@@ -602,26 +721,26 @@ const EstimateBudgetSection = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div>
               <label className="block text-[11px] font-bold text-slate-700 mb-1">Target Monthly</label>
-              <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+              <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
                 <span className="text-slate-400 mr-1">$</span>
                 <input 
                   type="number" 
                   value={monthlyPayment} 
                   onChange={e => setMonthlyPayment(Number(e.target.value))}
-                  className="w-full outline-none bg-transparent"
+                  className="w-full outline-none bg-transparent font-poppins"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-[11px] font-bold text-slate-700 mb-1">Down Payment</label>
-              <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+              <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
                 <span className="text-slate-400 mr-1">$</span>
                 <input 
                   type="number" 
                   value={downPayment} 
                   onChange={e => setDownPayment(Number(e.target.value))}
-                  className="w-full outline-none bg-transparent"
+                  className="w-full outline-none bg-transparent font-poppins"
                 />
               </div>
             </div>
@@ -632,7 +751,7 @@ const EstimateBudgetSection = () => {
                 <select 
                   value={loanTerm} 
                   onChange={e => setLoanTerm(Number(e.target.value))}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer font-poppins shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                 >
                   <option value={36}>36 months</option>
                   <option value={48}>48 months</option>
@@ -645,20 +764,45 @@ const EstimateBudgetSection = () => {
             </div>
 
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 mb-1">Credit Tier / APR</label>
-              <div className="relative">
-                <select 
-                  value={apr} 
-                  onChange={e => setApr(Number(e.target.value))}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer"
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-[11px] font-bold text-slate-700">Credit Tier / APR</label>
+                <button 
+                  type="button"
+                  onClick={() => setIsCustomApr(!isCustomApr)}
+                  className="text-[10px] text-[#29abe2] font-semibold hover:underline cursor-pointer font-poppins"
                 >
-                  <option value={0.065}>740+ (6.50%)</option>
-                  <option value={0.0979}>680-739 (9.79%)</option>
-                  <option value={0.1400}>630-679 (14.0%)</option>
-                  <option value={0.2000}>Under 630 (20%)</option>
-                </select>
-                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                  {isCustomApr ? 'Presets' : 'Custom'}
+                </button>
               </div>
+
+              {isCustomApr ? (
+                <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
+                  <input 
+                    type="number" 
+                    step="0.05"
+                    value={Number(((apr || 0) * 100).toFixed(2))} 
+                    onChange={e => setApr(Math.max(0, Number(e.target.value) / 100))}
+                    className="w-full outline-none bg-transparent font-poppins"
+                    placeholder="8.50"
+                  />
+                  <span className="text-slate-400 ml-1 font-poppins">%</span>
+                </div>
+              ) : (
+                <div className="relative">
+                  <select 
+                    value={apr} 
+                    onChange={e => setApr(Number(e.target.value))}
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer font-poppins shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
+                  >
+                    <option value={0.065}>740+ Tier 1 (6.50%)</option>
+                    <option value={0.0799}>700-739 Tier 2 (7.99%)</option>
+                    <option value={0.0979}>680-699 Tier 3 (9.79%)</option>
+                    <option value={0.1400}>630-679 Subprime (14.0%)</option>
+                    <option value={0.2000}>Under 630 Deep Subprime (20.0%)</option>
+                  </select>
+                  <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                </div>
+              )}
             </div>
           </div>
 
@@ -673,13 +817,13 @@ const EstimateBudgetSection = () => {
             {includeTradeIn && (
               <div className="flex items-center gap-2">
                 <span className="text-xs text-slate-500 font-semibold">Trade-in Value:</span>
-                <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 w-28">
+                <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 w-28 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
                   <span className="text-slate-400 mr-1">$</span>
                   <input 
                     type="number" 
                     value={tradeInAmount} 
                     onChange={e => setTradeInAmount(Number(e.target.value))}
-                    className="w-full outline-none bg-transparent"
+                    className="w-full outline-none bg-transparent font-poppins"
                     placeholder="0"
                   />
                 </div>
@@ -706,10 +850,55 @@ const EstimateBudgetSection = () => {
 
           <div className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-1 border-t border-slate-200">
             <HelpCircle size={13} className="shrink-0" />
-            <span>Excludes state sales tax & title fees. Prequalify with lenders for exact APR.</span>
+            <span>Excludes state sales tax &amp; title fees. Prequalify with lenders for exact APR.</span>
           </div>
         </div>
       </div>
+
+      {/* Conditional Affiliate Offer (Dynamically Triggers when APR > 8%) */}
+      {apr > 0.08 && (
+        <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-[#0a0f1d] border border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.18)] text-white relative overflow-hidden transition-all duration-300">
+          {/* Authentic terminal scanline & subtle grid overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:1.5rem_1.5rem] pointer-events-none opacity-40" />
+
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0 mt-0.5 shadow-[0_0_12px_rgba(245,158,11,0.25)]">
+                <AlertTriangle size={20} />
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_#f59e0b]" />
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400">
+                    SYS_NOTIFY // TELEMETRY: APR {(apr * 100).toFixed(2)}% &gt; 8.00% NATIONAL BENCHMARK
+                  </span>
+                </div>
+
+                <p className="text-sm sm:text-base font-bold text-white font-poppins leading-snug">
+                  Your rate is above the national average. Check if you qualify for a better rate here.
+                </p>
+
+                <p className="text-xs text-slate-300 font-poppins leading-relaxed">
+                  Prime national auto rates average 6.50%–7.99%. Overpaying on dealer-marked APR adds an estimated <strong className="text-amber-300 font-bold">{"$" + Math.round(totalInterestPaid * 0.28).toLocaleString()}</strong> in excess finance charges over {loanTerm} months.
+                </p>
+              </div>
+            </div>
+
+            <div className="shrink-0 flex items-center pt-2 md:pt-0">
+              <a 
+                href={AUTO_REFINANCE_AFFILIATE_URL}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer font-poppins"
+              >
+                <span>Check Pre-Qualified Rates</span>
+                <ArrowUpRight size={15} />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -730,24 +919,24 @@ const ResearchAndReviews = () => {
   ];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 font-poppins">
       <div>
         <div className="flex justify-between items-end mb-4">
           <div>
-            <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Latest Vehicle Deep Dives</h3>
-            <p className="text-xs text-slate-500 mt-0.5">Independent road tests, reliability findings, and safety scores</p>
+            <h3 className="text-xl font-semibold text-slate-900 tracking-tight font-poppins">Latest Vehicle Deep Dives</h3>
+            <p className="text-xs text-slate-500 mt-0.5 font-poppins">Independent road tests, reliability findings, and safety scores</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {reviews.map((item, idx) => (
-            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-300/80 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
+            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white/80 backdrop-blur-xl border border-white/70 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
               <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
                 <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <span className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                <span className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-poppins">
                   {item.rating}
                 </span>
               </div>
-              <h4 className="text-xs font-bold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug">{item.title}</h4>
+              <h4 className="text-xs font-semibold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug font-poppins">{item.title}</h4>
             </a>
           ))}
         </div>
@@ -756,17 +945,17 @@ const ResearchAndReviews = () => {
       <div>
         <div className="flex justify-between items-end mb-4">
           <div>
-            <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Buyer Research Guides</h3>
-            <p className="text-xs text-slate-500 mt-0.5">Practical strategies, financing tips, and inspection advice</p>
+            <h3 className="text-xl font-semibold text-slate-900 tracking-tight font-poppins">Buyer Research Guides</h3>
+            <p className="text-xs text-slate-500 mt-0.5 font-poppins">Practical strategies, financing tips, and inspection advice</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {guides.map((item, idx) => (
-            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white border border-slate-300/80 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
+            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white/80 backdrop-blur-xl border border-white/70 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
               <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
                 <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
               </div>
-              <h4 className="text-xs font-bold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug">{item.title}</h4>
+              <h4 className="text-xs font-semibold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug font-poppins">{item.title}</h4>
             </a>
           ))}
         </div>
@@ -916,7 +1105,7 @@ export default function App() {
   };
 
   return (
-    <div className="font-sans text-slate-900 min-h-screen selection:bg-[#29abe2]/20 relative flex flex-col bg-[#DDE3EA]">
+    <div className="font-poppins text-slate-900 min-h-screen selection:bg-[#29abe2]/30 selection:text-slate-900 relative flex flex-col bg-[#DDE3EA]">
       <NavBar 
         onHomeClick={() => navigateTo('home')}
         onMarketPulseClick={() => navigateTo('market_pulse')}
@@ -959,95 +1148,176 @@ export default function App() {
               onScrollToTool={scrollToTool}
             />
           
-            <main className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+            <main className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
               
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'ai') && (
-                <section id="ai-advisor" className="scroll-mt-24">
-                  <AIAdvisorWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'vin') && (
-                <section id="vin-checker" className="scroll-mt-24">
-                  <VINRecallWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'quote') && (
-                <section id="quote-auditor" className="scroll-mt-24">
-                  <DealerQuoteAuditorWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'state-fees') && (
-                <section id="state-fees" className="scroll-mt-24">
-                  <StateFeeGuideWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'lease') && (
-                <section id="lease-vs-finance" className="scroll-mt-24">
-                  <LeaseVsFinanceWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'tco') && (
-                <section id="tco-calculator" className="scroll-mt-24">
-                  <TCOCalculator />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'loan') && (
-                <section id="loan-calculator" className="scroll-mt-24">
-                  <EstimateBudgetSection />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'dossier') && (
-                <section id="test-drive-dossier" className="scroll-mt-24">
-                  <TestDriveDossierWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'depreciation') && (
-                <section id="depreciation-curve" className="scroll-mt-24">
-                  <DepreciationPredictorWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'ev') && (
-                <section id="ev-comparison" className="scroll-mt-24">
-                  <EVComparisonWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'valuation') && (
-                <section id="valuation-estimator" className="scroll-mt-24">
-                  <ValuationWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'inspection') && (
-                <section id="inspection-checklist" className="scroll-mt-24">
-                  <InspectionChecklistWidget />
-                </section>
-              )}
-
-              {(activeToolkitFilter === 'all' || activeToolkitFilter === 'market') && (
-                <section id="market-trends" className="scroll-mt-24 bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
-                  <div className="mb-6">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
-                      <TrendingUp size={14} className="text-[#29abe2]" />
-                      <span>Live Market Feed</span>
+              <div className="space-y-16">
+                
+                {/* =========================================================================
+                    SECTOR 01: PRE-LOT RECON
+                    (VIN Decoder, 5-Year Ownership, Live Market Valuation)
+                    ========================================================================= */}
+                {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin' || activeToolkitFilter === 'tco' || activeToolkitFilter === 'valuation' || activeToolkitFilter === 'inspection' || activeToolkitFilter === 'dossier') && (
+                  <section className="space-y-8 relative">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] relative overflow-hidden">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+                          <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+                          <Search size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
+                            Pre-Lot Recon
+                          </h2>
+                          <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
+                            Audit vehicle build history, 5-year ownership depreciation, and fair market value before setting foot on the dealer lot.
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Market Trends & Price Index</h3>
-                    <p className="text-slate-500 text-sm mt-1">Track real-time inventory days-supply, wholesale price trajectory, and regional price adjustments.</p>
-                  </div>
-                  <MarketPulse />
-                </section>
-              )}
 
-              <section className="pt-6 border-t border-slate-200">
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin') && (
+                      <section id="vin-checker" className="scroll-mt-24">
+                        <VINRecallWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'tco') && (
+                      <section id="tco-calculator" className="scroll-mt-24">
+                        <TCOCalculator />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'valuation') && (
+                      <section id="valuation-estimator" className="scroll-mt-24">
+                        <ValuationWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'inspection') && (
+                      <section id="inspection-checklist" className="scroll-mt-24">
+                        <InspectionChecklistWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'dossier') && (
+                      <section id="test-drive-dossier" className="scroll-mt-24">
+                        <TestDriveDossierWidget />
+                      </section>
+                    )}
+                  </section>
+                )}
+
+                {/* =========================================================================
+                    SECTOR 02: FINANCE TRAP DETECTORS
+                    (Auto Loan Calculator, Lease vs. Buy, Negative Equity Check)
+                    ========================================================================= */}
+                {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'loan' || activeToolkitFilter === 'lease' || activeToolkitFilter === 'depreciation') && (
+                  <section className="space-y-8 relative">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] relative overflow-hidden">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-transparent border border-amber-300/40 shadow-[0_4px_16px_rgba(245,158,11,0.18)] flex items-center justify-center text-amber-500 shrink-0 relative overflow-hidden">
+                          <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+                          <SlidersHorizontal size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
+                            Finance Trap Detectors
+                          </h2>
+                          <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
+                            Expose backend APR markup, deceptive lease money factors, and underwater trade-in rollovers before signing.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'loan') && (
+                      <section id="loan-calculator" className="scroll-mt-24">
+                        <EstimateBudgetSection />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'lease') && (
+                      <section id="lease-vs-finance" className="scroll-mt-24">
+                        <LeaseVsFinanceWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'depreciation') && (
+                      <section id="depreciation-curve" className="scroll-mt-24">
+                        <DepreciationPredictorWidget />
+                      </section>
+                    )}
+                  </section>
+                )}
+
+                {/* =========================================================================
+                    SECTOR 03: THE CLOSING TABLE
+                    (OTD Calculator, AI Negotiation Research, 50-State Doc Fee Guide)
+                    ========================================================================= */}
+                {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote' || activeToolkitFilter === 'ai' || activeToolkitFilter === 'state-fees' || activeToolkitFilter === 'ev' || activeToolkitFilter === 'market') && (
+                  <section className="space-y-8 relative">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] relative overflow-hidden">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-transparent border border-emerald-300/40 shadow-[0_4px_16px_rgba(16,185,129,0.18)] flex items-center justify-center text-emerald-600 shrink-0 relative overflow-hidden">
+                          <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+                          <FileSearch size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
+                            The Closing Table
+                          </h2>
+                          <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
+                            Dismantle dealer fee padding, eliminate unauthorized add-ons, and deploy AI counter-negotiation language.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote') && (
+                      <section id="quote-auditor" className="scroll-mt-24">
+                        <DealerQuoteAuditorWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'ai') && (
+                      <section id="ai-advisor" className="scroll-mt-24">
+                        <AIAdvisorWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'state-fees') && (
+                      <section id="state-fees" className="scroll-mt-24">
+                        <StateFeeGuideWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'ev') && (
+                      <section id="ev-comparison" className="scroll-mt-24">
+                        <EVComparisonWidget />
+                      </section>
+                    )}
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'market') && (
+                      <section id="market-trends" className="scroll-mt-24 bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 font-poppins relative overflow-hidden">
+                        <div className="flex items-center gap-3.5 mb-6">
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+                            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+                            <TrendingUp size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Market Trends &amp; Price Index</h3>
+                            <p className="text-slate-600 text-sm mt-0.5 font-poppins">Track real-time inventory days-supply, wholesale price trajectory, and regional price adjustments.</p>
+                          </div>
+                        </div>
+                        <MarketPulse />
+                      </section>
+                    )}
+                  </section>
+                )}
+
+              </div>
+
+              <section className="pt-8 border-t border-slate-300/80">
                 <ResearchAndReviews />
               </section>
             </main>

@@ -76,16 +76,18 @@ export default function StateFeeGuideWidget() {
   );
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-200/60 rounded-full text-emerald-800 text-xs font-bold mb-2">
-            <Scale size={14} className="text-emerald-600" />
-            <span>50-State Buyer Rights Directory</span>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-transparent border border-emerald-300/40 shadow-[0_4px_16px_rgba(16,185,129,0.18)] flex items-center justify-center text-emerald-600 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <Scale size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">State Doc Fee & Trade-In Tax Credit Guide</h3>
-          <p className="text-slate-500 text-sm mt-1">Look up statutory documentation fee limits, tax credit rules, and buyer protection policies in your state.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">State Doc Fee &amp; Trade-In Tax Credit Guide</h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Look up statutory documentation fee limits, tax credit rules, and buyer protection policies in your state.</p>
+          </div>
         </div>
 
         {/* State Quick Selector */}
@@ -93,7 +95,7 @@ export default function StateFeeGuideWidget() {
           <select
             value={selectedStateCode}
             onChange={(e) => setSelectedStateCode(e.target.value)}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2] cursor-pointer"
+            className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
           >
             {STATES_DATA.map(s => (
               <option key={s.code} value={s.code}>{s.name} ({s.code})</option>

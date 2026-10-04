@@ -82,7 +82,7 @@ export default function PublicRelationsPage() {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all" 
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400" 
                       placeholder="Jane Doe" 
                     />
                   </div>
@@ -92,7 +92,7 @@ export default function PublicRelationsPage() {
                       type="text" 
                       value={formData.publication}
                       onChange={(e) => setFormData({ ...formData, publication: e.target.value })}
-                      className="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all" 
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400" 
                       placeholder="Automotive News / Bloomberg / etc." 
                     />
                   </div>
@@ -103,7 +103,7 @@ export default function PublicRelationsPage() {
                       required
                       value={formData.details}
                       onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                      className="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all resize-none" 
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all resize-none placeholder:text-slate-400" 
                       placeholder="Deadline, questions, or specific automotive data needed..."
                     ></textarea>
                   </div>

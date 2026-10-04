@@ -426,7 +426,7 @@ export default function DealersPage() {
                       required
                       value={formData.firstName}
                       onChange={e => setFormData({...formData, firstName: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:bg-white focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all"
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-xs text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
                       placeholder="Jane"
                     />
                   </div>
@@ -437,7 +437,7 @@ export default function DealersPage() {
                       required
                       value={formData.lastName}
                       onChange={e => setFormData({...formData, lastName: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:bg-white focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all"
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-xs text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
                       placeholder="Doe"
                     />
                   </div>
@@ -451,7 +451,7 @@ export default function DealersPage() {
                       required
                       value={formData.email}
                       onChange={e => setFormData({...formData, email: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:bg-white focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all"
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-xs text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
                       placeholder="jane@apexauto.com"
                     />
                   </div>
@@ -462,7 +462,7 @@ export default function DealersPage() {
                       required
                       value={formData.phone}
                       onChange={e => setFormData({...formData, phone: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:bg-white focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all"
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-xs text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
                       placeholder="(555) 000-0000"
                     />
                   </div>
@@ -476,7 +476,7 @@ export default function DealersPage() {
                       required
                       value={formData.dealershipName}
                       onChange={e => setFormData({...formData, dealershipName: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:bg-white focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all"
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-xs text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
                       placeholder="Apex Automotive Group"
                     />
                   </div>
@@ -487,7 +487,7 @@ export default function DealersPage() {
                       required
                       value={formData.zipCode}
                       onChange={e => setFormData({...formData, zipCode: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:bg-white focus:border-[#29abe2] focus:ring-1 focus:ring-[#29abe2] transition-all"
+                      className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-xs text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
                       placeholder="78701"
                     />
                   </div>

@@ -29,15 +29,17 @@ export default function EVComparisonWidget() {
   const co2ReducedLbs = Math.round(gasGallonsPerYear * 19.6 * 0.65);
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-200/60 rounded-full text-emerald-700 text-xs font-bold mb-2">
-            <Zap size={14} className="text-emerald-500" />
-            <span>Energy & Fuel Simulator</span>
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400/20 via-emerald-500/10 to-transparent border border-emerald-300/40 shadow-[0_4px_16px_rgba(34,197,94,0.18)] flex items-center justify-center text-emerald-500 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <Zap size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">EV vs. Gas vs. Hybrid Cost Comparison</h3>
-          <p className="text-slate-500 text-sm mt-1">Calculate how much you save on fuel, charging, and maintenance by switching powertrains.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">EV vs. Gas vs. Hybrid Cost Comparison</h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Calculate how much you save on fuel, charging, and maintenance by switching powertrains.</p>
+          </div>
         </div>
 
         <div className="text-left md:text-right bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-2xl shrink-0">
@@ -86,7 +88,7 @@ export default function EVComparisonWidget() {
               <div className="space-y-3">
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-600 mb-1">Local Gas Price ($/gal)</label>
-                  <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800">
+                  <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
                     <span className="text-slate-400 mr-1">$</span>
                     <input
                       type="number"
@@ -103,7 +105,7 @@ export default function EVComparisonWidget() {
                     type="number"
                     value={gasMpg}
                     onChange={(e) => setGasMpg(Number(e.target.value))}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 outline-none"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                   />
                 </div>
               </div>
@@ -117,7 +119,7 @@ export default function EVComparisonWidget() {
               <div className="space-y-3">
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-600 mb-1">Electricity Rate ($/kWh)</label>
-                  <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800">
+                  <div className="flex items-center bg-white border border-emerald-300 hover:border-emerald-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 shadow-xs focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 transition-all">
                     <span className="text-slate-400 mr-1">$</span>
                     <input
                       type="number"
@@ -135,7 +137,7 @@ export default function EVComparisonWidget() {
                     step="0.1"
                     value={evEfficiency}
                     onChange={(e) => setEvEfficiency(Number(e.target.value))}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 outline-none"
+                    className="w-full bg-white border border-emerald-300 hover:border-emerald-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 outline-none shadow-xs focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                   />
                 </div>
               </div>

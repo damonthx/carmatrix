@@ -334,7 +334,7 @@ export default function Dashboard({ onBack }: { onBack: () => void }) {
                                 <select
                                   value={inq.status}
                                   onChange={(e) => updateInquiryStatus(inq.id, e.target.value)}
-                                  className="appearance-none bg-white border border-slate-200 rounded-xl pl-3 pr-8 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-1 focus:ring-[#29abe2] cursor-pointer"
+                                  className="appearance-none bg-white border border-slate-300 hover:border-slate-400 rounded-xl pl-3 pr-8 py-2 text-xs font-bold text-slate-700 outline-none shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] cursor-pointer transition-all"
                                 >
                                   <option value="pending">Pending</option>
                                   <option value="contacted">Contacted</option>
@@ -370,7 +370,7 @@ export default function Dashboard({ onBack }: { onBack: () => void }) {
                         value={heroBg}
                         onChange={(e) => setHeroBg(e.target.value)}
                         placeholder="https://images.unsplash.com/..."
-                        className="w-full px-3 py-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#29abe2] outline-none transition-all font-medium"
+                        className="w-full px-3 py-2.5 text-xs rounded-xl bg-white border border-slate-300 hover:border-slate-400 shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] outline-none transition-all font-medium text-slate-900"
                       />
                       <p className="text-slate-400 text-[10px] mt-1.5 font-medium italic leading-relaxed">Enter a direct image URL (Unsplash recommended)</p>
                     </div>

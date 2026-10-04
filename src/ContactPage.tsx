@@ -64,7 +64,7 @@ export default function ContactPage() {
                     required
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm outline-none focus:bg-white focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all" 
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-4 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400" 
                     placeholder="Jane" 
                   />
                 </div>
@@ -74,7 +74,7 @@ export default function ContactPage() {
                     type="text" 
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm outline-none focus:bg-white focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all" 
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-4 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400" 
                     placeholder="Doe" 
                   />
                 </div>
@@ -87,7 +87,7 @@ export default function ContactPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm outline-none focus:bg-white focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all" 
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-4 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400" 
                   placeholder="jane@example.com" 
                 />
               </div>
@@ -98,7 +98,7 @@ export default function ContactPage() {
                   <select 
                     value={formData.topic}
                     onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm outline-none focus:bg-white focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all appearance-none cursor-pointer"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-4 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all appearance-none cursor-pointer"
                   >
                     <option>General Inquiry</option>
                     <option>Research Tools & Data Support</option>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                   required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm outline-none focus:bg-white focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all resize-none" 
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-4 text-sm text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all resize-none placeholder:text-slate-400" 
                   placeholder="How can our automotive research desk assist you?"
                 ></textarea>
               </div>

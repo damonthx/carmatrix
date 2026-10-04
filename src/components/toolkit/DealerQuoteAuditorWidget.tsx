@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileSearch, AlertTriangle, CheckCircle2, Copy, Check, DollarSign, Plus, Trash2, MessageSquare, Car, Building2, User } from 'lucide-react';
+import NegotiationScriptGenerator from './NegotiationScriptGenerator';
 
 interface FeeItem {
   id: string;
@@ -47,6 +48,10 @@ export default function DealerQuoteAuditorWidget() {
   const cleanTargetPrice = legitTotal + Math.min(negotiableTotal, 350);
 
   const vehiclePrice = items.find(i => i.name.toLowerCase().includes('price'))?.amount || 29985;
+  const stateTax = items.find(i => i.name.toLowerCase().includes('tax'))?.amount || 0;
+  const dmvFees = items.find(i => i.name.toLowerCase().includes('title') || i.name.toLowerCase().includes('dmv') || i.name.toLowerCase().includes('plate'))?.amount || 0;
+  const docFee = items.find(i => i.name.toLowerCase().includes('doc'))?.amount || 0;
+  const junkItemNames = items.filter(i => i.category === 'junk').map(i => i.name);
 
   const handleSelectPreset = (name: string) => {
     const found = PRESET_VEHICLES.find(v => v.name === name);
@@ -117,16 +122,18 @@ ${buyerName.trim() || '[Your Name]'}`;
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 border border-indigo-200/60 rounded-full text-indigo-700 text-xs font-bold mb-2">
-            <FileSearch size={14} />
-            <span>Buyer Transparency Tool</span>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-400/20 via-indigo-500/10 to-transparent border border-indigo-300/40 shadow-[0_4px_16px_rgba(99,102,241,0.18)] flex items-center justify-center text-indigo-600 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <FileSearch size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Dealer Quote Auditor & Counter-Offer Generator</h3>
-          <p className="text-slate-500 text-sm mt-1">Audit line items on dealer worksheets, expose predatory add-ons, and generate clean counter-offers.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight">Dealer Quote Auditor &amp; Counter-Offer Generator</h3>
+            <p className="text-slate-500 text-sm mt-0.5">Audit line items on dealer worksheets, expose predatory add-ons, and generate clean counter-offers.</p>
+          </div>
         </div>
       </div>
 
@@ -142,7 +149,7 @@ ${buyerName.trim() || '[Your Name]'}`;
             <span className="text-slate-500 font-medium hidden md:inline">Quick Vehicle Preset:</span>
             <select
               onChange={(e) => handleSelectPreset(e.target.value)}
-              className="text-xs font-semibold bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-700 outline-none focus:border-[#29abe2] cursor-pointer shadow-xs w-full sm:w-auto"
+              className="text-xs font-semibold bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-2.5 py-1.5 text-slate-700 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 cursor-pointer shadow-xs w-full sm:w-auto transition-all"
               value={PRESET_VEHICLES.some(v => v.name === vehicleName) ? vehicleName : ""}
             >
               <option value="" disabled>Choose a preset model...</option>
@@ -158,7 +165,7 @@ ${buyerName.trim() || '[Your Name]'}`;
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">Target Vehicle (Year/Make/Model)</label>
-            <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2]">
+            <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
               <Car size={14} className="text-slate-400 mr-2 shrink-0" />
               <input
                 type="text"
@@ -172,7 +179,7 @@ ${buyerName.trim() || '[Your Name]'}`;
 
           <div>
             <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">Salesperson / Dealership</label>
-            <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2]">
+            <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
               <Building2 size={14} className="text-slate-400 mr-2 shrink-0" />
               <input
                 type="text"
@@ -186,7 +193,7 @@ ${buyerName.trim() || '[Your Name]'}`;
 
           <div>
             <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">Your Name (Signs Script)</label>
-            <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2]">
+            <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
               <User size={14} className="text-slate-400 mr-2 shrink-0" />
               <input
                 type="text"
@@ -257,7 +264,7 @@ ${buyerName.trim() || '[Your Name]'}`;
               value={newItemName}
               onChange={(e) => setNewItemName(e.target.value)}
               placeholder="Add dealer item (e.g. Window Tint)..."
-              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none focus:border-[#29abe2]"
+              className="flex-1 bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all placeholder:text-slate-400"
             />
             <div className="flex gap-2">
               <input
@@ -265,12 +272,12 @@ ${buyerName.trim() || '[Your Name]'}`;
                 value={newItemAmount}
                 onChange={(e) => setNewItemAmount(e.target.value)}
                 placeholder="Amount $"
-                className="w-24 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none focus:border-[#29abe2]"
+                className="w-24 bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all placeholder:text-slate-400"
               />
               <select
                 value={newItemCategory}
                 onChange={(e) => setNewItemCategory(e.target.value as any)}
-                className="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs text-slate-700 outline-none"
+                className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all cursor-pointer"
               >
                 <option value="junk">Junk Fee</option>
                 <option value="negotiable">Negotiable</option>
@@ -366,6 +373,22 @@ ${buyerName.trim() || '[Your Name]'}`;
           </div>
         </div>
       </div>
+
+      {/* Negotiation Script Generator Connected to OTD Calculator */}
+      <NegotiationScriptGenerator
+        vehicleName={vehicleName}
+        vehiclePrice={vehiclePrice}
+        outTheDoorTotal={outTheDoorTotal}
+        cleanTargetPrice={cleanTargetPrice}
+        stateTax={stateTax}
+        dmvFees={dmvFees}
+        docFee={docFee}
+        junkTotal={junkTotal}
+        junkItemNames={junkItemNames}
+        salespersonName={salespersonName}
+        dealershipName={dealershipName}
+        buyerName={buyerName}
+      />
     </div>
   );
 }

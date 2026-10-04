@@ -140,12 +140,12 @@ export const AFFILIATE_CONFIG: AffiliateConfig = {
       name: 'EpicVIN',
       category: 'history',
       network: 'Impact.com',
-      isEnabled: false,
+      isEnabled: true,
       headline: "Verify vehicle past before buying",
       description: "Uncover hidden salvage damage, past auction photos, and theft history.",
       ctaText: "Check Vehicle History",
       badgeText: "Auction Photos",
-      url: "https://epicvin.com/?aff_id=YOUR_EPICVIN_ID",
+      url: "https://epicvin.com?a_aid=apznuns4wq2bd&a_bid=intropz3",
       payoutNote: "$8–$15 per report"
     },
 

@@ -140,7 +140,7 @@ export default function SellPage() {
                     onChange={(e) => setMake(e.target.value)}
                     placeholder="e.g. Toyota"
                     required={activeTab === 'make'}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3.5 outline-none font-semibold"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] block p-3.5 outline-none font-semibold shadow-xs transition-all placeholder:text-slate-400"
                   />
                 </div>
                 <div className="text-left">
@@ -151,7 +151,7 @@ export default function SellPage() {
                     onChange={(e) => setModel(e.target.value)}
                     placeholder="e.g. Camry"
                     required={activeTab === 'make'}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3.5 outline-none font-semibold"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] block p-3.5 outline-none font-semibold shadow-xs transition-all placeholder:text-slate-400"
                   />
                 </div>
                 <div className="text-left">
@@ -162,7 +162,7 @@ export default function SellPage() {
                     onChange={(e) => setYear(e.target.value)}
                     placeholder="e.g. 2022"
                     required={activeTab === 'make'}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3.5 outline-none font-semibold"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] block p-3.5 outline-none font-semibold shadow-xs transition-all placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function SellPage() {
                     onChange={(e) => setVin(e.target.value)}
                     placeholder="Enter Plate or VIN" 
                     required={activeTab === 'vin'}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3.5 outline-none font-semibold" 
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] block p-3.5 outline-none font-semibold shadow-xs transition-all placeholder:text-slate-400" 
                   />
                 </div>
                 <div className="text-left">
@@ -184,7 +184,7 @@ export default function SellPage() {
                   <select 
                     value={state}
                     onChange={(e) => setState(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3.5 outline-none font-semibold"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] block p-3.5 outline-none font-semibold shadow-xs transition-all cursor-pointer"
                   >
                     <option value="">Select State</option>
                     <option value="TX">TX</option>

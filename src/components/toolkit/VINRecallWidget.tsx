@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Search, ShieldAlert, ShieldCheck, AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react';
+import { 
+  Search, ShieldAlert, ShieldCheck, AlertTriangle, CheckCircle2, Loader2, 
+  ChevronDown, HelpCircle, BookOpen, FileText, CheckCircle, ArrowUpRight 
+} from 'lucide-react';
+
+// =========================================================================
+// EPICVIN AFFILIATE TRACKING LINK (Accidents, Title & Salvage History Check)
+// =========================================================================
+const affiliateUrl = 'https://epicvin.com/vin-decoder?a_aid=apznuns4wq2bd';
 
 interface VinDetails {
   vin: string;
@@ -31,6 +39,21 @@ const SAMPLE_VINS = [
   { label: '2023 Tesla Model Y', vin: '7SAYGDEE1PF123456' }
 ];
 
+const FAQ_ITEMS = [
+  {
+    question: "Can a car dealership legally sell a vehicle with an open safety recall?",
+    answer: "Under federal law (49 U.S.C. 30120), franchised dealerships are strictly prohibited from selling or leasing any new vehicle subject to an open, unremedied safety recall until repairs are completed. For pre-owned and used vehicles, while federal recall-sale restrictions differ across jurisdictions, dealerships are prohibited under state consumer protection statutes from misrepresenting a vehicle's roadworthiness or safety condition. Furthermore, federal law requires manufacturers to perform all safety recall repairs completely free of charge at any authorized brand dealership, regardless of vehicle age or change of ownership."
+  },
+  {
+    question: "How do dealerships use trim packages to overcharge car buyers?",
+    answer: "A common dealership pricing tactic is 'trim inflation' or window-sticker padding—advertising a base or mid-tier trim (such as an SE or LE) at premium-trim pricing (such as an XSE, Limited, or Touring). Dealers may also charge extra for all-wheel drive (AWD) when the factory build is actually front-wheel drive (FWD), or add charges for options already standard from the factory. A direct NHTSA VIN decode provides official manufacturer build records that definitively prove the exact factory engine displacement, transmission, drive system, and original equipment package."
+  },
+  {
+    question: "What is the difference between a free VIN decode and a full vehicle history report?",
+    answer: "A free NHTSA VIN decode verifies official manufacturer build specifications, plant assembly location, engine parameters, and federally recorded safety recall campaigns. A comprehensive vehicle history report (such as NMVTIS, EpicVIN, or Carfax) goes a step further by compiling multi-state DMV title records, tracking salvage or flood brands, identifying total loss declarations, checking for active liens, uncovering odometer rollbacks, and detailing police-reported accident records."
+  }
+];
+
 export default function VINRecallWidget() {
   const [vinInput, setVinInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,6 +61,23 @@ export default function VINRecallWidget() {
   const [vinDetails, setVinDetails] = useState<VinDetails | null>(null);
   const [recalls, setRecalls] = useState<RecallItem[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [vinCopied, setVinCopied] = useState(false);
+
+  const handleHistoryCheck = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    const userVin = vinDetails?.vin || vinInput.trim().toUpperCase();
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(userVin);
+      setVinCopied(true);
+      setTimeout(() => setVinCopied(false), 3000);
+    }
+    window.open(affiliateUrl, '_blank');
+  };
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(prev => prev === index ? null : index);
+  };
 
   const handleLookup = async (vinToLookup?: string) => {
     const targetVin = (vinToLookup || vinInput).trim().toUpperCase();
@@ -105,16 +145,20 @@ export default function VINRecallWidget() {
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
+    <div className="space-y-8 font-poppins">
+      {/* Functional Widget Container */}
+      <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
-            <Search size={14} />
-            <span>NHTSA Government Database</span>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <Search size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Free VIN Decoder & Safety Recall Scanner</h3>
-          <p className="text-slate-500 text-sm mt-1">Verify factory build specifications, engine & trim, and scan for unperformed safety recalls before buying.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight">Free VIN Decoder &amp; Safety Recall Scanner</h3>
+            <p className="text-slate-500 text-sm mt-0.5">Verify factory build specifications, engine &amp; trim, and scan for unperformed safety recalls before buying.</p>
+          </div>
         </div>
       </div>
 
@@ -136,7 +180,7 @@ export default function VINRecallWidget() {
             }}
             maxLength={17}
             placeholder="Enter 17-character VIN..."
-            className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl pl-4 pr-4 sm:pr-32 py-3.5 text-sm text-slate-900 font-mono tracking-wider placeholder:tracking-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/40 focus:border-[#29abe2] transition-all uppercase"
+            className="w-full bg-white border-2 border-slate-300 hover:border-slate-400 rounded-2xl pl-4 pr-4 sm:pr-32 py-3.5 text-sm text-slate-900 font-mono tracking-wider placeholder:tracking-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/30 focus:border-[#29abe2] shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all uppercase"
           />
           <button
             type="submit"
@@ -212,6 +256,49 @@ export default function VINRecallWidget() {
               </div>
             </div>
 
+            {/* Dynamic Full-Width Warning CTA: Accidents & Salvage History Check */}
+            <div className="w-full space-y-2">
+              <button
+                type="button"
+                onClick={handleHistoryCheck}
+                className="w-full group relative overflow-hidden rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-950 via-[#0a0f1d] to-slate-950 hover:from-slate-900 hover:via-[#0f172a] hover:to-slate-900 text-white font-poppins border-2 border-amber-500/80 hover:border-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.25)] hover:shadow-[0_0_40px_rgba(245,158,11,0.45)] transition-all duration-300 active:scale-[0.99] cursor-pointer text-left"
+              >
+                {/* Top specular highlight & scanline grid */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/80 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:1.5rem_1.5rem] pointer-events-none opacity-40" />
+
+                <div className="relative z-10 flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/50 flex items-center justify-center text-amber-400 shrink-0 shadow-[0_0_16px_rgba(245,158,11,0.3)] group-hover:scale-105 transition-transform">
+                    <AlertTriangle size={24} strokeWidth={2.4} className="animate-pulse" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400">
+                        CRITICAL ALERT // TITLE &amp; ACCIDENT CHECK REQUIRED
+                      </span>
+                    </div>
+                    <div className="text-sm sm:text-base font-bold text-white tracking-tight leading-snug group-hover:text-amber-300 transition-colors">
+                      Check {vinDetails.year} {vinDetails.make} {vinDetails.model} for Accidents &amp; Salvage History
+                    </div>
+                    <div className="text-[11px] sm:text-xs text-slate-300 leading-tight mt-0.5">
+                      Instant NMVTIS scan: multi-state salvage titles, total loss insurance claims &amp; collision records.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative z-10 shrink-0 flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all self-start sm:self-auto group-hover:scale-105">
+                  <span>{vinCopied ? 'VIN Copied! Opening...' : 'Check Records'}</span>
+                  <ArrowUpRight size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </button>
+
+              {/* Italicized Tooltip */}
+              <p className="text-center text-[11px] sm:text-xs italic text-slate-500 font-poppins pt-0.5">
+                Clicking will copy your VIN to your clipboard. Just hit &quot;Paste&quot; in the search box on the next page.
+              </p>
+            </div>
+
             {/* Recall Status */}
             <div className="p-6 rounded-2xl border transition-all duration-200">
               {recalls.length === 0 ? (
@@ -271,5 +358,158 @@ export default function VINRecallWidget() {
         )}
       </div>
     </div>
-  );
+
+    {/* SEO-Optimized Structural Content Section (Prevents Thin Content) */}
+    <section 
+      className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 sm:p-8 md:p-10 space-y-8 font-poppins relative overflow-hidden"
+      aria-label="VIN Decoder Buyer Defense Guide & Technical FAQ"
+    >
+      {/* FAQ Schema Markup (JSON-LD) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": FAQ_ITEMS.map((faq) => ({
+              "@type": "Question",
+              "name": faq.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
+              }
+            }))
+          })
+        }}
+      />
+
+      {/* Section Header with Styled H2 */}
+      <div className="space-y-3 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <ShieldCheck size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+          </div>
+          <div>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-slate-900 tracking-tight font-poppins leading-tight">
+              How to Decode Your VIN &amp; Avoid Dealership Overcharges
+            </h2>
+          </div>
+        </div>
+
+        <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-poppins max-w-3xl">
+          A 17-character Vehicle Identification Number (VIN) is your automobile's forensic DNA fingerprint. Every digit encodes vital engineering data verified by the National Highway Traffic Safety Administration (NHTSA)—including the World Manufacturer Identifier (WMI), vehicle descriptor section (VDS), and assembly plant code. Learn how independent car buyers leverage direct factory data to dismantle dealer fee padding and catch misrepresented trim levels.
+        </p>
+      </div>
+
+      {/* 2-Column Informational Section: Avoiding Dealership Rip-Offs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        {/* Column 1: Trim Inflation */}
+        <div className="p-6 rounded-2xl bg-white/60 backdrop-blur-md border border-white/80 space-y-3.5 hover:shadow-sm transition-shadow">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] text-[#29abe2] flex items-center justify-center font-bold shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <FileText size={20} strokeWidth={2.2} className="drop-shadow-xs" />
+          </div>
+          
+          <h3 className="text-base sm:text-lg font-semibold text-slate-900 tracking-tight font-poppins">
+            1. Neutralize "Trim Inflation" &amp; Window-Sticker Padding
+          </h3>
+
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-poppins">
+            One of the most pervasive dealership sales strategies is listing a base or mid-tier model with the MSRP or market pricing of an upgraded trim level. Dealers frequently add aftermarket appearance packages (such as blacked-out emblems or non-OEM wheels) to justify a thousands-dollar markup.
+          </p>
+
+          <ul className="space-y-2 pt-1 text-xs sm:text-sm text-slate-700">
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+              <span><strong>Verify Real Engine Displacement:</strong> Ensure the window sticker matches the official factory liter displacement and cylinder count.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+              <span><strong>Confirm Drivetrain Configuration:</strong> Check whether the VIN designates FWD, RWD, or true AWD before paying an all-wheel-drive premium.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+              <span><strong>Counter Deceptive Pricing:</strong> Present the official NHTSA decode sheet on the sales floor to demand an immediate price adjustment.</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 2: Safety Recalls & Reconditioning Fees */}
+        <div className="p-6 rounded-2xl bg-white/60 backdrop-blur-md border border-white/80 space-y-3.5 hover:shadow-sm transition-shadow">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-transparent border border-amber-300/40 shadow-[0_4px_16px_rgba(245,158,11,0.18)] text-amber-500 flex items-center justify-center font-bold shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <AlertTriangle size={20} strokeWidth={2.2} className="drop-shadow-xs" />
+          </div>
+
+          <h3 className="text-base sm:text-lg font-semibold text-slate-900 tracking-tight font-poppins">
+            2. Eliminate Bogus "Reconditioning Fees" with Open Recalls
+          </h3>
+
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-poppins">
+            Dealerships routinely slip $895 to $1,995 line items onto buyer order sheets labeled as "Safety Inspection," "Reconditioning," or "Prep Fees." When our VIN tool detects active, open safety recalls, it proves the dealership has not resolved fundamental safety defects.
+          </p>
+
+          <ul className="space-y-2 pt-1 text-xs sm:text-sm text-slate-700">
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+              <span><strong>Free Remedy by Law:</strong> All safety campaign remedies must be performed 100% free of charge by authorized franchise dealers.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+              <span><strong>Expose Junk Reconditioning Fees:</strong> If an open recall exists, challenge any dealer reconditioning fees as fraudulent and unjustified.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+              <span><strong>Condition Pre-Delivery:</strong> Make completed certified repair documentation a non-negotiable written condition of closing.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Styled FAQ Accordion Component */}
+      <div className="pt-6 border-t border-slate-200/80 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 flex items-center justify-center text-[#29abe2] shrink-0">
+            <HelpCircle size={18} strokeWidth={2.2} />
+          </div>
+          <h3 className="text-lg sm:text-xl font-semibold text-slate-900 font-poppins">
+            Frequently Asked Questions (FAQ)
+          </h3>
+        </div>
+
+        <div className="space-y-3">
+          {FAQ_ITEMS.map((faq, index) => {
+            const isOpen = openFaqIndex === index;
+            return (
+              <div 
+                key={index}
+                className="rounded-2xl border border-white/80 overflow-hidden transition-all duration-200 bg-white/70 backdrop-blur-md shadow-xs"
+              >
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full flex items-center justify-between p-4 sm:p-5 text-left cursor-pointer hover:bg-white/90 transition-colors"
+                  aria-expanded={isOpen}
+                >
+                  <span className="text-sm sm:text-base font-semibold text-slate-900 font-poppins pr-4">
+                    {faq.question}
+                  </span>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-slate-100/80 text-slate-600 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 bg-sky-50 text-[#29abe2]' : ''}`}>
+                    <ChevronDown size={16} />
+                  </div>
+                </button>
+
+                {isOpen && (
+                  <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-slate-600 font-poppins leading-relaxed border-t border-slate-100 pt-3">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  </div>
+);
 }

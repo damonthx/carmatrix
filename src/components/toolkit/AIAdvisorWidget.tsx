@@ -65,18 +65,20 @@ export default function AIAdvisorWidget() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white rounded-3xl border border-slate-800 shadow-2xl p-6 md:p-8 relative overflow-hidden">
+    <div className="bg-gradient-to-br from-slate-900/90 via-slate-950/95 to-slate-900/90 backdrop-blur-xl text-white rounded-3xl border border-white/10 shadow-2xl p-6 md:p-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#29abe2]/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#29abe2]/15 border border-[#29abe2]/30 rounded-full text-[#29abe2] text-xs font-bold mb-2">
-              <Cpu size={14} />
-              <span>Consumer Intelligence System</span>
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+              <Cpu size={22} strokeWidth={2.2} className="drop-shadow-xs" />
             </div>
-            <h3 className="text-2xl font-extrabold text-white tracking-tight">Automotive Knowledge Engine</h3>
-            <p className="text-slate-400 text-sm mt-1">Instant expert vehicle benchmarks, mechanical watchouts, pricing sanity checks, and dealer negotiation scripts.</p>
+            <div>
+              <h3 className="text-2xl font-semibold text-white tracking-tight font-poppins">Automotive Knowledge Engine</h3>
+              <p className="text-slate-400 text-sm mt-0.5 font-poppins">Instant expert vehicle benchmarks, mechanical watchouts, pricing sanity checks, and dealer negotiation scripts.</p>
+            </div>
           </div>
         </div>
 

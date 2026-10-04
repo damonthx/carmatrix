@@ -78,28 +78,28 @@ export default function LatestArticles() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.edmunds.com/feeds/rss/car-news.xml');
+        const res = await fetch('/api/feeds/news');
         if (!res.ok) throw new Error("Network response was not ok");
         
         const data = await res.json();
         
-        if (data.status !== "ok" || !data.items || data.items.length === 0) {
+        if (!Array.isArray(data) || data.length === 0) {
           throw new Error("Invalid feed structure or no items");
         }
 
-        const topThree = data.items.slice(0, 4).map((item: any) => ({
-          id: item.guid || item.link,
-          title: stripHtml(item.title),
-          summary: stripHtml(item.description).substring(0, 150) + "...",
-          sourceName: "Edmunds",
-          sourceUrl: item.link,
-          imageUrl: item.thumbnail || (item.enclosure && item.enclosure.link) || FALLBACK_IMAGE,
-          publishedAt: formatPubDate(item.pubDate)
+        const topFour = data.slice(0, 4).map((item: any) => ({
+          id: item.id || item.sourceUrl,
+          title: item.title,
+          summary: item.summary,
+          sourceName: item.sourceName || "Auto News",
+          sourceUrl: item.sourceUrl,
+          imageUrl: item.imageUrl || FALLBACK_IMAGE,
+          publishedAt: formatPubDate(item.publishedAt)
         }));
 
-        setArticles(topThree);
+        setArticles(topFour);
       } catch (err) {
-        console.error("Failed to load RSS feed, falling back to static data.", err);
+        console.error("Failed to load news feed, falling back to static data.", err);
         setHasError(true);
       } finally {
         setIsLoading(false);

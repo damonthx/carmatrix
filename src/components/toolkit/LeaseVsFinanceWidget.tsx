@@ -38,16 +38,18 @@ export default function LeaseVsFinanceWidget() {
   const leaseTotalSpend3Years = downPayment + (leaseMonthly * leaseTerm);
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-violet-50 border border-violet-200/60 rounded-full text-violet-800 text-xs font-bold mb-2">
-            <ArrowLeftRight size={14} className="text-violet-600" />
-            <span>Financing Decision Engine</span>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-400/20 via-violet-500/10 to-transparent border border-violet-300/40 shadow-[0_4px_16px_rgba(139,92,246,0.18)] flex items-center justify-center text-violet-600 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <ArrowLeftRight size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Lease vs. Finance Decision Simulator</h3>
-          <p className="text-slate-500 text-sm mt-1">Compare 3-year cash outflow, monthly payments, and long-term equity to make the best financial choice.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Lease vs. Finance Decision Simulator</h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Compare 3-year cash outflow, monthly payments, and long-term equity to make the best financial choice.</p>
+          </div>
         </div>
       </div>
 
@@ -96,7 +98,7 @@ export default function LeaseVsFinanceWidget() {
                 step="0.1"
                 value={loanApr}
                 onChange={(e) => setLoanApr(Number(e.target.value))}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
               />
             </div>
             <div>
@@ -104,7 +106,7 @@ export default function LeaseVsFinanceWidget() {
               <select
                 value={loanTerm}
                 onChange={(e) => setLoanTerm(Number(e.target.value))}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
               >
                 <option value={36}>36 Months</option>
                 <option value={48}>48 Months</option>

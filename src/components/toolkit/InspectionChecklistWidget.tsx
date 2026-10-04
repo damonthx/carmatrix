@@ -58,20 +58,22 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
   const outTheDoorTotal = legitTotal + junkTotal;
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8 transition-all">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 transition-all relative overflow-hidden">
       <div 
-        className={"flex flex-col md:flex-row md:items-center justify-between gap-4 select-none cursor-pointer " + (isOpen ? "pb-6 border-b border-slate-100" : "")}
+        className={"flex flex-col md:flex-row md:items-center justify-between gap-4 select-none cursor-pointer " + (isOpen ? "pb-6 border-b border-slate-200/80" : "")}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200/60 rounded-full text-amber-800 text-xs font-bold mb-2">
-            <ShieldCheck size={14} className="text-amber-600" />
-            <span>Buyer Protection Guide</span>
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400/20 via-orange-500/10 to-transparent border border-orange-300/40 shadow-[0_4px_16px_rgba(249,115,22,0.18)] flex items-center justify-center text-orange-500 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <ShieldCheck size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-            <span>Pre-Purchase Inspection & Fee Detector</span>
-          </h3>
-          <p className="text-slate-500 text-sm mt-1">Interactive inspection tool for used cars and dealer fee analyzer to prevent thousands in junk add-ons.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight flex items-center gap-3 font-poppins">
+              <span>Pre-Purchase Inspection &amp; Fee Detector</span>
+            </h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Interactive inspection tool for used cars and dealer fee analyzer to prevent thousands in junk add-ons.</p>
+          </div>
         </div>
 
         <div className="flex items-center gap-3 shrink-0 self-start md:self-auto" onClick={(e) => e.stopPropagation()}>
@@ -180,7 +182,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                   type="number"
                   value={vehiclePrice}
                   onChange={e => setVehiclePrice(Number(e.target.value))}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                 />
               </div>
 
@@ -191,7 +193,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                     type="number"
                     value={docFee}
                     onChange={e => setDocFee(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                   />
                 </div>
                 <div>
@@ -200,7 +202,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                     type="number"
                     value={govTaxes}
                     onChange={e => setGovTaxes(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                   />
                 </div>
                 <div>
@@ -209,7 +211,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                     type="number"
                     value={registration}
                     onChange={e => setRegistration(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                   />
                 </div>
               </div>
@@ -227,7 +229,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                   type="number"
                   value={paintProtection}
                   onChange={e => setPaintProtection(Number(e.target.value))}
-                  className="w-full bg-white border border-rose-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none"
+                  className="w-full bg-white border border-rose-300 hover:border-rose-400 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
                 />
               </div>
 
@@ -237,7 +239,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                   type="number"
                   value={vinEtching}
                   onChange={e => setVinEtching(Number(e.target.value))}
-                  className="w-full bg-white border border-rose-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none"
+                  className="w-full bg-white border border-rose-300 hover:border-rose-400 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
                 />
               </div>
 
@@ -247,7 +249,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                   type="number"
                   value={nitrogenTires}
                   onChange={e => setNitrogenTires(Number(e.target.value))}
-                  className="w-full bg-white border border-rose-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none"
+                  className="w-full bg-white border border-rose-300 hover:border-rose-400 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
                 />
               </div>
 
@@ -257,7 +259,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
                   type="number"
                   value={marketAdjustment}
                   onChange={e => setMarketAdjustment(Number(e.target.value))}
-                  className="w-full bg-white border border-rose-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none"
+                  className="w-full bg-white border border-rose-300 hover:border-rose-400 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
                 />
               </div>
             </div>

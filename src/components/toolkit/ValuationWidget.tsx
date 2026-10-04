@@ -62,15 +62,17 @@ export default function ValuationWidget() {
   const demandRating = ['Toyota', 'Honda', 'Porsche', 'Subaru'].includes(make) ? 'High Demand (Fast Turn)' : 'Moderate Demand';
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 border border-sky-200/60 rounded-full text-[#29abe2] text-xs font-bold mb-2">
-            <DollarSign size={14} className="text-[#29abe2]" />
-            <span>Market Valuation Engine</span>
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400/20 via-amber-500/10 to-transparent border border-amber-300/40 shadow-[0_4px_16px_rgba(245,158,11,0.18)] flex items-center justify-center text-amber-500 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <DollarSign size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Instant Trade-In & Market Value Estimator</h3>
-          <p className="text-slate-500 text-sm mt-1">Get transparent private party, trade-in, and dealer retail valuations based on real market data.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Instant Trade-In &amp; Market Value Estimator</h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Get transparent private party, trade-in, and dealer retail valuations based on real market data.</p>
+          </div>
         </div>
 
         <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 min-w-[200px]">
@@ -91,7 +93,7 @@ export default function ValuationWidget() {
                 <select
                   value={year}
                   onChange={(e) => setYear(Number(e.target.value))}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                 >
                   {[2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014].map(y => (
                     <option key={y} value={y}>{y}</option>
@@ -107,7 +109,7 @@ export default function ValuationWidget() {
                 <select
                   value={make}
                   onChange={(e) => setMake(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                 >
                   {availableMakes.map(m => (
                     <option key={m} value={m}>{m}</option>
@@ -123,7 +125,7 @@ export default function ValuationWidget() {
                 <select
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                 >
                   {availableModels.length > 0 ? (
                     availableModels.map(m => (
@@ -146,7 +148,7 @@ export default function ValuationWidget() {
                 step="1000"
                 value={mileage}
                 onChange={(e) => setMileage(Number(e.target.value))}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
               />
             </div>
 
@@ -157,7 +159,7 @@ export default function ValuationWidget() {
                 maxLength={5}
                 value={zip}
                 onChange={(e) => setZip(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
               />
             </div>
           </div>

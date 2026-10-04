@@ -83,7 +83,7 @@ export default function SignIn({
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-slate-50/50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl py-3 pl-10 pr-4 outline-none shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all font-medium text-slate-900 placeholder:text-slate-400"
                   placeholder="name@example.com"
                   required
                 />
@@ -98,7 +98,7 @@ export default function SignIn({
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-50/50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl py-3 pl-10 pr-4 outline-none shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all font-medium text-slate-900 placeholder:text-slate-400"
                   placeholder="••••••••"
                   required
                 />

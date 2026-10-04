@@ -60,16 +60,18 @@ export default function DepreciationPredictorWidget() {
   const activeSegment = SEGMENTS.find(s => s.id === selectedSegmentId) || SEGMENTS[0];
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-300/80 shadow-[0_12px_32px_rgba(15,23,42,0.08)] p-6 md:p-8">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-50 border border-cyan-200/60 rounded-full text-cyan-800 text-xs font-bold mb-2">
-            <TrendingDown size={14} className="text-cyan-600" />
-            <span>Resale Value Predictor</span>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400/20 via-cyan-500/10 to-transparent border border-cyan-300/40 shadow-[0_4px_16px_rgba(6,182,212,0.18)] flex items-center justify-center text-cyan-500 shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <TrendingDown size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
-          <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">Depreciation Curve & "Sweet Spot" Predictor</h3>
-          <p className="text-slate-500 text-sm mt-1">See how vehicles lose value over 7 years and identify the optimal age to buy for maximum financial savings.</p>
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Depreciation Curve &amp; "Sweet Spot" Predictor</h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">See how vehicles lose value over 7 years and identify the optimal age to buy for maximum financial savings.</p>
+          </div>
         </div>
       </div>
 
@@ -96,7 +98,7 @@ export default function DepreciationPredictorWidget() {
         <div className="lg:col-span-4 space-y-4">
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
             <label className="block text-xs font-bold text-slate-800">Original Vehicle MSRP ($)</label>
-            <div className="flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2">
+            <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
               <span className="text-slate-400 font-bold mr-1">$</span>
               <input
                 type="number"

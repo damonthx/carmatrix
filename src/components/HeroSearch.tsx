@@ -240,7 +240,7 @@ export default function HeroSearch({ onSearch, onSell }: HeroSearchProps) {
                       <label className="block text-slate-800 font-bold text-sm mb-2 drop-shadow-sm">Make</label>
                       <select 
                         value={classicMake} onChange={(e) => setClassicMake(e.target.value)}
-                        className="w-full bg-white/70 border border-white/60 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/50 backdrop-blur-md shadow-inner"
+                        className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
                       >
                         <option value="">Any Make</option>
                         {availableMakes.map(m => <option key={m} value={m}>{m}</option>)}
@@ -251,7 +251,7 @@ export default function HeroSearch({ onSearch, onSell }: HeroSearchProps) {
                       <select 
                         value={classicModel} onChange={(e) => setClassicModel(e.target.value)}
                         disabled={isModelsLoading || availableModels.length === 0}
-                        className="w-full bg-white/70 border border-white/60 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/50 backdrop-blur-md shadow-inner disabled:opacity-50"
+                        className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer disabled:opacity-50"
                       >
                         <option value="">{availableModels.length === 0 ? 'Select Make First' : 'Any Model'}</option>
                         {availableModels.map(m => <option key={m} value={m}>{m}</option>)}
@@ -269,7 +269,7 @@ export default function HeroSearch({ onSearch, onSell }: HeroSearchProps) {
                       <label className="block text-slate-800 font-bold text-sm mb-2 drop-shadow-sm">Year</label>
                       <select 
                         value={classicYear} onChange={(e) => setClassicYear(e.target.value)}
-                        className="w-full bg-white/70 border border-white/60 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/50 backdrop-blur-md shadow-inner"
+                        className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
                       >
                         <option value="">Any Year</option>
                         {Array.from({ length: new Date().getFullYear() + 2 - 1900 }, (_, i) => new Date().getFullYear() + 1 - i).map(y => (
@@ -281,7 +281,7 @@ export default function HeroSearch({ onSearch, onSell }: HeroSearchProps) {
                       <label className="block text-slate-800 font-bold text-sm mb-2 drop-shadow-sm">Body Type</label>
                       <select 
                         value={classicBodyType} onChange={(e) => setClassicBodyType(e.target.value)}
-                        className="w-full bg-white/70 border border-white/60 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/50 backdrop-blur-md shadow-inner"
+                        className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl p-3 text-[14px] font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
                       >
                         <option value="">Any Body Type</option>
                         {['SUV', 'Sedan', 'Pickup Truck', 'Coupe', 'Hatchback', 'Minivan'].map(b => <option key={b} value={b}>{b}</option>)}

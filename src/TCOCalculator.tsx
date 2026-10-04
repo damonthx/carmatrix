@@ -193,7 +193,7 @@ export default function TCOCalculator() {
   );
 
   return (
-    <div className="bg-white border border-slate-300/80 rounded-3xl overflow-hidden shadow-[0_12px_32px_rgba(15,23,42,0.08)] my-16 relative">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl overflow-hidden my-16 relative">
       
       {isLoading && (
         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
@@ -206,9 +206,12 @@ export default function TCOCalculator() {
         <div className="absolute right-0 top-0 w-64 h-64 bg-blue-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
         <div className="relative z-10 flex justify-between items-center">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-white/10 rounded-xl"><Calculator size={20} className="text-blue-300" /></div>
-              <h2 className="text-[24px] font-extrabold tracking-tight">5-Year Total Cost of Ownership</h2>
+            <div className="flex items-center gap-3.5 mb-2">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+                <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+                <Calculator size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+              </div>
+              <h2 className="text-[24px] font-semibold tracking-tight">5-Year Total Cost of Ownership</h2>
             </div>
             <p className="text-slate-300 font-medium">Discover the "Real Price" of owning your next car beyond the sticker price.</p>
           </div>
@@ -229,7 +232,7 @@ export default function TCOCalculator() {
               <label className="block text-sm font-bold text-slate-700 mb-2">Make</label>
               <select 
                 value={make} onChange={e => setMake(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
               >
                 {availableMakes.map(m => <option key={m} value={m}>{m}</option>)}
               </select>
@@ -239,7 +242,7 @@ export default function TCOCalculator() {
               <select 
                 value={model} onChange={e => setModel(e.target.value)}
                 disabled={isModelsLoading || availableModels.length === 0}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer disabled:opacity-50"
               >
                 {availableModels.length === 0 && <option value="">Select Make First</option>}
                 {availableModels.map(m => <option key={m} value={m}>{m}</option>)}
@@ -257,7 +260,7 @@ export default function TCOCalculator() {
               <label className="block text-sm font-bold text-slate-700 mb-2">Year</label>
               <select 
                 value={year} onChange={e => setYear(Number(e.target.value))}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
               >
                 {Array.from({ length: new Date().getFullYear() + 2 - 1900 }, (_, i) => new Date().getFullYear() + 1 - i).map(y => (
                   <option key={y} value={y}>{y}</option>
@@ -268,7 +271,7 @@ export default function TCOCalculator() {
               <label className="block text-sm font-bold text-slate-700 mb-2">State</label>
               <select 
                 value={stateCode} onChange={e => setStateCode(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
               >
                 {STATES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
@@ -284,7 +287,7 @@ export default function TCOCalculator() {
                   if (e.target.value === 'Electric' && efficiency < 70) setEfficiency(100);
                   if (e.target.value !== 'Electric' && efficiency > 60) setEfficiency(28);
                 }}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
               >
                 {FUEL_TYPES.map(f => <option key={f} value={f}>{f}</option>)}
               </select>
@@ -295,7 +298,7 @@ export default function TCOCalculator() {
               </label>
               <input 
                 type="number" value={efficiency} onChange={e => setEfficiency(Number(e.target.value))}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
               />
             </div>
           </div>

@@ -478,7 +478,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
               placeholder="17-digit VIN"
               value={vin}
               onChange={(e) => setVin(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-inner uppercase placeholder:normal-case transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs uppercase placeholder:normal-case transition-all"
             />
           </div>
 
@@ -493,7 +493,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
               placeholder="e.g. 2020"
               value={year}
               onChange={(e) => setYear(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-inner transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
             />
           </div>
 
@@ -506,7 +506,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
               placeholder="e.g. Toyota"
               value={make}
               onChange={(e) => setMake(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-inner transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
             />
           </div>
 
@@ -519,7 +519,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
               placeholder="e.g. RAV4"
               value={model}
               onChange={(e) => setModel(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-inner transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
             />
           </div>
 
@@ -532,7 +532,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
               placeholder="Current odometer"
               value={mileage}
               onChange={(e) => setMileage(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-inner transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
             />
           </div>
 
@@ -543,7 +543,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
             <select
               value={condition}
               onChange={(e) => setCondition(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-sm transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all cursor-pointer"
             >
               <option value="">Select Condition</option>
               <option value="Excellent">Excellent</option>
@@ -618,7 +618,7 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
                     placeholder="e.g. 24500"
                     value={currentOfferVal}
                     onChange={(e) => handleOfferChange(buyer.id, e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-900 font-bold focus:outline-none focus:ring-1 focus:ring-[#29abe2] shadow-sm transition-all"
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-3 py-1.5 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all placeholder:text-slate-400"
                   />
                 </div>
               </div>

@@ -220,7 +220,7 @@ export default function SearchPage({
             placeholder="Search Keyword" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 light-glass rounded-xl text-sm font-medium text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-500"
+            className="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 hover:border-slate-400 rounded-xl text-sm font-semibold text-slate-900 outline-none shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all placeholder:text-slate-400"
           />
         </div>
 
@@ -233,11 +233,11 @@ export default function SearchPage({
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value)}
               maxLength={5}
-              className="w-[100px] px-3 py-2 light-glass rounded-xl text-sm font-medium text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-500"
+              className="w-[100px] px-3 py-2 bg-white border border-slate-300 hover:border-slate-400 rounded-xl text-sm font-semibold text-slate-900 outline-none shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all placeholder:text-slate-400"
             />
             <button 
               onClick={executeApiSearch}
-              className="flex-1 bg-[#29abe2] text-white text-sm font-bold rounded-xl hover:bg-[#2089b5] transition-colors"
+              className="flex-1 bg-[#29abe2] text-white text-sm font-bold rounded-xl hover:bg-[#2089b5] transition-colors shadow-xs cursor-pointer"
             >
               Apply
             </button>
@@ -264,7 +264,7 @@ export default function SearchPage({
             <select 
               value={selectedMake}
               onChange={(e) => setSelectedMake(e.target.value)}
-              className="w-full px-3 py-2 light-glass rounded-xl text-sm font-medium text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
+              className="w-full px-3 py-2 bg-white border border-slate-300 hover:border-slate-400 rounded-xl text-sm font-semibold text-slate-900 outline-none shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all cursor-pointer"
             >
               <option value="">All Makes</option>
               {availableMakes.map(make => (
@@ -275,7 +275,7 @@ export default function SearchPage({
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
               disabled={!selectedMake}
-              className="w-full px-3 py-2 light-glass rounded-xl text-sm font-medium text-slate-900 outline-none focus:ring-2 focus:ring-[#29abe2]/20 transition-all disabled:opacity-50"
+              className="w-full px-3 py-2 bg-white border border-slate-300 hover:border-slate-400 rounded-xl text-sm font-semibold text-slate-900 outline-none shadow-xs focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all cursor-pointer disabled:opacity-50"
             >
               <option value="">All Models</option>
               {availableModels.map(model => (

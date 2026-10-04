@@ -404,7 +404,7 @@ export default function GearGuidePage({ onNavigate }: GearGuidePageProps) {
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-100 border border-slate-200 rounded-xl py-2 pl-9 pr-3 text-xs outline-none focus:bg-white focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl py-2 pl-9 pr-3 text-xs text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all placeholder:text-slate-400"
                 />
               </div>
 
@@ -413,7 +413,7 @@ export default function GearGuidePage({ onNavigate }: GearGuidePageProps) {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-slate-100 border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold text-slate-700 outline-none focus:border-[#29abe2] cursor-pointer appearance-none pr-8"
+                  className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl py-2 px-3 text-xs font-semibold text-slate-700 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 cursor-pointer appearance-none pr-8 transition-all"
                 >
                   <option value="featured">Featured</option>
                   <option value="rating">Top Rated</option>

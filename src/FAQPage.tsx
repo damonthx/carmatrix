@@ -81,7 +81,7 @@ export default function FAQPage({ onNavigate }: FAQPageProps) {
             placeholder="Search questions, doc fees, TCO formulas..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-full py-4 pl-12 pr-6 text-base md:text-lg outline-none focus:ring-4 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all shadow-sm"
+            className="w-full bg-white border-2 border-slate-300 hover:border-slate-400 rounded-full py-4 pl-12 pr-6 text-base md:text-lg text-slate-900 outline-none focus:ring-4 focus:ring-[#29abe2]/20 focus:border-[#29abe2] transition-all shadow-[0_2px_8px_rgba(15,23,42,0.06)]"
           />
         </div>
       </div>

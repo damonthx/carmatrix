@@ -81,35 +81,30 @@ export default function FeaturedInfluencerFeeds() {
   useEffect(() => {
     const fetchAllInfluencers = async () => {
       setIsLoading(true);
-      
-      const fetchPromises = influencersConfig.map(async (config) => {
-        try {
-          const res = await fetch(config.url);
-          if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-          const data = await res.json();
-          
-          if (data.status !== "ok" || !data.items || data.items.length === 0) {
-            throw new Error("Invalid structure or empty items");
-          }
-
-          const topItem = data.items[0];
-          return {
-            id: topItem.guid || topItem.link,
-            title: stripHtml(topItem.title),
-            sourceUrl: topItem.link,
-            imageUrl: topItem.thumbnail || config.fallback.imageUrl,
-            sourceName: config.name,
-            publishedAt: topItem.pubDate
-          } as InfluencerVideoItem;
-        } catch (err) {
-          console.warn(`Failed to fetch live feed for ${config.name}, using fallback.`, err);
-          return config.fallback;
+      try {
+        const res = await fetch('/api/feeds/videos');
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        const data = await res.json();
+        
+        if (Array.isArray(data) && data.length > 0) {
+          const items: InfluencerVideoItem[] = data.map((item: any) => ({
+            id: item.id || item.sourceUrl,
+            title: stripHtml(item.title),
+            sourceUrl: item.sourceUrl,
+            imageUrl: item.imageUrl || FALLBACK_IMAGE_SCOTTY,
+            sourceName: item.sourceName,
+            publishedAt: item.publishedAt
+          }));
+          setVideos(items);
+          setIsLoading(false);
+          return;
         }
-      });
-
-      const results = await Promise.all(fetchPromises);
-      setVideos(results);
-      setIsLoading(false);
+        throw new Error("Empty items from feeds endpoint");
+      } catch (err) {
+        console.warn("Failed to fetch live YouTube feeds from backend, using fallbacks.", err);
+        setVideos(influencersConfig.map(c => c.fallback));
+        setIsLoading(false);
+      }
     };
 
     fetchAllInfluencers();

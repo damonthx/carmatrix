@@ -281,7 +281,7 @@ export default function InventoryGrid() {
                 placeholder="Search Make, Model, Year..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-sm transition-all placeholder:text-slate-400"
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-2xl pl-10 pr-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all placeholder:text-slate-400"
               />
               <Search className="absolute left-3.5 top-3.5 text-slate-400" size={15} />
             </div>
@@ -295,7 +295,7 @@ export default function InventoryGrid() {
             <select
               value={selectedMake}
               onChange={(e) => setSelectedMake(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-2xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-sm transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-2xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all cursor-pointer"
             >
               <option value="">All Makes</option>
               {uniqueMakes.map((m) => (
@@ -314,7 +314,7 @@ export default function InventoryGrid() {
             <select
               value={selectedBodyType}
               onChange={(e) => setSelectedBodyType(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-2xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-sm transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-2xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all cursor-pointer"
             >
               <option value="">All Body Styles</option>
               {uniqueBodyTypes.map((bt) => (
@@ -333,7 +333,7 @@ export default function InventoryGrid() {
             <select
               value={selectedCondition}
               onChange={(e) => setSelectedCondition(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-2xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/50 shadow-sm transition-all"
+              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-2xl px-4 py-2.5 text-sm text-slate-950 font-medium focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all cursor-pointer"
             >
               <option value="">All Conditions</option>
               <option value="new">New Vehicles</option>
