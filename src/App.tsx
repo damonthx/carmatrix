@@ -231,29 +231,38 @@ const NavBar = ({
           </div>
           
           {/* Desktop Navigation Grouped by the 3 Distinct Categories */}
-          <nav className="hidden lg:flex items-center gap-5 sm:gap-7 text-[14.5px] font-medium font-poppins text-slate-600">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[14px] xl:text-[14.5px] font-medium font-poppins text-slate-600">
             <button 
               onClick={() => handleNavClick('vin-checker')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5"
+              className="group hover:text-[#29abe2] transition-all py-1.5 px-2 rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-900/[0.03]"
             >
-              <span className="text-[10px] text-[#29abe2] font-bold px-1.5 py-0.5 rounded bg-sky-50 border border-sky-200">01</span>
-              <span>Pre-Lot Recon</span>
+              <div className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-white/95 border border-sky-300/70 shadow-[0_2px_6px_rgba(41,171,226,0.18),inset_0_1px_1px_rgba(255,255,255,0.95)] flex items-center justify-center text-[#0284c7] font-mono text-[11px] font-black tracking-tight relative overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-[#29abe2] group-hover:text-[#29abe2] group-hover:shadow-[0_0_12px_rgba(41,171,226,0.35),inset_0_1px_1px_rgba(255,255,255,1)] shrink-0">
+                <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
+                <span>01</span>
+              </div>
+              <span className="font-semibold text-slate-700 group-hover:text-[#29abe2] transition-colors">Pre-Lot Recon</span>
             </button>
 
             <button 
               onClick={() => handleNavClick('loan-calculator')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5"
+              className="group hover:text-amber-600 transition-all py-1.5 px-2 rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-900/[0.03]"
             >
-              <span className="text-[10px] text-amber-600 font-bold px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200">02</span>
-              <span>Finance Traps</span>
+              <div className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-white/95 border border-amber-300/70 shadow-[0_2px_6px_rgba(245,158,11,0.18),inset_0_1px_1px_rgba(255,255,255,0.95)] flex items-center justify-center text-amber-700 font-mono text-[11px] font-black tracking-tight relative overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-amber-500 group-hover:text-amber-600 group-hover:shadow-[0_0_12px_rgba(245,158,11,0.35),inset_0_1px_1px_rgba(255,255,255,1)] shrink-0">
+                <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
+                <span>02</span>
+              </div>
+              <span className="font-semibold text-slate-700 group-hover:text-amber-600 transition-colors">Finance Traps</span>
             </button>
 
             <button 
               onClick={() => handleNavClick('quote-auditor')}
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5"
+              className="group hover:text-emerald-600 transition-all py-1.5 px-2 rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-900/[0.03]"
             >
-              <span className="text-[10px] text-emerald-600 font-bold px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-200">03</span>
-              <span>The Closing Table</span>
+              <div className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-white/95 border border-emerald-300/70 shadow-[0_2px_6px_rgba(16,185,129,0.18),inset_0_1px_1px_rgba(255,255,255,0.95)] flex items-center justify-center text-emerald-700 font-mono text-[11px] font-black tracking-tight relative overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-emerald-500 group-hover:text-emerald-600 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,1)] shrink-0">
+                <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
+                <span>03</span>
+              </div>
+              <span className="font-semibold text-slate-700 group-hover:text-emerald-600 transition-colors">The Closing Table</span>
             </button>
 
             <button 
