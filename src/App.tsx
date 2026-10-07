@@ -1193,22 +1193,9 @@ export default function App() {
                     ========================================================================= */}
                 {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin' || activeToolkitFilter === 'tco' || activeToolkitFilter === 'valuation' || activeToolkitFilter === 'inspection' || activeToolkitFilter === 'dossier') && (
                   <section className="space-y-8 relative">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] relative overflow-hidden">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
-                          <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
-                          <Search size={22} strokeWidth={2.2} className="drop-shadow-xs" />
-                        </div>
-                        <div>
-                          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
-                            Pre-Lot Recon
-                          </h1>
-                          <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
-                            Audit vehicle build history, 5-year ownership depreciation, and fair market value before setting foot on the dealer lot.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
+                      Pre-Lot Recon
+                    </h1>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin') && (
                       <section id="vin-checker" className="scroll-mt-24">
@@ -1248,22 +1235,9 @@ export default function App() {
                     ========================================================================= */}
                 {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'loan' || activeToolkitFilter === 'lease' || activeToolkitFilter === 'depreciation') && (
                   <section className="space-y-8 relative">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] relative overflow-hidden">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-transparent border border-amber-300/40 shadow-[0_4px_16px_rgba(245,158,11,0.18)] flex items-center justify-center text-amber-500 shrink-0 relative overflow-hidden">
-                          <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
-                          <SlidersHorizontal size={22} strokeWidth={2.2} className="drop-shadow-xs" />
-                        </div>
-                        <div>
-                          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
-                            Finance Trap Detectors
-                          </h1>
-                          <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
-                            Expose backend APR markup, deceptive lease money factors, and underwater trade-in rollovers before signing.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
+                      Finance Trap Detectors
+                    </h1>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'loan') && (
                       <section id="loan-calculator" className="scroll-mt-24">
@@ -1291,22 +1265,9 @@ export default function App() {
                     ========================================================================= */}
                 {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote' || activeToolkitFilter === 'ai' || activeToolkitFilter === 'state-fees' || activeToolkitFilter === 'ev' || activeToolkitFilter === 'market') && (
                   <section className="space-y-8 relative">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] relative overflow-hidden">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-transparent border border-emerald-300/40 shadow-[0_4px_16px_rgba(16,185,129,0.18)] flex items-center justify-center text-emerald-600 shrink-0 relative overflow-hidden">
-                          <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
-                          <FileSearch size={22} strokeWidth={2.2} className="drop-shadow-xs" />
-                        </div>
-                        <div>
-                          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
-                            The Closing Table
-                          </h1>
-                          <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
-                            Dismantle dealer fee padding, eliminate unauthorized add-ons, and deploy AI counter-negotiation language.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
+                      The Closing Table
+                    </h1>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote') && (
                       <section id="quote-auditor" className="scroll-mt-24">
