@@ -465,12 +465,14 @@ const ToolkitHeroHeader = ({
       name: 'Pre-Lot Recon',
       sectorCode: 'SECTOR 01',
       badge: 'INTEL & VERIFICATION',
-      borderColor: 'border-slate-700/80 hover:border-sky-400/50',
-      panelGradients: 'from-slate-900/90 via-slate-900/70 to-slate-950',
-      glowBorder: 'shadow-[0_12px_32px_rgba(0,0,0,0.5)]',
-      badgeStyle: 'bg-sky-500/10 border-sky-400/30 text-sky-300',
-      dotColor: 'bg-[#29abe2]',
-      headingGradient: 'from-white via-slate-100 to-sky-200',
+      borderColor: 'border-sky-500/30 hover:border-sky-400/70',
+      panelGradients: 'from-sky-950/40 via-slate-900/65 to-[#080d19]/90',
+      glowBorder: 'shadow-[0_16px_48px_rgba(0,0,0,0.65),0_0_30px_rgba(41,171,226,0.14)]',
+      glowOrb: 'bg-gradient-to-br from-sky-400/20 via-sky-600/10 to-transparent group-hover:from-sky-400/30',
+      topRim: 'from-transparent via-sky-300/60 to-transparent',
+      badgeStyle: 'bg-sky-500/15 border-sky-400/30 text-sky-300 shadow-[0_0_12px_rgba(41,171,226,0.2)]',
+      dotColor: 'bg-[#29abe2] shadow-[0_0_8px_#29abe2]',
+      headingGradient: 'from-white via-sky-100 to-sky-300',
       description: 'Audit factory build history, true 5-year depreciation, and fair market valuation before stepping on the dealer lot.',
       tools: [
         { id: 'vin', name: 'VIN & Recall Decoder', tag: 'NHTSA AUDIT', icon: Search, target: 'vin-checker', desc: 'Scan factory specs & open safety campaigns' },
@@ -484,12 +486,14 @@ const ToolkitHeroHeader = ({
       name: 'Finance Trap Detectors',
       sectorCode: 'SECTOR 02',
       badge: 'FINANCE GUARD',
-      borderColor: 'border-slate-700/80 hover:border-amber-400/50',
-      panelGradients: 'from-slate-900/90 via-slate-900/70 to-slate-950',
-      glowBorder: 'shadow-[0_12px_32px_rgba(0,0,0,0.5)]',
-      badgeStyle: 'bg-amber-500/10 border-amber-400/30 text-amber-300',
-      dotColor: 'bg-amber-400',
-      headingGradient: 'from-white via-slate-100 to-amber-200',
+      borderColor: 'border-amber-500/30 hover:border-amber-400/70',
+      panelGradients: 'from-amber-950/35 via-slate-900/65 to-[#080d19]/90',
+      glowBorder: 'shadow-[0_16px_48px_rgba(0,0,0,0.65),0_0_30px_rgba(245,158,11,0.14)]',
+      glowOrb: 'bg-gradient-to-br from-amber-400/20 via-amber-600/10 to-transparent group-hover:from-amber-400/30',
+      topRim: 'from-transparent via-amber-300/60 to-transparent',
+      badgeStyle: 'bg-amber-500/15 border-amber-400/30 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.2)]',
+      dotColor: 'bg-amber-400 shadow-[0_0_8px_#fbbf24]',
+      headingGradient: 'from-white via-amber-100 to-amber-300',
       description: 'Expose backend APR markup, deceptive lease money factors, and underwater trade-in rollovers.',
       tools: [
         { id: 'loan', name: 'Auto Loan Calculator', tag: 'RATE SHIELD', icon: SlidersHorizontal, target: 'loan-calculator', desc: 'Purchasing power, amortized interest & terms' },
@@ -502,12 +506,14 @@ const ToolkitHeroHeader = ({
       name: 'The Closing Table',
       sectorCode: 'SECTOR 03',
       badge: 'ADD-ON DEFENSE',
-      borderColor: 'border-slate-700/80 hover:border-emerald-400/50',
-      panelGradients: 'from-slate-900/90 via-slate-900/70 to-slate-950',
-      glowBorder: 'shadow-[0_12px_32px_rgba(0,0,0,0.5)]',
-      badgeStyle: 'bg-emerald-500/10 border-emerald-400/30 text-emerald-300',
-      dotColor: 'bg-emerald-400',
-      headingGradient: 'from-white via-slate-100 to-emerald-200',
+      borderColor: 'border-emerald-500/30 hover:border-emerald-400/70',
+      panelGradients: 'from-emerald-950/35 via-slate-900/65 to-[#080d19]/90',
+      glowBorder: 'shadow-[0_16px_48px_rgba(0,0,0,0.65),0_0_30px_rgba(16,185,129,0.14)]',
+      glowOrb: 'bg-gradient-to-br from-emerald-400/20 via-emerald-600/10 to-transparent group-hover:from-emerald-400/30',
+      topRim: 'from-transparent via-emerald-300/60 to-transparent',
+      badgeStyle: 'bg-emerald-500/15 border-emerald-400/30 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]',
+      dotColor: 'bg-emerald-400 shadow-[0_0_8px_#34d399]',
+      headingGradient: 'from-white via-emerald-100 to-emerald-300',
       description: 'Weaponize out-the-door fee audits and AI negotiation leverage to eliminate dealer add-on junk fees at signing.',
       tools: [
         { id: 'quote', name: 'Out-The-Door (OTD) Calculator', tag: 'JUNK FEE AUDIT', icon: FileSearch, target: 'quote-auditor', desc: 'Separate legitimate taxes/fees from bogus dealer add-ons' },
@@ -545,17 +551,34 @@ const ToolkitHeroHeader = ({
           {TOOLKIT_CATEGORIES.map((category) => (
             <div 
               key={category.id}
-              className={`flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-gradient-to-b ${category.panelGradients} border ${category.borderColor} ${category.glowBorder} transition-all duration-300 relative overflow-hidden backdrop-blur-xl`}
+              className={`group flex flex-col justify-between p-6 sm:p-7 rounded-3xl bg-gradient-to-b ${category.panelGradients} border ${category.borderColor} ${category.glowBorder} hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden backdrop-blur-2xl`}
             >
-              {/* Top ambient highlight */}
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+              {/* Internal ambient radial glow orb */}
+              <div className={`absolute -top-20 -right-20 w-56 h-56 rounded-full blur-3xl pointer-events-none transition-all duration-500 ${category.glowOrb}`} />
 
-              <div>
-                <h3 className={`text-xl font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${category.headingGradient} mb-2 font-poppins`}>
+              {/* Diagonal light refraction sheen */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent pointer-events-none" />
+
+              {/* Specular Top Edge Light Rim */}
+              <div className={`absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r ${category.topRim} pointer-events-none`} />
+
+              {/* Bottom subtle edge illumination */}
+              <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent pointer-events-none" />
+
+              <div className="relative z-10">
+                {/* Sector & Badge Pill */}
+                <div className="flex items-center justify-between mb-3.5">
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border backdrop-blur-md ${category.badgeStyle}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${category.dotColor}`} />
+                    {category.sectorCode} · {category.badge}
+                  </span>
+                </div>
+
+                <h3 className={`text-[22px] font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${category.headingGradient} mb-2 font-poppins`}>
                   {category.name}
                 </h3>
 
-                <p className="text-xs text-slate-400 leading-relaxed mb-6 font-poppins">
+                <p className="text-xs text-slate-300/80 leading-relaxed mb-6 font-poppins font-medium">
                   {category.description}
                 </p>
 
@@ -571,33 +594,36 @@ const ToolkitHeroHeader = ({
                           setActiveFilter(t.id);
                           onScrollToTool(t.target);
                         }}
-                        className={`group w-full flex items-center justify-between p-3 rounded-2xl border transition-all duration-200 cursor-pointer text-left ${
+                        className={`group/btn w-full flex items-center justify-between p-3 rounded-2xl border transition-all duration-200 cursor-pointer text-left relative overflow-hidden backdrop-blur-xl ${
                           isSelected
-                            ? 'bg-slate-800 border-sky-400/80 shadow-md ring-1 ring-sky-400/40 text-white'
-                            : 'bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.08] text-slate-200'
+                            ? 'bg-slate-800/95 border-sky-400/80 shadow-[0_4px_20px_rgba(41,171,226,0.25)] ring-1 ring-sky-400/40 text-white'
+                            : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 hover:border-white/20 text-slate-200 hover:-translate-y-0.5 shadow-sm shadow-black/30'
                         }`}
                       >
+                        {/* Top sheen line on each inner button */}
+                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none" />
+
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Premium Jewel / Squircle Icon Pedestal */}
                           <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 relative overflow-hidden shadow-inner ${
                             isSelected 
                               ? 'text-[#29abe2] border-sky-400/50 bg-gradient-to-br from-sky-400/25 via-sky-500/10 to-transparent shadow-[0_0_16px_rgba(41,171,226,0.3)]' 
-                              : 'text-slate-200 bg-gradient-to-br from-white/10 via-white/5 to-transparent border-white/15 group-hover:border-sky-400/40 group-hover:text-[#29abe2] group-hover:shadow-[0_0_14px_rgba(41,171,226,0.2)]'
+                              : 'text-slate-200 bg-gradient-to-br from-white/10 via-white/5 to-transparent border-white/15 group-hover/btn:border-sky-400/40 group-hover/btn:text-[#29abe2] group-hover/btn:shadow-[0_0_14px_rgba(41,171,226,0.2)]'
                           }`}>
                             <div className="absolute inset-x-0 top-0 h-px bg-white/30 pointer-events-none" />
                             <Icon size={18} strokeWidth={2.2} className="drop-shadow-xs" />
                           </div>
                           <div className="min-w-0">
-                            <div className="text-xs font-semibold text-white tracking-tight truncate group-hover:text-[#29abe2] transition-colors font-poppins">
+                            <div className="text-xs font-semibold text-white tracking-tight truncate group-hover/btn:text-[#29abe2] transition-colors font-poppins">
                               {t.name}
                             </div>
-                            <div className="text-[10.5px] text-slate-400 truncate leading-tight font-poppins mt-0.5">
+                            <div className="text-[10.5px] text-slate-400 truncate leading-tight font-poppins mt-0.5 font-medium">
                               {t.desc}
                             </div>
                           </div>
                         </div>
 
-                        <div className="text-slate-500 group-hover:text-[#29abe2] group-hover:translate-x-1 transition-all shrink-0 ml-2">
+                        <div className="text-slate-500 group-hover/btn:text-[#29abe2] group-hover/btn:translate-x-1 transition-all shrink-0 ml-2">
                           <ChevronRight size={15} />
                         </div>
                       </button>
@@ -612,7 +638,7 @@ const ToolkitHeroHeader = ({
                   setActiveFilter(category.id);
                   onScrollToTool(category.tools[0].target);
                 }}
-                className="mt-5 w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-xs font-semibold font-poppins text-slate-200 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="relative z-10 mt-6 w-full py-2.5 px-3 rounded-xl backdrop-blur-xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 hover:border-white/25 text-xs font-semibold font-poppins text-slate-200 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md shadow-black/20 hover:shadow-lg overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-white/20"
               >
                 <span>Explore {category.name}</span>
                 <ArrowUpRight size={14} className="text-[#29abe2]" />
