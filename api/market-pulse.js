@@ -121,14 +121,22 @@ export default async function handler(req, res) {
       };
     });
 
-    // Set a weekly refresh time (604800 seconds)
-    res.setHeader(
-      'Cache-Control',
-      's-maxage=604800, stale-while-revalidate=86400'
-    );
+    const isForce = req.query && (req.query.force === 'true' || req.query.refresh === 'true' || req.query.refresh === '1');
+
+    if (isForce) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    } else {
+      // Set a 12-hour edge refresh time (43200 seconds)
+      res.setHeader(
+        'Cache-Control',
+        's-maxage=43200, stale-while-revalidate=3600'
+      );
+    }
+
     res.status(200).json({
       source: 'U.S. Bureau of Labor Statistics, Consumer Price Index',
       fetchedAt: new Date().toISOString(),
+      nextRelease: 'October 14, 2026 (8:30 AM ET)',
       metrics,
     });
   } catch (err) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, TrendingDown, Minus, ArrowLeft, 
-  HelpCircle, ShieldCheck, Wrench, Car, CarFront, BookOpen 
+  HelpCircle, ShieldCheck, Wrench, Car, CarFront, BookOpen, RefreshCw 
 } from 'lucide-react';
 
 interface Metric {
@@ -17,6 +17,7 @@ interface Metric {
 interface MarketPulseData {
   source: string;
   fetchedAt: string;
+  nextRelease?: string;
   metrics: Metric[];
 }
 
@@ -25,24 +26,40 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [selectedKey, setSelectedKey] = useState<string>('usedCars');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshNotice, setRefreshNotice] = useState('');
 
-  useEffect(() => {
-    fetch('/api/market-pulse')
+  const fetchData = (force = false) => {
+    if (force) {
+      setIsRefreshing(true);
+    }
+    const url = force ? `/api/market-pulse?force=true&_t=${Date.now()}` : '/api/market-pulse';
+    fetch(url)
       .then((r) => {
         if (!r.ok) throw new Error();
         return r.json();
       })
       .then((json) => {
         setData(json);
-        if (json.metrics && json.metrics.length > 0) {
+        if (json.metrics && json.metrics.length > 0 && !selectedKey) {
           setSelectedKey(json.metrics[0].key);
         }
         setLoading(false);
+        setIsRefreshing(false);
+        if (force) {
+          setRefreshNotice('Refreshed live');
+          setTimeout(() => setRefreshNotice(''), 3500);
+        }
       })
       .catch(() => {
         setError(true);
         setLoading(false);
+        setIsRefreshing(false);
       });
+  };
+
+  useEffect(() => {
+    fetchData(false);
   }, []);
 
   const selectedMetric = data?.metrics.find((m) => m.key === selectedKey);
@@ -144,13 +161,30 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
               Track real-time inflation trends, price indexes, and overhead costs in the automotive industry compiled directly from the U.S. Bureau of Labor Statistics (BLS).
             </p>
           </div>
-          <div className="relative overflow-hidden backdrop-blur-xl bg-slate-900/70 border border-slate-700/70 rounded-2xl px-6 py-4.5 shrink-0 min-w-[210px] shadow-xl shadow-black/30 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Last Updated</div>
+          <div className="relative overflow-hidden backdrop-blur-xl bg-slate-900/70 border border-slate-700/70 rounded-2xl px-6 py-4.5 shrink-0 min-w-[240px] shadow-xl shadow-black/30 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Latest Monthly Report</span>
+              <button
+                onClick={() => fetchData(true)}
+                disabled={isRefreshing}
+                title="Force live refresh from BLS API"
+                className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-300 hover:text-white px-2 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 transition-all cursor-pointer disabled:opacity-50"
+              >
+                <RefreshCw size={11} className={isRefreshing ? "animate-spin text-[#29abe2]" : ""} />
+                <span>{isRefreshing ? 'Checking…' : 'Force Refresh'}</span>
+              </button>
+            </div>
             <div className="text-[18px] font-black text-white">
               {data ? data.metrics[0]?.asOf : 'Loading...'}
             </div>
-            <div className="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1.5">
-              <HelpCircle size={12} className="text-[#29abe2]" /> Edge cached 12h
+            <div className="text-[11px] text-emerald-400 mt-1.5 flex items-center justify-between font-medium">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                {refreshNotice || 'Live Sync (12h CDN)'}
+              </span>
+              {data?.nextRelease && (
+                <span className="text-slate-400 text-[10px]">Next: Oct 14</span>
+              )}
             </div>
           </div>
         </div>
@@ -333,7 +367,7 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
                   <ShieldCheck size={14} className="text-emerald-400" />
                   <span>Data Transparency & Method</span>
                 </h4>
-                The indexes displayed are calculated monthly by the Bureau of Labor Statistics (BLS) using consumer transaction baskets. Sparklines represent index fluctuations over the last 12 reporting cycles. Year-over-Year (YoY) figures reflect long-term trends, while Month-over-Month (MoM) captures short-term market volatility.
+                The indexes displayed are calculated monthly by the Bureau of Labor Statistics (BLS) using consumer transaction baskets. The BLS operates on a standard monthly reporting cadence, with new monthly reports published around mid-month for the previous cycle (e.g. September numbers release mid-October). Sparklines track index fluctuations across the last 12 reporting cycles.
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TrendingUp, TrendingDown, Minus, Car, CarFront, Wrench, ShieldCheck } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Car, CarFront, Wrench, ShieldCheck, RefreshCw } from 'lucide-react';
 
 const BRAND = '#29abe2';
 
@@ -41,12 +41,30 @@ const METRIC_STYLES = {
 export default function MarketPulse() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+
+  const refreshData = (force = false) => {
+    setIsRefreshing(true);
+    const url = force ? `/api/market-pulse?force=true&_t=${Date.now()}` : '/api/market-pulse';
+    fetch(url)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((res) => {
+        setData(res);
+        setIsRefreshing(false);
+        if (force) {
+          setStatusMessage('Data refreshed live');
+          setTimeout(() => setStatusMessage(''), 3500);
+        }
+      })
+      .catch(() => {
+        setError(true);
+        setIsRefreshing(false);
+      });
+  };
 
   useEffect(() => {
-    fetch('/api/market-pulse')
-      .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then(setData)
-      .catch(() => setError(true));
+    refreshData(false);
   }, []);
 
   if (error) return null; // fail silent — never block the page on a widget
@@ -60,9 +78,27 @@ export default function MarketPulse() {
             Consumer Market Pulse
           </h2>
         </div>
-        <span className="text-[11.5px] font-medium text-slate-400">
-          {data ? `${data.metrics[0]?.asOf} · BLS data` : 'Loading…'}
-        </span>
+        <div className="flex items-center gap-2 text-[11.5px] font-medium text-slate-400">
+          {data ? (
+            <>
+              <span>Latest Report: <strong className="text-slate-200 font-semibold">{data.metrics[0]?.asOf}</strong></span>
+              <span className="text-slate-600">·</span>
+              <span className="text-emerald-400 font-medium flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                {statusMessage || 'Live Sync'}
+              </span>
+              <button
+                onClick={() => refreshData(true)}
+                disabled={isRefreshing}
+                title="Force refresh live data from BLS API"
+                className="p-1 hover:bg-white/10 rounded-md text-slate-400 hover:text-white transition-all disabled:opacity-50 cursor-pointer ml-1"
+                aria-label="Force live refresh"
+              >
+                <RefreshCw size={12} className={isRefreshing ? "animate-spin text-[#29abe2]" : ""} />
+              </button>
+            </>
+          ) : 'Loading…'}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
@@ -73,7 +109,7 @@ export default function MarketPulse() {
 
       {data && (
         <p className="mt-3.5 text-[11px] text-slate-500 font-medium">
-          Source: U.S. Bureau of Labor Statistics, Consumer Price Index.
+          Source: U.S. Bureau of Labor Statistics, Consumer Price Index (Monthly Releases).
         </p>
       )}
     </section>
