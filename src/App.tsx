@@ -1174,9 +1174,9 @@ export default function App() {
                           <Search size={22} strokeWidth={2.2} className="drop-shadow-xs" />
                         </div>
                         <div>
-                          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
+                          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
                             Pre-Lot Recon
-                          </h2>
+                          </h1>
                           <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
                             Audit vehicle build history, 5-year ownership depreciation, and fair market value before setting foot on the dealer lot.
                           </p>
@@ -1229,9 +1229,9 @@ export default function App() {
                           <SlidersHorizontal size={22} strokeWidth={2.2} className="drop-shadow-xs" />
                         </div>
                         <div>
-                          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
+                          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
                             Finance Trap Detectors
-                          </h2>
+                          </h1>
                           <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
                             Expose backend APR markup, deceptive lease money factors, and underwater trade-in rollovers before signing.
                           </p>
@@ -1272,9 +1272,9 @@ export default function App() {
                           <FileSearch size={22} strokeWidth={2.2} className="drop-shadow-xs" />
                         </div>
                         <div>
-                          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
+                          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight font-poppins">
                             The Closing Table
-                          </h2>
+                          </h1>
                           <p className="text-xs sm:text-sm text-slate-600 max-w-md font-poppins mt-0.5">
                             Dismantle dealer fee padding, eliminate unauthorized add-ons, and deploy AI counter-negotiation language.
                           </p>
