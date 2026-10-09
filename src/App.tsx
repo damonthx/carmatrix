@@ -1113,8 +1113,8 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
             </a>
           </div>
 
-          <div className="pt-2 text-[11px] text-slate-500">
-            A publication of <strong className="text-slate-400">Defiant Digital Holdings LLC</strong>
+          <div className="pt-2 text-[11px] text-slate-500 leading-relaxed">
+            © 2026 CarMatrix — Defiant Digital Holdings LLC. All rights reserved. Data powered by NHTSA &amp; MarketCheck.
           </div>
         </div>
 
@@ -1146,21 +1146,6 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
             <li><button onClick={() => onNavigate('faq')} className="hover:text-white cursor-pointer">FAQ & Knowledge Base</button></li>
             <li><button onClick={() => onNavigate('pr')} className="hover:text-white cursor-pointer">Press & Media Inquiries</button></li>
           </ul>
-        </div>
-      </div>
-
-      <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
-        <span>© 2026 CarMatrix — Defiant Digital Holdings LLC. All rights reserved. Data powered by NHTSA & MarketCheck.</span>
-        <div className="flex flex-wrap items-center gap-4">
-          <button onClick={() => onNavigate('dealer_directory')} className="hover:text-slate-300 cursor-pointer text-emerald-400 font-semibold">Dealer Intel™</button>
-          <button onClick={() => onNavigate('gear')} className="hover:text-slate-300 cursor-pointer text-[#29abe2]">Gear Guide</button>
-          <button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-slate-300 cursor-pointer text-[#29abe2]">Affiliate Disclosure</button>
-          <button onClick={() => onNavigate('privacy')} className="hover:text-slate-300 cursor-pointer">Privacy Policy</button>
-          <button onClick={() => onNavigate('terms')} className="hover:text-slate-300 cursor-pointer">Terms</button>
-          <button onClick={() => onNavigate('team')} className="hover:text-slate-300 cursor-pointer">Team</button>
-          <button onClick={() => onNavigate('contact')} className="hover:text-slate-300 cursor-pointer">Contact</button>
-          <button onClick={() => onNavigate('faq')} className="hover:text-slate-300 cursor-pointer">FAQ</button>
-          <button onClick={() => onNavigate('pr')} className="hover:text-slate-300 cursor-pointer">Press</button>
         </div>
       </div>
     </div>
