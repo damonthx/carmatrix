@@ -78,17 +78,20 @@ export const DealerCard: React.FC<DealerCardProps> = ({
       <div>
         <div className="flex items-start justify-between gap-3 mb-3.5">
           
-          {/* Location & Distance Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100/90 border border-slate-200/80 text-slate-700 text-xs font-semibold">
-            <MapPin size={12} className="text-[#29abe2] shrink-0" />
-            <span className="truncate max-w-[170px]">{dealer.city}, {dealer.state}</span>
+          {/* Location & Distance Badge (Ultra-Premium Jewel Waypoint) */}
+          <div className="group/pin inline-flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-gradient-to-r from-white/95 to-slate-50/90 border border-slate-200/90 text-slate-800 text-xs font-semibold shadow-[0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_1px_rgba(255,255,255,1)] hover:border-sky-300/80 transition-all">
+            {/* Jewel Waypoint Container */}
+            <div className="w-5 h-5 rounded-full bg-gradient-to-br from-sky-400 via-[#29abe2] to-sky-600 flex items-center justify-center text-white shadow-[0_2px_6px_rgba(41,171,226,0.45),inset_0_1px_1px_rgba(255,255,255,0.8)] shrink-0">
+              <MapPin size={11} strokeWidth={2.4} className="drop-shadow-xs" />
+            </div>
+            <span className="truncate max-w-[155px] font-medium text-slate-700">{dealer.city}, {dealer.state}</span>
             <span className="text-slate-300">·</span>
-            <span className="text-[#0284c7] font-bold whitespace-nowrap">{dealer.distance_miles} mi</span>
+            <span className="text-[#0284c7] font-black whitespace-nowrap tracking-tight">{dealer.distance_miles} mi</span>
           </div>
 
           {/* Transparency / Integrity Score Pill (0–100 with subtle glow) */}
-          <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full border text-xs font-black tracking-tight shrink-0 transition-all ${scoreTheme.bg} ${scoreTheme.glow}`}>
-            <span className={`w-2 h-2 rounded-full ${scoreTheme.indicator} animate-pulse`} />
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-black tracking-tight shrink-0 transition-all ${scoreTheme.bg} ${scoreTheme.glow}`}>
+            <span className={`w-2 h-2 rounded-full ${scoreTheme.indicator} animate-pulse shadow-[0_0_6px_currentColor]`} />
             <span>{score}/100</span>
             <span className="hidden sm:inline font-bold text-[10.5px] opacity-80 uppercase tracking-wider">{scoreTheme.label}</span>
           </div>
@@ -136,13 +139,15 @@ export const DealerCard: React.FC<DealerCardProps> = ({
           )}
         </div>
 
-        {/* Key Stats Bar (3 Metric Boxes) */}
-        <div className="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-50/90 border border-slate-100 mb-6 text-center">
+        {/* Key Stats Bar (3 Luxury Glass Metric Boxes) */}
+        <div className="grid grid-cols-3 gap-2 p-2.5 rounded-2xl bg-gradient-to-b from-slate-50/95 to-slate-100/70 border border-slate-200/70 mb-6 text-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.9)]">
           
           {/* 1. Active Vehicles in Stock */}
-          <div className="flex flex-col justify-center px-1">
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/70 border border-white shadow-xs">
             <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">
-              <Car size={11} className="text-slate-400" />
+              <div className="w-4 h-4 rounded-md bg-sky-500/10 flex items-center justify-center text-[#29abe2]">
+                <Car size={10} strokeWidth={2.4} />
+              </div>
               <span>In Stock</span>
             </div>
             <div className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
@@ -152,9 +157,13 @@ export const DealerCard: React.FC<DealerCardProps> = ({
           </div>
 
           {/* 2. Average Market Price Delta */}
-          <div className="flex flex-col justify-center px-1 border-x border-slate-200/70">
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/70 border border-white shadow-xs">
             <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">
-              {isBelowMarket ? <TrendingDown size={11} className="text-emerald-500" /> : <TrendingUp size={11} className="text-amber-500" />}
+              <div className={`w-4 h-4 rounded-md flex items-center justify-center ${
+                isBelowMarket ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'
+              }`}>
+                {isBelowMarket ? <TrendingDown size={10} strokeWidth={2.4} /> : <TrendingUp size={10} strokeWidth={2.4} />}
+              </div>
               <span>Market</span>
             </div>
             <div className={`text-sm sm:text-base font-black tracking-tight ${
@@ -166,9 +175,11 @@ export const DealerCard: React.FC<DealerCardProps> = ({
           </div>
 
           {/* 3. Customer Rating */}
-          <div className="flex flex-col justify-center px-1">
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/70 border border-white shadow-xs">
             <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">
-              <Star size={11} className="text-amber-400 fill-amber-400" />
+              <div className="w-4 h-4 rounded-md bg-amber-500/10 flex items-center justify-center text-amber-500">
+                <Star size={10} strokeWidth={2.4} className="fill-amber-400 text-amber-400" />
+              </div>
               <span>Rating</span>
             </div>
             <div className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center justify-center gap-1">

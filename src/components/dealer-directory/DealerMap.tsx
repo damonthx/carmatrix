@@ -65,44 +65,48 @@ export const DealerMap: React.FC<DealerMapProps> = ({
       {/* Top Map Controls Header */}
       <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
         
-        {/* Metro badge */}
-        <div className="pointer-events-auto bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/80 shadow-sm flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#29abe2] animate-pulse" />
-          <span className="text-xs font-bold text-slate-800 tracking-tight">Dallas–Fort Worth Metroplex</span>
-          <span className="text-[11px] font-semibold text-slate-400">({dealers.length} active pins)</span>
+        {/* Metro badge (Luxury Glass Badge) */}
+        <div className="pointer-events-auto bg-white/95 backdrop-blur-xl pl-2 pr-3.5 py-1.5 rounded-full border border-white/90 shadow-[0_4px_16px_rgba(15,23,42,0.08),inset_0_1px_1px_rgba(255,255,255,1)] flex items-center gap-2.5">
+          <div className="w-5 h-5 rounded-full bg-gradient-to-br from-sky-400 via-[#29abe2] to-sky-600 flex items-center justify-center text-white shadow-[0_2px_6px_rgba(41,171,226,0.45)]">
+            <Navigation size={10} strokeWidth={2.4} className="fill-white" />
+          </div>
+          <span className="text-xs font-black text-slate-800 tracking-tight">Dallas–Fort Worth Metroplex</span>
+          <span className="text-[11px] font-bold text-[#0284c7] bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200/60">
+            {dealers.length} pins
+          </span>
         </div>
 
         {/* Zoom & Style Controls */}
-        <div className="pointer-events-auto flex items-center gap-1.5 bg-white/90 backdrop-blur-md p-1 rounded-2xl border border-white/80 shadow-sm">
+        <div className="pointer-events-auto flex items-center gap-1.5 bg-white/95 backdrop-blur-xl p-1.5 rounded-2xl border border-white/90 shadow-[0_4px_16px_rgba(15,23,42,0.08),inset_0_1px_1px_rgba(255,255,255,1)]">
           <button
             onClick={() => handleZoom(0.2)}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-50 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-100/80 transition-colors cursor-pointer"
             title="Zoom In"
             aria-label="Zoom in"
           >
-            <ZoomIn size={16} />
+            <ZoomIn size={15} />
           </button>
           <button
             onClick={() => handleZoom(-0.2)}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-50 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-100/80 transition-colors cursor-pointer"
             title="Zoom Out"
             aria-label="Zoom out"
           >
-            <ZoomOut size={16} />
+            <ZoomOut size={15} />
           </button>
           <button
             onClick={handleReset}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-50 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-100/80 transition-colors cursor-pointer"
             title="Reset View"
             aria-label="Reset map view"
           >
-            <RotateCcw size={15} />
+            <RotateCcw size={14} />
           </button>
           <div className="w-px h-4 bg-slate-200 mx-0.5" />
           <button
             onClick={() => setMapStyle(s => s === 'light' ? 'tech' : 'light')}
-            className={`px-2.5 h-8 rounded-xl text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer ${
-              mapStyle === 'tech' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-50'
+            className={`px-3 h-8 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
+              mapStyle === 'tech' ? 'bg-slate-900 text-white shadow-slate-900/30' : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
             }`}
             title="Toggle Map Canvas"
           >

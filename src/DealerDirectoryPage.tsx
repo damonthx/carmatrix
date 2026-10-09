@@ -239,9 +239,13 @@ export default function DealerDirectoryPage({
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold tracking-widest uppercase mb-4 backdrop-blur-md">
-                <ShieldCheck size={14} className="text-[#29abe2]" />
-                <span>CarMatrix Dealer Intel™ Directory</span>
+              {/* Luxury Glass Badge: The Shield at the Top */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-white/[0.12] via-white/[0.06] to-transparent border border-white/25 text-white text-xs font-bold tracking-widest uppercase mb-4 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)] relative overflow-hidden group">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />
+                <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-[#29abe2] to-sky-600 flex items-center justify-center text-white shadow-[0_0_10px_rgba(41,171,226,0.6)] shrink-0">
+                  <ShieldCheck size={13} strokeWidth={2.5} className="drop-shadow-xs" />
+                </div>
+                <span className="text-slate-100 tracking-wider">CarMatrix Dealer Intel™ Directory</span>
               </div>
               <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
                 Know the dealer <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] via-sky-300 to-emerald-400">before</span> you make the deal.
@@ -256,19 +260,34 @@ export default function DealerDirectoryPage({
               <button
                 type="button"
                 onClick={() => setIsAuditModalOpen(true)}
-                className="bg-[#29abe2] hover:bg-[#2089b5] text-white px-5 py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#29abe2]/25 hover:shadow-xl transition-all cursor-pointer"
+                className="group relative overflow-hidden bg-gradient-to-r from-[#29abe2] to-[#1e88b8] hover:from-[#249bc9] hover:to-[#1a77a2] text-white px-5 py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-[0_10px_25px_-5px_rgba(41,171,226,0.45),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_14px_30px_-5px_rgba(41,171,226,0.6)] border border-sky-300/40 transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                <ShieldCheck size={18} />
+                <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+                <div className="w-6 h-6 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+                  <ShieldCheck size={15} strokeWidth={2.4} />
+                </div>
                 <span>Audit a Dealership</span>
               </button>
 
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/15 px-4 py-3 rounded-2xl shrink-0 shadow-lg">
-                <div className="w-10 h-10 rounded-xl bg-[#29abe2]/20 border border-[#29abe2]/40 flex items-center justify-center text-[#29abe2]">
-                  <Car size={20} />
+              {/* Ultra-Premium Glass Box: Car Icon with 59 Dealerships */}
+              <div className="relative group overflow-hidden bg-gradient-to-b from-white/[0.14] to-white/[0.04] backdrop-blur-2xl border border-white/20 shadow-[0_12px_32px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.45)] px-4 py-3 rounded-2xl shrink-0 flex items-center gap-3.5">
+                {/* Specular top rim highlight */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none" />
+                {/* Ambient backglow */}
+                <div className="absolute -inset-1 bg-[#29abe2]/20 rounded-2xl blur-lg pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity" />
+
+                {/* Luxury Jewel Icon Container */}
+                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-sky-400/30 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/50 shadow-[0_4px_14px_rgba(41,171,226,0.35),inset_0_1px_2px_rgba(255,255,255,0.8)] flex items-center justify-center text-[#29abe2] group-hover:scale-105 transition-transform duration-200 shrink-0">
+                  <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
+                  <Car size={21} strokeWidth={2.2} className="drop-shadow-[0_2px_6px_rgba(41,171,226,0.6)]" />
                 </div>
-                <div>
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-sky-200">DFW Metro Market</div>
-                  <div className="text-xl font-black text-white leading-none mt-0.5">
+
+                <div className="relative z-10">
+                  <div className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-wider text-sky-200/90">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                    <span>DFW Metro Market</span>
+                  </div>
+                  <div className="text-xl font-black text-white leading-tight tracking-tight mt-0.5">
                     {allEnrichedDealers.length} Dealerships
                   </div>
                 </div>

@@ -302,40 +302,49 @@ export default function DealerProfilePage({
 
           </div>
 
-          {/* Overview Metrics Row: 4 Metric Cards */}
+          {/* Overview Metrics Row: 4 Luxury Metric Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
             
             {/* Metric 1: Total Inventory */}
-            <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-100 flex flex-col justify-between">
-              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5 mb-1">
-                <Car size={13} className="text-slate-400" />
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
+              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
+                <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-[#29abe2] shadow-xs">
+                  <Car size={13} strokeWidth={2.4} />
+                </div>
                 <span>Total Inventory</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                 {vehicles.length}
               </div>
-              <span className="text-[11px] font-semibold text-emerald-600 mt-1">Active on lot today</span>
+              <span className="text-[11px] font-semibold text-emerald-600 mt-1 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Active on lot today</span>
+              </span>
             </div>
 
             {/* Metric 2: Verified Transparency Score */}
-            <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-100 flex flex-col justify-between">
-              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5 mb-1">
-                <ShieldCheck size={13} className="text-[#29abe2]" />
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
+              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-600 shadow-xs">
+                  <ShieldCheck size={14} strokeWidth={2.4} />
+                </div>
                 <span>Transparency Score</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-emerald-600 tracking-tight flex items-baseline gap-1">
                 <span>{transparencyScore}</span>
                 <span className="text-xs text-slate-400 font-bold">/100</span>
               </div>
-              <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md inline-block w-fit mt-1">
+              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md inline-block w-fit mt-1 shadow-xs">
                 Elite Price Integrity
               </span>
             </div>
 
             {/* Metric 3: Pricing Health Index */}
-            <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-100 flex flex-col justify-between">
-              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5 mb-1">
-                <TrendingDown size={13} className="text-[#29abe2]" />
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
+              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
+                <div className="w-6 h-6 rounded-lg bg-[#29abe2]/10 border border-[#29abe2]/30 flex items-center justify-center text-[#29abe2] shadow-xs">
+                  <TrendingDown size={14} strokeWidth={2.4} />
+                </div>
                 <span>Pricing Health Index</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -345,9 +354,11 @@ export default function DealerProfilePage({
             </div>
 
             {/* Metric 4: Customer Satisfaction */}
-            <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-100 flex flex-col justify-between">
-              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5 mb-1">
-                <Star size={13} className="text-amber-400 fill-amber-400" />
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
+              <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
+                <div className="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-400/30 flex items-center justify-center text-amber-500 shadow-xs">
+                  <Star size={13} strokeWidth={2.4} className="fill-amber-400" />
+                </div>
                 <span>Satisfaction</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
