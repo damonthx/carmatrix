@@ -5,6 +5,7 @@ import fs from "fs";
 // @ts-ignore
 import marketPulseHandler from "./api/market-pulse.js";
 import { dealerIntelRouter } from "./src/services/dealerIntelRoutes";
+import { rankingsRouter } from "./src/services/rankingsRoutes";
 
 // Load environment variables from .env or .env.local
 if (fs.existsSync('.env.local')) {
@@ -23,6 +24,9 @@ async function startServer() {
 
   // Dealer Intel™ API routes
   app.use("/api/dealer-intel", dealerIntelRouter);
+
+  // Top-Rated Used Cars API routes
+  app.use("/api/rankings", rankingsRouter);
 
   // Add a proxy endpoint for MarketCheck
   app.get("/api/marketcheck/search", async (req, res) => {

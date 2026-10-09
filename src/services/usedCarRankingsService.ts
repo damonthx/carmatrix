@@ -67,10 +67,10 @@ export async function getTopRatedUsedCars(
 
     return {
       ...vehicle,
-      composite_score: scoreData.composite_score,
-      reliability_component: scoreData.breakdown.reliability_score,
-      ownership_cost_component: scoreData.breakdown.ownership_cost_score,
-      market_spread_component: scoreData.breakdown.spread_value_score,
+      composite_score: scoreData.final_composite_score,
+      reliability_component: scoreData.reliability_score,
+      ownership_cost_component: scoreData.ownership_cost_score,
+      market_spread_component: scoreData.market_spread_score,
       cash_price_tier: tier,
       spread_pct: spreadPct,
       private_party_savings: spreadSavings,

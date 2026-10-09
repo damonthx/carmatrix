@@ -67,12 +67,37 @@ export interface ScoreComponentBreakdown {
  * `calculate_carmatrix_composite_score`
  */
 export function calculateCarMatrixScore(
-  reliabilityRating: number,
-  fiveYearMaintenanceCost: number,
-  depreciationRatePct: number,
-  dealerRetailMid: number,
-  privatePartyMid: number
+  reliabilityRatingOrVehicle: number | {
+    reliability_rating: number;
+    five_year_maintenance_cost: number;
+    depreciation_rate_pct: number;
+    dealer_retail_mid: number;
+    private_party_mid: number;
+  },
+  fiveYearMaintenanceCostParam?: number,
+  depreciationRatePctParam?: number,
+  dealerRetailMidParam?: number,
+  privatePartyMidParam?: number
 ): ScoreComponentBreakdown {
+  let reliabilityRating: number;
+  let fiveYearMaintenanceCost: number;
+  let depreciationRatePct: number;
+  let dealerRetailMid: number;
+  let privatePartyMid: number;
+
+  if (typeof reliabilityRatingOrVehicle === 'object' && reliabilityRatingOrVehicle !== null) {
+    reliabilityRating = reliabilityRatingOrVehicle.reliability_rating;
+    fiveYearMaintenanceCost = reliabilityRatingOrVehicle.five_year_maintenance_cost;
+    depreciationRatePct = reliabilityRatingOrVehicle.depreciation_rate_pct;
+    dealerRetailMid = reliabilityRatingOrVehicle.dealer_retail_mid;
+    privatePartyMid = reliabilityRatingOrVehicle.private_party_mid;
+  } else {
+    reliabilityRating = reliabilityRatingOrVehicle;
+    fiveYearMaintenanceCost = fiveYearMaintenanceCostParam ?? 0;
+    depreciationRatePct = depreciationRatePctParam ?? 0;
+    dealerRetailMid = dealerRetailMidParam ?? 0;
+    privatePartyMid = privatePartyMidParam ?? 0;
+  }
   // 1. Reliability Score: 40% weight
   const boundedReliability = Math.min(5.0, Math.max(1.0, reliabilityRating));
   const reliability_score = Math.round(((boundedReliability / 5.0) * 40.0) * 10) / 10;
@@ -113,6 +138,16 @@ export function calculateCarMatrixScore(
     market_spread_score,
     final_composite_score
   };
+}
+
+/**
+ * Helper to determine cash price tier from street price
+ */
+export function determineCashTier(privatePartyMid: number): CashPriceTier {
+  if (privatePartyMid < 6000) return 'sub_6k';
+  if (privatePartyMid < 11000) return '6k_11k';
+  if (privatePartyMid < 18000) return '11k_18k';
+  return '18k_26k';
 }
 
 /**
