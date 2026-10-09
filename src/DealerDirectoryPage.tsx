@@ -278,7 +278,6 @@ export default function DealerDirectoryPage({
 
                 {/* Luxury Jewel Icon Container */}
                 <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-sky-400/30 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/50 shadow-[0_4px_14px_rgba(41,171,226,0.35),inset_0_1px_2px_rgba(255,255,255,0.8)] flex items-center justify-center text-[#29abe2] group-hover:scale-105 transition-transform duration-200 shrink-0">
-                  <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
                   <Car size={21} strokeWidth={2.2} className="drop-shadow-[0_2px_6px_rgba(41,171,226,0.6)]" />
                 </div>
 
