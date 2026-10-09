@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 // @ts-ignore
 import marketPulseHandler from "./api/market-pulse.js";
+import { dealerIntelRouter } from "./src/services/dealerIntelRoutes";
 
 // Load environment variables from .env or .env.local
 if (fs.existsSync('.env.local')) {
@@ -16,6 +17,12 @@ if (fs.existsSync('.env.local')) {
 async function startServer() {
   const app = express();
   const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+
+  // JSON Body Parser for API requests
+  app.use(express.json());
+
+  // Dealer Intel™ API routes
+  app.use("/api/dealer-intel", dealerIntelRouter);
 
   // Add a proxy endpoint for MarketCheck
   app.get("/api/marketcheck/search", async (req, res) => {
