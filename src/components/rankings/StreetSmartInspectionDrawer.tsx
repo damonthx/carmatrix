@@ -11,6 +11,7 @@ import {
   ExternalLink 
 } from 'lucide-react';
 import { VehicleRankingItem } from '@/lib/services/rankingsService';
+import { buildCarMatrixInventoryUrl } from '@/lib/utils/inventoryLinks';
 
 interface StreetSmartInspectionDrawerProps {
   vehicle: VehicleRankingItem | null;
@@ -184,7 +185,7 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
               if (onSearchInventory) {
                 onSearchInventory(vehicle.make, vehicle.model);
               } else if (typeof window !== 'undefined') {
-                window.location.href = `/?tab=inventory&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model)}`;
+                window.location.href = buildCarMatrixInventoryUrl(vehicle, 'private_party');
               }
             }}
             className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] transition-colors cursor-pointer shadow-md"

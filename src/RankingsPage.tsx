@@ -11,6 +11,8 @@ import { RankingsHeader } from './components/rankings/RankingsHeader';
 import { PriceBracketNav } from './components/rankings/PriceBracketNav';
 import { VehicleRankingCard } from './components/rankings/VehicleRankingCard';
 import { StreetSmartInspectionDrawer } from './components/rankings/StreetSmartInspectionDrawer';
+import { ShareRankingsBar } from './components/rankings/ShareRankingsBar';
+import { useRankingsAnalytics } from './hooks/useRankingsAnalytics';
 import { 
   ValuationChannel, 
   TierSummaryItem, 
@@ -147,24 +149,31 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
     };
   }, [channel, activeTier, selectedBodyType, sortBy]);
 
+  // Analytics hook
+  const { logEvent } = useRankingsAnalytics();
+
   // Handlers
   const handleChannelChange = (newChannel: ValuationChannel) => {
     setChannel(newChannel);
+    logEvent('rankings_channel_switched', { channel: newChannel });
     updateUrlParams(newChannel, activeTier, selectedBodyType, sortBy);
   };
 
   const handleSelectTier = (newTier: string | null) => {
     setActiveTier(newTier);
+    logEvent('price_tier_selected', { tier: newTier, channel });
     updateUrlParams(channel, newTier, selectedBodyType, sortBy);
   };
 
   const handleBodyTypeChange = (newBody: string) => {
     setSelectedBodyType(newBody);
+    logEvent('body_type_filtered', { bodyType: newBody });
     updateUrlParams(channel, activeTier, newBody, sortBy);
   };
 
   const handleSortChange = (newSort: string) => {
     setSortBy(newSort);
+    logEvent('sort_mode_changed', { sortBy: newSort });
     updateUrlParams(channel, activeTier, selectedBodyType, newSort);
   };
 
@@ -173,6 +182,22 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
     setSelectedBodyType('all');
     setSortBy('score_desc');
     updateUrlParams(channel, null, 'all', 'score_desc');
+  };
+
+  const handleOpenInspection = (v: VehicleRankingItem) => {
+    setInspectingVehicle(v);
+    logEvent('inspection_drawer_viewed', { 
+      vehicleId: v.id, 
+      vehicleName: `${v.year_start} ${v.make} ${v.model}`,
+      alertsCount: v.inspection_alerts?.length || 0 
+    });
+  };
+
+  const handleSearchInventoryClick = (make: string, model: string) => {
+    logEvent('inventory_cta_clicked', { make, model, channel });
+    if (onSearchInventory) {
+      onSearchInventory(make, model);
+    }
   };
 
   return (
@@ -205,6 +230,14 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
           activeTier={activeTier}
           onSelectTier={handleSelectTier}
           tiersSummary={tiersSummary}
+        />
+
+        {/* 3. Social Sharing & Quick-Link Bar */}
+        <ShareRankingsBar
+          channel={channel}
+          tierSlug={activeTier}
+          bodyType={selectedBodyType}
+          totalCount={vehicles.length}
         />
 
         {/* 3. Filter and Sort Toolbar */}
@@ -304,19 +337,34 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
             </button>
           </div>
         ) : vehicles.length === 0 ? (
-          <div className="p-12 rounded-3xl bg-white/80 border border-white/80 text-center max-w-md mx-auto space-y-4 shadow-sm">
+          <div className="p-12 rounded-3xl bg-white/80 border border-white/80 text-center max-w-lg mx-auto space-y-4 shadow-sm">
             <Car size={36} className="text-slate-400 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">No vehicles match these filters</h3>
-            <p className="text-xs text-slate-500">
-              Try selecting a different body category or clearing the price bracket filter.
+            <h3 className="text-base font-bold text-slate-850">
+              No Vehicles Meeting Clean-Title Reliability Standards
+            </h3>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-md mx-auto">
+              {selectedBodyType !== 'all' && activeTier
+                ? `No ${selectedBodyType}s found meeting strict clean-title reliability standards in the ${activeTier.replace('-', '–')} tier. In street markets, high-reliability ${selectedBodyType}s usually trade in higher price brackets.`
+                : 'No vehicles match the selected combination of criteria. Try expanding your search or clearing price and category constraints.'}
             </p>
-            <button
-              type="button"
-              onClick={handleResetFilters}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] transition-colors cursor-pointer"
-            >
-              Clear All Filters
-            </button>
+            <div className="flex items-center justify-center gap-3 pt-1">
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] transition-colors cursor-pointer"
+              >
+                Clear All Filters
+              </button>
+              {activeTier && (
+                <button
+                  type="button"
+                  onClick={() => handleSelectTier(null)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
+                >
+                  View All Tiers
+                </button>
+              )}
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -326,8 +374,8 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
                 vehicle={vehicle}
                 rank={index + 1}
                 channel={channel}
-                onOpenInspection={(v) => setInspectingVehicle(v)}
-                onSearchInventory={onSearchInventory}
+                onOpenInspection={handleOpenInspection}
+                onSearchInventory={handleSearchInventoryClick}
               />
             ))}
           </div>
@@ -338,7 +386,7 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
           vehicle={inspectingVehicle}
           isOpen={inspectingVehicle !== null}
           onClose={() => setInspectingVehicle(null)}
-          onSearchInventory={onSearchInventory}
+          onSearchInventory={handleSearchInventoryClick}
         />
       </div>
     </div>

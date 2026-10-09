@@ -10,6 +10,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import { VehicleRankingItem, ValuationChannel } from '@/lib/services/rankingsService';
+import { buildCarMatrixInventoryUrl } from '@/lib/utils/inventoryLinks';
 
 interface VehicleRankingCardProps {
   vehicle: VehicleRankingItem;
@@ -168,7 +169,7 @@ export const VehicleRankingCard: React.FC<VehicleRankingCardProps> = ({
             if (onSearchInventory) {
               onSearchInventory(vehicle.make, vehicle.model);
             } else if (typeof window !== 'undefined') {
-              window.location.href = `/?tab=inventory&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model)}`;
+              window.location.href = buildCarMatrixInventoryUrl(vehicle, channel);
             }
           }}
           className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] shadow-md hover:shadow-[#29abe2]/25 transition-all cursor-pointer"
