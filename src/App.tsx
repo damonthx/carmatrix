@@ -37,15 +37,18 @@ import TestDriveDossierWidget from './components/toolkit/TestDriveDossierWidget'
 import DepreciationPredictorWidget from './components/toolkit/DepreciationPredictorWidget';
 import DealerDirectoryPage from './DealerDirectoryPage';
 import DealerProfilePage from './DealerProfilePage';
+import RankingsPage from './RankingsPage';
 
 const NavBar = ({ 
   onHomeClick, 
+  onRankingsClick,
   onMarketPulseClick, 
   onGearClick,
   onDealerDirectoryClick,
   onScrollToTool,
 }: { 
   onHomeClick: () => void; 
+  onRankingsClick?: () => void;
   onMarketPulseClick: () => void; 
   onGearClick?: () => void;
   onDealerDirectoryClick?: () => void;
@@ -270,6 +273,14 @@ const NavBar = ({
             </button>
 
             <button 
+              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onRankingsClick?.(); }} 
+              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5 font-semibold text-slate-700 hover:text-[#29abe2]"
+            >
+              <TrendingUp size={15} className="text-[#29abe2]" />
+              <span>Used Car Rankings</span>
+            </button>
+
+            <button 
               onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }} 
               className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
             >
@@ -387,8 +398,40 @@ const NavBar = ({
                 })}
               </div>
 
-              {/* Market Pulse Link - Elevated Luxury Glass Banner */}
+              {/* Top-Rated Used Cars Link - Mobile Glass Banner */}
               <div className="pt-2 border-t border-white/10">
+                <button
+                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onRankingsClick?.(); }}
+                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-emerald-500/10 to-white/[0.04] hover:from-emerald-500/20 hover:to-white/[0.08] border-emerald-400/40 shadow-[0_4px_20px_0_rgba(0,0,0,0.4)] active:scale-[0.99] text-left"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-emerald-300/40 bg-gradient-to-br from-emerald-400/30 via-teal-500/15 to-transparent text-emerald-300 group-hover:scale-105 transition-all">
+                      <TrendingUp size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-[8.5px] font-black uppercase tracking-widest text-emerald-400">
+                          RANKINGS • STREET VALUE
+                        </span>
+                      </div>
+                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-emerald-400 transition-colors">
+                        Top-Rated Used Cars
+                      </div>
+                      <div className="text-[10.5px] text-slate-400 font-medium">
+                        Ranked by price bracket, reliability &amp; cash spread
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-400 shrink-0 pl-2">
+                    <span>Rankings</span>
+                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
+                </button>
+              </div>
+
+              {/* Market Pulse Link - Elevated Luxury Glass Banner */}
+              <div className="pt-2">
                 <button
                   onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }}
                   className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-[#29abe2]/10 to-white/[0.04] hover:from-[#29abe2]/20 hover:via-sky-500/15 hover:to-white/[0.08] border-[#29abe2]/40 hover:border-[#29abe2]/70 shadow-[0_4px_20px_0_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.2)] active:scale-[0.99] text-left"
@@ -1121,6 +1164,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         <div>
           <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Research Tools</h4>
           <ul className="space-y-2">
+            <li><button onClick={() => onNavigate('rankings')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><TrendingUp size={13} /> Top-Rated Used Cars</button></li>
             <li><button onClick={() => onNavigate('dealer_directory')} className="hover:text-white cursor-pointer text-emerald-400 font-semibold flex items-center gap-1.5"><ShieldCheck size={13} /> Dealer Intel™ Directory</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">AI Buying Advisor</button></li>
             <li><button onClick={() => onNavigate('gear')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><ShoppingBag size={13} /> Buyer's Gear Guide</button></li>
@@ -1175,6 +1219,7 @@ export default function App() {
     <div className="font-poppins text-slate-900 min-h-screen selection:bg-[#29abe2]/30 selection:text-slate-900 relative flex flex-col bg-[#DDE3EA]">
       <NavBar 
         onHomeClick={() => navigateTo('home')}
+        onRankingsClick={() => navigateTo('rankings')}
         onMarketPulseClick={() => navigateTo('market_pulse')}
         onGearClick={() => navigateTo('gear')}
         onDealerDirectoryClick={() => navigateTo('dealer_directory')}
@@ -1182,7 +1227,15 @@ export default function App() {
       />
       
       <div className="flex-1">
-        {currentPath === 'dealer_profile' ? (
+        {currentPath === 'rankings' ? (
+          <RankingsPage
+            onBackToHome={() => navigateTo('home')}
+            onSearchInventory={(make, model) => {
+              navigateTo('home');
+              scrollToTool('valuation-estimator');
+            }}
+          />
+        ) : currentPath === 'dealer_profile' ? (
           <DealerProfilePage 
             slug={selectedDealerSlug}
             onBack={() => navigateTo('dealer_directory')}
