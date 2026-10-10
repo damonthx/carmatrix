@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, ShieldAlert, Sparkles, Building2, UserCheck } from 'lucide-react';
+import { DollarSign, ShieldAlert, ShieldCheck, Building2, UserCheck, Gauge } from 'lucide-react';
 import { ValuationChannel } from '@/lib/services/rankingsService';
 
 interface RankingsHeaderProps {
@@ -23,9 +23,11 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
         {/* Title and Copy */}
         <div className="max-w-2xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#29abe2]/10 border border-[#29abe2]/30 text-[#29abe2]">
-            <Sparkles size={13} />
-            <span>CarMatrix Value &amp; Reliability Index</span>
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-transparent border border-white/20 text-[#29abe2] backdrop-blur-xl shadow-[0_2px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]">
+            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-sky-400/30 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[0_0_8px_rgba(41,171,226,0.35),inset_0_1px_1px_rgba(255,255,255,0.6)] shrink-0">
+              <ShieldCheck size={12} strokeWidth={2.4} className="drop-shadow-xs" />
+            </div>
+            <span className="text-slate-100 tracking-wider">CarMatrix Value &amp; Reliability Index</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white font-poppins">
@@ -53,13 +55,19 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
             <button
               type="button"
               onClick={() => onChannelChange('private_party')}
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${
+              className={`relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${
                 channel === 'private_party'
                   ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-500/25'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
               }`}
             >
-              <UserCheck size={14} className={channel === 'private_party' ? 'text-white' : 'text-slate-400'} />
+              <div className={`w-6 h-6 rounded-lg backdrop-blur-md flex items-center justify-center shrink-0 border ${
+                channel === 'private_party'
+                  ? 'bg-white/20 border-white/35 text-white shadow-inner'
+                  : 'bg-white/5 border-white/10 text-slate-400'
+              }`}>
+                <UserCheck size={13} strokeWidth={2.4} />
+              </div>
               <span>Private Party / Street Cash</span>
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                 channel === 'private_party' 
@@ -74,13 +82,19 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
             <button
               type="button"
               onClick={() => onChannelChange('dealer_retail')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${
+              className={`relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${
                 channel === 'dealer_retail'
-                  ? 'bg-[#29abe2] text-white shadow-lg shadow-[#29abe2]/25'
+                  ? 'bg-gradient-to-r from-[#29abe2] to-[#1e88b8] text-white shadow-lg shadow-[#29abe2]/25'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
               }`}
             >
-              <Building2 size={14} className={channel === 'dealer_retail' ? 'text-white' : 'text-slate-400'} />
+              <div className={`w-6 h-6 rounded-lg backdrop-blur-md flex items-center justify-center shrink-0 border ${
+                channel === 'dealer_retail'
+                  ? 'bg-white/20 border-white/35 text-white shadow-inner'
+                  : 'bg-white/5 border-white/10 text-slate-400'
+              }`}>
+                <Building2 size={13} strokeWidth={2.4} />
+              </div>
               <span>Dealership Lots</span>
             </button>
           </div>

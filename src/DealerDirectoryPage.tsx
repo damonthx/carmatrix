@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Search, SlidersHorizontal, MapPin, LayoutGrid, Columns, 
-  ShieldCheck, Car, Star, Zap, CheckCircle2, RotateCcw, 
-  ChevronDown, X, ArrowLeft, ArrowUpRight, TrendingUp, Sparkles
+  ShieldCheck, Car, Award, Zap, CheckCircle2, RotateCcw, 
+  ChevronDown, X, ArrowLeft, ArrowUpRight, TrendingUp
 } from 'lucide-react';
 import { DFW_DEALERSHIPS_SEED, seedToDealership } from './services/dfwDealerSeedData';
 import { DealerCard } from './components/dealer-directory/DealerCard';
@@ -240,10 +240,10 @@ export default function DealerDirectoryPage({
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div>
               {/* Luxury Glass Badge: The Shield at the Top */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-white/[0.12] via-white/[0.06] to-transparent border border-white/25 text-white text-xs font-bold tracking-widest uppercase mb-4 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)] relative overflow-hidden group">
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-white/[0.12] via-white/[0.06] to-transparent border border-white/25 text-white text-xs font-bold tracking-widest uppercase mb-4 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)] relative overflow-hidden group">
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />
-                <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-[#29abe2] to-sky-600 flex items-center justify-center text-white shadow-[0_0_10px_rgba(41,171,226,0.6)] shrink-0">
-                  <ShieldCheck size={13} strokeWidth={2.5} className="drop-shadow-xs" />
+                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-sky-400/30 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[0_0_10px_rgba(41,171,226,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.7)] shrink-0">
+                  <ShieldCheck size={13} strokeWidth={2.4} className="drop-shadow-xs" />
                 </div>
                 <span className="text-slate-100 tracking-wider">CarMatrix Dealer Intel™ Directory</span>
               </div>
@@ -263,7 +263,7 @@ export default function DealerDirectoryPage({
                 className="group relative overflow-hidden bg-gradient-to-r from-[#29abe2] to-[#1e88b8] hover:from-[#249bc9] hover:to-[#1a77a2] text-white px-5 py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-[0_10px_25px_-5px_rgba(41,171,226,0.45),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_14px_30px_-5px_rgba(41,171,226,0.6)] border border-sky-300/40 transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
-                <div className="w-6 h-6 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+                <div className="w-7 h-7 rounded-xl bg-white/20 backdrop-blur-md border border-white/35 flex items-center justify-center text-white shadow-inner shrink-0">
                   <ShieldCheck size={15} strokeWidth={2.4} />
                 </div>
                 <span>Audit a Dealership</span>
@@ -325,26 +325,30 @@ export default function DealerDirectoryPage({
                 <button
                   type="button"
                   onClick={() => setViewMode('grid')}
-                  className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     viewMode === 'grid'
                       ? 'bg-white text-slate-900 shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  <LayoutGrid size={15} />
+                  <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${viewMode === 'grid' ? 'bg-[#29abe2]/15 text-[#29abe2]' : 'text-slate-500'}`}>
+                    <LayoutGrid size={13} strokeWidth={2.3} />
+                  </div>
                   <span>Grid View</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setViewMode('split')}
-                  className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     viewMode === 'split'
                       ? 'bg-white text-slate-900 shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  <Columns size={15} />
+                  <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${viewMode === 'split' ? 'bg-[#29abe2]/15 text-[#29abe2]' : 'text-slate-500'}`}>
+                    <Columns size={13} strokeWidth={2.3} />
+                  </div>
                   <span>Map Split-View</span>
                 </button>
               </div>
@@ -354,17 +358,23 @@ export default function DealerDirectoryPage({
             {/* Bottom Row: Filter Pills */}
             <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
               
-              {/* Filter 1: Top Rated Pill */}
+              {/* Filter 1: Top Rated Pill (Star replaced with Award & Glassmorphic container) */}
               <button
                 type="button"
                 onClick={() => setFilterTopRated(v => !v)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                   filterTopRated
                     ? 'bg-amber-500 text-white border-amber-500 shadow-sm shadow-amber-500/20'
-                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80'
+                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80 shadow-2xs'
                 }`}
               >
-                <Star size={13} className={filterTopRated ? 'fill-white' : 'text-amber-400 fill-amber-400'} />
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border ${
+                  filterTopRated
+                    ? 'bg-white/25 border-white/40 text-white shadow-inner'
+                    : 'bg-amber-500/10 border-amber-400/30 text-amber-500'
+                }`}>
+                  <Award size={12} strokeWidth={2.4} />
+                </div>
                 <span>Top Rated (4.6+)</span>
               </button>
 
@@ -372,13 +382,19 @@ export default function DealerDirectoryPage({
               <button
                 type="button"
                 onClick={() => setFilterTransparentVerified(v => !v)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                   filterTransparentVerified
                     ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm shadow-emerald-600/20'
-                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80'
+                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80 shadow-2xs'
                 }`}
               >
-                <ShieldCheck size={14} className={filterTransparentVerified ? 'text-white' : 'text-emerald-500'} />
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border ${
+                  filterTransparentVerified
+                    ? 'bg-white/25 border-white/40 text-white shadow-inner'
+                    : 'bg-emerald-500/10 border-emerald-400/30 text-emerald-600'
+                }`}>
+                  <ShieldCheck size={12} strokeWidth={2.4} />
+                </div>
                 <span>Transparent Pricing Verified</span>
               </button>
 
@@ -386,13 +402,19 @@ export default function DealerDirectoryPage({
               <button
                 type="button"
                 onClick={() => setFilterEvCertified(v => !v)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                   filterEvCertified
                     ? 'bg-[#29abe2] text-white border-[#29abe2] shadow-sm shadow-[#29abe2]/20'
-                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80'
+                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80 shadow-2xs'
                 }`}
               >
-                <Zap size={13} className={filterEvCertified ? 'fill-white' : 'text-[#29abe2] fill-[#29abe2]'} />
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border ${
+                  filterEvCertified
+                    ? 'bg-white/25 border-white/40 text-white shadow-inner'
+                    : 'bg-[#29abe2]/10 border-[#29abe2]/30 text-[#29abe2]'
+                }`}>
+                  <Zap size={12} strokeWidth={2.4} />
+                </div>
                 <span>EV Certified</span>
               </button>
 

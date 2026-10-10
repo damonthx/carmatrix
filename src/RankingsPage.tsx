@@ -5,7 +5,8 @@ import {
   Car, 
   ShieldCheck, 
   RotateCcw,
-  AlertCircle
+  AlertCircle,
+  Info
 } from 'lucide-react';
 import { RankingsHeader } from './components/rankings/RankingsHeader';
 import { PriceBracketNav } from './components/rankings/PriceBracketNav';
@@ -47,6 +48,8 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
   const [tiersSummary, setTiersSummary] = useState<TierSummaryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isFallback, setIsFallback] = useState<boolean>(false);
+  const [fallbackMessage, setFallbackMessage] = useState<string | null>(null);
 
   // Selected vehicle for Inspection Drawer
   const [inspectingVehicle, setInspectingVehicle] = useState<VehicleRankingItem | null>(null);
@@ -149,6 +152,8 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
 
         if (!isCancelled && result.items) {
           setVehicles(result.items);
+          setIsFallback(Boolean(result.is_fallback));
+          setFallbackMessage(result.fallback_message || null);
           setIsLoading(false);
           setError(null);
         }
@@ -169,6 +174,8 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
           const data = await res.json();
           if (!isCancelled && data.items && data.items.length > 0) {
             setVehicles(data.items);
+            setIsFallback(Boolean(data.is_fallback));
+            setFallbackMessage(data.fallback_message || null);
             setIsLoading(false);
             setError(null);
           }
@@ -216,6 +223,8 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
     setActiveTier(null);
     setSelectedBodyType('all');
     setSortBy('score_desc');
+    setIsFallback(false);
+    setFallbackMessage(null);
     updateUrlParams(channel, null, 'all', 'score_desc');
   };
 
@@ -279,9 +288,11 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
         <div className="p-4 sm:p-5 rounded-2xl bg-white/80 backdrop-blur-md border border-white/70 shadow-sm mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           {/* Body Style Filter Pills */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mr-1 shrink-0 flex items-center gap-1">
-              <Car size={13} />
-              <span>Category:</span>
+            <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
+              <Car size={13} strokeWidth={2.4} />
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 mr-1 shrink-0">
+              Category:
             </span>
 
             <button
@@ -315,7 +326,9 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
           {/* Sort Dropdown & Reset */}
           <div className="flex items-center gap-3 shrink-0">
             <div className="flex items-center gap-2">
-              <ArrowUpDown size={14} className="text-slate-500" />
+              <div className="w-6 h-6 rounded-lg bg-slate-100/90 border border-slate-200/80 backdrop-blur-md flex items-center justify-center text-slate-600 shadow-2xs shrink-0">
+                <ArrowUpDown size={12} strokeWidth={2.4} />
+              </div>
               <label htmlFor="sort-select" className="text-xs font-bold text-slate-700">Sort By:</label>
               <select
                 id="sort-select"
@@ -334,14 +347,40 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                className="w-7 h-7 rounded-lg text-slate-500 hover:text-slate-800 bg-slate-100/80 hover:bg-slate-200/90 border border-slate-200 flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
                 title="Reset filters"
               >
-                <RotateCcw size={14} />
+                <RotateCcw size={13} strokeWidth={2.4} />
               </button>
             )}
           </div>
         </div>
+
+        {/* Subtle Fallback Notification Banner */}
+        {isFallback && vehicles.length > 0 && !isLoading && (
+          <div className="mb-6 p-4 rounded-2xl bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sky-950 shadow-xs animate-in fade-in duration-300">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] shrink-0">
+                <Info size={16} strokeWidth={2.4} />
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-900 block">
+                  {fallbackMessage || 'Showing top-rated alternatives nearby for this selection.'}
+                </span>
+                <span className="text-[11px] text-slate-500">
+                  Showing high-reliability vehicle recommendations matching your criteria closely.
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="text-xs font-bold text-[#0284c7] hover:text-sky-800 underline underline-offset-2 shrink-0 cursor-pointer self-start sm:self-auto"
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
 
         {/* 4. Vehicles Grid / Skeletons / Empty State */}
         {isLoading ? (

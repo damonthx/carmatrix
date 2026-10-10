@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   X, MapPin, Phone, Globe, ShieldCheck, CheckCircle2, 
-  AlertTriangle, Star, ArrowUpRight, FileSearch, Car, Zap, 
+  AlertTriangle, ArrowUpRight, FileSearch, Car, Zap, 
   TrendingDown, Check, Scale, ShieldAlert, Award
 } from 'lucide-react';
 import { EnrichedDealer } from './dealerTypes';
@@ -131,9 +131,9 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
             <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Consumer Trust</span>
-            <span className="text-lg font-black text-slate-900 block flex items-center justify-center gap-1">
+            <span className="text-lg font-black text-slate-900 block flex items-center justify-center gap-1.5">
               <span>{dealer.customer_rating_display.toFixed(1)}</span>
-              <span className="text-amber-500 text-sm">★</span>
+              <span className="text-[10px] font-bold text-amber-600 bg-amber-100/90 px-1.5 py-0.5 rounded border border-amber-200/60 leading-none">TRUST</span>
             </span>
             <span className="text-[10px] font-semibold text-slate-500">{dealer.review_count_display} reviews</span>
           </div>
@@ -147,23 +147,31 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
           </h4>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
-              <CheckCircle2 size={15} className="text-emerald-500 shrink-0" />
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
+              <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center text-emerald-600 shadow-2xs shrink-0">
+                <CheckCircle2 size={13} strokeWidth={2.4} />
+              </div>
               <span>Honors online advertised pricing</span>
             </div>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
-              <CheckCircle2 size={15} className="text-emerald-500 shrink-0" />
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
+              <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center text-emerald-600 shadow-2xs shrink-0">
+                <CheckCircle2 size={13} strokeWidth={2.4} />
+              </div>
               <span>No mandatory nitrogen or tint packages</span>
             </div>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
-              <CheckCircle2 size={15} className="text-emerald-500 shrink-0" />
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
+              <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center text-emerald-600 shadow-2xs shrink-0">
+                <CheckCircle2 size={13} strokeWidth={2.4} />
+              </div>
               <span>Complies with Texas doc fee statutes</span>
             </div>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
-              <CheckCircle2 size={15} className="text-emerald-500 shrink-0" />
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-700">
+              <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center text-emerald-600 shadow-2xs shrink-0">
+                <CheckCircle2 size={13} strokeWidth={2.4} />
+              </div>
               <span>Trade-in valuations backed by market data</span>
             </div>
           </div>
@@ -210,9 +218,11 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
               onClose();
               if (onAuditQuote) onAuditQuote(dealer.name);
             }}
-            className="w-full sm:flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+            className="w-full sm:flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all cursor-pointer"
           >
-            <FileSearch size={16} className="text-[#29abe2]" />
+            <div className="w-6 h-6 rounded-lg bg-[#29abe2]/15 border border-[#29abe2]/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
+              <FileSearch size={13} strokeWidth={2.4} />
+            </div>
             <span>Audit a Quote</span>
           </button>
 
@@ -223,9 +233,11 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
                 onClose();
                 onViewFullProfile(dealer.slug);
               }}
-              className="w-full sm:flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3.5 px-5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+              className="w-full sm:flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3.5 px-5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer"
             >
-              <ShieldCheck size={16} className="text-[#29abe2]" />
+              <div className="w-6 h-6 rounded-lg bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-inner shrink-0">
+                <ShieldCheck size={13} strokeWidth={2.4} />
+              </div>
               <span>Full Dealer Hub &amp; Lot</span>
             </button>
           )}

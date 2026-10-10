@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   ArrowLeft, Phone, MapPin, Globe, Clock, ShieldCheck, CheckCircle2, 
-  Car, Star, Award, TrendingUp, TrendingDown, FileSearch, Filter, 
+  Car, Award, TrendingUp, TrendingDown, FileSearch, Filter, 
   Search, Calendar, ChevronRight, ArrowUpRight, Gauge, Fuel, Check, 
-  MessageSquare, User, AlertCircle, Share2, Heart, Sparkles, Building
+  MessageSquare, User, AlertCircle, Share2, Heart, Building
 } from 'lucide-react';
 import { Dealership, Review } from './types/dealerIntel';
 import { DealerIntelService } from './services/dealerIntelService';
@@ -308,7 +308,7 @@ export default function DealerProfilePage({
             {/* Metric 1: Total Inventory */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
               <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-[#29abe2] shadow-xs">
+                <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
                   <Car size={13} strokeWidth={2.4} />
                 </div>
                 <span>Total Inventory</span>
@@ -325,7 +325,7 @@ export default function DealerProfilePage({
             {/* Metric 2: Verified Transparency Score */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
               <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-lg bg-emerald-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-600 shadow-xs">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/35 backdrop-blur-md flex items-center justify-center text-emerald-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
                   <ShieldCheck size={14} strokeWidth={2.4} />
                 </div>
                 <span>Transparency Score</span>
@@ -342,7 +342,7 @@ export default function DealerProfilePage({
             {/* Metric 3: Pricing Health Index */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
               <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-lg bg-[#29abe2]/10 border border-[#29abe2]/30 flex items-center justify-center text-[#29abe2] shadow-xs">
+                <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
                   <TrendingDown size={14} strokeWidth={2.4} />
                 </div>
                 <span>Pricing Health Index</span>
@@ -353,17 +353,17 @@ export default function DealerProfilePage({
               <span className="text-[11px] font-semibold text-slate-500 mt-1">Advertised Price Honored</span>
             </div>
 
-            {/* Metric 4: Customer Satisfaction */}
+            {/* Metric 4: Customer Satisfaction (Award icon replacing Star in Glassmorphic curved square) */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
               <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-400/30 flex items-center justify-center text-amber-500 shadow-xs">
-                  <Star size={13} strokeWidth={2.4} className="fill-amber-400" />
+                <div className="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-400/35 backdrop-blur-md flex items-center justify-center text-amber-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
+                  <Award size={13} strokeWidth={2.4} />
                 </div>
                 <span>Satisfaction</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
                 <span>4.8</span>
-                <span className="text-sm text-amber-500 font-bold">★</span>
+                <span className="text-[10px] font-bold text-amber-600 bg-amber-100/90 px-1.5 py-0.5 rounded border border-amber-200/60 leading-none">TRUST</span>
               </div>
               <span className="text-[11px] font-semibold text-slate-500 mt-1">
                 Based on verified buyers
@@ -689,9 +689,11 @@ export default function DealerProfilePage({
               <button
                 type="button"
                 onClick={() => setIsAuditModalOpen(true)}
-                className="py-3 px-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                className="py-3 px-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center gap-2.5 shadow-sm transition-all cursor-pointer"
               >
-                <ShieldCheck size={16} className="text-[#29abe2]" />
+                <div className="w-5 h-5 rounded-lg bg-sky-500/20 border border-sky-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                  <ShieldCheck size={12} strokeWidth={2.4} className="text-[#29abe2]" />
+                </div>
                 <span>Audit This Dealer</span>
               </button>
 
@@ -700,8 +702,8 @@ export default function DealerProfilePage({
                   <div className="text-xl sm:text-2xl font-black text-slate-900 leading-none">4.8 / 5.0</div>
                   <div className="text-[10.5px] font-bold text-emerald-600 mt-0.5">96% Would Recommend</div>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-500 flex items-center justify-center font-bold">
-                  ★
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/25 via-amber-500/15 to-transparent border border-amber-300/40 shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.9),0_2px_8px_rgba(245,158,11,0.2)] text-amber-600 flex items-center justify-center">
+                  <Award size={20} strokeWidth={2.4} />
                 </div>
               </div>
             </div>
@@ -736,10 +738,11 @@ export default function DealerProfilePage({
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1 text-amber-400 text-sm">
-                    {Array.from({ length: rev.overall_rating }).map((_, i) => (
-                      <span key={i}>★</span>
-                    ))}
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/90 border border-slate-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_1px_2px_rgba(15,23,42,0.04)]">
+                    <span className="text-xs font-black text-slate-900">{rev.overall_rating}.0</span>
+                    <div className="w-4.5 h-4.5 rounded-md bg-amber-500/15 border border-amber-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]">
+                      <Award size={10} strokeWidth={2.4} className="text-amber-600" />
+                    </div>
                   </div>
                 </div>
 

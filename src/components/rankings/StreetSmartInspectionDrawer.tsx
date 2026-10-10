@@ -57,7 +57,7 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
         <div className="p-6 bg-slate-950 text-white flex items-start justify-between border-b border-slate-800">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30 backdrop-blur-md">
                 Street-Smart PPI Guide
               </span>
               <span className="text-[11px] text-slate-400 font-mono">
@@ -75,19 +75,21 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-all cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition-all cursor-pointer shadow-xs"
             aria-label="Close inspection drawer"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* Title Baseline Warning Callout */}
-          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200/90 text-amber-900 space-y-2">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-800">
-              <AlertTriangle size={15} className="text-amber-600 shrink-0" />
+          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200/90 text-amber-900 space-y-2.5">
+            <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider text-amber-800">
+              <div className="w-7 h-7 rounded-xl bg-amber-500/20 border border-amber-400/40 backdrop-blur-md flex items-center justify-center text-amber-700 shadow-2xs shrink-0">
+                <AlertTriangle size={14} strokeWidth={2.4} />
+              </div>
               <span>Clean Title Baseline Notice</span>
             </div>
             <p className="text-xs leading-relaxed">
@@ -97,8 +99,10 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
 
           {/* Model-Specific Mechanical Failure Points */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-800">
-              <Wrench size={15} className="text-[#29abe2]" />
+            <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider text-slate-800">
+              <div className="w-7 h-7 rounded-xl bg-sky-500/15 border border-sky-400/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
+                <Wrench size={14} strokeWidth={2.4} />
+              </div>
               <span>Model-Specific Mechanical Failure Points</span>
             </div>
 
@@ -109,7 +113,7 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
                     key={index}
                     className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 shadow-2xs"
                   >
-                    <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-md bg-amber-100/90 border border-amber-200 text-amber-800 text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
                       {index + 1}
                     </span>
                     <p className="text-xs text-slate-700 font-medium leading-relaxed">
@@ -126,33 +130,41 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
           </div>
 
           {/* Private Party Cash Safety Checklist */}
-          <div className="p-5 rounded-2xl bg-slate-900 text-white space-y-3 shadow-lg">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#29abe2]">
-              <ShieldCheck size={16} />
+          <div className="p-5 rounded-2xl bg-slate-900 text-white space-y-3.5 shadow-lg border border-slate-800">
+            <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider text-[#29abe2]">
+              <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-sky-400/30 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[0_0_10px_rgba(41,171,226,0.35)] shrink-0">
+                <ShieldCheck size={14} strokeWidth={2.4} />
+              </div>
               <span>Private Party Cash Protocol</span>
             </div>
 
-            <div className="space-y-2.5 text-xs text-slate-300">
-              <div className="flex items-start gap-2.5">
-                <CheckSquare2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
+            <div className="space-y-3 text-xs text-slate-300">
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center text-emerald-400 shrink-0 mt-0.5 shadow-2xs">
+                  <CheckSquare2 size={13} strokeWidth={2.4} />
+                </div>
                 <div>
-                  <strong className="text-white block">1. Verify Seller ID Against Title:</strong>
+                  <strong className="text-white block mb-0.5">1. Verify Seller ID Against Title:</strong>
                   Ensure the name on the seller&apos;s driver&apos;s license exactly matches the registered owner on the physical title. Refuse "open titles" signed by third parties (title jumping).
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5">
-                <CheckSquare2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center text-emerald-400 shrink-0 mt-0.5 shadow-2xs">
+                  <CheckSquare2 size={13} strokeWidth={2.4} />
+                </div>
                 <div>
-                  <strong className="text-white block">2. Verify Cold Engine Before Starting:</strong>
+                  <strong className="text-white block mb-0.5">2. Verify Cold Engine Before Starting:</strong>
                   Feel the hood and engine manifold with your bare hand before the test drive. Sellers frequently warm up engines to mask cold-start valve rattle, timing chain slap, or smoke.
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5">
-                <CheckSquare2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center text-emerald-400 shrink-0 mt-0.5 shadow-2xs">
+                  <CheckSquare2 size={13} strokeWidth={2.4} />
+                </div>
                 <div>
-                  <strong className="text-white block">3. Run Active Lien &amp; Stolen Check:</strong>
+                  <strong className="text-white block mb-0.5">3. Run Active Lien &amp; Stolen Check:</strong>
                   Verify the title does not list an outstanding lienholder (bank or finance company) without an accompanying signed original Lien Release letter.
                 </div>
               </div>

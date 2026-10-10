@@ -37,10 +37,10 @@ export const VehicleQuickViewModal: React.FC<VehicleQuickViewModalProps> = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer z-10"
+          className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-white/70 hover:bg-white border border-slate-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.05)] text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer z-10"
           aria-label="Close vehicle modal"
         >
-          <X size={18} />
+          <X size={15} strokeWidth={2.4} />
         </button>
 
         {/* Modal Layout: 2 Columns on desktop */}
@@ -78,12 +78,16 @@ export const VehicleQuickViewModal: React.FC<VehicleQuickViewModalProps> = ({
 
             {/* Vehicle Trust Badges */}
             <div className="grid grid-cols-2 gap-2 pt-2">
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700">
-                <ShieldCheck size={16} className="text-emerald-500 shrink-0" />
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/90 border border-slate-100 text-xs font-semibold text-slate-700">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                  <ShieldCheck size={13} strokeWidth={2.4} className="text-emerald-600" />
+                </div>
                 <span>CARFAX Clean Title</span>
               </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700">
-                <Check size={16} className="text-emerald-500 shrink-0" />
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/90 border border-slate-100 text-xs font-semibold text-slate-700">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                  <Check size={13} strokeWidth={2.6} className="text-emerald-600" />
+                </div>
                 <span>1-Owner History</span>
               </div>
             </div>
@@ -140,7 +144,9 @@ export const VehicleQuickViewModal: React.FC<VehicleQuickViewModalProps> = ({
               {/* Specs Grid */}
               <div className="grid grid-cols-2 gap-3 mb-5 text-xs">
                 <div className="p-2.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-center gap-2.5">
-                  <Gauge size={16} className="text-[#29abe2]" />
+                  <div className="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-400/30 flex items-center justify-center shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                    <Gauge size={14} strokeWidth={2.3} className="text-[#29abe2]" />
+                  </div>
                   <div>
                     <span className="text-[10px] text-slate-400 font-bold block">Mileage</span>
                     <span className="font-bold text-slate-800">{vehicle.mileage.toLocaleString()} mi</span>
@@ -148,7 +154,9 @@ export const VehicleQuickViewModal: React.FC<VehicleQuickViewModalProps> = ({
                 </div>
 
                 <div className="p-2.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-center gap-2.5">
-                  <Fuel size={16} className="text-[#29abe2]" />
+                  <div className="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-400/30 flex items-center justify-center shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                    <Fuel size={14} strokeWidth={2.3} className="text-[#29abe2]" />
+                  </div>
                   <div>
                     <span className="text-[10px] text-slate-400 font-bold block">Efficiency</span>
                     <span className="font-bold text-slate-800">{vehicle.mpg_city}/{vehicle.mpg_highway} MPG</span>
@@ -156,7 +164,9 @@ export const VehicleQuickViewModal: React.FC<VehicleQuickViewModalProps> = ({
                 </div>
 
                 <div className="p-2.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-center gap-2.5">
-                  <Settings size={16} className="text-[#29abe2]" />
+                  <div className="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-400/30 flex items-center justify-center shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                    <Settings size={14} strokeWidth={2.3} className="text-[#29abe2]" />
+                  </div>
                   <div>
                     <span className="text-[10px] text-slate-400 font-bold block">Transmission</span>
                     <span className="font-bold text-slate-800 truncate">{vehicle.transmission}</span>
@@ -164,7 +174,9 @@ export const VehicleQuickViewModal: React.FC<VehicleQuickViewModalProps> = ({
                 </div>
 
                 <div className="p-2.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-center gap-2.5">
-                  <Car size={16} className="text-[#29abe2]" />
+                  <div className="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-400/30 flex items-center justify-center shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                    <Car size={14} strokeWidth={2.3} className="text-[#29abe2]" />
+                  </div>
                   <div>
                     <span className="text-[10px] text-slate-400 font-bold block">Exterior Color</span>
                     <span className="font-bold text-slate-800 truncate">{vehicle.exterior_color}</span>

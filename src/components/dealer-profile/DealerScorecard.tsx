@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   ShieldCheck, ShieldAlert, AlertTriangle, DollarSign, FileText, 
-  HelpCircle, ChevronRight, X, Eye, ThumbsDown, Award, Sparkles, 
+  HelpCircle, ChevronRight, X, Eye, ThumbsDown, Award, Compass, 
   ArrowUpRight, Lock, CheckCircle2, Sliders, ExternalLink
 } from 'lucide-react';
 import { Dealership, Review } from '../../types/dealerIntel';
@@ -272,9 +272,9 @@ export const DealerScorecard: React.FC<DealerScorecardProps> = ({
           <div className="lg:col-span-4 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-[#29abe2]/5 via-sky-500/5 to-white border border-sky-200/80 flex flex-col justify-between">
             
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded-lg bg-[#29abe2]/20 text-[#29abe2] flex items-center justify-center font-bold">
-                  <Sparkles size={14} />
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-sky-400/25 via-[#29abe2]/15 to-transparent border border-sky-300/40 backdrop-blur-md shadow-[0_2px_8px_rgba(41,171,226,0.2),inset_0_1px_1.5px_rgba(255,255,255,0.8)] text-[#29abe2] flex items-center justify-center shrink-0">
+                  <Compass size={14} strokeWidth={2.4} />
                 </div>
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#0284c7]">
                   CarMatrix Buyer Intel Tips

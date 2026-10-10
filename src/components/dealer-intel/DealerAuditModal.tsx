@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   X, ShieldAlert, ShieldCheck, AlertTriangle, FileText, Upload, 
   CheckCircle2, DollarSign, Calendar, Car, Sliders, Info, Lock, 
-  HelpCircle, Eye, ArrowRight, Sparkles, Building2
+  HelpCircle, Eye, ArrowRight, Award, Building2
 } from 'lucide-react';
 import { Dealership } from '../../types/dealerIntel';
 import { CreateReviewInput, CreateEvidenceInput } from '../../services/dealerIntelValidation';
@@ -274,10 +274,10 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer"
+          className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-white/70 hover:bg-white border border-slate-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.05)] text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer z-10"
           aria-label="Close modal"
         >
-          <X size={18} />
+          <X size={15} strokeWidth={2.4} />
         </button>
 
         {/* Success State */}
@@ -350,8 +350,10 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                 SECTION 1: TRANSACTION CONTEXT
                 ========================================================================= */}
             <div className="bg-slate-50/80 rounded-2xl p-4 sm:p-6 border border-slate-200/80 space-y-4">
-              <div className="flex items-center gap-2 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
-                <Building2 size={15} className="text-[#29abe2]" />
+              <div className="flex items-center gap-2.5 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
+                <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                  <Building2 size={13} strokeWidth={2.4} className="text-[#29abe2]" />
+                </div>
                 <span>1. Transaction Context</span>
               </div>
 
@@ -480,8 +482,10 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                 SECTION 2: TRANSPARENCY & PRICING AUDIT (THE MEAT OF THE AUDIT)
                 ========================================================================= */}
             <div className="bg-slate-50/80 rounded-2xl p-4 sm:p-6 border border-slate-200/80 space-y-4">
-              <div className="flex items-center gap-2 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
-                <DollarSign size={15} className="text-amber-500" />
+              <div className="flex items-center gap-2.5 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
+                <div className="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                  <DollarSign size={13} strokeWidth={2.4} className="text-amber-600" />
+                </div>
                 <span>2. Transparency &amp; Pricing Audit</span>
               </div>
 
@@ -604,8 +608,10 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                 SECTION 3: THE "DEALER INTEGRITY" SCORE (1 TO 5 SLIDERS)
                 ========================================================================= */}
             <div className="bg-slate-50/80 rounded-2xl p-4 sm:p-6 border border-slate-200/80 space-y-5">
-              <div className="flex items-center gap-2 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
-                <Sliders size={15} className="text-[#29abe2]" />
+              <div className="flex items-center gap-2.5 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
+                <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                  <Sliders size={13} strokeWidth={2.4} className="text-[#29abe2]" />
+                </div>
                 <span>3. Dealer Integrity Scorecard (1 = Poor, 5 = Flawless)</span>
               </div>
 
@@ -615,7 +621,7 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                   <span className="text-xs font-bold text-slate-800">
                     Price Honesty <span className="text-slate-400 font-normal">(Did numbers change in the finance office?)</span>
                   </span>
-                  <span className="text-xs font-black text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md">
+                  <span className="text-xs font-black text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md shadow-2xs">
                     {priceHonestyRating} / 5
                   </span>
                 </div>
@@ -625,13 +631,14 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                       key={val}
                       type="button"
                       onClick={() => setPriceHonestyRating(val)}
-                      className={`flex-1 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                      className={`flex-1 py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                         priceHonestyRating === val
-                          ? 'bg-[#29abe2] text-white shadow-xs'
-                          : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                          ? 'bg-gradient-to-r from-sky-500 to-[#29abe2] text-white shadow-md shadow-sky-500/25 border border-white/30'
+                          : 'bg-white/70 hover:bg-white border border-slate-200/80 text-slate-700 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]'
                       }`}
                     >
-                      {val}★
+                      <span>{val}</span>
+                      <Award size={11} strokeWidth={2.4} className={priceHonestyRating === val ? 'text-white' : 'text-slate-400'} />
                     </button>
                   ))}
                 </div>
@@ -643,7 +650,7 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                   <span className="text-xs font-bold text-slate-800">
                     Pressure Tactics <span className="text-slate-400 font-normal">(Hostage keys, tag-team closers, artificial rush)</span>
                   </span>
-                  <span className="text-xs font-black text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md">
+                  <span className="text-xs font-black text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md shadow-2xs">
                     {pressureTacticsRating} / 5
                   </span>
                 </div>
@@ -653,13 +660,14 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                       key={val}
                       type="button"
                       onClick={() => setPressureTacticsRating(val)}
-                      className={`flex-1 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                      className={`flex-1 py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                         pressureTacticsRating === val
-                          ? 'bg-[#29abe2] text-white shadow-xs'
-                          : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                          ? 'bg-gradient-to-r from-sky-500 to-[#29abe2] text-white shadow-md shadow-sky-500/25 border border-white/30'
+                          : 'bg-white/70 hover:bg-white border border-slate-200/80 text-slate-700 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]'
                       }`}
                     >
-                      {val}★
+                      <span>{val}</span>
+                      <Award size={11} strokeWidth={2.4} className={pressureTacticsRating === val ? 'text-white' : 'text-slate-400'} />
                     </button>
                   ))}
                 </div>
@@ -671,7 +679,7 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                   <span className="text-xs font-bold text-slate-800">
                     Overall Deal Fairness &amp; Transparency
                   </span>
-                  <span className="text-xs font-black text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md">
+                  <span className="text-xs font-black text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md shadow-2xs">
                     {overallFairnessRating} / 5
                   </span>
                 </div>
@@ -681,13 +689,14 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                       key={val}
                       type="button"
                       onClick={() => setOverallFairnessRating(val)}
-                      className={`flex-1 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                      className={`flex-1 py-2 px-1 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                         overallFairnessRating === val
-                          ? 'bg-[#29abe2] text-white shadow-xs'
-                          : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                          ? 'bg-gradient-to-r from-sky-500 to-[#29abe2] text-white shadow-md shadow-sky-500/25 border border-white/30'
+                          : 'bg-white/70 hover:bg-white border border-slate-200/80 text-slate-700 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]'
                       }`}
                     >
-                      {val}★
+                      <span>{val}</span>
+                      <Award size={11} strokeWidth={2.4} className={overallFairnessRating === val ? 'text-white' : 'text-slate-400'} />
                     </button>
                   ))}
                 </div>
@@ -698,8 +707,10 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                 SECTION 4: COMMUNITY NARRATIVE & PROOF UPLOAD
                 ========================================================================= */}
             <div className="bg-slate-50/80 rounded-2xl p-4 sm:p-6 border border-slate-200/80 space-y-4">
-              <div className="flex items-center gap-2 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
-                <FileText size={15} className="text-emerald-600" />
+              <div className="flex items-center gap-2.5 pb-2 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                  <FileText size={13} strokeWidth={2.4} className="text-emerald-600" />
+                </div>
                 <span>4. Community Narrative &amp; Proof (Verified Audit)</span>
               </div>
 

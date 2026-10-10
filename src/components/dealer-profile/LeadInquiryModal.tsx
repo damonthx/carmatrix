@@ -65,16 +65,16 @@ export const LeadInquiryModal: React.FC<LeadInquiryModalProps> = ({
       >
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer"
+          className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-white/70 hover:bg-white border border-slate-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.05)] text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer z-10"
           aria-label="Close modal"
         >
-          <X size={18} />
+          <X size={15} strokeWidth={2.4} />
         </button>
 
         {isSuccess ? (
           <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 size={36} />
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400/20 via-emerald-500/15 to-transparent border border-emerald-300/40 shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.9),0_4px_16px_rgba(16,185,129,0.2)] text-emerald-600 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 size={32} strokeWidth={2.4} />
             </div>
             <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-2">
               Appointment Request Sent!

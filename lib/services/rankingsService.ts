@@ -63,6 +63,8 @@ export interface RankingsResponsePayload {
     average_composite_score: number;
   };
   items: VehicleRankingItem[];
+  is_fallback?: boolean;
+  fallback_message?: string;
 }
 
 export interface TierSummaryItem {
@@ -196,10 +198,10 @@ export class RankingsService {
     const bounds = this.resolvePriceBounds(channel, params.tier, params.min_price, params.max_price);
 
     // 1. Enrich static array
-    let allItems: VehicleRankingItem[] = VEHICLE_RANKINGS_DATA.map((v) => enrichVehicleRecord(v, channel));
+    const allItems: VehicleRankingItem[] = VEHICLE_RANKINGS_DATA.map((v) => enrichVehicleRecord(v, channel));
 
     // 2. Filter by price bounds (using target price for active channel)
-    allItems = allItems.filter((v) => {
+    let filteredItems = allItems.filter((v) => {
       const p = v.target_price;
       if (p < bounds.min) return false;
       if (bounds.max !== null && p > bounds.max) return false;
@@ -208,11 +210,59 @@ export class RankingsService {
 
     // 3. Filter by body type
     if (params.body_type && params.body_type.length > 0) {
-      allItems = allItems.filter((v) => params.body_type!.includes(v.body_type as any));
+      filteredItems = filteredItems.filter((v) => params.body_type!.includes(v.body_type as any));
     }
 
-    // 4. Sort by criteria
-    allItems.sort((a, b) => {
+    let is_fallback = false;
+    let fallback_message: string | undefined = undefined;
+
+    // 4. SMART FALLBACK LAYER: Prevent empty views
+    if (filteredItems.length === 0) {
+      // Strategy 1: If user filtered by body_type, find that body_type across adjacent tiers/overall
+      if (params.body_type && params.body_type.length > 0) {
+        const sameBodyVehicles = allItems.filter((v) => params.body_type!.includes(v.body_type as any));
+        if (sameBodyVehicles.length > 0) {
+          const tierMid = bounds.max !== null ? (bounds.min + bounds.max) / 2 : bounds.min;
+          sameBodyVehicles.sort((a, b) => {
+            const distA = Math.abs(a.target_price - tierMid);
+            const distB = Math.abs(b.target_price - tierMid);
+            if (Math.abs(distA - distB) > 3000) {
+              return distA - distB;
+            }
+            return b.composite_score - a.composite_score;
+          });
+          filteredItems = sameBodyVehicles;
+          is_fallback = true;
+          const bodyLabel = params.body_type.map((b) => b === 'hybrid_ev' ? 'Hybrid/EV' : b.toUpperCase()).join(', ');
+          fallback_message = `Showing closest matches and top ${bodyLabel} alternatives nearby`;
+        }
+      }
+
+      // Strategy 2: If still empty, fall back to top-scoring vehicles in that price tier overall
+      if (filteredItems.length === 0) {
+        const tierVehicles = allItems.filter((v) => {
+          const p = v.target_price;
+          if (p < bounds.min) return false;
+          if (bounds.max !== null && p > bounds.max) return false;
+          return true;
+        });
+        if (tierVehicles.length > 0) {
+          filteredItems = tierVehicles;
+          is_fallback = true;
+          fallback_message = `Showing top-scoring vehicles in this price bracket`;
+        }
+      }
+
+      // Strategy 3: Ultimate fallback across the whole catalog
+      if (filteredItems.length === 0) {
+        filteredItems = [...allItems];
+        is_fallback = true;
+        fallback_message = `Showing closest matches and top alternatives nearby`;
+      }
+    }
+
+    // 5. Sort by criteria
+    filteredItems.sort((a, b) => {
       switch (params.sort_by) {
         case 'reliability_desc':
           return b.reliability_rating - a.reliability_rating;
@@ -226,23 +276,23 @@ export class RankingsService {
       }
     });
 
-    const total_count = allItems.length;
+    const total_count = filteredItems.length;
 
-    // 5. Calculate summary statistics
+    // 6. Calculate summary statistics
     const avgSpread = total_count > 0
-      ? Number((allItems.reduce((acc, curr) => acc + curr.savings_spread, 0) / total_count).toFixed(2))
+      ? Number((filteredItems.reduce((acc, curr) => acc + curr.savings_spread, 0) / total_count).toFixed(2))
       : 0;
     const avgPct = total_count > 0
-      ? Number((allItems.reduce((acc, curr) => acc + curr.savings_pct, 0) / total_count).toFixed(1))
+      ? Number((filteredItems.reduce((acc, curr) => acc + curr.savings_pct, 0) / total_count).toFixed(1))
       : 0;
     const avgScore = total_count > 0
-      ? Number((allItems.reduce((acc, curr) => acc + curr.composite_score, 0) / total_count).toFixed(1))
+      ? Number((filteredItems.reduce((acc, curr) => acc + curr.composite_score, 0) / total_count).toFixed(1))
       : 0;
 
-    // 6. Paginate
+    // 7. Paginate
     const offset = params.offset !== undefined && !isNaN(params.offset) ? params.offset : 0;
     const limit = params.limit !== undefined && !isNaN(params.limit) ? params.limit : 50;
-    const paginatedItems = allItems.slice(offset, offset + limit);
+    const paginatedItems = filteredItems.slice(offset, offset + limit);
 
     return {
       active_channel: channel,
@@ -258,6 +308,8 @@ export class RankingsService {
         average_composite_score: avgScore,
       },
       items: paginatedItems,
+      is_fallback,
+      fallback_message,
     };
   }
 

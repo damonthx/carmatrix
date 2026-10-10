@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { 
   MapPin, Navigation, ZoomIn, ZoomOut, RotateCcw, 
-  Layers, ExternalLink, ShieldCheck, Star, Car, ArrowRight, X
+  Layers, ExternalLink, ShieldCheck, Car, ArrowRight, X
 } from 'lucide-react';
 import { EnrichedDealer } from './dealerTypes';
 
@@ -80,37 +80,39 @@ export const DealerMap: React.FC<DealerMapProps> = ({
         <div className="pointer-events-auto flex items-center gap-1.5 bg-white/95 backdrop-blur-xl p-1.5 rounded-2xl border border-white/90 shadow-[0_4px_16px_rgba(15,23,42,0.08),inset_0_1px_1px_rgba(255,255,255,1)]">
           <button
             onClick={() => handleZoom(0.2)}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-100/80 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] bg-white/70 hover:bg-white border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.04)] transition-all cursor-pointer"
             title="Zoom In"
             aria-label="Zoom in"
           >
-            <ZoomIn size={15} />
+            <ZoomIn size={15} strokeWidth={2.3} />
           </button>
           <button
             onClick={() => handleZoom(-0.2)}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-100/80 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] bg-white/70 hover:bg-white border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.04)] transition-all cursor-pointer"
             title="Zoom Out"
             aria-label="Zoom out"
           >
-            <ZoomOut size={15} />
+            <ZoomOut size={15} strokeWidth={2.3} />
           </button>
           <button
             onClick={handleReset}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] hover:bg-slate-100/80 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:text-[#29abe2] bg-white/70 hover:bg-white border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.04)] transition-all cursor-pointer"
             title="Reset View"
             aria-label="Reset map view"
           >
-            <RotateCcw size={14} />
+            <RotateCcw size={14} strokeWidth={2.3} />
           </button>
           <div className="w-px h-4 bg-slate-200 mx-0.5" />
           <button
             onClick={() => setMapStyle(s => s === 'light' ? 'tech' : 'light')}
-            className={`px-3 h-8 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
-              mapStyle === 'tech' ? 'bg-slate-900 text-white shadow-slate-900/30' : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
+            className={`px-3 h-8 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs border ${
+              mapStyle === 'tech' ? 'bg-slate-900 text-white border-slate-800 shadow-slate-900/30' : 'bg-white/70 border-white/80 text-slate-700 hover:bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]'
             }`}
             title="Toggle Map Canvas"
           >
-            <Layers size={13} />
+            <div className="w-4 h-4 rounded-md bg-sky-500/15 border border-sky-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
+              <Layers size={10} strokeWidth={2.3} className="text-[#29abe2]" />
+            </div>
             <span>{mapStyle === 'light' ? 'Light' : 'Tech'}</span>
           </button>
         </div>
@@ -271,14 +273,14 @@ export const DealerMap: React.FC<DealerMapProps> = ({
               {/* Close pin popup button */}
               <button 
                 onClick={(e) => { e.stopPropagation(); onSelectDealer({} as any); }}
-                className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors"
+                className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 w-7 h-7 rounded-lg bg-white/60 hover:bg-white border border-slate-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_1px_2px_rgba(15,23,42,0.04)] flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Close dealer popup"
               >
-                <X size={15} />
+                <X size={14} strokeWidth={2.4} />
               </button>
 
-              <div className="flex items-start gap-3 mb-2.5 pr-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400/20 via-[#29abe2]/15 to-transparent border border-sky-300/40 flex items-center justify-center text-[#29abe2] shrink-0 font-black text-sm">
+              <div className="flex items-start gap-3 mb-2.5 pr-8">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400/25 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/50 shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.9),0_2px_8px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 font-black text-sm">
                   {activeDealer.name.charAt(0)}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -293,17 +295,17 @@ export const DealerMap: React.FC<DealerMapProps> = ({
 
               {/* Quick metrics in popup */}
               <div className="grid grid-cols-3 gap-2 py-2.5 my-2 border-y border-slate-100 text-center">
-                <div className="bg-slate-50/80 rounded-xl p-1.5">
+                <div className="bg-slate-50/90 backdrop-blur-md rounded-xl p-1.5 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_1px_3px_rgba(15,23,42,0.04)]">
                   <span className="text-[9.5px] uppercase font-bold text-slate-400 block">Inventory</span>
                   <span className="text-[13px] font-black text-slate-900">{activeDealer.active_inventory_count || 120}</span>
                 </div>
-                <div className="bg-slate-50/80 rounded-xl p-1.5">
+                <div className="bg-slate-50/90 backdrop-blur-md rounded-xl p-1.5 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_1px_3px_rgba(15,23,42,0.04)]">
                   <span className="text-[9.5px] uppercase font-bold text-slate-400 block">Integrity</span>
                   <span className="text-[13px] font-black text-emerald-600">
                     {activeDealer.price_transparency_score ?? 88}/100
                   </span>
                 </div>
-                <div className="bg-slate-50/80 rounded-xl p-1.5">
+                <div className="bg-slate-50/90 backdrop-blur-md rounded-xl p-1.5 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_1px_3px_rgba(15,23,42,0.04)]">
                   <span className="text-[9.5px] uppercase font-bold text-slate-400 block">Market</span>
                   <span className="text-[13px] font-black text-[#29abe2]">
                     {activeDealer.price_delta_label || '-$650'}
@@ -315,19 +317,23 @@ export const DealerMap: React.FC<DealerMapProps> = ({
               <div className="flex items-center gap-2 pt-1">
                 <button
                   onClick={() => onViewProfile(activeDealer)}
-                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-2 px-3 rounded-xl text-xs font-bold transition-all text-center flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-2 px-3 rounded-xl text-xs font-bold transition-all text-center flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                 >
-                  <ShieldCheck size={14} className="text-[#29abe2]" />
+                  <div className="w-5 h-5 rounded-lg bg-sky-500/20 border border-sky-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                    <ShieldCheck size={12} strokeWidth={2.4} className="text-[#29abe2]" />
+                  </div>
                   <span>Dealer Profile</span>
                 </button>
                 <a
                   href={activeDealer.website || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#29abe2] hover:bg-[#2295c5] text-white py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-sm shadow-[#29abe2]/20 cursor-pointer"
+                  className="bg-[#29abe2] hover:bg-[#2295c5] text-white py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm shadow-[#29abe2]/20 cursor-pointer"
                 >
                   <span>Inventory</span>
-                  <ExternalLink size={12} />
+                  <div className="w-4 h-4 rounded-md bg-white/20 border border-white/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
+                    <ExternalLink size={10} strokeWidth={2.4} />
+                  </div>
                 </a>
               </div>
 
