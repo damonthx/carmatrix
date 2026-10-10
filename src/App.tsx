@@ -231,8 +231,8 @@ const NavBar = ({
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               alt="CarMatrix Logo" 
-              className="w-[195px] sm:w-[220px] h-auto object-contain brightness-0 invert transition-all hover:opacity-90"
-              style={{ width: '220px' }}
+              className="w-[195px] sm:w-[225px] h-auto object-contain transition-all hover:opacity-90"
+              style={{ width: '225px' }}
               referrerPolicy="no-referrer"
             />
           </div>
@@ -1204,7 +1204,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               alt="CarMatrix Logo" 
-              className="h-11 w-auto object-contain brightness-0 invert"
+              className="h-11 w-auto object-contain transition-all hover:opacity-90"
               referrerPolicy="no-referrer"
             />
           </div>
