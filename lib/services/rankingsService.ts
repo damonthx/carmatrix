@@ -1,10 +1,9 @@
-import { supabase } from '../../src/supabaseClient';
-import { BENCHMARK_USED_VEHICLES_SEED } from '../../src/services/usedCarSeedData';
+import { VEHICLE_RANKINGS_DATA, StaticRankedVehicle } from '../data/vehicleRankingsData';
 import {
   RankedVehicleView,
   calculateCarMatrixScore,
   determineCashTier,
-} from '../../src/types/vehicleRankings';
+} from '@/src/types/vehicleRankings';
 import { RankingsQueryParams } from '../validations/rankingsSchema';
 
 export type ValuationChannel = 'private_party' | 'dealer_retail';
@@ -107,10 +106,11 @@ export interface SingleVehicleDetailPayload {
 }
 
 /**
- * Converts a raw vehicle record into a fully enriched VehicleRankingItem
+ * Converts a static vehicle item into an enriched runtime VehicleRankingItem
+ * with calculated score metrics and channel savings.
  */
 export function enrichVehicleRecord(
-  raw: any,
+  raw: StaticRankedVehicle,
   channel: ValuationChannel = 'private_party'
 ): VehicleRankingItem {
   const dealerRetail = Number(raw.dealer_retail_mid) || 0;
@@ -122,36 +122,41 @@ export function enrichVehicleRecord(
     ? Number(((savings_spread / dealerRetail) * 100).toFixed(1))
     : 0;
 
-  // Generate deterministic ID if missing (e.g. from static seed objects)
   const id = raw.id || `${raw.make}-${raw.model}-${raw.year_start}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-  // If score fields not precalculated in DB view, calculate via client scoring engine
+  // Compute composite score via client scoring engine
   const scoreData = calculateCarMatrixScore(raw);
-  const composite_score = Number(raw.composite_score ?? scoreData.final_composite_score);
-  const reliability_component = Number(raw.reliability_component ?? scoreData.reliability_score);
-  const ownership_cost_component = Number(raw.ownership_cost_component ?? scoreData.ownership_cost_score);
-  const market_spread_component = Number(raw.market_spread_component ?? scoreData.market_spread_score);
-  const cash_price_tier = raw.cash_price_tier ?? determineCashTier(privateParty);
+  const composite_score = scoreData.final_composite_score;
+  const reliability_component = scoreData.reliability_score;
+  const ownership_cost_component = scoreData.ownership_cost_score;
+  const market_spread_component = scoreData.market_spread_score;
+  const cash_price_tier = determineCashTier(privateParty);
 
   return {
     ...raw,
     id,
+    carmatrix_score: composite_score,
     composite_score,
     reliability_component,
     ownership_cost_component,
     market_spread_component,
     cash_price_tier,
+    dealer_retail_tier: 'sub_7.5k', // default fallback
+    private_party_savings_pct: savings_pct,
+    private_party_savings_dollars: savings_spread,
     spread_pct: savings_pct,
     private_party_savings: savings_spread,
     savings_spread,
     savings_pct,
     target_price: targetPrice,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   };
 }
 
 /**
- * Rankings Service
- * Handles querying, dynamic filtering by channel/body type, sorting, and summary metrics.
+ * Pure in-memory Rankings Service (Zero Database Reliance)
+ * Operates entirely on VEHICLE_RANKINGS_DATA.
  */
 export class RankingsService {
   /**
@@ -178,53 +183,29 @@ export class RankingsService {
   }
 
   /**
-   * Query top-rated vehicles dynamically
+   * Pure in-memory filtering, sorting, and pagination
    */
   static async getRankings(params: RankingsQueryParams): Promise<RankingsResponsePayload> {
     const channel = params.channel;
-    const priceColumn = channel === 'dealer_retail' ? 'dealer_retail_mid' : 'private_party_mid';
     const bounds = this.resolvePriceBounds(channel, params.tier, params.min_price, params.max_price);
 
-    let allItems: VehicleRankingItem[] = [];
+    // 1. Enrich static array
+    let allItems: VehicleRankingItem[] = VEHICLE_RANKINGS_DATA.map((v) => enrichVehicleRecord(v, channel));
 
-    try {
-      let query = supabase.from('v_top_rated_used_cars').select('*');
+    // 2. Filter by price bounds (using target price for active channel)
+    allItems = allItems.filter((v) => {
+      const p = v.target_price;
+      if (p < bounds.min) return false;
+      if (bounds.max !== null && p > bounds.max) return false;
+      return true;
+    });
 
-      // Price bounds
-      if (bounds.min > 0) {
-        query = query.gte(priceColumn, bounds.min);
-      }
-      if (bounds.max !== null) {
-        query = query.lte(priceColumn, bounds.max);
-      }
-
-      // Body type filter
-      if (params.body_type && params.body_type.length > 0) {
-        query = query.in('body_type', params.body_type);
-      }
-
-      const { data, error } = await query;
-      if (!error && data && data.length > 0) {
-        allItems = data.map((d) => enrichVehicleRecord(d, channel));
-      }
-    } catch (err) {
-      console.warn('RankingsService: Supabase query failed, falling back to seed data:', err);
+    // 3. Filter by body type
+    if (params.body_type && params.body_type.length > 0) {
+      allItems = allItems.filter((v) => params.body_type!.includes(v.body_type as any));
     }
 
-    // In-memory fallback if Supabase returned 0 rows or is offline
-    if (allItems.length === 0) {
-      allItems = BENCHMARK_USED_VEHICLES_SEED.map((v) => enrichVehicleRecord(v, channel)).filter((v) => {
-        const p = v.target_price;
-        if (p < bounds.min) return false;
-        if (bounds.max !== null && p > bounds.max) return false;
-        if (params.body_type && params.body_type.length > 0 && !params.body_type.includes(v.body_type as any)) {
-          return false;
-        }
-        return true;
-      });
-    }
-
-    // Sort items according to sort_by
+    // 4. Sort by criteria
     allItems.sort((a, b) => {
       switch (params.sort_by) {
         case 'reliability_desc':
@@ -241,7 +222,7 @@ export class RankingsService {
 
     const total_count = allItems.length;
 
-    // Calculate summary statistics
+    // 5. Calculate summary statistics
     const avgSpread = total_count > 0
       ? Number((allItems.reduce((acc, curr) => acc + curr.savings_spread, 0) / total_count).toFixed(2))
       : 0;
@@ -252,7 +233,7 @@ export class RankingsService {
       ? Number((allItems.reduce((acc, curr) => acc + curr.composite_score, 0) / total_count).toFixed(1))
       : 0;
 
-    // Pagination slice
+    // 6. Paginate
     const paginatedItems = allItems.slice(params.offset, params.offset + params.limit);
 
     return {
@@ -273,26 +254,13 @@ export class RankingsService {
   }
 
   /**
-   * Get pre-computed summary of all price tiers for tabs and switches
+   * Pure in-memory pre-computed summary of price tiers
    */
   static async getTiersSummary(channel: ValuationChannel = 'private_party'): Promise<TierSummaryItem[]> {
     const channelTiers = TIER_DEFINITIONS[channel];
     const results: TierSummaryItem[] = [];
 
-    // Fetch all vehicles once
-    let allVehicles: VehicleRankingItem[] = [];
-    try {
-      const { data, error } = await supabase.from('v_top_rated_used_cars').select('*');
-      if (!error && data && data.length > 0) {
-        allVehicles = data.map((d) => enrichVehicleRecord(d, channel));
-      }
-    } catch (e) {
-      // Fallback
-    }
-
-    if (allVehicles.length === 0) {
-      allVehicles = BENCHMARK_USED_VEHICLES_SEED.map((v) => enrichVehicleRecord(v, channel));
-    }
+    const allVehicles = VEHICLE_RANKINGS_DATA.map((v) => enrichVehicleRecord(v, channel));
 
     for (const [slug, def] of Object.entries(channelTiers)) {
       const tierVehicles = allVehicles.filter((v) => {
@@ -340,35 +308,15 @@ export class RankingsService {
   }
 
   /**
-   * Get single vehicle full breakdown by ID
+   * Pure in-memory lookup for single vehicle detail by ID or slug
    */
   static async getVehicleById(id: string): Promise<SingleVehicleDetailPayload | null> {
-    let raw: any = null;
-
-    try {
-      const { data, error } = await supabase
-        .from('v_top_rated_used_cars')
-        .select('*')
-        .eq('id', id)
-        .maybeSingle();
-
-      if (!error && data) {
-        raw = data;
-      }
-    } catch (e) {
-      console.warn('RankingsService: getVehicleById failed on DB:', e);
-    }
-
-    if (!raw) {
-      // Look up in benchmark seeds by id or slugified match
-      const targetSlug = id.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      raw = BENCHMARK_USED_VEHICLES_SEED.find((v) => {
-        const seedId = (v as any).id;
-        if (seedId && seedId === id) return true;
-        const generatedSlug = `${v.make}-${v.model}-${v.year_start}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        return generatedSlug === targetSlug || generatedSlug.includes(targetSlug) || targetSlug.includes(generatedSlug);
-      });
-    }
+    const targetSlug = id.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const raw = VEHICLE_RANKINGS_DATA.find((v) => {
+      if (v.id === id) return true;
+      const generatedSlug = `${v.make}-${v.model}-${v.year_start}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return generatedSlug === targetSlug || generatedSlug.includes(targetSlug) || targetSlug.includes(generatedSlug);
+    });
 
     if (!raw) {
       return null;
@@ -405,7 +353,7 @@ export class RankingsService {
       inventory_search_query: {
         make: enriched.make,
         model: enriched.model,
-        search_url: `/?tab=inventory&make=${encodeURIComponent(enriched.make)}&model=${encodeURIComponent(enriched.model)}`,
+        search_url: `/?tool=valuation-estimator&make=${encodeURIComponent(enriched.make)}&model=${encodeURIComponent(enriched.model)}`,
       },
     };
   }
