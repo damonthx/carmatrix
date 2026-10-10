@@ -223,86 +223,184 @@ const NavBar = ({
   ];
 
   return (
-    <header className="light-glass sticky top-0 z-50 border-b border-slate-200/60 font-poppins">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-md font-poppins text-white transition-colors">
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-[72px] sm:h-[85px]">
+        <div className="flex justify-between items-center h-[72px] sm:h-[80px]">
           {/* Logo */}
           <div className="cursor-pointer flex items-center shrink-0" onClick={() => handleNavClick()}>
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
               alt="CarMatrix Logo" 
-              className="w-[195px] sm:w-[225px] h-auto object-contain transition-all"
-              style={{ width: '225px' }}
+              className="w-[195px] sm:w-[220px] h-auto object-contain brightness-0 invert transition-all hover:opacity-90"
+              style={{ width: '220px' }}
               referrerPolicy="no-referrer"
             />
           </div>
           
-          {/* Desktop Navigation Grouped by the 3 Distinct Categories */}
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[14px] xl:text-[14.5px] font-medium font-poppins text-slate-600">
-            <button 
-              onClick={() => handleNavClick('vin-checker')}
-              className="group hover:text-[#29abe2] transition-all py-1.5 px-2 rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-900/[0.03]"
-            >
-              <div className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-white/95 border border-sky-300/70 shadow-[0_2px_6px_rgba(41,171,226,0.18),inset_0_1px_1px_rgba(255,255,255,0.95)] flex items-center justify-center text-[#0284c7] font-mono text-[11px] font-black tracking-tight relative overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-[#29abe2] group-hover:text-[#29abe2] group-hover:shadow-[0_0_12px_rgba(41,171,226,0.35),inset_0_1px_1px_rgba(255,255,255,1)] shrink-0">
-                <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
-                <span>01</span>
-              </div>
-              <span className="font-semibold text-slate-700 group-hover:text-[#29abe2] transition-colors">Pre-Lot Recon</span>
-            </button>
+          {/* Center Navigation */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm text-slate-300 font-medium font-poppins">
+            {/* Dropdown for Sectors 01, 02, 03 (Playbook Tools) */}
+            <div className="relative group cursor-pointer py-2">
+              <span className="flex items-center gap-1.5 hover:text-white transition-colors py-1">
+                <span>Playbook Tools</span>
+                <ChevronDown className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-200" />
+              </span>
 
-            <button 
-              onClick={() => handleNavClick('loan-calculator')}
-              className="group hover:text-amber-600 transition-all py-1.5 px-2 rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-900/[0.03]"
-            >
-              <div className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-white/95 border border-amber-300/70 shadow-[0_2px_6px_rgba(245,158,11,0.18),inset_0_1px_1px_rgba(255,255,255,0.95)] flex items-center justify-center text-amber-700 font-mono text-[11px] font-black tracking-tight relative overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-amber-500 group-hover:text-amber-600 group-hover:shadow-[0_0_12px_rgba(245,158,11,0.35),inset_0_1px_1px_rgba(255,255,255,1)] shrink-0">
-                <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
-                <span>02</span>
-              </div>
-              <span className="font-semibold text-slate-700 group-hover:text-amber-600 transition-colors">Finance Traps</span>
-            </button>
+              {/* Dropdown Panel rendering Sectors 01, 02, 03 */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                <div className="rounded-3xl bg-slate-950/95 border border-slate-800 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)] p-6 backdrop-blur-2xl relative overflow-hidden">
+                  {/* Ambient internal lighting glow */}
+                  <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-28 bg-[#29abe2]/20 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#29abe2]/40 to-transparent pointer-events-none" />
 
-            <button 
-              onClick={() => handleNavClick('quote-auditor')}
-              className="group hover:text-emerald-600 transition-all py-1.5 px-2 rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-900/[0.03]"
-            >
-              <div className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-white/95 border border-emerald-300/70 shadow-[0_2px_6px_rgba(16,185,129,0.18),inset_0_1px_1px_rgba(255,255,255,0.95)] flex items-center justify-center text-emerald-700 font-mono text-[11px] font-black tracking-tight relative overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-emerald-500 group-hover:text-emerald-600 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,1)] shrink-0">
-                <div className="absolute inset-x-0 top-0 h-px bg-white/90 pointer-events-none" />
-                <span>03</span>
-              </div>
-              <span className="font-semibold text-slate-700 group-hover:text-emerald-600 transition-colors">The Closing Table</span>
-            </button>
+                  <div className="grid grid-cols-3 gap-5 relative z-10">
+                    {/* Sector 01: Pre-Lot Recon */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 pb-2 border-b border-sky-500/20">
+                        <span className="w-5 h-5 rounded-md bg-sky-500/20 border border-sky-400/30 text-sky-400 font-mono text-[10px] font-black flex items-center justify-center">01</span>
+                        <span className="text-xs font-bold text-sky-300 uppercase tracking-wider">Pre-Lot Recon</span>
+                      </div>
+                      <div className="space-y-1">
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('vin-checker')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">VIN &amp; Recall Scanner</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">NHTSA factory records &amp; recalls</div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('valuation-estimator')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">Live Market Valuation</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">Trade-in vs private party pricing</div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('tco-calculator')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">5-Year Ownership TCO</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">Fuel, insurance &amp; depreciation</div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('inspection-checklist')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">Pre-Purchase Checklist</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">40-point pre-lot inspection</div>
+                        </button>
+                      </div>
+                    </div>
 
+                    {/* Sector 02: Finance Traps */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 pb-2 border-b border-amber-500/20">
+                        <span className="w-5 h-5 rounded-md bg-amber-500/20 border border-amber-400/30 text-amber-400 font-mono text-[10px] font-black flex items-center justify-center">02</span>
+                        <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Finance Traps</span>
+                      </div>
+                      <div className="space-y-1">
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('loan-calculator')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">Auto Loan Calculator</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">Payment power &amp; interest math</div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('lease-vs-finance')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">Lease vs. Buy Simulator</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">Equity vs lease cashflow traps</div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('depreciation-curve')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">Negative Equity Curve</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">7-year residual depreciation</div>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Sector 03: The Closing Table */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 pb-2 border-b border-emerald-500/20">
+                        <span className="w-5 h-5 rounded-md bg-emerald-500/20 border border-emerald-400/30 text-emerald-400 font-mono text-[10px] font-black flex items-center justify-center">03</span>
+                        <span className="text-xs font-bold text-emerald-300 uppercase tracking-wider">The Closing Table</span>
+                      </div>
+                      <div className="space-y-1">
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('quote-auditor')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-emerald-400 transition-colors">Quote &amp; Fee Auditor</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">Detect &amp; delete dealer junk fees</div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('state-fees')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-emerald-400 transition-colors">50-State Doc Fee Guide</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">Statutory caps &amp; tax averages</div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick('ai-advisor')}
+                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
+                        >
+                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-emerald-400 transition-colors">AI Negotiation Advisor</div>
+                          <div className="text-[10.5px] text-slate-400 leading-tight">Counter-scripts &amp; leverage tips</div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Direct Navigation Links */}
             <button 
               onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onRankingsClick?.(); }} 
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5 font-semibold text-slate-700 hover:text-[#29abe2]"
+              className="hover:text-white transition-colors py-2 cursor-pointer"
             >
-              <TrendingUp size={15} className="text-[#29abe2]" />
-              <span>Used Car Rankings</span>
+              Used Cars
             </button>
 
             <button 
               onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }} 
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer"
+              className="hover:text-white transition-colors py-2 cursor-pointer"
             >
               Market Pulse
             </button>
 
             <button 
-              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onGearClick?.(); }} 
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5 font-semibold text-sky-600"
-            >
-              <ShoppingBag size={15} className="text-[#29abe2]" />
-              <span>Buyer's Gear</span>
-            </button>
-
-            <button 
               onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onDealerDirectoryClick?.(); }} 
-              className="hover:text-[#29abe2] transition-colors py-2 cursor-pointer flex items-center gap-1.5 font-semibold text-slate-700 hover:text-[#29abe2]"
+              className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors py-2 cursor-pointer flex items-center gap-1.5"
             >
-              <ShieldCheck size={16} className="text-[#29abe2]" />
-              <span>Dealer Intel™</span>
+              Dealer Intel™
             </button>
           </nav>
+
+          {/* Right Action: Buyer's Gear pill button */}
+          <div className="hidden lg:flex items-center gap-3">
+            <button 
+              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onGearClick?.(); }} 
+              className="text-xs px-3.5 py-1.5 rounded-full border border-sky-500/30 text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 hover:border-sky-400/50 transition-all flex items-center gap-1.5 font-medium cursor-pointer"
+            >
+              <ShoppingBag className="w-3.5 h-3.5 text-sky-400" />
+              <span>Buyer's Gear</span>
+            </button>
+          </div>
 
           {/* Mobile Hamburger Button */}
           <div className="lg:hidden flex items-center">
