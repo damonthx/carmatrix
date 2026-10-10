@@ -229,7 +229,7 @@ const NavBar = ({
           {/* Logo */}
           <div className="cursor-pointer flex items-center shrink-0" onClick={() => handleNavClick()}>
             <img 
-              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1791661870/Logo-white-500_m3yxou.png" 
               alt="CarMatrix Logo" 
               className="w-[195px] sm:w-[225px] h-auto object-contain transition-all hover:opacity-90"
               style={{ width: '225px' }}
