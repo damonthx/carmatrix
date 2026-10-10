@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tag, Sparkles, TrendingDown } from 'lucide-react';
-import { TierSummaryItem, ValuationChannel, TIER_DEFINITIONS } from '@/lib/services/rankingsService';
+import { TierSummaryItem, ValuationChannel, TIER_DEFINITIONS, TierDefinition } from '@/lib/services/rankingsService';
 
 interface PriceBracketNavProps {
   channel: ValuationChannel;
@@ -54,7 +54,7 @@ export const PriceBracketNav: React.FC<PriceBracketNavProps> = ({
           <span>All Price Tiers</span>
         </button>
 
-        {Object.entries(definitions).map(([slug, def]) => {
+        {(Object.entries(definitions) as [string, TierDefinition][]).map(([slug, def]) => {
           const isSelected = activeTier === slug;
           const summary = tiersSummary.find((t) => t.tier_slug === slug);
           const count = summary ? summary.vehicle_count : 0;

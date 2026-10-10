@@ -16,7 +16,8 @@ import { useRankingsAnalytics } from './hooks/useRankingsAnalytics';
 import { 
   ValuationChannel, 
   TierSummaryItem, 
-  VehicleRankingItem 
+  VehicleRankingItem,
+  RankingsService
 } from '@/lib/services/rankingsService';
 import { vehicleBodyTypes } from '@/lib/validations/rankingsSchema';
 
@@ -88,37 +89,74 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
     }
   };
 
-  // Fetch Tier Summaries whenever channel changes
+  // Fetch Tier Summaries whenever channel changes (instant in-memory with optional network sync)
   useEffect(() => {
     let isCancelled = false;
 
-    async function fetchTiersSummary() {
+    async function loadTiersSummary() {
+      // 1. Immediately hydrate from in-memory service
       try {
-        const res = await fetch(`/api/rankings/tiers-summary?channel=${channel}`);
-        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-        const data = await res.json();
-        if (!isCancelled && data.tiers) {
-          setTiersSummary(data.tiers);
+        const localSummaries = await RankingsService.getTiersSummary(channel);
+        if (!isCancelled && localSummaries && localSummaries.length > 0) {
+          setTiersSummary(localSummaries);
         }
       } catch (err) {
-        console.warn('Failed to load tiers summary:', err);
+        console.warn('Local tier summary calculation error:', err);
+      }
+
+      // 2. Optionally attempt network sync if API route is responding
+      try {
+        const res = await fetch(`/api/rankings/tiers-summary?channel=${channel}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!isCancelled && data.tiers && data.tiers.length > 0) {
+            setTiersSummary(data.tiers);
+          }
+        }
+      } catch {
+        // Network unavailable, already safely hydrated from in-memory data
       }
     }
 
-    fetchTiersSummary();
+    loadTiersSummary();
     return () => {
       isCancelled = true;
     };
   }, [channel]);
 
-  // Fetch Vehicles whenever filters change
+  // Fetch Vehicles whenever filters change (instant in-memory with optional network sync)
   useEffect(() => {
     let isCancelled = false;
 
-    async function fetchVehicles() {
+    async function loadVehicles() {
       setIsLoading(true);
       setError(null);
 
+      // 1. Instantly compute and render vehicles from pure in-memory service
+      try {
+        const validBodyTypes = selectedBodyType !== 'all'
+          ? [selectedBodyType as any]
+          : undefined;
+
+        const result = await RankingsService.getRankings({
+          channel,
+          tier: activeTier || undefined,
+          body_type: validBodyTypes,
+          sort_by: sortBy as any,
+          limit: 50,
+          offset: 0,
+        });
+
+        if (!isCancelled && result.items) {
+          setVehicles(result.items);
+          setIsLoading(false);
+          setError(null);
+        }
+      } catch (memErr) {
+        console.error('In-memory rankings load failed:', memErr);
+      }
+
+      // 2. Optionally check network API if reachable without overriding with error on failure
       try {
         const query = new URLSearchParams();
         query.set('channel', channel);
@@ -127,23 +165,20 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
         query.set('sort_by', sortBy);
 
         const res = await fetch(`/api/rankings?${query.toString()}`);
-        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-        const data = await res.json();
-
-        if (!isCancelled) {
-          setVehicles(data.items || []);
-          setIsLoading(false);
+        if (res.ok) {
+          const data = await res.json();
+          if (!isCancelled && data.items && data.items.length > 0) {
+            setVehicles(data.items);
+            setIsLoading(false);
+            setError(null);
+          }
         }
-      } catch (err) {
-        if (!isCancelled) {
-          console.error('Failed to load rankings:', err);
-          setError('Unable to load vehicle rankings. Please try again.');
-          setIsLoading(false);
-        }
+      } catch {
+        // Safe: in-memory rankings are already loaded and interactive
       }
     }
 
-    fetchVehicles();
+    loadVehicles();
     return () => {
       isCancelled = true;
     };

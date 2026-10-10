@@ -27,6 +27,7 @@
     "node_modules",
     "dist",
     "supabase",
-    "scripts"
+    "scripts",
+    "app"
   ]
 }

@@ -41,6 +41,12 @@ export interface VehicleRankingItem extends RankedVehicleView {
   savings_spread: number;
   savings_pct: number;
   target_price: number;
+  composite_score: number;
+  reliability_component?: number;
+  ownership_cost_component?: number;
+  market_spread_component?: number;
+  spread_pct?: number;
+  private_party_savings?: number;
 }
 
 export interface RankingsResponsePayload {
@@ -234,7 +240,9 @@ export class RankingsService {
       : 0;
 
     // 6. Paginate
-    const paginatedItems = allItems.slice(params.offset, params.offset + params.limit);
+    const offset = params.offset !== undefined && !isNaN(params.offset) ? params.offset : 0;
+    const limit = params.limit !== undefined && !isNaN(params.limit) ? params.limit : 50;
+    const paginatedItems = allItems.slice(offset, offset + limit);
 
     return {
       active_channel: channel,

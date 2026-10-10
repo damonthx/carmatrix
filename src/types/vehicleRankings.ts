@@ -51,6 +51,7 @@ export interface RankedVehicleView extends VehicleRankingMaster {
   private_party_savings_pct: number;
   private_party_savings_dollars: number;
   carmatrix_score: number; // 0 - 100 composite score
+  composite_score?: number; // alias for carmatrix_score
   cash_price_tier: CashPriceTier;
   dealer_retail_tier: DealerRetailTier;
 }
@@ -92,7 +93,7 @@ export function calculateCarMatrixScore(
     dealerRetailMid = reliabilityRatingOrVehicle.dealer_retail_mid;
     privatePartyMid = reliabilityRatingOrVehicle.private_party_mid;
   } else {
-    reliabilityRating = reliabilityRatingOrVehicle;
+    reliabilityRating = Number(reliabilityRatingOrVehicle) || 0;
     fiveYearMaintenanceCost = fiveYearMaintenanceCostParam ?? 0;
     depreciationRatePct = depreciationRatePctParam ?? 0;
     dealerRetailMid = dealerRetailMidParam ?? 0;

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { ValuationChannel } from '../lib/services/rankingsService';
+import { ValuationChannel } from '@/lib/services/rankingsService';
 
 export type RankingsAnalyticsEvent = 
   | 'rankings_channel_switched'
