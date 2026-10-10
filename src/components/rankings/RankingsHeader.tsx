@@ -20,37 +20,63 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
       <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#29abe2]/40 to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-        {/* Title and Copy */}
-        <div className="max-w-2xl space-y-3">
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-transparent border border-white/20 text-[#29abe2] backdrop-blur-xl shadow-[0_2px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]">
-            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-sky-400/30 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[0_0_8px_rgba(41,171,226,0.35),inset_0_1px_1px_rgba(255,255,255,0.6)] shrink-0">
-              <ShieldCheck size={12} strokeWidth={2.4} className="drop-shadow-xs" />
+      <div className="relative z-10 flex flex-col gap-8">
+        {/* Main Hero Row: Text on Left, Car Image on Right */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+          {/* Title and Copy */}
+          <div className="flex-1 max-w-2xl space-y-3.5">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-transparent border border-white/20 text-[#29abe2] backdrop-blur-xl shadow-[0_2px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]">
+              <div className="w-5 h-5 rounded-md bg-gradient-to-br from-sky-400/30 via-[#29abe2]/20 to-sky-600/10 border border-sky-300/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[0_0_8px_rgba(41,171,226,0.35),inset_0_1px_1px_rgba(255,255,255,0.6)] shrink-0">
+                <ShieldCheck size={12} strokeWidth={2.4} className="drop-shadow-xs" />
+              </div>
+              <span className="text-slate-100 tracking-wider">CarMatrix Value &amp; Reliability Index</span>
             </div>
-            <span className="text-slate-100 tracking-wider">CarMatrix Value &amp; Reliability Index</span>
+
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white font-poppins">
+              Top-Rated Used Cars by <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] to-sky-300">True Street Value</span>
+            </h1>
+
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+              Dual-channel pricing engine cross-referencing NHTSA safety records, 5-year maintenance costs, and private party cash clearing prices vs. dealership lot markups.
+            </p>
+
+            <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Updated with live Dallas–Fort Worth &amp; nationwide cash transactions ({totalVehicles} ranked models)</span>
+            </div>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white font-poppins">
-            Top-Rated Used Cars by <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] to-sky-300">True Street Value</span>
-          </h1>
-
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-            Dual-channel pricing engine cross-referencing NHTSA safety records, 5-year maintenance costs, and private party cash clearing prices vs. dealership lot markups.
-          </p>
-
-          <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Updated with live Dallas–Fort Worth &amp; nationwide cash transactions ({totalVehicles} ranked models)</span>
+          {/* Car Image to the right of the text */}
+          <div className="relative w-full lg:w-auto flex-1 flex items-center justify-center lg:justify-end min-w-[260px] max-w-[400px]">
+            {/* Ambient radial glow behind vehicle */}
+            <div className="absolute w-64 h-64 sm:w-72 sm:h-72 rounded-full bg-[radial-gradient(circle,_rgba(41,171,226,0.22)_0%,_transparent_70%)] blur-2xl pointer-events-none" />
+            
+            <img
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/e_background_removal/v1791673725/lexus-is-car-luxury-vehicle-2018-lexus-es-300h-car-thumbnail_mrluwc.png"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://res.cloudinary.com/yrhldsmj/image/upload/v1791673725/lexus-is-car-luxury-vehicle-2018-lexus-es-300h-car-thumbnail_mrluwc.jpg";
+              }}
+              alt="Top-Rated Used Car"
+              className="relative z-10 w-full max-w-[340px] sm:max-w-[380px] h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.65)] hover:scale-[1.03] transition-transform duration-300"
+              referrerPolicy="no-referrer"
+            />
           </div>
         </div>
 
-        {/* Channel Segmented Control Switcher */}
-        <div className="flex flex-col sm:items-end gap-2 shrink-0">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-            Market Valuation Mode
+        {/* Bottom Bar: Market Valuation Mode Switcher */}
+        <div className="pt-6 border-t border-slate-800/80 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Market Valuation Mode:
+            </div>
+            <p className="text-[11px] text-slate-400">
+              {channel === 'private_party'
+                ? 'Private party reflects street cash clearing value without dealer doc fees or pack.'
+                : 'Dealer retail incorporates median dealer listing prices before taxes and doc fees.'}
+            </p>
           </div>
 
-          <div className="inline-flex p-1.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-inner backdrop-blur-xl">
+          <div className="inline-flex p-1.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-inner backdrop-blur-xl shrink-0 self-start md:self-auto">
             {/* Private Party Cash Option */}
             <button
               type="button"
@@ -98,12 +124,6 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
               <span>Dealership Lots</span>
             </button>
           </div>
-
-          <p className="text-[11px] text-slate-400 max-w-xs text-right">
-            {channel === 'private_party'
-              ? 'Private party reflects street cash clearing value without dealer doc fees or pack.'
-              : 'Dealer retail incorporates median dealer listing prices before taxes and doc fees.'}
-          </p>
         </div>
       </div>
     </div>
