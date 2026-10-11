@@ -531,7 +531,10 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
               type="number"
               placeholder="Current odometer"
               value={mileage}
-              onChange={(e) => setMileage(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value.replace(/^0+(?=\d)/, '');
+                setMileage(val);
+              }}
               className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
             />
           </div>

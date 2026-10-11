@@ -146,8 +146,12 @@ export default function ValuationWidget() {
               <input
                 type="number"
                 step="1000"
-                value={mileage}
-                onChange={(e) => setMileage(Number(e.target.value))}
+                placeholder="e.g. 38000"
+                value={mileage === 0 ? '' : mileage}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setMileage(val === '' ? 0 : Number(val));
+                }}
                 className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
               />
             </div>

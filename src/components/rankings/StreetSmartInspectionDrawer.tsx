@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { VehicleRankingItem } from '@/lib/services/rankingsService';
 import { buildCarMatrixInventoryUrl } from '@/lib/utils/inventoryLinks';
+import { CostOfOwnershipWidget } from '../toolkit/CostOfOwnershipWidget';
 
 interface StreetSmartInspectionDrawerProps {
   vehicle: VehicleRankingItem | null;
@@ -171,14 +172,20 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
             </div>
           </div>
 
-          {/* Powertrain & Ownership Cost Summary */}
+          {/* Live 5-Year Cost of Ownership Projection */}
+          <CostOfOwnershipWidget 
+            initialPrice={vehicle.private_party_mid}
+            vehicleName={`${vehicle.year_start}–${vehicle.year_end} ${vehicle.make} ${vehicle.model}`}
+          />
+
+          {/* Powertrain & Reliability Summary */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2">
             <div className="flex items-center justify-between text-slate-600">
               <span>Powertrain Notes:</span>
               <strong className="text-slate-900">{vehicle.engine_notes}</strong>
             </div>
             <div className="flex items-center justify-between text-slate-600">
-              <span>5-Year Estimated Maintenance:</span>
+              <span>5-Year Estimated Maintenance Baseline:</span>
               <strong className="text-slate-900">${vehicle.five_year_maintenance_cost.toLocaleString()}</strong>
             </div>
             <div className="flex items-center justify-between text-slate-600">

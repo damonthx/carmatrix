@@ -14,15 +14,15 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
   totalVehicles,
 }) => {
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-slate-950 text-white border border-slate-800 p-6 sm:p-10 shadow-2xl mb-8">
+    <div className="relative overflow-hidden rounded-3xl bg-slate-950 text-white border border-slate-800 px-6 py-5 sm:px-10 sm:py-6 shadow-2xl mb-8">
       {/* Ambient background glows */}
       <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#29abe2]/15 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#29abe2]/40 to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col gap-8">
+      <div className="relative z-10 flex flex-col gap-5">
         {/* Main Hero Row: Text on Left, Car Image on Right */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 py-1">
           {/* Title and Copy */}
           <div className="flex-1 max-w-2xl space-y-3.5">
             <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-transparent border border-white/20 text-[#29abe2] backdrop-blur-xl shadow-[0_2px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]">
@@ -64,7 +64,7 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
         </div>
 
         {/* Bottom Bar: Market Valuation Mode Switcher */}
-        <div className="pt-6 border-t border-slate-800/80 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="pt-4 border-t border-slate-800/80 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
             <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
               Market Valuation Mode:

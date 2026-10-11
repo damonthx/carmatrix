@@ -35,6 +35,7 @@ import StateFeeGuideWidget from './components/toolkit/StateFeeGuideWidget';
 import LeaseVsFinanceWidget from './components/toolkit/LeaseVsFinanceWidget';
 import TestDriveDossierWidget from './components/toolkit/TestDriveDossierWidget';
 import DepreciationPredictorWidget from './components/toolkit/DepreciationPredictorWidget';
+import CostOfOwnershipWidget from './components/toolkit/CostOfOwnershipWidget';
 import DealerDirectoryPage from './DealerDirectoryPage';
 import DealerProfilePage from './DealerProfilePage';
 import RankingsPage from './RankingsPage';
@@ -945,8 +946,9 @@ const EstimateBudgetSection = () => {
                 <span className="text-slate-400 mr-1">$</span>
                 <input 
                   type="number" 
-                  value={monthlyPayment} 
-                  onChange={e => setMonthlyPayment(Number(e.target.value))}
+                  placeholder="550"
+                  value={monthlyPayment === 0 ? '' : monthlyPayment} 
+                  onChange={e => setMonthlyPayment(e.target.value === '' ? 0 : Number(e.target.value))}
                   className="w-full outline-none bg-transparent font-poppins"
                 />
               </div>
@@ -958,8 +960,9 @@ const EstimateBudgetSection = () => {
                 <span className="text-slate-400 mr-1">$</span>
                 <input 
                   type="number" 
-                  value={downPayment} 
-                  onChange={e => setDownPayment(Number(e.target.value))}
+                  placeholder="3000"
+                  value={downPayment === 0 ? '' : downPayment} 
+                  onChange={e => setDownPayment(e.target.value === '' ? 0 : Number(e.target.value))}
                   className="w-full outline-none bg-transparent font-poppins"
                 />
               </div>
@@ -1409,8 +1412,11 @@ export default function App() {
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'tco') && (
-                      <section id="tco-calculator" className="scroll-mt-24">
+                      <section id="tco-calculator" className="scroll-mt-24 space-y-8">
                         <TCOCalculator />
+                        <div className="max-w-xl mx-auto">
+                          <CostOfOwnershipWidget />
+                        </div>
                       </section>
                     )}
 
