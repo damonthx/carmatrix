@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { 
   MapPin, Navigation, ZoomIn, ZoomOut, RotateCcw, 
-  Layers, ExternalLink, ShieldCheck, Car, ArrowRight, X
+  Layers, ShieldCheck, ArrowRight, X
 } from 'lucide-react';
 import { EnrichedDealer } from './dealerTypes';
 
@@ -230,7 +230,7 @@ export const DealerMap: React.FC<DealerMapProps> = ({
                   <span className="absolute -inset-2.5 rounded-full bg-[#29abe2]/30 animate-ping pointer-events-none" />
                 )}
 
-                {/* Marker Pill with Inventory Badge */}
+                {/* Marker Pill with Watchdog Transparency Score */}
                 <div className={`group flex items-center gap-1.5 px-2.5 py-1 rounded-full shadow-lg border transition-all duration-200 ${
                   isSelected
                     ? 'bg-slate-900 text-white border-[#29abe2] ring-2 ring-[#29abe2]/50 scale-115'
@@ -239,12 +239,12 @@ export const DealerMap: React.FC<DealerMapProps> = ({
                     : 'bg-white/95 text-slate-800 border-white/90 hover:scale-105'
                 }`}>
                   <div className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${scoreColor}`}>
-                    <Car size={10} className="stroke-[2.5]" />
+                    <ShieldCheck size={10} strokeWidth={2.4} className="stroke-[2.5]" />
                   </div>
                   
-                  {/* Inventory count number badge */}
+                  {/* Transparency score badge */}
                   <span className="text-[11px] font-black tracking-tight leading-none">
-                    {dealer.active_inventory_count || 120}
+                    {dealer.price_transparency_score ?? 88}
                   </span>
 
                   {/* Brand miniature or dot */}
@@ -293,11 +293,11 @@ export const DealerMap: React.FC<DealerMapProps> = ({
                 </div>
               </div>
 
-              {/* Quick metrics in popup */}
+              {/* Quick watchdog metrics in popup */}
               <div className="grid grid-cols-3 gap-2 py-2.5 my-2 border-y border-slate-100 text-center">
                 <div className="bg-slate-50/90 backdrop-blur-md rounded-xl p-1.5 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_1px_3px_rgba(15,23,42,0.04)]">
-                  <span className="text-[9.5px] uppercase font-bold text-slate-400 block">Inventory</span>
-                  <span className="text-[13px] font-black text-slate-900">{activeDealer.active_inventory_count || 120}</span>
+                  <span className="text-[9.5px] uppercase font-bold text-slate-400 block">Doc Fee</span>
+                  <span className="text-[13px] font-black text-slate-900">${activeDealer.doc_fee_display || 150}</span>
                 </div>
                 <div className="bg-slate-50/90 backdrop-blur-md rounded-xl p-1.5 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_1px_3px_rgba(15,23,42,0.04)]">
                   <span className="text-[9.5px] uppercase font-bold text-slate-400 block">Integrity</span>
@@ -313,28 +313,17 @@ export const DealerMap: React.FC<DealerMapProps> = ({
                 </div>
               </div>
 
-              {/* Popup CTAs */}
-              <div className="flex items-center gap-2 pt-1">
+              {/* Popup CTA (Single Accountability Dossier Link) */}
+              <div className="pt-1">
                 <button
                   onClick={() => onViewProfile(activeDealer)}
-                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-2 px-3 rounded-xl text-xs font-bold transition-all text-center flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                 >
                   <div className="w-5 h-5 rounded-lg bg-sky-500/20 border border-sky-400/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
                     <ShieldCheck size={12} strokeWidth={2.4} className="text-[#29abe2]" />
                   </div>
-                  <span>Dealer Profile</span>
+                  <span>Open Accountability Dossier</span>
                 </button>
-                <a
-                  href={activeDealer.website || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#29abe2] hover:bg-[#2295c5] text-white py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm shadow-[#29abe2]/20 cursor-pointer"
-                >
-                  <span>Inventory</span>
-                  <div className="w-4 h-4 rounded-md bg-white/20 border border-white/30 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
-                    <ExternalLink size={10} strokeWidth={2.4} />
-                  </div>
-                </a>
               </div>
 
             </div>
@@ -360,7 +349,7 @@ export const DealerMap: React.FC<DealerMapProps> = ({
           </span>
         </div>
         <div className="text-[10.5px] text-slate-400 font-medium">
-          Pin numbers indicate live vehicle stock count
+          Pin numbers indicate price transparency score (0–100)
         </div>
       </div>
 

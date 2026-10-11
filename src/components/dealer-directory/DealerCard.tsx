@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
-  MapPin, Award, ArrowUpRight, ShieldCheck, 
-  Car, TrendingDown, TrendingUp, Zap, ChevronRight, CheckCircle2, Phone, Globe
+  MapPin, Award, ShieldCheck, 
+  TrendingDown, TrendingUp, Zap, ChevronRight, CheckCircle2
 } from 'lucide-react';
 import { EnrichedDealer } from './dealerTypes';
 
@@ -10,15 +10,13 @@ interface DealerCardProps {
   isSelected?: boolean;
   onSelect?: () => void;
   onViewProfile: (dealer: EnrichedDealer) => void;
-  onViewInventory?: (dealer: EnrichedDealer) => void;
 }
 
 export const DealerCard: React.FC<DealerCardProps> = ({
   dealer,
   isSelected = false,
   onSelect,
-  onViewProfile,
-  onViewInventory
+  onViewProfile
 }) => {
   const score = dealer.price_transparency_score ?? 85;
 
@@ -74,13 +72,12 @@ export const DealerCard: React.FC<DealerCardProps> = ({
       {/* Internal subtle brand glow on hover */}
       <div className="absolute -top-16 -right-16 w-40 h-40 bg-gradient-to-br from-[#29abe2]/10 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
 
-      {/* Card Header: Brand Pills & Transparency Score Pill */}
+      {/* Card Header: Location Badge & Transparency Score Pill */}
       <div>
         <div className="flex items-start justify-between gap-3 mb-3.5">
           
-          {/* Location & Distance Badge (Ultra-Premium Jewel Waypoint) */}
+          {/* Location & Distance Badge */}
           <div className="group/pin inline-flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-gradient-to-r from-white/95 to-slate-50/90 border border-slate-200/90 text-slate-800 text-xs font-semibold shadow-[0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_1px_rgba(255,255,255,1)] hover:border-sky-300/80 transition-all">
-            {/* Jewel Waypoint Curved Square Container */}
             <div className="w-5 h-5 rounded-md bg-gradient-to-br from-sky-400 via-[#29abe2] to-sky-600 flex items-center justify-center text-white shadow-[0_2px_6px_rgba(41,171,226,0.45),inset_0_1px_1px_rgba(255,255,255,0.8)] shrink-0">
               <MapPin size={11} strokeWidth={2.4} className="drop-shadow-xs" />
             </div>
@@ -89,7 +86,7 @@ export const DealerCard: React.FC<DealerCardProps> = ({
             <span className="text-[#0284c7] font-black whitespace-nowrap tracking-tight">{dealer.distance_miles} mi</span>
           </div>
 
-          {/* Transparency / Integrity Score Pill (0–100 with subtle glow) */}
+          {/* Transparency / Integrity Score Pill (0–100) */}
           <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-black tracking-tight shrink-0 transition-all ${scoreTheme.bg} ${scoreTheme.glow}`}>
             <span className={`w-2 h-2 rounded-full ${scoreTheme.indicator} animate-pulse shadow-[0_0_6px_currentColor]`} />
             <span>{score}/100</span>
@@ -111,7 +108,7 @@ export const DealerCard: React.FC<DealerCardProps> = ({
           </div>
           
           <p className="text-xs text-slate-500 font-medium truncate">
-            {dealer.street_address} · {dealer.zip_code}
+            {dealer.street_address}, {dealer.city}, {dealer.state} {dealer.zip_code}
           </p>
         </div>
 
@@ -141,24 +138,24 @@ export const DealerCard: React.FC<DealerCardProps> = ({
           )}
         </div>
 
-        {/* Key Stats Bar (3 Luxury Glass Metric Boxes with Glassmorphic Curved Square Icons) */}
+        {/* Accountability Audit Metrics Bar (3 Watchdog Metric Boxes) */}
         <div className="grid grid-cols-3 gap-2 p-2.5 rounded-2xl bg-gradient-to-b from-slate-50/95 to-slate-100/70 border border-slate-200/70 mb-6 text-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.9)]">
           
-          {/* 1. Active Vehicles in Stock */}
+          {/* 1. Doc Fee Compliance */}
           <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/70 border border-white shadow-xs">
             <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">
-              <div className="w-5 h-5 rounded-md bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
-                <Car size={11} strokeWidth={2.4} />
+              <div className="w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-400/35 backdrop-blur-md flex items-center justify-center text-emerald-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
+                <ShieldCheck size={11} strokeWidth={2.4} />
               </div>
-              <span>In Stock</span>
+              <span>Doc Fee</span>
             </div>
             <div className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
-              {dealer.active_inventory_count}
+              ${dealer.doc_fee_display || 150}
             </div>
-            <div className="text-[10px] font-medium text-slate-400">Available</div>
+            <div className="text-[10px] font-medium text-emerald-600">TX Capped</div>
           </div>
 
-          {/* 2. Average Market Price Delta */}
+          {/* 2. Market Pricing Discipline */}
           <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/70 border border-white shadow-xs">
             <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">
               <div className={`w-5 h-5 rounded-md flex items-center justify-center backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] ${
@@ -166,7 +163,7 @@ export const DealerCard: React.FC<DealerCardProps> = ({
               }`}>
                 {isBelowMarket ? <TrendingDown size={11} strokeWidth={2.4} /> : <TrendingUp size={11} strokeWidth={2.4} />}
               </div>
-              <span>Market</span>
+              <span>Discipline</span>
             </div>
             <div className={`text-sm sm:text-base font-black tracking-tight ${
               isBelowMarket ? 'text-emerald-600' : 'text-slate-800'
@@ -176,62 +173,44 @@ export const DealerCard: React.FC<DealerCardProps> = ({
             <div className="text-[10px] font-medium text-slate-400">vs Regional Avg</div>
           </div>
 
-          {/* 3. Customer Rating (Award icon replacing Star in Glassmorphic curved square) */}
+          {/* 3. Customer Satisfaction / Trust Score */}
           <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white/70 border border-white shadow-xs">
             <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">
               <div className="w-5 h-5 rounded-md bg-amber-500/15 border border-amber-400/35 backdrop-blur-md flex items-center justify-center text-amber-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
                 <Award size={11} strokeWidth={2.4} />
               </div>
-              <span>Rating</span>
+              <span>Trust</span>
             </div>
             <div className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center justify-center gap-1">
               <span>{dealer.customer_rating_display.toFixed(1)}</span>
               <span className="text-[10px] font-bold text-amber-600 bg-amber-100/90 px-1 py-0.2 rounded border border-amber-200/60 leading-none">TRUST</span>
             </div>
             <div className="text-[10px] font-medium text-slate-400">
-              ({dealer.review_count_display} reviews)
+              ({dealer.review_count_display} audits)
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* CTA Buttons: Primary Accent & Secondary Glass */}
-      <div className="flex items-center gap-2.5 pt-1">
-        
-        {/* Primary Accent Button: "View Inventory" */}
-        <a
-          href={dealer.website || '#'}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => {
-            if (onViewInventory) {
-              e.preventDefault();
-              onViewInventory(dealer);
-            }
-          }}
-          className="flex-1 bg-[#29abe2] hover:bg-[#2089b5] text-white py-3 px-4 rounded-2xl text-xs sm:text-[13px] font-bold transition-all duration-200 shadow-md shadow-[#29abe2]/20 hover:shadow-lg hover:shadow-[#29abe2]/30 active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer text-center"
-        >
-          <span>View Inventory</span>
-          <ArrowUpRight size={15} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-        </a>
-
-        {/* Secondary Glass Button: "Dealer Profile" */}
+      {/* Primary Action Button: Pure Accountability Dossier (No Outbound Dealer Links) */}
+      <div className="pt-1">
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             onViewProfile(dealer);
           }}
-          className="bg-white/80 hover:bg-white text-slate-700 hover:text-slate-900 py-3 px-4 rounded-2xl text-xs sm:text-[13px] font-bold border border-slate-200/80 hover:border-slate-300 shadow-xs hover:shadow-md transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-2xl text-xs sm:text-[13px] font-bold shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2.5 cursor-pointer group/btn"
         >
-          <div className="w-5 h-5 rounded-md bg-[#29abe2]/15 border border-[#29abe2]/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
+          <div className="w-5 h-5 rounded-md bg-[#29abe2]/20 border border-[#29abe2]/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-inner shrink-0">
             <ShieldCheck size={12} strokeWidth={2.4} />
           </div>
-          <span>Dealer Profile</span>
+          <span>View Accountability Dossier</span>
+          <ChevronRight size={14} className="text-slate-400 group-hover/btn:translate-x-0.5 transition-transform" />
         </button>
-
       </div>
     </div>
   );
 };
+export default DealerCard;

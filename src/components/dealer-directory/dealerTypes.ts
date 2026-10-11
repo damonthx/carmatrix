@@ -9,6 +9,9 @@ export interface EnrichedDealer extends Dealership {
   review_count_display: number; // e.g. 142
   is_ev_certified: boolean;
   doc_fee_display: number; // e.g. 150
+  addon_risk_level?: 'low' | 'moderate' | 'high';
+  finance_risk_level?: 'low' | 'moderate' | 'high';
+  composite_grade?: string; // e.g. 'A+', 'A', 'B', 'C'
 }
 
 export type ViewMode = 'grid' | 'split';

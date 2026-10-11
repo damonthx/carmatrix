@@ -112,9 +112,9 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-center">
           
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Stocked Vehicles</span>
-            <span className="text-lg font-black text-slate-900 block">{dealer.active_inventory_count}</span>
-            <span className="text-[10px] font-semibold text-slate-500">Live Inventory</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Add-On Risk</span>
+            <span className="text-lg font-black text-emerald-600 block">Low Risk</span>
+            <span className="text-[10px] font-semibold text-slate-500">0% Mandatory Add-ons</span>
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
@@ -177,27 +177,11 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
           </div>
         </div>
 
-        {/* Brands & Contact Info */}
+        {/* Brands & Franchise Coverage */}
         <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 mb-6 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">
-            {dealer.phone && (
-              <a href={`tel:${dealer.phone}`} className="flex items-center gap-1.5 hover:text-[#29abe2] transition-colors">
-                <Phone size={14} className="text-[#29abe2]" />
-                <span>{dealer.phone}</span>
-              </a>
-            )}
-            {dealer.website && (
-              <a 
-                href={dealer.website} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="flex items-center gap-1.5 hover:text-[#29abe2] transition-colors"
-              >
-                <Globe size={14} className="text-[#29abe2]" />
-                <span>Official Website</span>
-                <ArrowUpRight size={12} />
-              </a>
-            )}
+          <div className="text-xs font-semibold text-slate-600">
+            <span className="text-slate-400 uppercase text-[10px] font-bold block mb-0.5">Franchise Brands Monitored</span>
+            <span>{dealer.dealer_group || 'Independent Franchise'}</span>
           </div>
 
           <div className="flex flex-wrap gap-1">
@@ -209,7 +193,7 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
           </div>
         </div>
 
-        {/* Bottom Modal Actions */}
+        {/* Bottom Modal Actions (Strictly Watchdog Actions, No Outbound Links) */}
         <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
           
           {/* Audit Quote Action */}
@@ -223,10 +207,10 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
             <div className="w-6 h-6 rounded-lg bg-[#29abe2]/15 border border-[#29abe2]/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
               <FileSearch size={13} strokeWidth={2.4} />
             </div>
-            <span>Audit a Quote</span>
+            <span>Audit a Quote from this Dealer</span>
           </button>
 
-          {/* View Full Profile Hub */}
+          {/* View Full Accountability Dossier */}
           {onViewFullProfile && (
             <button
               onClick={() => {
@@ -238,20 +222,9 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
               <div className="w-6 h-6 rounded-lg bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-inner shrink-0">
                 <ShieldCheck size={13} strokeWidth={2.4} />
               </div>
-              <span>Full Dealer Hub &amp; Lot</span>
+              <span>Open Accountability Dossier</span>
             </button>
           )}
-
-          {/* View Official Inventory */}
-          <a
-            href={dealer.website || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto bg-[#29abe2] hover:bg-[#2089b5] text-white py-3.5 px-5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shadow-md shadow-[#29abe2]/20 cursor-pointer text-center"
-          >
-            <span>Website</span>
-            <ArrowUpRight size={16} />
-          </a>
         </div>
 
       </div>

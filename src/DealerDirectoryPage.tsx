@@ -55,7 +55,7 @@ export default function DealerDirectoryPage({
   const [distanceRadius, setDistanceRadius] = useState<DistanceRadius>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('split'); // 'grid' | 'split'
-  const [sortBy, setSortBy] = useState<'transparency' | 'rating' | 'inventory' | 'distance'>('transparency');
+  const [sortBy, setSortBy] = useState<'transparency' | 'rating' | 'doc_fee' | 'distance'>('transparency');
 
   // 2. Selection & Modal State
   const [selectedDealerId, setSelectedDealerId] = useState<string | null>(null);
@@ -143,7 +143,7 @@ export default function DealerDirectoryPage({
         }
       }
 
-      // Filter Pill: Top Rated (>= 4.6 Stars)
+      // Filter Pill: Top Rated (>= 4.6 Trust Score)
       if (filterTopRated && dealer.customer_rating_display < 4.6) {
         return false;
       }
@@ -181,8 +181,8 @@ export default function DealerDirectoryPage({
       if (sortBy === 'rating') {
         return b.customer_rating_display - a.customer_rating_display;
       }
-      if (sortBy === 'inventory') {
-        return b.active_inventory_count - a.active_inventory_count;
+      if (sortBy === 'doc_fee') {
+        return (a.doc_fee_display || 150) - (b.doc_fee_display || 150);
       }
       if (sortBy === 'distance') {
         return a.distance_miles - b.distance_miles;
@@ -251,7 +251,7 @@ export default function DealerDirectoryPage({
                 Know the dealer <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#29abe2] via-sky-300 to-emerald-400">before</span> you make the deal.
               </h1>
               <p className="text-sm sm:text-base text-slate-300 max-w-2xl mt-2 font-medium">
-                Research 50+ verified Dallas–Fort Worth dealerships with unvarnished price transparency grades, live inventory, and doc fee audits.
+                Research 50+ verified Dallas–Fort Worth dealerships with independent price transparency grades, mandatory add-on risk audits, and verified buyer negotiation intelligence. Zero sponsored leads.
               </p>
             </div>
 
@@ -358,7 +358,7 @@ export default function DealerDirectoryPage({
             {/* Bottom Row: Filter Pills */}
             <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
               
-              {/* Filter 1: Top Rated Pill (Star replaced with Award & Glassmorphic container) */}
+              {/* Filter 1: Top Rated Pill (Award & Glassmorphic container) */}
               <button
                 type="button"
                 onClick={() => setFilterTopRated(v => !v)}
@@ -457,7 +457,7 @@ export default function DealerDirectoryPage({
                 >
                   <option value="transparency">Sort: Transparency Score</option>
                   <option value="rating">Sort: Highest Rating</option>
-                  <option value="inventory">Sort: Most Inventory</option>
+                  <option value="doc_fee">Sort: Lowest Doc Fee</option>
                   <option value="distance">Sort: Closest Distance</option>
                 </select>
                 <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />

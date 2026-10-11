@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import { 
-  ArrowLeft, Phone, MapPin, Globe, Clock, ShieldCheck, CheckCircle2, 
-  Car, Award, TrendingUp, TrendingDown, FileSearch, Filter, 
-  Search, Calendar, ChevronRight, ArrowUpRight, Gauge, Fuel, Check, 
-  MessageSquare, User, AlertCircle, Share2, Heart, Building
+  ArrowLeft, MapPin, Clock, ShieldCheck, CheckCircle2, 
+  Award, TrendingDown, FileSearch, Check, 
+  MessageSquare, AlertCircle, AlertTriangle, HelpCircle, 
+  ChevronRight, ArrowUpRight, Gauge, DollarSign, Sliders,
+  CheckSquare, Square
 } from 'lucide-react';
 import { Dealership, Review } from './types/dealerIntel';
 import { DealerIntelService } from './services/dealerIntelService';
 import { DFW_DEALERSHIPS_SEED, seedToDealership } from './services/dfwDealerSeedData';
-import { DealerInventoryService, DealerVehicle } from './services/dealerInventoryService';
-import { VehicleQuickViewModal } from './components/dealer-profile/VehicleQuickViewModal';
-import { LeadInquiryModal } from './components/dealer-profile/LeadInquiryModal';
 import { DealerAuditModal } from './components/dealer-intel/DealerAuditModal';
 import { DealerScorecard } from './components/dealer-profile/DealerScorecard';
 
@@ -26,24 +24,24 @@ export default function DealerProfilePage({
   onAuditQuote
 }: DealerProfilePageProps) {
   const [dealer, setDealer] = useState<Dealership | null>(null);
-  const [vehicles, setVehicles] = useState<DealerVehicle[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Inventory Filtering & Search State
-  const [inventorySearch, setInventorySearch] = useState('');
-  const [selectedCondition, setSelectedCondition] = useState<string>('All');
-  const [selectedBodyType, setSelectedBodyType] = useState<string>('All');
-  const [inventorySort, setInventorySort] = useState<'price_asc' | 'price_desc' | 'mileage' | 'year'>('price_asc');
-
-  // Modal Triggers
-  const [quickViewVehicle, setQuickViewVehicle] = useState<DealerVehicle | null>(null);
-  const [leadModalVehicle, setLeadModalVehicle] = useState<DealerVehicle | null>(null);
-  const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
+  // Modal Trigger
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
 
-  // 1. Hydrate Dealership, Inventory, and Reviews
-  useEffect(() => {
+  // Interactive Buyer Action Checklist state
+  const [checkedActions, setCheckedActions] = useState<Record<string, boolean>>({});
+
+  const toggleAction = (id: string) => {
+    setCheckedActions(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  // 1. Hydrate Dealership and Reviews (No Inventory)
+  React.useEffect(() => {
     async function loadDealerData() {
       setLoading(true);
       try {
@@ -58,11 +56,7 @@ export default function DealerProfilePage({
 
         setDealer(foundDealer);
 
-        // Hydrate Linked Inventory Feed from Supabase / Inventory Service
-        const inventoryData = await DealerInventoryService.getDealerInventory(foundDealer);
-        setVehicles(inventoryData);
-
-        // Hydrate Customer Reviews
+        // Hydrate Customer Reviews & Community Feedback
         const reviewsResult = await DealerIntelService.getReviews({ dealershipId: foundDealer.id });
         if (reviewsResult.data.length > 0) {
           setReviews(reviewsResult.data);
@@ -142,47 +136,65 @@ export default function DealerProfilePage({
     loadDealerData();
   }, [slug]);
 
-  // 2. Filter & Sort Vehicles
-  const filteredVehicles = useMemo(() => {
-    return vehicles.filter(v => {
-      if (inventorySearch.trim()) {
-        const q = inventorySearch.toLowerCase();
-        const matchesHeading = `${v.year} ${v.make} ${v.model} ${v.trim}`.toLowerCase().includes(q);
-        const matchesStock = v.stock_number.toLowerCase().includes(q);
-        const matchesVin = v.vin.toLowerCase().includes(q);
-        if (!matchesHeading && !matchesStock && !matchesVin) return false;
-      }
-      if (selectedCondition !== 'All') {
-        if (selectedCondition === 'New' && v.new_used !== 'New') return false;
-        if (selectedCondition === 'Pre-Owned' && v.new_used === 'New') return false;
-        if (selectedCondition === 'Certified' && v.new_used !== 'Certified Pre-Owned') return false;
-      }
-      if (selectedBodyType !== 'All') {
-        if (v.body_type !== selectedBodyType) return false;
-      }
-      return true;
-    }).sort((a, b) => {
-      if (inventorySort === 'price_asc') return a.internet_price - b.internet_price;
-      if (inventorySort === 'price_desc') return b.internet_price - a.internet_price;
-      if (inventorySort === 'mileage') return a.mileage - b.mileage;
-      if (inventorySort === 'year') return b.year - a.year;
-      return 0;
-    });
-  }, [vehicles, inventorySearch, selectedCondition, selectedBodyType, inventorySort]);
-
   if (loading || !dealer) {
     return (
       <div className="min-h-screen bg-[#DDE3EA] flex items-center justify-center font-poppins">
         <div className="text-center p-8 bg-white/80 rounded-3xl shadow-xl backdrop-blur-xl border border-white/80">
           <div className="w-10 h-10 border-3 border-[#29abe2] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm font-bold text-slate-700">Loading Dealership Profile &amp; Live Inventory...</p>
+          <p className="text-sm font-bold text-slate-700">Loading Dealership Accountability Dossier...</p>
         </div>
       </div>
     );
   }
 
   const transparencyScore = dealer.price_transparency_score ?? 92;
-  const mapDirectionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${dealer.name} ${dealer.street_address} ${dealer.city} TX ${dealer.zip_code}`)}`;
+  const compositeGrade = transparencyScore >= 90 ? 'A+' : transparencyScore >= 80 ? 'A-' : transparencyScore >= 70 ? 'B' : 'C';
+
+  // Specific pushback checklist items
+  const buyerChecklist = [
+    {
+      id: 'check-1',
+      title: 'Demand Itemized Buyer\'s Order Prior to Credit Application',
+      category: 'Contract Integrity',
+      desc: 'Verify that line-item selling price matches the advertised internet quote before signing or authorizing hard credit inquiries.',
+      risk: 'High Leverage'
+    },
+    {
+      id: 'check-2',
+      title: 'Audit Dealer Documentation Fee ($150 TX Statutory Cap)',
+      category: 'Fee Compliance',
+      desc: 'Ensure the documentary fee is strictly $150.00 and no separate "electronic filing" or "prep" surcharges are bundled.',
+      risk: 'Statutory Right'
+    },
+    {
+      id: 'check-3',
+      title: 'Decline Pre-Loaded Dealer Accessory Addendum',
+      category: 'Add-On Pushback',
+      desc: 'Reject mandatory nitrogen ($199), ceramic coating ($899), or pulse brake lights ($399). Request in writing that they be removed or zeroed out.',
+      risk: 'Negotiable'
+    },
+    {
+      id: 'check-4',
+      title: 'Secure Independent Financing Before Entering Showroom',
+      category: 'Finance Defense',
+      desc: 'Bring a pre-approval letter from your credit union to counter dealership APR buy-rate markups in the F&I back office.',
+      risk: 'High Leverage'
+    },
+    {
+      id: 'check-5',
+      title: 'Separate Vehicle Purchase from Trade-In Appraisal',
+      category: 'Trade Valuation',
+      desc: 'Negotiate the vehicle out-the-door price first. Introduce your trade-in only after the vehicle price is locked in writing.',
+      risk: 'Showroom Tactic'
+    },
+    {
+      id: 'check-6',
+      title: 'Refuse "In-House Financing Only" Rebate Traps',
+      category: 'Incentive Watch',
+      desc: 'Confirm whether manufacturer rebates mandate dealer financing, and calculate if interest rate premiums cancel out rebate savings.',
+      risk: 'Watchdog Warning'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-[#DDE3EA] font-poppins text-slate-900 pb-24 selection:bg-[#29abe2]/20">
@@ -201,17 +213,17 @@ export default function DealerProfilePage({
       <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 mt-3">
         
         {/* =========================================================================
-            SECTION 1: HERO HEADER (Glassmorphic Dealer Banner)
+            SECTION 1: HERO HEADER (Accountability Audit Dossier Banner)
             ========================================================================= */}
         <section className="relative overflow-hidden bg-white/85 rounded-[36px] p-6 sm:p-8 md:p-10 border border-white/80 shadow-[0_20px_50px_rgba(15,23,42,0.08)] backdrop-blur-2xl">
           {/* Specular top light rim */}
           <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none" />
           <div className="absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-[#29abe2]/15 to-transparent rounded-full blur-3xl pointer-events-none" />
 
-          {/* Banner Top Info & Direct CTAs */}
+          {/* Banner Top Info & Watchdog Action Buttons */}
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-8 border-b border-slate-200/80">
             
-            {/* Dealer Identity & Address */}
+            {/* Dealer Identity & Address Metadata */}
             <div className="flex items-start gap-5">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700 flex items-center justify-center text-white font-black text-2xl sm:text-3xl shrink-0 shadow-lg shadow-black/10">
                 {dealer.name.charAt(0)}
@@ -226,25 +238,26 @@ export default function DealerProfilePage({
                   {dealer.is_claimed ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-xs">
                       <CheckCircle2 size={13} className="text-emerald-600 stroke-[2.5]" />
-                      <span>Verified Dealer</span>
+                      <span>Verified Claimed Profile</span>
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-500 border border-slate-200">
-                      Public Listing
+                      Public Dossier
                     </span>
                   )}
                 </div>
 
+                {/* Strict Location Metadata - Zero Phone Numbers / Zero External Links */}
                 <div className="text-xs sm:text-sm text-slate-600 font-medium flex items-center gap-2 flex-wrap mb-3">
                   <span className="flex items-center gap-1">
                     <MapPin size={14} className="text-[#29abe2]" />
                     <span>{dealer.street_address}, {dealer.city}, {dealer.state} {dealer.zip_code}</span>
                   </span>
                   <span>·</span>
-                  <span className="text-slate-500">DFW Metro</span>
+                  <span className="text-slate-500 font-semibold">DFW Metro Region</span>
                 </div>
 
-                {/* Operating Hours & Brand Badges */}
+                {/* Operating Hours & Franchise Brands */}
                 <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 font-medium">
                   <div className="flex items-center gap-1.5 bg-slate-100/90 px-3 py-1 rounded-xl">
                     <Clock size={13} className="text-slate-400" />
@@ -262,80 +275,68 @@ export default function DealerProfilePage({
               </div>
             </div>
 
-            {/* Direct Action Buttons: "Call", "Get Directions", "Schedule Test Drive" */}
+            {/* Watchdog Action CTAs: Audit Deal Quote & Report Markup */}
             <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 shrink-0 pt-2 lg:pt-0">
               
-              {/* Call Button */}
-              {dealer.phone && (
-                <a
-                  href={`tel:${dealer.phone}`}
-                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-700 hover:text-slate-900 text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer"
+              {onAuditQuote && (
+                <button
+                  type="button"
+                  onClick={() => onAuditQuote(dealer.name)}
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 hover:text-slate-900 text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer"
                 >
-                  <Phone size={15} className="text-[#29abe2]" />
-                  <span>Call {dealer.phone}</span>
-                </a>
+                  <FileSearch size={15} className="text-[#29abe2]" />
+                  <span>Audit a Quote from this Dealer</span>
+                </button>
               )}
 
-              {/* Get Directions Button */}
-              <a
-                href={mapDirectionsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-700 hover:text-slate-900 text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer"
-              >
-                <MapPin size={15} className="text-emerald-600" />
-                <span>Get Directions</span>
-                <ArrowUpRight size={13} className="text-slate-400" />
-              </a>
-
-              {/* Schedule Test Drive / Appointment (Primary Accent) */}
               <button
                 type="button"
-                onClick={() => setIsAppointmentModalOpen(true)}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-[#29abe2] hover:bg-[#2089b5] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#29abe2]/20 hover:shadow-lg transition-all cursor-pointer active:scale-[0.98]"
+                onClick={() => setIsAuditModalOpen(true)}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-[#29abe2] to-[#1e88b8] hover:from-[#249bc9] hover:to-[#1a77a2] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#29abe2]/20 hover:shadow-lg transition-all cursor-pointer active:scale-[0.98]"
               >
-                <Calendar size={15} />
-                <span>Schedule Appointment</span>
+                <ShieldCheck size={16} strokeWidth={2.4} />
+                <span>Submit Lot Audit</span>
               </button>
 
             </div>
 
           </div>
 
-          {/* Overview Metrics Row: 4 Luxury Metric Cards */}
+          {/* Overview Metrics Row: 4 Accountability Metric Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
             
-            {/* Metric 1: Total Inventory */}
+            {/* Metric 1: Composite Dealer Grade */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
               <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
                 <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
-                  <Car size={13} strokeWidth={2.4} />
+                  <ShieldCheck size={13} strokeWidth={2.4} />
                 </div>
-                <span>Total Inventory</span>
+                <span>Composite Grade</span>
               </span>
-              <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                {vehicles.length}
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-baseline gap-2">
+                <span className="text-[#29abe2]">{compositeGrade}</span>
+                <span className="text-xs text-slate-400 font-bold">({transparencyScore}/100)</span>
               </div>
               <span className="text-[11px] font-semibold text-emerald-600 mt-1 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Active on lot today</span>
+                <span>Watchdog Audited</span>
               </span>
             </div>
 
-            {/* Metric 2: Verified Transparency Score */}
+            {/* Metric 2: Price Transparency Score */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
               <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
                 <div className="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-400/35 backdrop-blur-md flex items-center justify-center text-emerald-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
-                  <ShieldCheck size={14} strokeWidth={2.4} />
+                  <CheckCircle2 size={14} strokeWidth={2.4} />
                 </div>
-                <span>Transparency Score</span>
+                <span>Fee Transparency</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-emerald-600 tracking-tight flex items-baseline gap-1">
                 <span>{transparencyScore}</span>
                 <span className="text-xs text-slate-400 font-bold">/100</span>
               </div>
               <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md inline-block w-fit mt-1 shadow-xs">
-                Elite Price Integrity
+                Zero Hidden Fees
               </span>
             </div>
 
@@ -345,28 +346,28 @@ export default function DealerProfilePage({
                 <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
                   <TrendingDown size={14} strokeWidth={2.4} />
                 </div>
-                <span>Pricing Health Index</span>
+                <span>Pricing Honored</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                 98%
               </div>
-              <span className="text-[11px] font-semibold text-slate-500 mt-1">Advertised Price Honored</span>
+              <span className="text-[11px] font-semibold text-slate-500 mt-1">Advertised Price Upheld</span>
             </div>
 
-            {/* Metric 4: Customer Satisfaction (Award icon replacing Star in Glassmorphic curved square) */}
+            {/* Metric 4: Customer Satisfaction */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04),inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col justify-between">
               <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2 mb-1.5">
                 <div className="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-400/35 backdrop-blur-md flex items-center justify-center text-amber-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
                   <Award size={13} strokeWidth={2.4} />
                 </div>
-                <span>Satisfaction</span>
+                <span>Trust Index</span>
               </span>
               <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
                 <span>4.8</span>
                 <span className="text-[10px] font-bold text-amber-600 bg-amber-100/90 px-1.5 py-0.5 rounded border border-amber-200/60 leading-none">TRUST</span>
               </div>
               <span className="text-[11px] font-semibold text-slate-500 mt-1">
-                Based on verified buyers
+                Verified Community Reviews
               </span>
             </div>
 
@@ -375,7 +376,7 @@ export default function DealerProfilePage({
         </section>
 
         {/* =========================================================================
-            DEALER SCORECARD SUMMARY WIDGET (PROMINENT COMMUNITY AUDIT HUB)
+            DEALER SCORECARD SUMMARY WIDGET (COMMUNITY AUDIT & EVIDENCE VAULT)
             ========================================================================= */}
         <DealerScorecard
           dealer={dealer}
@@ -484,189 +485,220 @@ export default function DealerProfilePage({
         </section>
 
         {/* =========================================================================
-            SECTION 3: FILTERABLE INVENTORY GRID
+            SECTION 3: NEGOTIATION FRICTION & FINANCE RISK AUDIT (REPLACES INVENTORY)
             ========================================================================= */}
         <section className="bg-white/85 rounded-[36px] p-6 sm:p-8 md:p-10 border border-white/80 shadow-[0_16px_45px_rgba(15,23,42,0.06)] backdrop-blur-2xl">
           
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8 pb-6 border-b border-slate-100">
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#29abe2] mb-1">
-                <Car size={16} />
-                <span>Live Dealership Lot</span>
+                <Sliders size={16} />
+                <span>Showroom &amp; Finance Risk Assessment</span>
               </div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-                Active Vehicles in Stock ({filteredVehicles.length})
+                Negotiation Friction &amp; Finance Office Risk Meters
               </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5 max-w-2xl">
+                Diagnostic indicators tracking dealer sales pressure, APR rate markups, in-house financing mandates, and trade-in lowball propensity.
+              </p>
             </div>
 
-            {/* Inventory Search & Sort */}
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                <input
-                  type="text"
-                  value={inventorySearch}
-                  onChange={(e) => setInventorySearch(e.target.value)}
-                  placeholder="Search model, trim, stock #..."
-                  className="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 focus:border-[#29abe2] focus:bg-white rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 outline-none w-48 sm:w-64"
-                />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold shrink-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Overall Friction: Low Risk (Buyer Friendly)</span>
+            </div>
+          </div>
+
+          {/* 4 Risk Gauges Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            
+            {/* Risk Gauge 1: F&I Office Pushiness */}
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+                  <span>F&amp;I Office Pressure</span>
+                  <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md text-[10px] font-bold">LOW</span>
+                </div>
+                <div className="text-xl font-black text-slate-900 mb-1">Minimal Pressure</div>
+                <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                  Extended warranties, tire protection, and GAP insurance are presented as strictly optional. Zero high-pressure closing tactics reported.
+                </p>
               </div>
 
-              <select
-                value={inventorySort}
-                onChange={(e) => setInventorySort(e.target.value as any)}
-                className="bg-slate-50 text-slate-700 font-bold text-xs px-3 py-2 rounded-xl border border-slate-200 outline-none cursor-pointer"
-              >
-                <option value="price_asc">Price: Low to High</option>
-                <option value="price_desc">Price: High to Low</option>
-                <option value="mileage">Lowest Mileage</option>
-                <option value="year">Newest Year</option>
-              </select>
+              {/* Visual meter bar */}
+              <div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-1.5">
+                  <div className="bg-emerald-500 h-full rounded-full w-[22%]" />
+                </div>
+                <div className="flex justify-between text-[10px] font-bold text-slate-400">
+                  <span>Relaxed (22%)</span>
+                  <span>Aggressive</span>
+                </div>
+              </div>
             </div>
+
+            {/* Risk Gauge 2: Forced Financing Risk */}
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+                  <span>Forced Financing</span>
+                  <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md text-[10px] font-bold">0% RISK</span>
+                </div>
+                <div className="text-xl font-black text-slate-900 mb-1">Outside Loans Honored</div>
+                <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                  Accepts outside financing from credit unions and personal banks without penalizing the vehicle selling price or canceling rebates.
+                </p>
+              </div>
+
+              {/* Visual meter bar */}
+              <div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-1.5">
+                  <div className="bg-emerald-500 h-full rounded-full w-[15%]" />
+                </div>
+                <div className="flex justify-between text-[10px] font-bold text-slate-400">
+                  <span>Open (15%)</span>
+                  <span>Captive Only</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Risk Gauge 3: APR Buy-Rate Markup */}
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+                  <span>APR Spread Markup</span>
+                  <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md text-[10px] font-bold">COMPLIANT</span>
+                </div>
+                <div className="text-xl font-black text-slate-900 mb-1">0.0% – 0.5% Spread</div>
+                <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                  Dealer passes institutional lender buy-rates directly to qualified borrowers without excessive loan rate markups.
+                </p>
+              </div>
+
+              {/* Visual meter bar */}
+              <div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-1.5">
+                  <div className="bg-emerald-500 h-full rounded-full w-[18%]" />
+                </div>
+                <div className="flex justify-between text-[10px] font-bold text-slate-400">
+                  <span>Fair Spread (18%)</span>
+                  <span>High Markup (+2.5%)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Risk Gauge 4: Trade-In Valuation Honesty */}
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+                  <span>Trade-In Valuation</span>
+                  <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md text-[10px] font-bold">WHOLESALE PARITY</span>
+                </div>
+                <div className="text-xl font-black text-slate-900 mb-1">96% of MMR Value</div>
+                <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                  Initial trade-in appraisals match live Manheim Market Report (MMR) auction figures without predatory initial lowball bids.
+                </p>
+              </div>
+
+              {/* Visual meter bar */}
+              <div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-1.5">
+                  <div className="bg-emerald-500 h-full rounded-full w-[25%]" />
+                </div>
+                <div className="flex justify-between text-[10px] font-bold text-slate-400">
+                  <span>Near MMR (25%)</span>
+                  <span>Heavy Lowball</span>
+                </div>
+              </div>
+            </div>
+
           </div>
-
-          {/* Condition & Body Filter Pills */}
-          <div className="flex flex-wrap items-center gap-2 mb-6 pb-4 border-b border-slate-100">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">Condition:</span>
-            {['All', 'New', 'Pre-Owned', 'Certified'].map(cond => (
-              <button
-                key={cond}
-                onClick={() => setSelectedCondition(cond)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  selectedCondition === cond
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80'
-                }`}
-              >
-                {cond}
-              </button>
-            ))}
-
-            <div className="w-px h-4 bg-slate-200 mx-2 hidden sm:block" />
-
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1 hidden sm:inline">Body:</span>
-            {['All', 'SUV', 'Sedan', 'Truck', 'Coupe', 'Electric'].map(body => (
-              <button
-                key={body}
-                onClick={() => setSelectedBodyType(body)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  selectedBodyType === body
-                    ? 'bg-[#29abe2] text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80'
-                }`}
-              >
-                {body}
-              </button>
-            ))}
-          </div>
-
-          {/* Vehicles Grid */}
-          {filteredVehicles.length === 0 ? (
-            <div className="py-12 text-center bg-slate-50/50 rounded-2xl border border-slate-200/60">
-              <Car size={32} className="text-slate-400 mx-auto mb-2" />
-              <h3 className="text-sm font-bold text-slate-800">No vehicles matching current filters</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Try clearing the search query or selecting "All" body types.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredVehicles.map((veh) => {
-                const savings = Math.max(0, veh.retail_price - veh.internet_price);
-                return (
-                  <div
-                    key={veh.id}
-                    className="group bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between"
-                  >
-                    <div>
-                      {/* Vehicle Image Thumbnail with condition badge */}
-                      <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                        <img
-                          src={veh.images[0]}
-                          alt={`${veh.year} ${veh.make} ${veh.model}`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                          <span className="bg-slate-900/85 backdrop-blur-md text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-md">
-                            {veh.new_used}
-                          </span>
-                          {savings > 0 && (
-                            <span className="bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                              Save ${savings.toLocaleString()}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-4">
-                        <div className="text-[10px] uppercase font-bold text-slate-400 mb-0.5">
-                          Stock #{veh.stock_number} · {veh.drive_type}
-                        </div>
-                        <h4 className="text-base font-black text-slate-900 tracking-tight leading-snug group-hover:text-[#29abe2] transition-colors">
-                          {veh.year} {veh.make} {veh.model}
-                        </h4>
-                        <div className="text-xs font-semibold text-slate-500 truncate mb-3">
-                          {veh.trim} · {veh.exterior_color}
-                        </div>
-
-                        {/* Specs */}
-                        <div className="flex items-center gap-3 text-[11px] text-slate-600 font-semibold mb-3">
-                          <span className="flex items-center gap-1">
-                            <Gauge size={12} className="text-[#29abe2]" />
-                            <span>{veh.mileage.toLocaleString()} mi</span>
-                          </span>
-                          <span>·</span>
-                          <span className="flex items-center gap-1">
-                            <Fuel size={12} className="text-[#29abe2]" />
-                            <span>{veh.mpg_highway} HWY</span>
-                          </span>
-                        </div>
-
-                        {/* Price */}
-                        <div className="pt-2 border-t border-slate-100 flex items-baseline justify-between">
-                          <div>
-                            <span className="text-[10px] uppercase font-bold text-slate-400 block">Internet Price</span>
-                            <span className="text-xl font-black text-slate-900 leading-none">
-                              ${veh.internet_price.toLocaleString()}
-                            </span>
-                          </div>
-                          {savings > 0 && (
-                            <span className="text-xs text-slate-400 line-through font-medium">
-                              ${veh.retail_price.toLocaleString()}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card Actions: Quick View & Contact Dealer */}
-                    <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setQuickViewVehicle(veh)}
-                        className="flex-1 py-2 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer text-center"
-                      >
-                        Quick View
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setLeadModalVehicle(veh)}
-                        className="flex-1 py-2 px-3 rounded-xl bg-[#29abe2] hover:bg-[#2089b5] text-white text-xs font-bold transition-all shadow-xs cursor-pointer text-center"
-                      >
-                        Contact Dealer
-                      </button>
-                    </div>
-
-                  </div>
-                );
-              })}
-            </div>
-          )}
 
         </section>
 
         {/* =========================================================================
-            SECTION 4: CUSTOMER REVIEWS & VERIFIED BUYER FEEDBACK
+            SECTION 4: BUYER ACTION CHECKLIST (TACTICAL PUSHBACK STRATEGY)
+            ========================================================================= */}
+        <section className="bg-white/85 rounded-[36px] p-6 sm:p-8 md:p-10 border border-white/80 shadow-[0_16px_45px_rgba(15,23,42,0.06)] backdrop-blur-2xl">
+          
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6 pb-6 border-b border-slate-100">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#29abe2] mb-1">
+                <ShieldCheck size={16} />
+                <span>Pre-Showroom Negotiation Blueprint</span>
+              </div>
+              <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+                Buyer Action Checklist for {dealer.name}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5 max-w-2xl">
+                Execute these high-leverage steps to safeguard your deal terms before stepping onto the lot or signing paperwork.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 bg-slate-100 px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-700">
+              <span>{Object.values(checkedActions).filter(Boolean).length} of {buyerChecklist.length} Checked</span>
+            </div>
+          </div>
+
+          {/* Action List Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {buyerChecklist.map((item) => {
+              const isChecked = Boolean(checkedActions[item.id]);
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => toggleAction(item.id)}
+                  className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                    isChecked
+                      ? 'bg-emerald-50/70 border-emerald-200/80 text-emerald-950'
+                      : 'bg-slate-50/80 hover:bg-white border-slate-200/80 text-slate-900 shadow-2xs hover:shadow-xs'
+                  }`}
+                >
+                  <button
+                    type="button"
+                    className="mt-0.5 text-slate-400 hover:text-slate-600 transition-colors shrink-0"
+                    aria-label={isChecked ? 'Mark incomplete' : 'Mark complete'}
+                  >
+                    {isChecked ? (
+                      <CheckSquare size={20} className="text-emerald-600" />
+                    ) : (
+                      <Square size={20} className="text-slate-400" />
+                    )}
+                  </button>
+
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#29abe2]">
+                        {item.category}
+                      </span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                        item.risk === 'Statutory Right'
+                          ? 'bg-blue-100 text-blue-700'
+                          : item.risk === 'High Leverage'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-amber-100 text-amber-700'
+                      }`}>
+                        {item.risk}
+                      </span>
+                    </div>
+
+                    <h4 className={`text-sm font-bold mb-1 ${isChecked ? 'line-through text-slate-500' : 'text-slate-900'}`}>
+                      {item.title}
+                    </h4>
+                    
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+        </section>
+
+        {/* =========================================================================
+            SECTION 5: CUSTOMER REVIEWS & VERIFIED BUYER FEEDBACK
             ========================================================================= */}
         <section className="bg-white/85 rounded-[36px] p-6 sm:p-8 md:p-10 border border-white/80 shadow-[0_16px_45px_rgba(15,23,42,0.06)] backdrop-blur-2xl">
           
@@ -789,29 +821,6 @@ export default function DealerProfilePage({
         </section>
 
       </main>
-
-      {/* Vehicle Quick View Modal */}
-      <VehicleQuickViewModal
-        vehicle={quickViewVehicle}
-        onClose={() => setQuickViewVehicle(null)}
-        onContactDealer={(veh) => {
-          setQuickViewVehicle(null);
-          setLeadModalVehicle(veh);
-        }}
-      />
-
-      {/* Lead Routing / Appointment Modal */}
-      {(leadModalVehicle || isAppointmentModalOpen) && (
-        <LeadInquiryModal
-          dealer={dealer}
-          vehicle={leadModalVehicle}
-          initialInquiryType={isAppointmentModalOpen ? 'test_drive' : 'availability'}
-          onClose={() => {
-            setLeadModalVehicle(null);
-            setIsAppointmentModalOpen(false);
-          }}
-        />
-      )}
 
       {/* Community Accountability / Dealer Audit Modal */}
       {isAuditModalOpen && (

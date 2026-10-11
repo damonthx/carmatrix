@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { 
   TrendingUp, BarChart3, Users, CheckCircle2, 
   MessageSquare, Download, ArrowRight, Shield, 
-  Activity, Star, Mail, Phone, Building, MapPin, 
-  CheckCircle, ArrowUpRight, AlertCircle
+  Activity, ShieldCheck, Mail, Phone, Building, MapPin, 
+  CheckCircle, ArrowUpRight, AlertCircle, Award
 } from 'lucide-react';
 import { supabase } from './supabaseClient';
 
@@ -60,8 +60,11 @@ export default function DealersPage() {
       >
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-15 mix-blend-overlay"></div>
         <div className="max-w-[1200px] mx-auto relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-white/90 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md">
-            <Activity size={14} className="text-[#29abe2]" /> CarMatrix for Dealers
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]">
+            <div className="w-5 h-5 rounded-md bg-[#29abe2]/20 border border-[#29abe2]/40 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[0_0_8px_rgba(41,171,226,0.35),inset_0_1px_1px_rgba(255,255,255,0.6)] shrink-0">
+              <Activity size={12} strokeWidth={2.4} />
+            </div>
+            <span>CarMatrix for Dealers</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-[1.1] max-w-[900px] mx-auto">
             More shoppers. <span className="text-[#29abe2]">More intelligence.</span> More sales.
@@ -71,9 +74,10 @@ export default function DealersPage() {
           </p>
           <a 
             href="#inquiry-form" 
-            className="inline-flex items-center gap-2 bg-[#29abe2] text-white px-8 py-4 rounded-full font-bold hover:bg-[#2089b5] shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02]"
+            className="inline-flex items-center gap-2.5 bg-[#29abe2] text-white px-8 py-4 rounded-full font-bold hover:bg-[#2089b5] shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] cursor-pointer"
           >
-            Get Started Today <ArrowRight size={16} />
+            <span>Get Started Today</span>
+            <ArrowRight size={16} strokeWidth={2.4} />
           </a>
         </div>
       </div>
@@ -272,8 +276,11 @@ export default function DealersPage() {
 
             {/* Content Column */}
             <div className="w-full lg:w-1/2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold tracking-widest uppercase mb-4">
-                <BarChart3 size={12} /> Regional Intelligence
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-400/30 text-[#0284c7] text-xs font-bold tracking-wider uppercase mb-4 shadow-xs">
+                <div className="w-5 h-5 rounded-md bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] shrink-0">
+                  <BarChart3 size={12} strokeWidth={2.4} />
+                </div>
+                <span>Regional Intelligence</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
                 Turn data into sales.
@@ -287,9 +294,11 @@ export default function DealersPage() {
                   "Local trade-in acquisition predictive pipelines",
                   "AI match propensity rating for every listed vehicle"
                 ].map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-2.5 text-[14px] font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#29abe2]" />
-                    {item}
+                  <li key={idx} className="flex items-center gap-3 text-[14px] font-semibold text-slate-700">
+                    <div className="w-5 h-5 rounded-md bg-[#29abe2]/15 border border-[#29abe2]/30 flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] shrink-0">
+                      <CheckCircle2 size={13} strokeWidth={2.4} />
+                    </div>
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -315,8 +324,15 @@ export default function DealersPage() {
         <div className="bg-[#1a365d] rounded-[32px] p-8 md:p-12 text-center text-white relative overflow-hidden shadow-xl">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay"></div>
           <div className="max-w-[800px] mx-auto relative z-10">
-            <div className="flex justify-center gap-1 text-amber-400 mb-6">
-              {[...Array(5)].map((_, i) => <Star key={i} size={20} fill="currentColor" stroke="none" />)}
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 via-emerald-500/10 to-transparent border border-emerald-400/30 text-emerald-300 text-xs font-bold tracking-wide mb-6 backdrop-blur-md shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="w-5 h-5 rounded-md bg-emerald-500/25 border border-emerald-300/40 flex items-center justify-center text-emerald-300 shadow-inner">
+                    <ShieldCheck size={12} strokeWidth={2.4} />
+                  </div>
+                ))}
+              </div>
+              <span className="font-extrabold text-white tracking-wider uppercase text-[11px]">5.0 / 5.0 Verified Partner Trust</span>
             </div>
             <p className="text-xl md:text-2xl font-bold leading-relaxed italic mb-8">
               "CarMatrix has been the best investment for our dealership! The lead quality from the AI Matchmaker is exceptional, their support team is amazing, and their real-time market data lets us price vehicles with absolute confidence."
@@ -390,15 +406,24 @@ export default function DealersPage() {
             <p className="text-slate-600 font-semibold text-sm leading-relaxed mb-6">
               Let us help you connect with high-intent shoppers, streamline transactions, and maximize your profitability.
             </p>
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               <div className="flex items-center gap-3 text-slate-700 font-semibold text-xs">
-                <Shield size={16} className="text-[#29abe2]" /> Zero long-term lock-in contracts
+                <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] shrink-0">
+                  <Shield size={13} strokeWidth={2.4} />
+                </div>
+                <span>Zero long-term lock-in contracts</span>
               </div>
               <div className="flex items-center gap-3 text-slate-700 font-semibold text-xs">
-                <Users size={16} className="text-[#29abe2]" /> Access 40M+ monthly shoppers
+                <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] shrink-0">
+                  <Users size={13} strokeWidth={2.4} />
+                </div>
+                <span>Access 40M+ monthly shoppers</span>
               </div>
               <div className="flex items-center gap-3 text-slate-700 font-semibold text-xs">
-                <TrendingUp size={16} className="text-[#29abe2]" /> Maximize lead conversions
+                <div className="w-6 h-6 rounded-lg bg-sky-500/15 border border-sky-400/35 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] shrink-0">
+                  <TrendingUp size={13} strokeWidth={2.4} />
+                </div>
+                <span>Maximize lead conversions</span>
               </div>
             </div>
           </div>
@@ -406,7 +431,9 @@ export default function DealersPage() {
           <div className="w-full md:w-3/5">
             {submitted ? (
               <div className="text-center py-10 bg-emerald-50 rounded-2xl border border-emerald-100 p-6 flex flex-col items-center">
-                <CheckCircle size={48} className="text-emerald-500 mb-3" />
+                <div className="w-16 h-16 rounded-2xl bg-emerald-500/15 border border-emerald-400/40 backdrop-blur-md flex items-center justify-center text-emerald-600 mb-4 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_4px_16px_rgba(16,185,129,0.2)]">
+                  <CheckCircle2 size={32} strokeWidth={2.4} />
+                </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-1">Inquiry Submitted!</h3>
                 <p className="text-slate-600 font-semibold text-sm">Thank you for your interest. A CarMatrix Partnerships manager will reach out within 1 business day.</p>
               </div>
