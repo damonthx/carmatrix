@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Loader2, Info } from 'lucide-react';
+import { Cpu, Loader2, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { supabase } from '../supabaseClient';
@@ -197,7 +197,7 @@ export default function HeroSearch({ onSearch, onSell }: HeroSearchProps) {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <div className="mb-2">
                     <label className="flex items-center gap-2 text-slate-800 font-bold text-sm mb-2 drop-shadow-sm">
-                      <Sparkles size={16} className="text-[#29abe2]" /> 
+                      <Cpu size={16} className="text-[#29abe2]" /> 
                       Describe your lifestyle or needs
                     </label>
                     <textarea 

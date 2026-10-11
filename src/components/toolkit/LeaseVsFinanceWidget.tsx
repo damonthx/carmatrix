@@ -4,7 +4,6 @@ import {
   CheckCircle2, 
   DollarSign, 
   HelpCircle, 
-  Sparkles, 
   TrendingUp, 
   ShieldCheck, 
   AlertTriangle,

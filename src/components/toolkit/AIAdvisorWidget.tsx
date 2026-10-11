@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Send, Loader2, Cpu, CheckCircle2 } from 'lucide-react';
+import { Send, Loader2, Cpu, CheckCircle2 } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
 import { queryAutomotiveKnowledgeEngine } from '../../utils/automotiveKnowledgeEngine';
 

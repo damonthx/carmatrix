@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, CreditCard, Lock, DollarSign, ChevronRight, Coins, Sparkles, Building2, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, CreditCard, Lock, DollarSign, ChevronRight, Coins, Building2, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface CreditTier {
@@ -59,7 +59,7 @@ export default function FinancePage() {
           {/* Hero Left */}
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-xs font-bold tracking-widest uppercase mb-6">
-              <Sparkles size={13} /> CarMatrix Finance
+              <ShieldCheck size={13} /> CarMatrix Finance
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
               Shop with <span className="text-[#29abe2]">real rates</span> in hand

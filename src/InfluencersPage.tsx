@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  Sparkles, Award, Star, ShieldCheck, Zap, 
+  Award, Star, ShieldCheck, Zap, 
   ArrowRight, Users, CheckCircle2, Play, 
   Instagram, Youtube, Send, FileText
 } from 'lucide-react';
@@ -42,7 +42,7 @@ export default function InfluencersPage() {
         <div className="max-w-[1200px] mx-auto relative z-10">
           {/* [Design Element: Liquid glass badge, highly reflective white border, semi-transparent backdrop] */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-350 text-[11px] font-extrabold tracking-widest uppercase mb-8 backdrop-blur-xl">
-            <Sparkles size={13} className="text-[#29abe2]" /> Exclusive Creator Invitation
+            <Award size={13} className="text-[#29abe2]" /> Exclusive Creator Invitation
           </div>
           
           <h1 className="text-4xl md:text-7xl font-black tracking-tight mb-6 leading-[1.05] max-w-[1000px] mx-auto">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, ShieldCheck, Sparkles } from 'lucide-react';
+import { ExternalLink, ShieldCheck } from 'lucide-react';
 import { 
   AFFILIATE_CONFIG, 
   AffiliateCategory, 
@@ -44,7 +44,7 @@ export default function AffiliatePartnerBanner({
           <div className="flex items-center gap-2">
             {partner.badgeText && (
               <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#29abe2]/20 border border-[#29abe2]/40 text-sky-300">
-                <Sparkles size={10} />
+                <ShieldCheck size={10} />
                 {partner.badgeText}
               </span>
             )}

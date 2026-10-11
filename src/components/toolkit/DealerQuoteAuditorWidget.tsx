@@ -16,8 +16,7 @@ import {
   Edit3, 
   RotateCcw,
   ShieldAlert,
-  Loader2,
-  Sparkles
+  Loader2
 } from 'lucide-react';
 import NegotiationScriptGenerator from './NegotiationScriptGenerator';
 import { getMakes, getModelsForMakeYear } from '../../services/nhtsa';

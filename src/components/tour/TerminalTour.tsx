@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { X, ChevronRight, ChevronLeft, Check, Compass, Sparkles } from 'lucide-react';
+import { X, ChevronRight, ChevronLeft, Check, Compass, Layers, ShieldCheck } from 'lucide-react';
 import { TOUR_STEPS, TourStep } from '../../config/terminalTourSteps';
 
 interface TerminalTourProps {
@@ -302,7 +302,22 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
             STATE 2: STEP-BY-STEP POINTING OUT THE 3 MODULES AT THE TOP (NO JUMPING)
             ========================================================================= */
         <>
-          {/* Target Focus Ring / Spotlight bounding box - zero blur, crisp outline */}
+          {/* Ambient radial glow under the active module card */}
+          {targetRect && (
+            <div
+              style={{
+                position: 'fixed',
+                top: targetRect.top - 12,
+                left: targetRect.left - 12,
+                width: targetRect.width + 24,
+                height: targetRect.height + 24,
+                pointerEvents: 'none',
+              }}
+              className="rounded-3xl bg-[#29abe2]/20 blur-xl transition-all duration-300"
+            />
+          )}
+
+          {/* Elevated Specular Spotlight Frame around active module */}
           {targetRect && (
             <div
               style={{
@@ -313,8 +328,11 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
                 height: targetRect.height + 12,
                 pointerEvents: 'none',
               }}
-              className="rounded-3xl border-2 border-[#29abe2] shadow-[0_0_35px_rgba(41,171,226,0.45)] transition-all duration-300 ring-2 ring-sky-400/50"
-            />
+              className="rounded-3xl border-2 border-[#29abe2] shadow-[0_0_50px_rgba(41,171,226,0.55),inset_0_0_24px_rgba(41,171,226,0.18),0_20px_50px_rgba(0,0,0,0.85)] transition-all duration-300 ring-2 ring-sky-300/40 relative overflow-hidden"
+            >
+              {/* Top edge light rim on the spotlight frame */}
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none" />
+            </div>
           )}
 
           {/* Step Popover Card */}
@@ -331,7 +349,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
                   }
                 : undefined
             }
-            className={`z-[105] rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_20px_60px_-10px_rgba(0,0,0,0.95)] p-4 sm:p-5 text-white transition-all duration-200 relative overflow-hidden flex flex-col justify-between ${
+            className={`z-[105] rounded-3xl bg-slate-950/98 border border-sky-500/35 shadow-[0_25px_70px_rgba(0,0,0,0.95),0_0_30px_rgba(41,171,226,0.2)] p-4 sm:p-5 text-white transition-all duration-200 relative overflow-hidden flex flex-col justify-between ${
               !popoverCoords
                 ? 'fixed bottom-5 inset-x-4 mx-auto max-w-[400px] max-h-[calc(100vh-100px)]'
                 : ''
@@ -340,7 +358,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
             aria-labelledby="tour-step-title"
           >
             {/* Specular top rim light */}
-            <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#29abe2]/60 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#29abe2]/70 to-transparent pointer-events-none" />
 
             {/* Ambient interior radial glow */}
             <div className="absolute -top-16 -right-16 w-44 h-44 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none" />
@@ -349,7 +367,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
             <div className="flex items-center justify-between pb-2.5 border-b border-slate-800 mb-2.5 relative z-10 shrink-0">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-500/15 border border-sky-400/30 text-sky-300">
-                  <Sparkles className="w-2.5 h-2.5 text-[#29abe2]" />
+                  <Layers className="w-3 h-3 text-[#29abe2]" />
                   Sector {currentStepIndex + 1} of {TOUR_STEPS.length}
                 </span>
 

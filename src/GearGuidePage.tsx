@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { 
   ShoppingBag, ShieldCheck, Zap, Star, 
   ExternalLink, CheckCircle2, Search, ArrowUpDown, 
-  Truck, RotateCcw, Lock, Sparkles, Filter, ChevronRight
+  Truck, RotateCcw, Lock, Filter, ChevronRight
 } from 'lucide-react';
 
 interface GearGuidePageProps {

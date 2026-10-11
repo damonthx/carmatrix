@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { 
   Search, SlidersHorizontal, Tag, CarFront, ShieldCheck, 
   User, CheckCircle2, AlertTriangle, ArrowUpRight, Check, X, ArrowUpCircle, Heart,
-  Battery, LayoutGrid, History, Loader2, MapPin, Sparkles
+  Battery, LayoutGrid, History, Loader2, MapPin, Cpu
 } from 'lucide-react';
 import { searchCars, MarketCheckCar } from './services/marketcheck';
 import { getFavorites, toggleFavorite } from './services/favoritesService';
@@ -403,7 +403,7 @@ export default function SearchPage({
       {initialFilters?.aiReasoning && (
         <div className="mb-8 p-4 md:p-5 bg-indigo-50/80 border border-indigo-100 rounded-2xl flex items-start gap-4">
           <div className="mt-0.5 text-indigo-500 shrink-0">
-            <Sparkles size={20} strokeWidth={2} />
+            <Cpu size={20} strokeWidth={2} />
           </div>
           <div>
             <h3 className="font-bold text-indigo-900 text-[15px] mb-1">AI Recommendation</h3>
