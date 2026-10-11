@@ -1,201 +1,258 @@
-import React, { useState } from 'react';
-import { ArrowLeftRight, CheckCircle2, DollarSign, HelpCircle, Sparkles, TrendingUp } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { 
+  ArrowLeftRight, 
+  CheckCircle2, 
+  DollarSign, 
+  HelpCircle, 
+  Sparkles, 
+  TrendingUp, 
+  ShieldCheck, 
+  AlertTriangle,
+  Info 
+} from 'lucide-react';
 
-export default function LeaseVsFinanceWidget() {
-  const [vehiclePrice, setVehiclePrice] = useState(38000);
-  const [downPayment, setDownPayment] = useState(4000);
-  const [loanApr, setLoanApr] = useState(6.5);
-  const [loanTerm, setLoanTerm] = useState(60);
-  
-  // Lease assumptions
-  const leaseTerm = 36;
-  const [residualPercent, setResidualPercent] = useState(58); // 58% after 36mo
-  const [leaseMoneyFactor, setLeaseMoneyFactor] = useState(0.0027); // ~6.5% APR equivalent
+export interface LeaseVsFinanceWidgetProps {
+  className?: string;
+}
 
-  // Finance calculation
-  const financePrincipal = Math.max(0, vehiclePrice - downPayment);
-  const monthlyInterestRate = loanApr / 100 / 12;
-  const financeMonthly = monthlyInterestRate === 0
-    ? financePrincipal / loanTerm
-    : (financePrincipal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTerm)) /
-      (Math.pow(1 + monthlyInterestRate, loanTerm) - 1);
-  const financeTotalInterest = (financeMonthly * loanTerm) - financePrincipal;
-  const finance3YearSpend = downPayment + (financeMonthly * 36);
-  // Estimated equity at Year 3 (assuming vehicle depreciates to 58% of original MSRP)
-  const vehicleValueYear3 = vehiclePrice * (residualPercent / 100);
-  // Approximate loan balance remaining at 36 months of 60 month loan
-  const approxRemainingBalance = financePrincipal * 0.44; 
-  const financeEstimatedEquityYear3 = Math.max(0, vehicleValueYear3 - approxRemainingBalance);
-  const financeNetCost3Years = finance3YearSpend - financeEstimatedEquityYear3;
+export const LeaseVsFinanceWidget: React.FC<LeaseVsFinanceWidgetProps> = ({ className = '' }) => {
+  const [vehiclePrice, setVehiclePrice] = useState<number>(8500);
+  const [termMonths, setTermMonths] = useState<number>(36);
+  const [downPayment, setDownPayment] = useState<number>(1000);
+  const [financeApr, setFinanceApr] = useState<number>(8.5); // Used car loan APR
 
-  // Lease calculation
-  const leaseGrossCap = vehiclePrice;
-  const leaseNetCap = Math.max(0, leaseGrossCap - downPayment);
-  const leaseResidualValue = vehiclePrice * (residualPercent / 100);
-  const monthlyDepreciation = (leaseNetCap - leaseResidualValue) / leaseTerm;
-  const monthlyRentCharge = (leaseNetCap + leaseResidualValue) * leaseMoneyFactor;
-  const leaseMonthly = Math.max(0, monthlyDepreciation + monthlyRentCharge);
-  const leaseTotalSpend3Years = downPayment + (leaseMonthly * leaseTerm);
+  // Dynamic check: true retail leasing is practically non-existent sub-$15k
+  const isLeaseEligible = vehiclePrice >= 15000;
+
+  const comparison = useMemo(() => {
+    // 1. Finance Calculation (Standard Amortization)
+    const principal = Math.max(0, vehiclePrice - downPayment);
+    const monthlyRate = financeApr / 100 / 12;
+    const monthlyFinance =
+      principal > 0
+        ? (principal * (monthlyRate * Math.pow(1 + monthlyRate, termMonths))) /
+          (Math.pow(1 + monthlyRate, termMonths) - 1)
+        : 0;
+    const totalFinancePaid = monthlyFinance * termMonths + downPayment;
+
+    // 2. Lease Calculation (Simulated or Active)
+    // Residual for sub-$15k cars drops faster or hits a flat baseline ($2,000)
+    const residualPct = vehiclePrice >= 25000 ? 0.55 : 0.40;
+    const residualValue = Math.max(1500, vehiclePrice * residualPct);
+    const depreciationCharge = (vehiclePrice - downPayment - residualValue) / termMonths;
+    const moneyFactor = 0.0028; // Equivalent to ~6.7% APR
+    const rentCharge = (vehiclePrice - downPayment + residualValue) * moneyFactor;
+    const monthlyLease = Math.max(0, depreciationCharge + rentCharge);
+    const totalLeasePaid = monthlyLease * termMonths + downPayment;
+
+    return {
+      finance: {
+        monthly: Math.round(monthlyFinance),
+        totalCost: Math.round(totalFinancePaid),
+        equityAtEnd: vehiclePrice >= 8000 ? Math.round(vehiclePrice * 0.5) : 2500,
+      },
+      lease: {
+        monthly: Math.round(monthlyLease),
+        totalCost: Math.round(totalLeasePaid),
+        residualValue: Math.round(residualValue),
+      },
+    };
+  }, [vehiclePrice, termMonths, downPayment, financeApr]);
+
+  const handlePriceChange = (value: number) => {
+    const clamped = Math.max(2000, Math.min(100000, value || 0));
+    setVehiclePrice(clamped);
+  };
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+    <div className={`relative overflow-hidden bg-slate-900/95 border border-slate-800 rounded-3xl p-6 md:p-8 text-white shadow-2xl backdrop-blur-2xl ${className}`}>
+      {/* Specular top rim light */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#29abe2]/40 to-transparent pointer-events-none" />
+
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-400/20 via-violet-500/10 to-transparent border border-violet-300/40 shadow-[0_4px_16px_rgba(139,92,246,0.18)] flex items-center justify-center text-violet-600 shrink-0 relative overflow-hidden">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-[#29abe2]/15 to-transparent border border-sky-400/35 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
             <ArrowLeftRight size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
           <div>
-            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Lease vs. Finance Decision Simulator</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Compare 3-year cash outflow, monthly payments, and long-term equity to make the best financial choice.</p>
+            <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight font-poppins">
+              Lease vs. Finance Terminal
+            </h3>
+            <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
+              Compare true monthly outflow, loan amortization, and ending equity retention.
+            </p>
+          </div>
+        </div>
+
+        <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-lg border border-emerald-500/25 shrink-0 self-start sm:self-auto flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Live Real-Time</span>
+        </span>
+      </div>
+
+      {/* Price Slider & Direct Input Controls */}
+      <div className="space-y-3 mb-6 bg-slate-950/60 p-4 sm:p-5 rounded-2xl border border-slate-800/80">
+        <div className="flex justify-between items-baseline text-xs sm:text-sm text-slate-400">
+          <span className="font-semibold text-slate-300">Vehicle Price (Market Value)</span>
+          <span className="text-2xl font-black text-[#29abe2] font-mono">
+            ${vehiclePrice.toLocaleString()}
+          </span>
+        </div>
+
+        <input
+          type="range"
+          min="2000"
+          max="60000"
+          step="250"
+          value={vehiclePrice}
+          onChange={(e) => handlePriceChange(Number(e.target.value))}
+          className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#29abe2]"
+        />
+
+        {/* Quick select budget chips */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+          <span className="text-[10.5px] font-semibold text-slate-500 uppercase tracking-wider mr-1">Presets:</span>
+          {[4000, 7500, 12000, 18000, 28000, 45000].map((preset) => (
+            <button
+              key={preset}
+              type="button"
+              onClick={() => handlePriceChange(preset)}
+              className={`text-[11px] px-2.5 py-1 rounded-lg font-mono font-bold transition-all cursor-pointer ${
+                vehiclePrice === preset
+                  ? 'bg-gradient-to-r from-[#29abe2] to-[#1e88b8] text-white shadow-xs'
+                  : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60'
+              }`}
+            >
+              ${preset / 1000}k
+            </button>
+          ))}
+        </div>
+
+        {/* Loan Term & Down Payment Mini Inputs */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800/80 text-xs">
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-400 mb-1">Down Payment ($)</label>
+            <input
+              type="number"
+              placeholder="1000"
+              value={downPayment === 0 ? '' : downPayment}
+              onChange={(e) => setDownPayment(e.target.value === '' ? 0 : Number(e.target.value))}
+              className="w-full bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-white outline-none focus:border-[#29abe2]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-400 mb-1">Term Length</label>
+            <select
+              value={termMonths}
+              onChange={(e) => setTermMonths(Number(e.target.value))}
+              className="w-full bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-xl px-3 py-1.5 text-xs font-bold text-white outline-none focus:border-[#29abe2] cursor-pointer"
+            >
+              <option value={24}>24 Months (2 Yr)</option>
+              <option value={36}>36 Months (3 Yr)</option>
+              <option value={48}>48 Months (4 Yr)</option>
+              <option value={60}>60 Months (5 Yr)</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-400 mb-1">Used Loan APR (%)</label>
+            <input
+              type="number"
+              step="0.1"
+              placeholder="8.5"
+              value={financeApr === 0 ? '' : financeApr}
+              onChange={(e) => setFinanceApr(e.target.value === '' ? 0 : Number(e.target.value))}
+              className="w-full bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-white outline-none focus:border-[#29abe2]"
+            />
           </div>
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left: Interactive Controls */}
-        <div className="lg:col-span-4 space-y-4">
-          <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Purchase Assumptions</h4>
+      {/* Sub-$15k Market Reality Banner */}
+      {!isLeaseEligible && (
+        <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-xs text-amber-200 flex items-start gap-3">
+          <div className="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+            <AlertTriangle size={14} strokeWidth={2.4} />
+          </div>
+          <div>
+            <p className="font-bold text-amber-300 mb-0.5">Market Reality Note (Sub-$15,000 Vehicle):</p>
+            Lenders and captive finance institutions rarely write retail leases on vehicles under $15,000. In this range, private cash purchases or credit union financing deliver vastly superior equity retention and zero lease-turn-in penalties.
+          </div>
+        </div>
+      )}
+
+      {/* Comparison Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {/* Finance Column */}
+        <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-slate-950/90 to-slate-900/90 border-2 border-emerald-500/50 shadow-lg shadow-emerald-500/5 flex flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-3 right-3 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            Builds Equity
+          </div>
 
           <div>
-            <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
-              <span>Vehicle Negotiated Price</span>
-              <span className="text-[#29abe2]">${vehiclePrice.toLocaleString()}</span>
-            </div>
-            <input
-              type="range"
-              min="15000"
-              max="90000"
-              step="1000"
-              value={vehiclePrice}
-              onChange={(e) => setVehiclePrice(Number(e.target.value))}
-              className="w-full accent-[#29abe2]"
-            />
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Financing ({termMonths} mo @ {financeApr}%)
+            </p>
+            <p className="text-3xl sm:text-4xl font-black font-mono text-emerald-400 my-1">
+              ${comparison.finance.monthly}
+              <span className="text-xs font-normal text-slate-400">/mo</span>
+            </p>
+            <p className="text-xs text-slate-400 mt-1">Full asset ownership with no mileage restrictions.</p>
           </div>
 
-          <div>
-            <div className="flex justify-between text-xs font-bold text-slate-800 mb-1">
-              <span>Down Payment / Trade-In</span>
-              <span className="text-slate-900">${downPayment.toLocaleString()}</span>
+          <div className="text-xs space-y-2 mt-5 pt-4 border-t border-slate-800">
+            <div className="flex justify-between text-slate-300">
+              <span className="text-slate-400">Total Outlay:</span>
+              <span className="font-mono font-bold text-white">${comparison.finance.totalCost.toLocaleString()}</span>
             </div>
-            <input
-              type="range"
-              min="0"
-              max="20000"
-              step="500"
-              value={downPayment}
-              onChange={(e) => setDownPayment(Number(e.target.value))}
-              className="w-full accent-slate-800"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 pt-2">
-            <div>
-              <label className="block text-[10px] font-bold text-slate-600 mb-1">Loan APR (%)</label>
-              <input
-                type="number"
-                step="0.1"
-                value={loanApr}
-                onChange={(e) => setLoanApr(Number(e.target.value))}
-                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
-              />
+            <div className="flex justify-between text-emerald-400">
+              <span className="font-semibold">End Asset Equity:</span>
+              <span className="font-mono font-black">+${comparison.finance.equityAtEnd.toLocaleString()}</span>
             </div>
-            <div>
-              <label className="block text-[10px] font-bold text-slate-600 mb-1">Loan Term</label>
-              <select
-                value={loanTerm}
-                onChange={(e) => setLoanTerm(Number(e.target.value))}
-                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
-              >
-                <option value={36}>36 Months</option>
-                <option value={48}>48 Months</option>
-                <option value={60}>60 Months</option>
-                <option value={72}>72 Months</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="pt-2 border-t border-slate-200 text-[11px] text-slate-500 leading-relaxed">
-            Lease assumes 36-month term, {residualPercent}% residual value, and 12,000 miles/yr.
           </div>
         </div>
 
-        {/* Right: Side-by-Side Comparison Cards */}
-        <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Option A: 36-Month Lease */}
-          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between space-y-4">
-            <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-violet-700 bg-violet-100 px-2.5 py-0.5 rounded-full inline-block mb-2">
-                Option A: 36-Month Lease
-              </span>
-              <div className="text-3xl font-black text-slate-900 tracking-tight">
-                ${Math.round(leaseMonthly)}
-                <span className="text-xs font-semibold text-slate-500"> / month</span>
-              </div>
-              <p className="text-xs text-slate-500 mt-1">Lower monthly payment, but zero equity ownership.</p>
+        {/* Lease Column */}
+        <div className={`p-5 sm:p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+          isLeaseEligible
+            ? 'bg-slate-950/70 border-slate-700/80 shadow-md'
+            : 'bg-slate-950/40 border-slate-800/60 opacity-60'
+        }`}>
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                Lease ({termMonths} mo)
+              </p>
+              {!isLeaseEligible && (
+                <span className="text-[10px] text-amber-400 uppercase font-mono font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                  Uncommon Sub-$15k
+                </span>
+              )}
             </div>
-
-            <div className="space-y-2.5 text-xs border-t border-slate-200 pt-4">
-              <div className="flex justify-between text-slate-600">
-                <span>3-Year Out-Of-Pocket:</span>
-                <span className="font-bold text-slate-900">${Math.round(leaseTotalSpend3Years).toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-slate-600">
-                <span>Vehicle Equity at Year 3:</span>
-                <span className="font-bold text-slate-400">$0 (Car returned)</span>
-              </div>
-              <div className="flex justify-between text-slate-600">
-                <span>Mileage Allowance:</span>
-                <span className="font-bold text-slate-900">12,000 mi / year</span>
-              </div>
-            </div>
-
-            <div className="p-3 bg-violet-50/70 border border-violet-200/60 rounded-xl text-[11px] text-violet-950 space-y-1">
-              <strong className="block text-violet-900">Best for you if:</strong>
-              You want a new car every 3 years, prefer driving under factory warranty, and have predictable annual mileage.
-            </div>
+            <p className="text-3xl sm:text-4xl font-black font-mono text-white my-1">
+              ${comparison.lease.monthly}
+              <span className="text-xs font-normal text-slate-400">/mo</span>
+            </p>
+            <p className="text-xs text-slate-400 mt-1">Lower monthly payment, but vehicle must be returned.</p>
           </div>
 
-          {/* Option B: Purchase / Finance */}
-          <div className="p-6 rounded-2xl bg-white border-2 border-[#29abe2] shadow-md shadow-sky-500/10 flex flex-col justify-between space-y-4 relative">
-            <div className="absolute -top-3 right-4 bg-[#29abe2] text-white text-[10px] font-extrabold px-3 py-0.5 rounded-full shadow-sm uppercase tracking-wider">
-              Builds Wealth
+          <div className="text-xs space-y-2 mt-5 pt-4 border-t border-slate-800">
+            <div className="flex justify-between text-slate-300">
+              <span className="text-slate-400">Total Outlay:</span>
+              <span className="font-mono font-bold text-white">${comparison.lease.totalCost.toLocaleString()}</span>
             </div>
-
-            <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-full inline-block mb-2">
-                Option B: {loanTerm}-Mo Loan
-              </span>
-              <div className="text-3xl font-black text-slate-900 tracking-tight">
-                ${Math.round(financeMonthly)}
-                <span className="text-xs font-semibold text-slate-500"> / month</span>
-              </div>
-              <p className="text-xs text-slate-500 mt-1">Higher monthly payment, but you build real equity asset.</p>
-            </div>
-
-            <div className="space-y-2.5 text-xs border-t border-slate-200 pt-4">
-              <div className="flex justify-between text-slate-600">
-                <span>3-Year Out-Of-Pocket:</span>
-                <span className="font-bold text-slate-900">${Math.round(finance3YearSpend).toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-emerald-700 font-bold">
-                <span>Estimated Equity at Year 3:</span>
-                <span>+${Math.round(financeEstimatedEquityYear3).toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-slate-600">
-                <span>Net 3-Year True Cost:</span>
-                <span className="font-bold text-slate-900">${Math.round(financeNetCost3Years).toLocaleString()}</span>
-              </div>
-            </div>
-
-            <div className="p-3 bg-sky-50/70 border border-sky-200/60 rounded-xl text-[11px] text-sky-950 space-y-1">
-              <strong className="block text-sky-900">Best for you if:</strong>
-              You plan to keep the car 5+ years, want no mileage penalties, and prefer owning an asset after pay-off.
+            <div className="flex justify-between text-slate-400">
+              <span>End Asset Value:</span>
+              <span className="font-mono">$0 (Return Car)</span>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default LeaseVsFinanceWidget;
