@@ -31,13 +31,41 @@ export async function getModelsForMake(make: string): Promise<string[]> {
     
     const data = await response.json();
     if (data && data.Results) {
-      return data.Results
-        .map((m: NHTSAModel) => m.Model_Name)
-        .sort((a: string, b: string) => a.localeCompare(b));
+      return Array.from(new Set(
+        data.Results
+          .map((m: NHTSAModel) => m.Model_Name.trim())
+          .filter(Boolean)
+      )).sort((a, b) => a.localeCompare(b));
     }
     return [];
   } catch (error) {
     console.error(`Failed to fetch NHTSA models for make ${make}:`, error);
     return [];
+  }
+}
+
+export async function getModelsForMakeYear(make: string, year?: number): Promise<string[]> {
+  if (!make) return [];
+  if (!year) return getModelsForMake(make);
+
+  try {
+    const response = await fetch(
+      `https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformakeyear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`
+    );
+    if (!response.ok) return getModelsForMake(make);
+
+    const data = await response.json();
+    if (data && data.Results && data.Results.length > 0) {
+      return Array.from(new Set(
+        data.Results
+          .map((m: NHTSAModel) => m.Model_Name.trim())
+          .filter(Boolean)
+      )).sort((a, b) => a.localeCompare(b));
+    }
+    // Fall back to general models for make if year-specific query has no results
+    return getModelsForMake(make);
+  } catch (error) {
+    console.error(`Failed to fetch NHTSA models for make ${make} and year ${year}:`, error);
+    return getModelsForMake(make);
   }
 }

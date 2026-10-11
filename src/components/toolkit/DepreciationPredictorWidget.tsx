@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingDown, Sparkles, CheckCircle2, DollarSign, Calendar, Car } from 'lucide-react';
+import { TrendingDown, Target, CheckCircle2, DollarSign, Calendar, Car } from 'lucide-react';
 
 interface VehicleSegment {
   id: string;
@@ -113,7 +113,7 @@ export default function DepreciationPredictorWidget() {
 
           <div className="p-5 rounded-2xl bg-gradient-to-br from-cyan-50 to-sky-50 border border-cyan-200/80 text-xs text-slate-800 space-y-2">
             <div className="flex items-center gap-1.5 font-bold text-[#29abe2]">
-              <Sparkles size={16} />
+              <Target size={16} className="text-[#29abe2]" />
               <span className="uppercase tracking-wider">Value Sweet Spot Analysis</span>
             </div>
             <p className="leading-relaxed text-slate-700">{activeSegment.insight}</p>
@@ -150,8 +150,8 @@ export default function DepreciationPredictorWidget() {
                     <div>
                       <span className="font-extrabold text-slate-900 block">Year {yearNum}</span>
                       {isSweetSpot && (
-                        <span className="text-[10px] font-black text-[#29abe2] uppercase tracking-wider">
-                          ★ Sweet Spot
+                        <span className="inline-flex items-center gap-1 text-[10px] font-black text-[#29abe2] uppercase tracking-wider">
+                          <Target size={11} className="stroke-[2.5]" /> Optimal Window
                         </span>
                       )}
                     </div>
