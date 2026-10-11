@@ -903,7 +903,7 @@ const EstimateBudgetSection = () => {
 
 const ResearchAndReviews = () => {
   const reviews = [
-    { title: "2026 Cadillac Escalade Review", rating: "7.7/10", img: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80", url: "https://www.caranddriver.com/cadillac/escalade" },
+    { title: "2026 Cadillac Escalade Review", rating: "7.7/10", img: "https://di-uploads-pod47.dealerinspire.com/jimelliscadillac/uploads/2025/10/2026-Cadillac-Escalade-IQ-exterior.jpg", url: "https://www.caranddriver.com/cadillac/escalade" },
     { title: "2026 Dodge Durango Review", rating: "6.5/10", img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80", url: "https://www.caranddriver.com/dodge/durango" },
     { title: "2026 Lexus LX Hybrid Review", rating: "6.8/10", img: "https://images.unsplash.com/photo-1614026480209-cd9934144671?auto=format&fit=crop&w=600&q=80", url: "https://www.caranddriver.com/lexus/lx" },
     { title: "2026 Hyundai Venue Review", rating: "5.2/10", img: "https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=600&q=80", url: "https://www.caranddriver.com/hyundai/venue" },
