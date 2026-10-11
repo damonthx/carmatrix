@@ -804,7 +804,9 @@ const ToolkitHeroHeader = ({
           {TOOLKIT_CATEGORIES.map((category) => (
             <div 
               key={category.id}
-              className={`group flex flex-col justify-between p-6 sm:p-7 rounded-3xl bg-gradient-to-b ${category.panelGradients} border ${category.borderColor} ${category.glowBorder} hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden backdrop-blur-2xl`}
+              id={`silo-${category.id}`}
+              data-tour-target={`silo-${category.id}`}
+              className={`group flex flex-col justify-between p-6 sm:p-7 rounded-3xl bg-gradient-to-b ${category.panelGradients} border ${category.borderColor} ${category.glowBorder} hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden backdrop-blur-2xl scroll-mt-28`}
             >
               {/* Internal ambient radial glow orb */}
               <div className={`absolute -top-20 -right-20 w-56 h-56 rounded-full blur-3xl pointer-events-none transition-all duration-500 ${category.glowOrb}`} />

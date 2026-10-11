@@ -1,49 +1,43 @@
 export interface TourStep {
   targetId: string; // DOM ID or data-tour-target
   title: string;
+  badge?: string;
   bullets: string[];
   position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 export const TOUR_STEPS: TourStep[] = [
   {
-    targetId: 'cash-market-intel',
-    title: 'Cash Market Intel',
+    targetId: 'silo-recon',
+    title: 'Silo 01: Pre-Lot Recon',
+    badge: 'INTEL & VERIFICATION',
     bullets: [
-      'Tracks real private-party cash transactions vs. dealer list prices',
-      'Filters out lot markups and dealer prep fees',
-      'Benchmark baseline before negotiating'
+      'Decode factory build specs & open NHTSA safety recalls before contacting dealers',
+      'Audit 5-year ownership depreciation, fuel expense, and true maintenance costs',
+      'Check trade-in vs. private-party market pricing and 40-point inspection list'
     ],
     position: 'bottom'
   },
   {
-    targetId: 'quote-auditor',
-    title: 'Dealer Quote Auditor',
+    targetId: 'silo-finance',
+    title: 'Silo 02: Finance Trap Detectors',
+    badge: 'FINANCE GUARD',
     bullets: [
-      'Flags junk fees, paint protection, and document add-ons',
-      'Generates automated counter-offer scripts and target buy prices',
-      'Supports any year, make, and model'
+      'Expose backend APR markup and calculate true monthly purchasing power',
+      'Simulate lease vs. financing equity paths side-by-side',
+      'Map 7-year residual depreciation decay curves to avoid negative equity'
     ],
-    position: 'top'
+    position: 'bottom'
   },
   {
-    targetId: 'cost-of-ownership',
-    title: 'Cost of Ownership',
+    targetId: 'silo-closing',
+    title: 'Silo 03: The Closing Table',
+    badge: 'ADD-ON DEFENSE',
     bullets: [
-      'Projects true 5-year maintenance, fuel, and insurance costs',
-      'Calculates real-world depreciation curves and equity loss',
-      'Uncovers the true cost beyond the monthly payment'
+      'Audit dealer quote sheets to isolate legitimate fees from bogus dealer add-ons',
+      'Deploy tactical AI negotiation scripts and real-time dealer counter-leverage',
+      'Verify 50-state statutory doc fee legal caps and mandatory tax rates'
     ],
-    position: 'top'
-  },
-  {
-    targetId: 'loan-affordability',
-    title: 'Loan & Affordability',
-    bullets: [
-      'Visualizes loan amortization schedules and total interest paid',
-      'Compares APR rates and dealer financing markups',
-      'Determines true purchasing power based on monthly budget'
-    ],
-    position: 'top'
+    position: 'bottom'
   }
 ];
