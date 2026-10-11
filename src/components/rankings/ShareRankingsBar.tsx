@@ -14,6 +14,7 @@ interface ShareRankingsBarProps {
   tierSlug: string | null;
   bodyType: string;
   totalCount: number;
+  className?: string;
 }
 
 export const ShareRankingsBar: React.FC<ShareRankingsBarProps> = ({
@@ -21,11 +22,12 @@ export const ShareRankingsBar: React.FC<ShareRankingsBarProps> = ({
   tierSlug,
   bodyType,
   totalCount,
+  className = '',
 }) => {
   const [copied, setCopied] = useState(false);
   const { logEvent } = useRankingsAnalytics();
 
-  // Compute descriptive label for the current filter state
+  // Compute descriptive metadata for sharing
   const tierDef = tierSlug && TIER_DEFINITIONS[channel][tierSlug] 
     ? TIER_DEFINITIONS[channel][tierSlug].label 
     : 'All Price Tiers';
@@ -105,32 +107,34 @@ export const ShareRankingsBar: React.FC<ShareRankingsBarProps> = ({
   };
 
   return (
-    <div className="p-3 sm:p-4 rounded-2xl bg-white/70 backdrop-blur-md border border-white/60 shadow-xs mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
-      <div className="flex items-center gap-2.5 text-slate-700">
-        <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
-          <Share2 size={13} strokeWidth={2.4} />
+    <div className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-2xs flex items-center justify-between sm:justify-start gap-2 text-xs shrink-0 ${className}`}>
+      <div className="flex items-center gap-1.5 text-slate-700 pl-1">
+        <div className="w-5 h-5 rounded-md bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
+          <Share2 size={12} strokeWidth={2.4} />
         </div>
-        <span className="font-semibold">
-          Share these rankings: <span className="text-slate-900 font-bold">{tierDef}</span> ({totalCount} models)
+        <span className="font-bold text-slate-800 text-xs whitespace-nowrap">
+          Share these rankings
         </span>
       </div>
 
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="h-3.5 w-px bg-slate-200 shrink-0 hidden sm:block mx-0.5" />
+
+      <div className="flex items-center gap-1.5 shrink-0">
         {/* Copy Link Button */}
         <button
           type="button"
           onClick={handleCopyLink}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer border ${
             copied
               ? 'bg-emerald-500 text-white border-emerald-500 shadow-xs'
-              : 'bg-white/90 hover:bg-white text-slate-700 border-slate-300/80 shadow-2xs'
+              : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300 shadow-2xs'
           }`}
           title="Copy link to clipboard"
         >
-          <div className={`w-4 h-4 rounded-md flex items-center justify-center shrink-0 ${copied ? 'text-white' : 'text-slate-500'}`}>
-            {copied ? <Check size={13} strokeWidth={2.5} /> : <Copy size={13} strokeWidth={2.3} />}
+          <div className={`w-3.5 h-3.5 flex items-center justify-center shrink-0 ${copied ? 'text-white' : 'text-slate-500'}`}>
+            {copied ? <Check size={11} strokeWidth={2.6} /> : <Copy size={11} strokeWidth={2.4} />}
           </div>
-          <span>{copied ? 'Link Copied!' : 'Copy Link'}</span>
+          <span>{copied ? 'Copied!' : 'Copy'}</span>
         </button>
 
         {/* Native Web Share button (visible on mobile / supported devices) */}
@@ -138,10 +142,10 @@ export const ShareRankingsBar: React.FC<ShareRankingsBarProps> = ({
           <button
             type="button"
             onClick={handleNativeShare}
-            className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#29abe2]/10 hover:bg-[#29abe2]/20 text-[#29abe2] border border-[#29abe2]/30 cursor-pointer transition-colors shadow-2xs backdrop-blur-md"
+            className="sm:hidden flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold bg-[#29abe2]/10 hover:bg-[#29abe2]/20 text-[#29abe2] border border-[#29abe2]/30 cursor-pointer transition-colors shadow-2xs"
+            title="Share"
           >
-            <Share2 size={13} strokeWidth={2.3} />
-            <span>Share</span>
+            <Share2 size={11} strokeWidth={2.4} />
           </button>
         )}
 
@@ -149,11 +153,11 @@ export const ShareRankingsBar: React.FC<ShareRankingsBarProps> = ({
         <button
           type="button"
           onClick={() => handleSocialClick('x')}
-          className="w-8 h-8 rounded-xl bg-slate-900 hover:bg-black text-white flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer shadow-xs border border-white/10"
+          className="w-6 h-6 rounded-lg bg-slate-900 hover:bg-black text-white flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer shadow-xs border border-white/10"
           title="Share on X"
           aria-label="Share on X"
         >
-          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
           </svg>
         </button>
@@ -162,22 +166,22 @@ export const ShareRankingsBar: React.FC<ShareRankingsBarProps> = ({
         <button
           type="button"
           onClick={() => handleSocialClick('linkedin')}
-          className="w-8 h-8 rounded-xl bg-[#0077b5] hover:bg-[#006097] text-white flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer shadow-xs border border-white/15"
+          className="w-6 h-6 rounded-lg bg-[#0077b5] hover:bg-[#006097] text-white flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer shadow-xs border border-white/15"
           title="Share on LinkedIn"
           aria-label="Share on LinkedIn"
         >
-          <Linkedin size={14} />
+          <Linkedin size={11} />
         </button>
 
         {/* Facebook */}
         <button
           type="button"
           onClick={() => handleSocialClick('facebook')}
-          className="w-8 h-8 rounded-xl bg-[#1877f2] hover:bg-[#0f66d8] text-white flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer shadow-xs border border-white/15"
+          className="w-6 h-6 rounded-lg bg-[#1877f2] hover:bg-[#0f66d8] text-white flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer shadow-xs border border-white/15"
           title="Share on Facebook"
           aria-label="Share on Facebook"
         >
-          <Facebook size={14} />
+          <Facebook size={11} />
         </button>
       </div>
     </div>

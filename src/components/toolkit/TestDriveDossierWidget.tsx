@@ -60,7 +60,7 @@ export default function TestDriveDossierWidget() {
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Printable Test-Drive Dossier &amp; Questions</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Take this checklist on your test drive. Print or save as PDF with your budget ceiling and questions dealers fear most.</p>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Printable test-drive evaluation checklist and dealer negotiation questions.</p>
           </div>
         </div>
 

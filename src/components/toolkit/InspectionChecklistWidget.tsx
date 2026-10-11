@@ -72,7 +72,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight flex items-center gap-3 font-poppins">
               <span>Pre-Purchase Inspection &amp; Fee Detector</span>
             </h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Interactive inspection tool for used cars and dealer fee analyzer to prevent thousands in junk add-ons.</p>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Used vehicle pre-purchase inspection guide and junk fee detector.</p>
           </div>
         </div>
 

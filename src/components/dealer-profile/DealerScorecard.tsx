@@ -336,8 +336,8 @@ export const DealerScorecard: React.FC<DealerScorecardProps> = ({
             <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-1">
               Community Proof &amp; Buyer Documents
             </h3>
-            <p className="text-xs text-slate-500 mb-6 leading-relaxed">
-              Redacted buyer orders, window stickers, and fee breakdowns submitted by verified CarMatrix members for <strong>{dealer.name}</strong>.
+            <p className="text-xs text-slate-500 mb-6">
+              Verified buyer orders and fee audits for <strong>{dealer.name}</strong>.
             </p>
 
             <div className="space-y-3">

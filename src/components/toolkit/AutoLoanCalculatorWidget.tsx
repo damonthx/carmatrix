@@ -230,7 +230,7 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Auto Loan &amp; Affordability Terminal</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Dual calculation engine: Test any specific sticker price or reverse-engineer your maximum vehicle budget.</p>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Calculate exact payments by vehicle price or estimate maximum purchasing power.</p>
           </div>
         </div>
 
@@ -263,7 +263,7 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
             }`}
           >
             <DollarSign size={14} className={mode === 'targetPrice' ? 'text-[#29abe2]' : 'text-slate-400'} />
-            <span>Target Price Mode ("Can I afford this car?")</span>
+            <span>Target Price ("Can I afford this car?")</span>
           </button>
 
           <button
@@ -276,12 +276,12 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
             }`}
           >
             <Calculator size={14} className={mode === 'reverseBudget' ? 'text-[#29abe2]' : 'text-slate-400'} />
-            <span>Reverse Budget Mode ("What can I afford?")</span>
+            <span>Reverse Budget ("What can I afford?")</span>
           </button>
         </div>
 
-        <span className="text-[11px] font-mono uppercase bg-emerald-500/10 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-500/20 font-bold hidden md:inline">
-          Live Reactive Math
+        <span className="text-[10.5px] uppercase bg-emerald-500/10 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-500/20 font-bold hidden md:inline">
+          Live Calculation
         </span>
       </div>
 
@@ -664,8 +664,8 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
                   ${Math.round(calculation.recommendedGrossIncome).toLocaleString()}/yr
                 </strong>
               </div>
-              <p className="text-[11px] text-slate-500 leading-relaxed">
-                Based on the standard 10% underwriting guardrail, a <strong>${calculation.monthlyPayment.toLocaleString()}/mo</strong> payment should not exceed 10% of your gross monthly income (${Math.round(calculation.recommendedGrossIncome / 12).toLocaleString()}/mo).
+              <p className="text-[11px] text-slate-500 leading-snug">
+                10% Underwriting Rule: Monthly payment ideally remains &le;10% of gross monthly income (${Math.round(calculation.recommendedGrossIncome / 12).toLocaleString()}/mo).
               </p>
             </div>
           </div>

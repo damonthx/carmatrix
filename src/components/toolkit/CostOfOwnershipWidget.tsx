@@ -124,8 +124,7 @@ export const CostOfOwnershipWidget: React.FC<CostOfOwnershipWidgetProps> = ({
           )}
         </div>
 
-        <div className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-500/25 shrink-0 self-start sm:self-auto">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="inline-flex items-center gap-1.5 text-[10.5px] font-bold uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-500/25 shrink-0 self-start sm:self-auto">
           <span>Live Calculation</span>
         </div>
       </div>

@@ -81,14 +81,13 @@ export const LeaseVsFinanceWidget: React.FC<LeaseVsFinanceWidgetProps> = ({ clas
               Lease vs. Finance Terminal
             </h3>
             <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
-              Compare true monthly outflow, loan amortization, and ending equity retention.
+              Compare monthly payments, loan amortization, and equity retention.
             </p>
           </div>
         </div>
 
-        <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-lg border border-emerald-500/25 shrink-0 self-start sm:self-auto flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Live Real-Time</span>
+        <span className="text-[10.5px] font-bold uppercase bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-lg border border-emerald-500/25 shrink-0 self-start sm:self-auto">
+          Live Calculation
         </span>
       </div>
 

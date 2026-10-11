@@ -88,7 +88,7 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
                 Price Transparency &amp; Negotiation Grade
               </h3>
               <p className="text-xs text-slate-300 mt-1 max-w-sm">
-                Calculated from genuine transaction data, reported doc fees, and customer contract reviews.
+                Verified transaction data, doc fees, and community contract audits.
               </p>
             </div>
 

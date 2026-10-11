@@ -86,7 +86,7 @@ export default function StateFeeGuideWidget() {
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">State Doc Fee &amp; Trade-In Tax Credit Guide</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Look up statutory documentation fee limits, tax credit rules, and buyer protection policies in your state.</p>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Statutory documentation fee caps and trade-in tax credits by state.</p>
           </div>
         </div>
 

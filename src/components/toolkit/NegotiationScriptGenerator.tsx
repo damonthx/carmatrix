@@ -95,17 +95,17 @@ ${buyer}`;
     <div className="mt-8 pt-8 border-t border-slate-200/80 font-poppins">
       {/* Trigger CTA Card when not generated */}
       {!isGenerated ? (
-        <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border border-slate-800 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-5 text-white">
+        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-white">
           <div className="flex items-center gap-3.5 max-w-xl">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-transparent border border-emerald-300/40 shadow-[0_4px_16px_rgba(16,185,129,0.18)] flex items-center justify-center text-[#00ff88] shrink-0">
-              <Terminal size={20} strokeWidth={2.2} />
+            <div className="w-10 h-10 rounded-xl bg-[#29abe2]/15 border border-[#29abe2]/30 flex items-center justify-center text-[#29abe2] shrink-0">
+              <Mail size={18} strokeWidth={2.2} />
             </div>
-            <div className="space-y-1">
-              <h4 className="text-lg sm:text-xl font-semibold text-white font-poppins tracking-tight">
-                Negotiation Script Generator
+            <div className="space-y-0.5">
+              <h4 className="text-base font-semibold text-white font-poppins tracking-tight">
+                Counter-Offer Email Generator
               </h4>
-              <p className="text-xs sm:text-sm text-slate-300 font-poppins leading-relaxed">
-                Inject your calculated <strong className="text-white">${cleanTargetPrice.toLocaleString()}</strong> clean OTD price, verified state sales tax (<strong className="text-white">${stateTax.toLocaleString()}</strong>), and vehicle parameters directly into a tactical email template for dealership sales managers.
+              <p className="text-xs text-slate-400 font-poppins leading-relaxed">
+                Generate a ready-to-send purchase offer with your target <strong className="text-white">${cleanTargetPrice.toLocaleString()}</strong> OTD price.
               </p>
             </div>
           </div>
@@ -113,116 +113,103 @@ ${buyer}`;
           <div className="shrink-0">
             <button
               onClick={handleGenerate}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#00f0ff] via-sky-400 to-[#00ff88] text-slate-950 font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:shadow-[0_0_28px_rgba(0,255,136,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer font-poppins"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#29abe2] hover:bg-[#2089b5] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer font-poppins shadow-sm"
             >
-              <Terminal size={17} strokeWidth={2.2} />
-              <span>Generate Dealer Email Script</span>
+              <Send size={14} />
+              <span>Generate Email Offer</span>
             </button>
           </div>
         </div>
       ) : (
-        /* Secure Message Terminal Component */
-        <div id="secure-script-terminal" className="space-y-4">
+        /* Message Preview Component */
+        <div id="secure-script-terminal" className="space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-transparent border border-emerald-300/40 shadow-[0_4px_16px_rgba(16,185,129,0.18)] flex items-center justify-center text-[#00ff88] shrink-0">
-                <Terminal size={18} strokeWidth={2.2} />
+              <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-[#29abe2] shrink-0">
+                <Mail size={16} strokeWidth={2.2} />
               </div>
               <div>
-                <h4 className="text-base font-semibold text-slate-900 font-poppins">
-                  Negotiation Script Generator
+                <h4 className="text-sm font-semibold text-slate-900 font-poppins">
+                  Negotiation Counter-Offer
                 </h4>
                 <p className="text-xs text-slate-500 font-poppins">
-                  Official Out-The-Door counter-offer calibrated for dealership management.
+                  Calibrated for dealership sales management.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
               <button
                 onClick={handleGenerate}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition-colors cursor-pointer"
+                className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition-colors cursor-pointer"
                 title="Refresh with current calculator inputs"
               >
-                <RefreshCw size={13} />
-                <span>Sync Inputs</span>
+                <RefreshCw size={12} />
+                <span>Sync</span>
               </button>
 
               <button
                 onClick={handleCopy}
-                className={`text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-sm ${
+                className={`text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer shadow-xs ${
                   copied 
                     ? 'bg-emerald-600 text-white' 
-                    : 'bg-[#29abe2] hover:bg-[#2089b5] text-white shadow-[#29abe2]/20'
+                    : 'bg-[#29abe2] hover:bg-[#2089b5] text-white'
                 }`}
               >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-                <span>{copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'}</span>
+                {copied ? <Check size={13} /> : <Copy size={13} />}
+                <span>{copied ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
           </div>
 
-          {/* Terminal Shell Window */}
-          <div className="rounded-2xl overflow-hidden bg-[#040711] border border-slate-800 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
-            {/* Terminal Window Header Bar */}
-            <div className="px-4 py-3 bg-[#0a0f1d] border-b border-slate-800/80 flex items-center justify-between text-xs font-mono">
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <span className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <span className="w-3 h-3 rounded-full bg-emerald-500/80" />
-                </div>
-                <span className="text-slate-500 ml-2">|</span>
-                <div className="flex items-center gap-1.5 text-[#00ff88] text-[11px] font-bold">
-                  <span className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" />
-                  <span>SECURE_TERMINAL // DISPATCH PROTOCOL v2.4</span>
-                </div>
-              </div>
+          {/* Script Display Window */}
+          <div className="rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-md">
+            {/* Header Bar */}
+            <div className="px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between text-xs">
+              <span className="text-xs font-bold text-slate-300">
+                Formal Purchase Offer
+              </span>
 
-              <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400">
-                <ShieldCheck size={13} className="text-[#00f0ff]" />
-                <span className="text-slate-400">ENCRYPTED COUNTER-OFFER BUFFER</span>
-              </div>
+              <span className="text-[11px] text-slate-400 font-medium">
+                Target OTD: ${cleanTargetPrice.toLocaleString()}
+              </span>
             </div>
 
             {/* Injected Variables Status Bar */}
-            <div className="px-4 py-2.5 bg-[#070c18] border-b border-slate-800/60 flex flex-wrap items-center gap-2 text-[10.5px] font-mono">
-              <span className="px-2 py-0.5 rounded bg-sky-950/80 text-[#00f0ff] border border-sky-500/30">
-                VEHICLE: {formattedVehicle}
+            <div className="px-4 py-2 bg-slate-900/40 border-b border-slate-800/60 flex flex-wrap items-center gap-2 text-[11px]">
+              <span className="px-2 py-0.5 rounded-md bg-sky-950/60 text-sky-300 border border-sky-800/40 font-medium">
+                Vehicle: {formattedVehicle}
               </span>
-              <span className="px-2 py-0.5 rounded bg-emerald-950/80 text-[#00ff88] border border-emerald-500/30">
-                TARGET OTD: ${cleanTargetPrice.toLocaleString()}
-              </span>
-              <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700">
-                STATE TAX: ${stateTax.toLocaleString()}
+              <span className="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 font-medium">
+                Taxes &amp; Fees: ${(stateTax + dmvFees + docFee).toLocaleString()}
               </span>
               {junkTotal > 0 && (
-                <span className="px-2 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/30">
-                  JUNK REMOVED: -${junkTotal.toLocaleString()}
+                <span className="px-2 py-0.5 rounded-md bg-rose-950/60 text-rose-300 border border-rose-800/40 font-medium">
+                  Add-Ons Removed: -${junkTotal.toLocaleString()}
                 </span>
               )}
             </div>
 
-            {/* Terminal Body Content */}
-            <div className="p-4 sm:p-6 font-mono text-xs sm:text-[13px] text-slate-200 leading-relaxed overflow-x-auto selection:bg-[#00f0ff]/30 selection:text-white max-h-[460px] overflow-y-auto">
+            {/* Script Body Content */}
+            <div className="p-4 sm:p-5 font-mono text-xs text-slate-200 leading-relaxed overflow-x-auto max-h-[380px] overflow-y-auto">
               <pre className="whitespace-pre-wrap font-mono font-medium">
                 {scriptContent}
               </pre>
             </div>
 
-            {/* Terminal Footer Bar */}
-            <div className="px-4 py-3 bg-[#0a0f1d] border-t border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono text-slate-400">
+            {/* Footer Bar */}
+            <div className="px-4 py-2.5 bg-slate-900/80 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
               <span className="text-[11px] text-slate-400 flex items-center gap-1.5">
-                <CheckCircle2 size={13} className="text-[#00ff88]" />
-                <span>Ready to paste directly into Gmail, Outlook, or dealer web inquiry forms.</span>
+                <CheckCircle2 size={13} className="text-emerald-400" />
+                <span>Ready to paste into email or web inquiry forms.</span>
               </span>
 
               <button
                 onClick={handleCopy}
-                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-[#00ff88] font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
               >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-                <span>{copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'}</span>
+                {copied ? <Check size={13} /> : <Copy size={13} />}
+                <span>{copied ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
           </div>

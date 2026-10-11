@@ -294,8 +294,8 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                 Community Accountability Report Published
               </h2>
-              <p className="text-sm text-slate-600 max-w-lg mx-auto mt-2 leading-relaxed">
-                Thank you for contributing transparent market intelligence. Your report arms prospective car buyers with genuine dealer fee realities.
+              <p className="text-sm text-slate-600 max-w-lg mx-auto mt-2">
+                Thank you for contributing transparent market intelligence.
               </p>
             </div>
 
@@ -304,7 +304,7 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                 <Lock size={18} className="text-[#29abe2] shrink-0 mt-0.5" />
                 <div className="text-xs text-sky-900">
                   <span className="font-bold block">Document Vaulted &amp; Redacted:</span>
-                  Your bill of sale / buyer order is locked in the CarMatrix administrator evidence vault. Upon audit verification, your review badge will elevate to <strong>Verified Audit</strong>.
+                  Your bill of sale / buyer order is locked in the secure vault. Verified Audit badge applied upon review.
                 </div>
               </div>
             )}
@@ -333,8 +333,8 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
                 Audit Your Dealership Experience
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-                Help other vehicle shoppers expose hidden dealer tactics, mandatory add-on packs, and surprise pricing changes.
+              <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+                Report pricing accuracy, mandatory add-ons, or surprise fee changes.
               </p>
             </div>
 
@@ -804,7 +804,7 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
                         className="w-4 h-4 rounded text-[#29abe2] focus:ring-[#29abe2] border-amber-300 mt-0.5"
                       />
                       <span>
-                        <strong>Redaction Confirmation:</strong> I confirm that private personal information (Social Security Numbers, bank account/routing numbers, and residential street address) has been blacked out or redacted from this file.
+                        <strong>Redaction Confirmation:</strong> I confirm sensitive personal information (SSN, account numbers, and street address) has been redacted.
                       </span>
                     </label>
                   </div>

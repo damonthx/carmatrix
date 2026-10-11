@@ -77,7 +77,7 @@ export default function AIAdvisorWidget() {
             </div>
             <div>
               <h3 className="text-2xl font-semibold text-white tracking-tight font-poppins">Automotive Knowledge Engine</h3>
-              <p className="text-slate-400 text-sm mt-0.5 font-poppins">Instant expert vehicle benchmarks, mechanical watchouts, pricing sanity checks, and dealer negotiation scripts.</p>
+              <p className="text-slate-400 text-sm mt-0.5 font-poppins">Vehicle benchmarks, mechanical watchouts, pricing sanity checks, and negotiation scripts.</p>
             </div>
           </div>
         </div>

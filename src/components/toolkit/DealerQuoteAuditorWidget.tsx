@@ -291,7 +291,7 @@ ${buyerName.trim() || '[Your Name]'}`;
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight">Dealer Quote Auditor &amp; Counter-Offer Generator</h3>
-            <p className="text-slate-500 text-sm mt-0.5">Audit any new or used vehicle quote nationwide, eliminate predatory add-ons, and generate high-leverage counter-offers.</p>
+            <p className="text-slate-500 text-sm mt-0.5">Audit dealer quotes, identify junk add-ons, and calculate target out-the-door pricing.</p>
           </div>
         </div>
       </div>
@@ -301,9 +301,9 @@ ${buyerName.trim() || '[Your Name]'}`;
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Car size={16} className="text-[#29abe2]" />
-            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Dynamic Vehicle Configuration</span>
-            <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
-              All Vehicles Supported
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Vehicle Configuration</span>
+            <span className="text-[10.5px] font-bold uppercase bg-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-lg border border-emerald-500/20">
+              Universal Coverage
             </span>
           </div>
           

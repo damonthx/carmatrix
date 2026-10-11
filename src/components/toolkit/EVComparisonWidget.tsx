@@ -38,7 +38,7 @@ export default function EVComparisonWidget() {
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">EV vs. Gas vs. Hybrid Cost Comparison</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Calculate how much you save on fuel, charging, and maintenance by switching powertrains.</p>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Fuel, charging, and maintenance cost comparison by powertrain.</p>
           </div>
         </div>
 

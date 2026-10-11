@@ -19,6 +19,7 @@ import MarketPulse from './components/MarketPulse';
 import MarketPulsePage from './MarketPulsePage';
 import LatestArticles from './components/LatestArticles';
 import ExpertAdviceFeeds from './components/ExpertAdviceFeeds';
+import DealerTacticsExposed from './components/DealerTacticsExposed';
 import FeaturedInfluencerFeeds from './components/FeaturedInfluencerFeeds';
 import FinancePage from './FinancePage';
 import LegalCompliancePage from './LegalCompliancePage';
@@ -40,6 +41,7 @@ import AutoLoanCalculatorWidget from './components/toolkit/AutoLoanCalculatorWid
 import DealerDirectoryPage from './DealerDirectoryPage';
 import DealerProfilePage from './DealerProfilePage';
 import RankingsPage from './RankingsPage';
+import TerminalTour from './components/tour/TerminalTour';
 
 const NavBar = ({ 
   onHomeClick, 
@@ -48,6 +50,7 @@ const NavBar = ({
   onGearClick,
   onDealerDirectoryClick,
   onScrollToTool,
+  onStartTour,
 }: { 
   onHomeClick: () => void; 
   onRankingsClick?: () => void;
@@ -55,6 +58,7 @@ const NavBar = ({
   onGearClick?: () => void;
   onDealerDirectoryClick?: () => void;
   onScrollToTool?: (toolId: string) => void;
+  onStartTour?: () => void;
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -393,8 +397,17 @@ const NavBar = ({
             </button>
           </nav>
 
-          {/* Right Action: Buyer's Gear pill button */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Right Action: Quick Tour & Buyer's Gear buttons */}
+          <div className="hidden lg:flex items-center gap-2.5">
+            <button 
+              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onStartTour?.(); }} 
+              className="text-xs px-3 py-1.5 rounded-full border border-sky-500/30 text-sky-300 bg-sky-500/10 hover:bg-sky-500/20 hover:border-sky-400/50 transition-all flex items-center gap-1.5 font-medium cursor-pointer"
+              title="Interactive Terminal Tour"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-[#29abe2]" />
+              <span>Quick Tour</span>
+            </button>
+
             <button 
               onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onGearClick?.(); }} 
               className="text-xs px-3.5 py-1.5 rounded-full border border-sky-500/30 text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 hover:border-sky-400/50 transition-all flex items-center gap-1.5 font-medium cursor-pointer"
@@ -629,6 +642,38 @@ const NavBar = ({
                   </div>
                 </button>
               </div>
+
+              {/* Quick Terminal Tour - Mobile Glass Banner */}
+              <div className="pt-2">
+                <button
+                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onStartTour?.(); }}
+                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-sky-500/10 to-white/[0.04] hover:from-sky-500/20 hover:to-white/[0.08] border-sky-400/40 shadow-[0_4px_20px_0_rgba(0,0,0,0.4)] active:scale-[0.99] text-left"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-sky-300/40 bg-gradient-to-br from-sky-400/30 via-blue-500/15 to-transparent text-sky-300 group-hover:scale-105 transition-all">
+                      <HelpCircle size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-[8.5px] font-black uppercase tracking-widest text-[#29abe2]">
+                          GUIDE • WALKTHROUGH
+                        </span>
+                      </div>
+                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-[#29abe2] transition-colors">
+                        Quick Terminal Tour
+                      </div>
+                      <div className="text-[10.5px] text-slate-400 font-medium">
+                        Explore key anti-dealer tools in 4 steps
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-[11px] font-bold text-[#29abe2] shrink-0 pl-2">
+                    <span>Start</span>
+                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
+                </button>
+              </div>
             </div>
           </div>
         </>
@@ -661,6 +706,13 @@ const ToolkitHeroHeader = ({
       dotColor: 'bg-[#29abe2] shadow-[0_0_8px_#29abe2]',
       headingGradient: 'from-white via-sky-100 to-sky-300',
       description: 'Audit factory build history, true 5-year depreciation, and fair market valuation before stepping on the dealer lot.',
+      hoverText: 'group-hover/btn:text-[#29abe2]',
+      hoverBorder: 'group-hover/btn:border-sky-400/50',
+      hoverShadow: 'group-hover/btn:shadow-[0_0_16px_rgba(41,171,226,0.22)]',
+      selectedBtn: 'bg-slate-800/95 border-sky-400/80 shadow-[0_4px_20px_rgba(41,171,226,0.25)] ring-1 ring-sky-400/40 text-white',
+      selectedIcon: 'text-[#29abe2] border-sky-400/50 bg-gradient-to-br from-sky-400/25 via-sky-500/10 to-transparent shadow-[0_0_16px_rgba(41,171,226,0.3)]',
+      exploreBtnHover: 'hover:border-sky-400/40 hover:bg-sky-500/10 hover:text-sky-200',
+      exploreIconColor: 'text-[#29abe2]',
       tools: [
         { id: 'vin', name: 'VIN & Recall Decoder', tag: 'NHTSA AUDIT', icon: Search, target: 'vin-checker', desc: 'Scan factory specs & open safety campaigns' },
         { id: 'tco', name: '5-Year Ownership TCO', tag: 'DEPRECIATION', icon: Calculator, target: 'tco-calculator', desc: 'True cost of fuel, insurance & maintenance' },
@@ -682,6 +734,13 @@ const ToolkitHeroHeader = ({
       dotColor: 'bg-amber-400 shadow-[0_0_8px_#fbbf24]',
       headingGradient: 'from-white via-amber-100 to-amber-300',
       description: 'Expose backend APR markup, deceptive lease money factors, and underwater trade-in rollovers.',
+      hoverText: 'group-hover/btn:text-amber-400',
+      hoverBorder: 'group-hover/btn:border-amber-400/50',
+      hoverShadow: 'group-hover/btn:shadow-[0_0_16px_rgba(245,158,11,0.22)]',
+      selectedBtn: 'bg-slate-800/95 border-amber-400/80 shadow-[0_4px_20px_rgba(245,158,11,0.25)] ring-1 ring-amber-400/40 text-white',
+      selectedIcon: 'text-amber-400 border-amber-400/50 bg-gradient-to-br from-amber-400/25 via-amber-500/10 to-transparent shadow-[0_0_16px_rgba(245,158,11,0.3)]',
+      exploreBtnHover: 'hover:border-amber-400/40 hover:bg-amber-500/10 hover:text-amber-200',
+      exploreIconColor: 'text-amber-400',
       tools: [
         { id: 'loan', name: 'Auto Loan Calculator', tag: 'RATE SHIELD', icon: SlidersHorizontal, target: 'loan-calculator', desc: 'Purchasing power, amortized interest & terms' },
         { id: 'lease', name: 'Lease vs. Buy Simulator', tag: 'TERMS AUDIT', icon: ArrowLeftRight, target: 'lease-vs-finance', desc: 'Compare equity accumulation vs lease cashflow traps' },
@@ -702,9 +761,16 @@ const ToolkitHeroHeader = ({
       dotColor: 'bg-emerald-400 shadow-[0_0_8px_#34d399]',
       headingGradient: 'from-white via-emerald-100 to-emerald-300',
       description: 'Weaponize out-the-door fee audits and AI negotiation leverage to eliminate dealer add-on junk fees at signing.',
+      hoverText: 'group-hover/btn:text-emerald-400',
+      hoverBorder: 'group-hover/btn:border-emerald-400/50',
+      hoverShadow: 'group-hover/btn:shadow-[0_0_16px_rgba(16,185,129,0.22)]',
+      selectedBtn: 'bg-slate-800/95 border-emerald-400/80 shadow-[0_4px_20px_rgba(16,185,129,0.25)] ring-1 ring-emerald-400/40 text-white',
+      selectedIcon: 'text-emerald-400 border-emerald-400/50 bg-gradient-to-br from-emerald-400/25 via-emerald-500/10 to-transparent shadow-[0_0_16px_rgba(16,185,129,0.3)]',
+      exploreBtnHover: 'hover:border-emerald-400/40 hover:bg-emerald-500/10 hover:text-emerald-200',
+      exploreIconColor: 'text-emerald-400',
       tools: [
         { id: 'quote', name: 'Out-The-Door (OTD) Calculator', tag: 'JUNK FEE AUDIT', icon: FileSearch, target: 'quote-auditor', desc: 'Separate legitimate taxes/fees from bogus dealer add-ons' },
-        { id: 'ai', name: 'AI Negotiation Research', tag: 'AI LEVERAGE', icon: Cpu, target: 'ai-advisor', desc: 'Tactical dealer counter-scripts & market intelligence' },
+        { id: 'ai', name: 'Automotive Knowledge Engine', tag: 'AI LEVERAGE', icon: Cpu, target: 'ai-advisor', desc: 'Tactical dealer counter-scripts & market intelligence' },
         { id: 'state-fees', name: '50-State Statutory Doc Fees', tag: 'LEGAL CAPS', icon: Scale, target: 'state-fees', desc: '50-state statutory legal doc fee limits & averages' },
       ]
     }
@@ -783,7 +849,7 @@ const ToolkitHeroHeader = ({
                         }}
                         className={`group/btn w-full flex items-center justify-between p-3 rounded-2xl border transition-all duration-200 cursor-pointer text-left relative overflow-hidden backdrop-blur-xl ${
                           isSelected
-                            ? 'bg-slate-800/95 border-sky-400/80 shadow-[0_4px_20px_rgba(41,171,226,0.25)] ring-1 ring-sky-400/40 text-white'
+                            ? category.selectedBtn
                             : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 hover:border-white/20 text-slate-200 hover:-translate-y-0.5 shadow-sm shadow-black/30'
                         }`}
                       >
@@ -794,14 +860,14 @@ const ToolkitHeroHeader = ({
                           {/* Premium Jewel / Squircle Icon Pedestal */}
                           <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 relative overflow-hidden shadow-inner ${
                             isSelected 
-                              ? 'text-[#29abe2] border-sky-400/50 bg-gradient-to-br from-sky-400/25 via-sky-500/10 to-transparent shadow-[0_0_16px_rgba(41,171,226,0.3)]' 
-                              : 'text-slate-200 bg-gradient-to-br from-white/10 via-white/5 to-transparent border-white/15 group-hover/btn:border-sky-400/40 group-hover/btn:text-[#29abe2] group-hover/btn:shadow-[0_0_14px_rgba(41,171,226,0.2)]'
+                              ? category.selectedIcon 
+                              : `text-slate-200 bg-gradient-to-br from-white/10 via-white/5 to-transparent border-white/15 ${category.hoverBorder} ${category.hoverText} ${category.hoverShadow}`
                           }`}>
                             <div className="absolute inset-x-0 top-0 h-px bg-white/30 pointer-events-none" />
                             <Icon size={18} strokeWidth={2.2} className="drop-shadow-xs" />
                           </div>
                           <div className="min-w-0">
-                            <div className="text-xs font-semibold text-white tracking-tight truncate group-hover/btn:text-[#29abe2] transition-colors font-poppins">
+                            <div className={`text-xs font-semibold text-white tracking-tight truncate ${category.hoverText} transition-colors font-poppins`}>
                               {t.name}
                             </div>
                             <div className="text-[10.5px] text-slate-400 truncate leading-tight font-poppins mt-0.5 font-medium">
@@ -810,7 +876,7 @@ const ToolkitHeroHeader = ({
                           </div>
                         </div>
 
-                        <div className="text-slate-500 group-hover/btn:text-[#29abe2] group-hover/btn:translate-x-1 transition-all shrink-0 ml-2">
+                        <div className={`text-slate-500 ${category.hoverText} group-hover/btn:translate-x-1 transition-all shrink-0 ml-2`}>
                           <ChevronRight size={15} />
                         </div>
                       </button>
@@ -825,10 +891,10 @@ const ToolkitHeroHeader = ({
                   setActiveFilter(category.id);
                   onScrollToTool(category.tools[0].target);
                 }}
-                className="relative z-10 mt-6 w-full py-2.5 px-3 rounded-xl backdrop-blur-xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 hover:border-white/25 text-xs font-semibold font-poppins text-slate-200 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md shadow-black/20 hover:shadow-lg overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-white/20"
+                className={`relative z-10 mt-6 w-full py-2.5 px-3 rounded-xl backdrop-blur-xl bg-white/[0.05] border border-white/10 text-xs font-semibold font-poppins text-slate-200 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md shadow-black/20 hover:shadow-lg overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-white/20 ${category.exploreBtnHover}`}
               >
                 <span>Explore {category.name}</span>
-                <ArrowUpRight size={14} className="text-[#29abe2]" />
+                <ArrowUpRight size={14} className={category.exploreIconColor} />
               </button>
             </div>
           ))}
@@ -903,10 +969,30 @@ const EstimateBudgetSection = () => {
 
 const ResearchAndReviews = () => {
   const reviews = [
-    { title: "2026 Cadillac Escalade Review", rating: "7.7/10", img: "https://di-uploads-pod47.dealerinspire.com/jimelliscadillac/uploads/2025/10/2026-Cadillac-Escalade-IQ-exterior.jpg", url: "https://www.caranddriver.com/cadillac/escalade" },
-    { title: "2026 Dodge Durango Review", rating: "6.5/10", img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80", url: "https://www.caranddriver.com/dodge/durango" },
-    { title: "2026 Lexus LX Hybrid Review", rating: "6.8/10", img: "https://images.unsplash.com/photo-1614026480209-cd9934144671?auto=format&fit=crop&w=600&q=80", url: "https://www.caranddriver.com/lexus/lx" },
-    { title: "2026 Hyundai Venue Review", rating: "5.2/10", img: "https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=600&q=80", url: "https://www.caranddriver.com/hyundai/venue" },
+    { 
+      title: "2026 Cadillac Escalade Review", 
+      rating: "7.7/10", 
+      img: "https://di-uploads-pod47.dealerinspire.com/jimelliscadillac/uploads/2025/10/2026-Cadillac-Escalade-IQ-exterior.jpg", 
+      url: "https://www.caranddriver.com/cadillac/escalade" 
+    },
+    { 
+      title: "2026 Dodge Durango Review", 
+      rating: "6.5/10", 
+      img: "https://hips.hearstapps.com/hmg-prod/images/b625962e-79c8-468e-98d6-2f4048c330c2.jpg?crop=0.656xw:0.492xh;0.123xw,0.294xh&resize=1200:*", 
+      url: "https://www.caranddriver.com/dodge/durango" 
+    },
+    { 
+      title: "2026 Lexus LX Hybrid Review", 
+      rating: "6.8/10", 
+      img: "https://hips.hearstapps.com/hmg-prod/images/2025-lexus-lx600-f-sport-exterior-pr-104-6864352bd13d7.jpg?crop=0.668xw:0.501xh;0.195xw,0.418xh&resize=1200:*", 
+      url: "https://www.caranddriver.com/lexus/lx" 
+    },
+    { 
+      title: "2026 Hyundai Venue Review", 
+      rating: "5.2/10", 
+      img: "https://hips.hearstapps.com/hmg-prod/images/5455c22d-0682-462c-bd26-1084b52e0c18.jpg?crop=0.65xw:0.488xh;0.203xw,0.303xh&resize=1200:*", 
+      url: "https://www.caranddriver.com/hyundai/venue" 
+    },
   ];
   
   const guides = [
@@ -1076,6 +1162,26 @@ export default function App() {
   const [currentPath, setCurrentPath] = useState<string>('home');
   const [selectedDealerSlug, setSelectedDealerSlug] = useState<string>('sewell-lexus-dallas');
   const [activeToolkitFilter, setActiveToolkitFilter] = useState<string>('all');
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  useEffect(() => {
+    // Only show for first-time visitors; do NOT show automatically on recurring visits
+    const tourSeen = localStorage.getItem('carmatrix_tour_seen');
+    if (!tourSeen) {
+      const timer = setTimeout(() => {
+        setIsTourOpen(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleStartTour = () => {
+    if (currentPath !== 'home') {
+      setCurrentPath('home');
+    }
+    setActiveToolkitFilter('all');
+    setIsTourOpen(true);
+  };
 
   const scrollToTool = (toolId: string) => {
     setTimeout(() => {
@@ -1100,6 +1206,7 @@ export default function App() {
         onGearClick={() => navigateTo('gear')}
         onDealerDirectoryClick={() => navigateTo('dealer_directory')}
         onScrollToTool={scrollToTool}
+        onStartTour={handleStartTour}
       />
       
       <div className="flex-1">
@@ -1187,7 +1294,8 @@ export default function App() {
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'tco') && (
-                      <section id="tco-calculator" className="scroll-mt-24 space-y-8">
+                      <section id="tco-calculator" data-tour-target="cost-of-ownership" className="scroll-mt-24 space-y-8">
+                        <div id="cost-of-ownership" />
                         <TCOCalculator />
                         <div className="max-w-xl mx-auto">
                           <CostOfOwnershipWidget />
@@ -1196,7 +1304,8 @@ export default function App() {
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'valuation') && (
-                      <section id="valuation-estimator" className="scroll-mt-24">
+                      <section id="valuation-estimator" data-tour-target="cash-market-intel" className="scroll-mt-24">
+                        <div id="cash-market-intel" />
                         <ValuationWidget />
                       </section>
                     )}
@@ -1226,7 +1335,8 @@ export default function App() {
                     </h1>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'loan') && (
-                      <section id="loan-calculator" className="scroll-mt-24">
+                      <section id="loan-calculator" data-tour-target="loan-affordability" className="scroll-mt-24">
+                        <div id="loan-affordability" />
                         <EstimateBudgetSection />
                       </section>
                     )}
@@ -1247,7 +1357,7 @@ export default function App() {
 
                 {/* =========================================================================
                     SECTOR 03: THE CLOSING TABLE
-                    (OTD Calculator, AI Negotiation Research, 50-State Doc Fee Guide)
+                    (OTD Calculator, Automotive Knowledge Engine, 50-State Doc Fee Guide)
                     ========================================================================= */}
                 {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote' || activeToolkitFilter === 'ai' || activeToolkitFilter === 'state-fees' || activeToolkitFilter === 'ev' || activeToolkitFilter === 'market') && (
                   <section className="space-y-8 relative">
@@ -1256,7 +1366,7 @@ export default function App() {
                     </h1>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote') && (
-                      <section id="quote-auditor" className="scroll-mt-24">
+                      <section id="quote-auditor" data-tour-target="quote-auditor" className="scroll-mt-24">
                         <DealerQuoteAuditorWidget />
                       </section>
                     )}
@@ -1306,6 +1416,7 @@ export default function App() {
           
             <LatestArticles />
             <ExpertAdviceFeeds />
+            <DealerTacticsExposed />
             <FeaturedInfluencerFeeds />
           </>
         )}
@@ -1313,6 +1424,7 @@ export default function App() {
       
       <Footer onNavigate={navigateTo} />
       <CookieConsentBanner onNavigate={navigateTo} />
+      <TerminalTour isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
     </div>
   );
 }

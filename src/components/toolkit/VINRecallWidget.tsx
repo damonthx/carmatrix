@@ -157,7 +157,7 @@ export default function VINRecallWidget() {
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight">Free VIN Decoder &amp; Safety Recall Scanner</h3>
-            <p className="text-slate-500 text-sm mt-0.5">Verify factory build specifications, engine &amp; trim, and scan for unperformed safety recalls before buying.</p>
+            <p className="text-slate-500 text-sm mt-0.5">Verify factory specs, engine trim, and unperformed NHTSA safety recalls.</p>
           </div>
         </div>
       </div>
@@ -273,16 +273,15 @@ export default function VINRecallWidget() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400">
-                        CRITICAL ALERT // TITLE &amp; ACCIDENT CHECK REQUIRED
+                      <span className="text-[10.5px] font-bold uppercase tracking-wider text-amber-400">
+                        Title &amp; Accident History Verification
                       </span>
                     </div>
                     <div className="text-sm sm:text-base font-bold text-white tracking-tight leading-snug group-hover:text-amber-300 transition-colors">
                       Check {vinDetails.year} {vinDetails.make} {vinDetails.model} for Accidents &amp; Salvage History
                     </div>
                     <div className="text-[11px] sm:text-xs text-slate-300 leading-tight mt-0.5">
-                      Instant NMVTIS scan: multi-state salvage titles, total loss insurance claims &amp; collision records.
+                      Scan multi-state salvage titles, total loss insurance claims, and collision records.
                     </div>
                   </div>
                 </div>

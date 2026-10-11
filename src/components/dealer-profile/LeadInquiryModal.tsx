@@ -80,7 +80,7 @@ export const LeadInquiryModal: React.FC<LeadInquiryModalProps> = ({
               Appointment Request Sent!
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 max-w-xs mx-auto mb-6">
-              Your inquiry has been routed directly to the verified VIP desk at <strong>{dealer.name}</strong>. A concierge representative will confirm your visit shortly.
+              Your inquiry was routed directly to <strong>{dealer.name}</strong>. A representative will confirm shortly.
             </p>
             <button
               onClick={onClose}
@@ -94,10 +94,10 @@ export const LeadInquiryModal: React.FC<LeadInquiryModalProps> = ({
             {/* Header */}
             <div className="mb-5 pr-8">
               <span className="text-[10.5px] font-bold uppercase tracking-widest text-[#29abe2] block mb-1">
-                Verified Direct Routing
+                Direct Dealer Inquiry
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
-                {inquiryType === 'test_drive' ? 'Schedule VIP Test Drive' : 'Contact Dealership Desk'}
+                {inquiryType === 'test_drive' ? 'Schedule Test Drive' : 'Contact Dealership Desk'}
               </h3>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
                 {dealer.name} · {dealer.city}, TX

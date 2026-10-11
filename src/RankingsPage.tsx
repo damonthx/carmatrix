@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  SlidersHorizontal, 
   ArrowUpDown, 
   Car, 
   ShieldCheck, 
@@ -268,73 +267,55 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
           totalVehicles={vehicles.length}
         />
 
-        {/* 2. Price Bracket Navigation Pills */}
-        <PriceBracketNav
-          channel={channel}
-          activeTier={activeTier}
-          onSelectTier={handleSelectTier}
-          tiersSummary={tiersSummary}
-        />
+        {/* Unified Controls Toolbar: Price Bracket, Category, Sort, and Share */}
+        <div className="p-3 sm:p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-white/70 shadow-sm mb-8 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3 sm:gap-4">
+          {/* Filter Dropdowns Cluster */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            {/* Price Bracket Dropdown Menu */}
+            <PriceBracketNav
+              channel={channel}
+              activeTier={activeTier}
+              onSelectTier={handleSelectTier}
+              tiersSummary={tiersSummary}
+            />
 
-        {/* 3. Social Sharing & Quick-Link Bar */}
-        <ShareRankingsBar
-          channel={channel}
-          tierSlug={activeTier}
-          bodyType={selectedBodyType}
-          totalCount={vehicles.length}
-        />
-
-        {/* 3. Filter and Sort Toolbar */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white/80 backdrop-blur-md border border-white/70 shadow-sm mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          {/* Body Style Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
-              <Car size={13} strokeWidth={2.4} />
-            </div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 mr-1 shrink-0">
-              Category:
-            </span>
-
-            <button
-              type="button"
-              onClick={() => handleBodyTypeChange('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
-                selectedBodyType === 'all'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80'
-              }`}
-            >
-              All Styles
-            </button>
-
-            {['sedan', 'suv', 'truck', 'hatchback', 'wagon', 'hybrid_ev'].map((type) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => handleBodyTypeChange(type)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition-all cursor-pointer shrink-0 ${
-                  selectedBodyType === type
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80'
-                }`}
+            {/* Category Dropdown Menu */}
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
+                <Car size={13} strokeWidth={2.4} />
+              </div>
+              <label htmlFor="category-select" className="text-xs font-bold text-slate-700 shrink-0">
+                Category:
+              </label>
+              <select
+                id="category-select"
+                value={selectedBodyType}
+                onChange={(e) => handleBodyTypeChange(e.target.value)}
+                className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer focus:ring-2 focus:ring-[#29abe2]/20 transition-colors shadow-2xs"
               >
-                {type === 'hybrid_ev' ? 'Hybrid / EV' : type}
-              </button>
-            ))}
-          </div>
+                <option value="all">All Styles</option>
+                <option value="sedan">Sedan</option>
+                <option value="suv">SUV</option>
+                <option value="truck">Truck</option>
+                <option value="hatchback">Hatchback</option>
+                <option value="wagon">Wagon</option>
+                <option value="hybrid_ev">Hybrid / EV</option>
+              </select>
+            </div>
 
-          {/* Sort Dropdown & Reset */}
-          <div className="flex items-center gap-3 shrink-0">
+            {/* Sort Dropdown Menu */}
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-lg bg-slate-100/90 border border-slate-200/80 backdrop-blur-md flex items-center justify-center text-slate-600 shadow-2xs shrink-0">
                 <ArrowUpDown size={12} strokeWidth={2.4} />
               </div>
-              <label htmlFor="sort-select" className="text-xs font-bold text-slate-700">Sort By:</label>
+              <label htmlFor="sort-select" className="text-xs font-bold text-slate-700 shrink-0">
+                Sort By:
+              </label>
               <select
                 id="sort-select"
                 value={sortBy}
                 onChange={(e) => handleSortChange(e.target.value)}
-                className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer focus:ring-2 focus:ring-[#29abe2]/20"
+                className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer focus:ring-2 focus:ring-[#29abe2]/20 transition-colors shadow-2xs"
               >
                 <option value="score_desc">CarMatrix Score (Highest)</option>
                 <option value="reliability_desc">Reliability (Highest)</option>
@@ -343,17 +324,27 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
               </select>
             </div>
 
+            {/* Reset Filters Button */}
             {(activeTier !== null || selectedBodyType !== 'all' || sortBy !== 'score_desc') && (
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="w-7 h-7 rounded-lg text-slate-500 hover:text-slate-800 bg-slate-100/80 hover:bg-slate-200/90 border border-slate-200 flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
+                className="w-8 h-8 rounded-xl text-slate-500 hover:text-slate-800 bg-slate-100/80 hover:bg-slate-200/90 border border-slate-200 flex items-center justify-center transition-colors cursor-pointer shadow-2xs shrink-0"
                 title="Reset filters"
+                aria-label="Reset filters"
               >
                 <RotateCcw size={13} strokeWidth={2.4} />
               </button>
             )}
           </div>
+
+          {/* Small Footprint Share Rankings Box */}
+          <ShareRankingsBar
+            channel={channel}
+            tierSlug={activeTier}
+            bodyType={selectedBodyType}
+            totalCount={vehicles.length}
+          />
         </div>
 
         {/* Subtle Fallback Notification Banner */}

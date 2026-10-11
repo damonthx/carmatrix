@@ -121,7 +121,7 @@ export default function DepreciationPredictorWidget() {
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Depreciation Curve &amp; "Sweet Spot" Predictor</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Audit 7-year residual value trajectories across vehicle segments and locate the optimal buying window.</p>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">7-year residual value trajectories and optimal buying windows by segment.</p>
           </div>
         </div>
 

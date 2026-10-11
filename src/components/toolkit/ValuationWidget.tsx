@@ -71,7 +71,7 @@ export default function ValuationWidget() {
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Instant Trade-In &amp; Market Value Estimator</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Get transparent private party, trade-in, and dealer retail valuations based on real market data.</p>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Private party, trade-in, and dealer retail valuations based on market data.</p>
           </div>
         </div>
 
