@@ -76,9 +76,9 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
           </div>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0 self-start md:self-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 self-start md:self-auto" onClick={(e) => e.stopPropagation()}>
           {isOpen && (
-            <div className="flex bg-slate-100 p-1 rounded-2xl">
+            <div className="flex flex-wrap sm:flex-nowrap bg-slate-100 p-1 rounded-2xl">
               <button
                 onClick={() => setActiveTab('checklist')}
                 className={

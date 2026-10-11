@@ -141,7 +141,7 @@ export default function HeroSearch({ onSearch, onSell }: HeroSearchProps) {
   };
 
   return (
-    <div className="relative w-full min-h-[650px] lg:h-[750px] flex items-center px-4 md:px-20 py-12">
+    <div className="relative w-full min-h-[600px] sm:min-h-[650px] lg:h-[750px] flex items-center px-4 md:px-20 py-8 sm:py-12">
       {/* Background Image */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000 brightness-[0.9] contrast-[1.1]"
@@ -332,7 +332,7 @@ export default function HeroSearch({ onSearch, onSell }: HeroSearchProps) {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-xl text-center lg:text-left mt-8 lg:mt-0"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-lg">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-lg">
             Same Data.<br className="hidden lg:inline" />Better Decisions.
           </h1>
         </motion.div>

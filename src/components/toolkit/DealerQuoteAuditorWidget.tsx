@@ -577,18 +577,18 @@ ${buyerName.trim() || '[Your Name]'}`;
               placeholder="Add dealer item (e.g. Doc Fee, Tint, GPS Tracker)..."
               className="flex-1 bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all placeholder:text-slate-400"
             />
-            <div className="flex gap-2">
+            <div className="flex flex-wrap sm:flex-nowrap gap-2">
               <input
                 type="number"
                 value={newItemAmount}
                 onChange={(e) => setNewItemAmount(e.target.value)}
                 placeholder="Amount $"
-                className="w-24 bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all placeholder:text-slate-400"
+                className="w-24 min-w-[70px] flex-1 sm:flex-initial bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all placeholder:text-slate-400"
               />
               <select
                 value={newItemCategory}
                 onChange={(e) => setNewItemCategory(e.target.value as any)}
-                className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all cursor-pointer"
+                className="flex-1 sm:flex-initial bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 shadow-xs transition-all cursor-pointer"
               >
                 <option value="junk">Junk Fee</option>
                 <option value="negotiable">Negotiable</option>
@@ -596,7 +596,7 @@ ${buyerName.trim() || '[Your Name]'}`;
               </select>
               <button
                 type="submit"
-                className="bg-slate-900 hover:bg-slate-800 text-white px-3 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer shrink-0"
+                className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer shrink-0"
               >
                 <Plus size={14} />
                 <span>Add</span>

@@ -101,7 +101,7 @@ export default function MarketPulse() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         {(data?.metrics ?? Array.from({ length: 4 })).map((m, i) =>
           m ? <PulseCard key={m.key} metric={m} /> : <SkeletonCard key={i} />
         )}

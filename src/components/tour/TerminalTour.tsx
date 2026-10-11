@@ -211,7 +211,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
         >
           <div 
             ref={popoverRef}
-            className="w-full max-w-[440px] max-h-[calc(100vh-60px)] overflow-y-auto rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-5 sm:p-6 text-white relative animate-fadeIn my-auto"
+            className="w-full max-w-[440px] max-h-[calc(100dvh-60px)] overflow-y-auto rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-5 sm:p-6 text-white relative animate-fadeIn my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Specular top rim light */}
@@ -344,14 +344,15 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
                     position: 'fixed',
                     top: popoverCoords.top,
                     left: popoverCoords.left,
-                    width: 380,
-                    maxHeight: 'calc(100vh - 100px)',
+                    width: Math.min(380, typeof window !== 'undefined' ? window.innerWidth - 32 : 380),
+                    maxWidth: 'calc(100vw - 32px)',
+                    maxHeight: 'calc(100dvh - 100px)',
                   }
                 : undefined
             }
             className={`z-[105] rounded-3xl bg-slate-950/98 border border-sky-500/35 shadow-[0_25px_70px_rgba(0,0,0,0.95),0_0_30px_rgba(41,171,226,0.2)] p-4 sm:p-5 text-white transition-all duration-200 relative overflow-hidden flex flex-col justify-between ${
               !popoverCoords
-                ? 'fixed bottom-5 inset-x-4 mx-auto max-w-[400px] max-h-[calc(100vh-100px)]'
+                ? 'fixed bottom-4 sm:bottom-5 inset-x-4 mx-auto max-w-[400px] max-h-[calc(100dvh-90px)]'
                 : ''
             }`}
             role="dialog"

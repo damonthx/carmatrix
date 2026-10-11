@@ -202,9 +202,9 @@ export default function TCOCalculator() {
         </div>
       )}
 
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-8 text-white relative overflow-hidden">
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-6 sm:p-8 text-white relative overflow-hidden">
         <div className="absolute right-0 top-0 w-64 h-64 bg-blue-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
-        <div className="relative z-10 flex justify-between items-center">
+        <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
             <div className="flex items-center gap-3.5 mb-2">
               <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
@@ -216,7 +216,7 @@ export default function TCOCalculator() {
             <p className="text-slate-300 font-medium">Discover the "Real Price" of owning your next car beyond the sticker price.</p>
           </div>
           {tcoData.isLive && (
-             <div className="bg-green-500/20 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-2">
+             <div className="bg-green-500/20 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shrink-0">
                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                Live API Data
              </div>
@@ -224,7 +224,7 @@ export default function TCOCalculator() {
         </div>
       </div>
 
-      <div className="p-8 grid md:grid-cols-2 gap-12">
+      <div className="p-5 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {/* Left side: Inputs */}
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">

@@ -265,7 +265,7 @@ export const DealerAuditModal: React.FC<DealerAuditModalProps> = ({
       
       {/* Modal Dialog Card */}
       <div 
-        className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto bg-white/95 rounded-[32px] p-5 sm:p-8 md:p-10 shadow-[0_30px_70px_rgba(15,23,42,0.3)] border border-white/80 backdrop-blur-2xl text-slate-900 scrollbar-thin"
+        className="relative w-full max-w-3xl max-h-[92dvh] overflow-y-auto bg-white/95 rounded-[32px] p-5 sm:p-8 md:p-10 shadow-[0_30px_70px_rgba(15,23,42,0.3)] border border-white/80 backdrop-blur-2xl text-slate-900 scrollbar-thin"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Specular Top Rim */}

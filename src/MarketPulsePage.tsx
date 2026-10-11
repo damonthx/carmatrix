@@ -161,7 +161,7 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
               Track real-time inflation trends, price indexes, and overhead costs in the automotive industry compiled directly from the U.S. Bureau of Labor Statistics (BLS).
             </p>
           </div>
-          <div className="relative overflow-hidden backdrop-blur-xl bg-slate-900/70 border border-slate-700/70 rounded-2xl px-6 py-4.5 shrink-0 min-w-[240px] shadow-xl shadow-black/30 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
+          <div className="relative overflow-hidden backdrop-blur-xl bg-slate-900/70 border border-slate-700/70 rounded-2xl px-6 py-4.5 shrink-0 w-full md:w-auto min-w-[240px] shadow-xl shadow-black/30 before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
             <div className="flex items-center justify-between mb-1">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Latest Monthly Report</span>
               <button
@@ -244,7 +244,7 @@ export default function MarketPulsePage({ onBack }: { onBack: () => void }) {
                   </div>
 
                   {/* Monthly Trend Indicators */}
-                  <div className="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-slate-800/80">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-slate-800/80">
                     <div className="backdrop-blur-xl bg-white/[0.04] border border-white/10 hover:border-white/20 rounded-2xl p-4.5 flex justify-between items-center transition-all shadow-md shadow-black/20">
                       <div>
                         <div className="text-[11px] text-slate-400 uppercase tracking-wider font-bold">MoM Change</div>

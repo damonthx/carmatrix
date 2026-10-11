@@ -445,7 +445,7 @@ const NavBar = ({
           />
 
           {/* Luxury Glassmorphic Drawer Menu */}
-          <div className="fixed top-[72px] sm:top-[85px] left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] p-4 sm:p-6 max-h-[calc(100vh-72px)] sm:max-h-[calc(100vh-85px)] overflow-y-auto lg:hidden text-white relative">
+          <div className="fixed top-[72px] sm:top-[85px] left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] p-4 sm:p-6 max-h-[calc(100dvh-72px)] sm:max-h-[calc(100dvh-85px)] overflow-y-auto lg:hidden text-white relative">
             {/* Ambient background glows */}
             <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-80 h-32 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute top-1/2 -right-20 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
@@ -1064,8 +1064,8 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-        <div className="col-span-2 space-y-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div className="col-span-1 sm:col-span-2 space-y-3">
           <div className="flex items-center">
             <img 
               src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 

@@ -273,15 +273,15 @@ export default function DealerTacticsExposed() {
       {/* Video Modal Player */}
       {activeVideo && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
           onClick={() => setActiveVideo(null)}
         >
           <div 
-            className="relative w-full max-w-sm rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] overflow-hidden"
+            className="relative w-full max-w-[340px] sm:max-w-sm max-h-[92dvh] flex flex-col rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Top Bar */}
-            <div className="flex items-center justify-between p-3.5 border-b border-slate-800/80 bg-slate-900/60">
+            <div className="flex items-center justify-between p-3.5 border-b border-slate-800/80 bg-slate-900/60 shrink-0">
               <div className="flex items-center gap-2 truncate pr-2">
                 <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse shrink-0" />
                 <span className="text-xs font-bold text-slate-200 truncate">
@@ -309,7 +309,7 @@ export default function DealerTacticsExposed() {
             </div>
 
             {/* 9:16 Shorts Video Embed */}
-            <div className="relative aspect-[9/16] w-full bg-black">
+            <div className="relative aspect-[9/16] w-full flex-1 min-h-0 bg-black">
               <iframe
                 src={`https://www.youtube.com/embed/${activeVideo.id}?autoplay=1&rel=0&modestbranding=1`}
                 title={activeVideo.title}

@@ -28,7 +28,7 @@ export const DealerProfileModal: React.FC<DealerProfileModalProps> = ({
       
       {/* Modal Container */}
       <div 
-        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white/95 rounded-[32px] p-6 sm:p-8 shadow-[0_25px_60px_rgba(15,23,42,0.25)] border border-white/80 backdrop-blur-2xl text-slate-900 scrollbar-thin"
+        className="relative w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-white/95 rounded-[32px] p-6 sm:p-8 shadow-[0_25px_60px_rgba(15,23,42,0.25)] border border-white/80 backdrop-blur-2xl text-slate-900 scrollbar-thin"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Specular top light rim */}

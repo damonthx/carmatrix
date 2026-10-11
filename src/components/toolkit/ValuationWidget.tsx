@@ -75,7 +75,7 @@ export default function ValuationWidget() {
           </div>
         </div>
 
-        <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 min-w-[200px]">
+        <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 w-full md:w-auto min-w-[200px]">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Estimated Fair Market Value</span>
           <span className="text-3xl font-black text-emerald-400 leading-none block mt-1">
             {"$" + estimatedMarketValue.toLocaleString()}
@@ -86,7 +86,7 @@ export default function ValuationWidget() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
         <div className="lg:col-span-6 space-y-4">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
             <div>
               <label className="block text-[11px] font-bold text-slate-700 mb-1">Year</label>
               <div className="relative">

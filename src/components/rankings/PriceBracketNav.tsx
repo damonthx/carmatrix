@@ -21,7 +21,7 @@ export const PriceBracketNav: React.FC<PriceBracketNavProps> = ({
   const channelLabel = channel === 'private_party' ? 'Street Cash' : 'Dealer Retail';
 
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <div className={`flex flex-wrap sm:flex-nowrap items-center gap-2 ${className}`}>
       <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
         <Tag size={13} strokeWidth={2.4} />
       </div>
@@ -32,7 +32,7 @@ export const PriceBracketNav: React.FC<PriceBracketNavProps> = ({
         id="price-bracket-select"
         value={activeTier || ''}
         onChange={(e) => onSelectTier(e.target.value ? e.target.value : null)}
-        className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer focus:ring-2 focus:ring-[#29abe2]/20 transition-colors shadow-2xs"
+        className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer focus:ring-2 focus:ring-[#29abe2]/20 transition-colors shadow-2xs min-w-0 max-w-full"
       >
         <option value="">All Price Tiers</option>
         {(Object.entries(definitions) as [string, TierDefinition][]).map(([slug, def]) => {

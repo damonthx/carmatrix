@@ -165,7 +165,7 @@ export const DealerCard: React.FC<DealerCardProps> = ({
               </div>
               <span>Discipline</span>
             </div>
-            <div className={`text-sm sm:text-base font-black tracking-tight ${
+            <div className={`text-xs sm:text-sm md:text-base font-black tracking-tight truncate px-0.5 ${
               isBelowMarket ? 'text-emerald-600' : 'text-slate-800'
             }`}>
               {dealer.price_delta_label}

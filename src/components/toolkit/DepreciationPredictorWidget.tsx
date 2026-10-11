@@ -125,7 +125,7 @@ export default function DepreciationPredictorWidget() {
           </div>
         </div>
 
-        <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 min-w-[210px] shadow-sm">
+        <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 w-full md:w-auto min-w-[210px] shadow-sm">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Optimal Buy Window</span>
           <span className="text-xl font-black text-emerald-400 leading-tight block mt-1 font-poppins">
             {activeSegment.sweetSpotYears.length > 1

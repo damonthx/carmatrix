@@ -191,7 +191,7 @@ export const VehicleRankingCard: React.FC<VehicleRankingCardProps> = ({
           <div className="w-5 h-5 rounded-md bg-amber-500/15 border border-amber-400/40 backdrop-blur-md flex items-center justify-center text-amber-600 shadow-2xs shrink-0">
             <AlertTriangle size={12} strokeWidth={2.4} />
           </div>
-          <span>Street-Smart Inspection Alerts ({vehicle.inspection_alerts?.length || 0})</span>
+          <span className="truncate">Street-Smart Inspection Alerts ({vehicle.inspection_alerts?.length || 0})</span>
         </button>
 
         {/* Inventory Search CTA with Glassmorphic Icon */}
@@ -209,8 +209,8 @@ export const VehicleRankingCard: React.FC<VehicleRankingCardProps> = ({
           <div className="w-5 h-5 rounded-md bg-white/15 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-inner shrink-0">
             <Search size={12} strokeWidth={2.4} />
           </div>
-          <span>Search Local Inventory on CarMatrix</span>
-          <ExternalLink size={12} className="opacity-70" />
+          <span className="truncate">Search Local Inventory on CarMatrix</span>
+          <ExternalLink size={12} className="opacity-70 shrink-0" />
         </button>
       </div>
     </div>

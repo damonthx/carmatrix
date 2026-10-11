@@ -154,7 +154,7 @@ export default function VehicleDetailPage({
           <div className="space-y-12">
             <div>
               <h2 className="text-[20px] font-extrabold text-slate-900 mb-6">Overview</h2>
-              <div className="grid grid-cols-2 gap-y-4 text-[14px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 text-[14px]">
                  <OverviewRow label="Make:" value={vehicle.make} />
                  <OverviewRow label="Interior color:" value={(vehicle as any).interior_color || 'Unknown'} />
                  <OverviewRow label="Model:" value={vehicle.model} />
@@ -173,7 +173,7 @@ export default function VehicleDetailPage({
             
             <div>
               <h2 className="text-[20px] font-extrabold text-slate-900 mb-6">Fuel economy</h2>
-              <div className="grid grid-cols-2 gap-y-4 text-[14px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 text-[14px]">
                  <OverviewRow label="Fuel tank size:" value="14 gal" />
                  <OverviewRow label="Highway gas mileage:" value={`${(vehicle as any).build?.highway_mpg || '--'} MPG`} />
                  <OverviewRow label="Combined gas mileage:" value="-- MPG" />
@@ -425,8 +425,8 @@ const FeatureItem = ({ icon, label, value }: { icon: React.ReactNode, label: str
 );
 
 const OverviewRow = ({ label, value }: { label: string, value: string }) => (
-  <div className="flex">
-    <span className="font-bold text-slate-900 w-[140px] shrink-0">{label}</span>
+  <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
+    <span className="font-bold text-slate-900 sm:w-[140px] shrink-0">{label}</span>
     <span className="text-slate-600 font-medium truncate pr-4">{value}</span>
   </div>
 );

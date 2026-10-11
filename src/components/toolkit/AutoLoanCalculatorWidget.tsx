@@ -235,7 +235,7 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
         </div>
 
         {/* Primary Hero Calculation Badge */}
-        <div className="bg-[#29abe2] text-white p-4 rounded-2xl shrink-0 min-w-[220px] shadow-sm">
+        <div className="bg-[#29abe2] text-white p-4 rounded-2xl shrink-0 w-full md:w-auto min-w-[220px] shadow-sm">
           <span className="text-[11px] font-semibold text-sky-100 uppercase tracking-wider block">
             {mode === 'targetPrice' ? 'Est. Monthly Payment' : 'Estimated Max Vehicle Price'}
           </span>
@@ -291,12 +291,12 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
           {/* Target Price Mode: Primary Vehicle Price Input & Synchronized Slider */}
           {mode === 'targetPrice' ? (
             <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-3">
-              <div className="flex justify-between items-center text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                 <label className="font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                   <DollarSign size={14} className="text-[#29abe2]" />
                   <span>Vehicle Asking / Sticker Price</span>
                 </label>
-                <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 font-mono text-sm font-bold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
+                <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 font-mono text-sm font-bold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all self-start sm:self-auto">
                   <span className="text-slate-400 mr-1">$</span>
                   <input
                     type="number"
@@ -343,12 +343,12 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
           ) : (
             /* Reverse Budget Mode: Target Monthly Input */
             <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-3">
-              <div className="flex justify-between items-center text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                 <label className="font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                   <Calculator size={14} className="text-[#29abe2]" />
                   <span>Target Monthly Payment Budget</span>
                 </label>
-                <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 font-mono text-sm font-bold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all">
+                <div className="flex items-center bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 font-mono text-sm font-bold text-slate-900 shadow-xs focus-within:border-[#29abe2] focus-within:ring-2 focus-within:ring-[#29abe2]/20 transition-all self-start sm:self-auto">
                   <span className="text-slate-400 mr-1">$</span>
                   <input
                     type="number"
