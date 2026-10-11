@@ -1180,6 +1180,7 @@ export default function App() {
       setCurrentPath('home');
     }
     setActiveToolkitFilter('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsTourOpen(true);
   };
 
