@@ -56,28 +56,22 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
       return;
     }
 
-    const popoverWidth = 380;
-    const popoverHeight = 260;
-    const gap = 14;
+    const popoverWidth = Math.min(380, window.innerWidth - 32);
+    // Measure actual rendered height or use safe upper bound (320px)
+    const actualHeight = popoverRef.current ? popoverRef.current.offsetHeight : 320;
+    const bottomSafeMargin = 28;
+    const gap = 12;
 
-    // Check space below vs above
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const spaceAbove = rect.top;
+    // Prefer placing below the target card
+    let top = rect.bottom + gap;
 
-    let preferredPos: 'top' | 'bottom' = 'bottom';
-    let top = 0;
-
-    if (spaceBelow >= popoverHeight + gap) {
-      top = rect.bottom + gap;
-      preferredPos = 'bottom';
-    } else if (spaceAbove >= popoverHeight + gap + 70) {
-      top = rect.top - popoverHeight - gap;
-      preferredPos = 'top';
-    } else {
-      // Dock near bottom with safe margin
-      top = Math.max(80, window.innerHeight - popoverHeight - 20);
-      preferredPos = 'bottom';
+    // If placing below would push the bottom off-screen, pin it safely above the bottom of the viewport
+    if (top + actualHeight > window.innerHeight - bottomSafeMargin) {
+      top = window.innerHeight - actualHeight - bottomSafeMargin;
     }
+
+    // Ensure it never clips into top navbar (height ~72px)
+    top = Math.max(84, top);
 
     // Center horizontally on target, clamped within screen margins
     let left = rect.left + rect.width / 2 - popoverWidth / 2;
@@ -86,7 +80,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
     setPopoverCoords({
       top,
       left,
-      position: preferredPos,
+      position: 'bottom',
     });
   }, [isOpen, isPrompting, currentStep]);
 
@@ -108,7 +102,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
 
     const timer = setTimeout(() => {
       updatePosition();
-    }, 250);
+    }, 200);
 
     return () => clearTimeout(timer);
   }, [isOpen, isPrompting, currentStepIndex, currentStep, updatePosition]);
@@ -217,7 +211,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
         >
           <div 
             ref={popoverRef}
-            className="w-full max-w-[450px] rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-6 sm:p-7 text-white relative overflow-hidden animate-fadeIn"
+            className="w-full max-w-[440px] max-h-[calc(100vh-60px)] overflow-y-auto rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-5 sm:p-6 text-white relative animate-fadeIn my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Specular top rim light */}
@@ -228,8 +222,8 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
             <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
             {/* Header: Badge & Close Button */}
-            <div className="flex items-center justify-between pb-3.5 border-b border-slate-800 mb-4 relative z-10">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider bg-sky-500/15 border border-sky-400/30 text-sky-300 shadow-[0_0_12px_rgba(41,171,226,0.2)]">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3.5 relative z-10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-bold uppercase tracking-wider bg-sky-500/15 border border-sky-400/30 text-sky-300 shadow-[0_0_12px_rgba(41,171,226,0.2)]">
                 <Compass className="w-3.5 h-3.5 text-[#29abe2]" />
                 Guided Walkthrough
               </span>
@@ -244,17 +238,17 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
             </div>
 
             {/* Prompt Question */}
-            <div className="space-y-2 mb-5 relative z-10">
-              <h3 id="tour-prompt-title" className="text-xl sm:text-[22px] font-bold text-white tracking-tight leading-snug">
-                Tour the 3 Module Silos?
+            <div className="space-y-1.5 mb-4 relative z-10">
+              <h3 id="tour-prompt-title" className="text-xl font-bold text-white tracking-tight leading-snug">
+                Tour the 3 Modules?
               </h3>
               <p id="tour-prompt-desc" className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
                 Take a quick 45-second overview of our 3 anti-dealer sectors right here at the top of the site — without jumping around.
               </p>
             </div>
 
-            {/* Preview of the 3 Silos */}
-            <div className="space-y-2.5 mb-6 relative z-10 bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 text-xs text-slate-300">
+            {/* Preview of the 3 Modules */}
+            <div className="space-y-2 mb-5 relative z-10 bg-slate-900/90 border border-slate-800 rounded-2xl p-3 text-xs text-slate-300">
               <div className="flex items-center gap-2.5">
                 <div className="w-5 h-5 rounded-md bg-sky-500/20 text-[#29abe2] flex items-center justify-center shrink-0 font-mono text-[10px] font-bold border border-sky-400/30">
                   01
@@ -288,14 +282,14 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
             <div className="flex items-center justify-end gap-3 pt-1 relative z-10">
               <button
                 onClick={handleSkip}
-                className="px-4 py-2.5 rounded-xl border border-slate-700 hover:border-slate-500 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-all cursor-pointer"
+                className="px-4 py-2 rounded-xl border border-slate-700 hover:border-slate-500 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-all cursor-pointer"
               >
                 No, thanks
               </button>
 
               <button
                 onClick={handleStartTour}
-                className="px-5 py-2.5 rounded-xl bg-[#29abe2] hover:bg-[#29abe2]/90 text-white text-xs font-semibold shadow-[0_2px_16px_rgba(41,171,226,0.4)] flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
+                className="px-5 py-2 rounded-xl bg-[#29abe2] hover:bg-[#29abe2]/90 text-white text-xs font-semibold shadow-[0_2px_16px_rgba(41,171,226,0.4)] flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
               >
                 <span>Yes, start tour</span>
                 <ChevronRight size={14} />
@@ -305,7 +299,7 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
         </div>
       ) : (
         /* =========================================================================
-            STATE 2: STEP-BY-STEP POINTING OUT THE 3 SILOS AT THE TOP (NO JUMPING)
+            STATE 2: STEP-BY-STEP POINTING OUT THE 3 MODULES AT THE TOP (NO JUMPING)
             ========================================================================= */
         <>
           {/* Target Focus Ring / Spotlight bounding box - zero blur, crisp outline */}
@@ -333,12 +327,13 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
                     top: popoverCoords.top,
                     left: popoverCoords.left,
                     width: 380,
+                    maxHeight: 'calc(100vh - 100px)',
                   }
                 : undefined
             }
-            className={`z-[105] rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_20px_60px_-10px_rgba(0,0,0,0.95)] p-5 text-white transition-all duration-300 relative overflow-hidden ${
+            className={`z-[105] rounded-3xl bg-slate-950 border border-slate-800 shadow-[0_20px_60px_-10px_rgba(0,0,0,0.95)] p-4 sm:p-5 text-white transition-all duration-200 relative overflow-hidden flex flex-col justify-between ${
               !popoverCoords
-                ? 'fixed bottom-4 inset-x-4 mx-auto max-w-[400px]'
+                ? 'fixed bottom-5 inset-x-4 mx-auto max-w-[400px] max-h-[calc(100vh-100px)]'
                 : ''
             }`}
             role="dialog"
@@ -350,12 +345,12 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
             {/* Ambient interior radial glow */}
             <div className="absolute -top-16 -right-16 w-44 h-44 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Header: Step Badge, Silo Tag & Close Button */}
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3 relative z-10">
+            {/* Header: Step Badge, Sector Tag & Close Button */}
+            <div className="flex items-center justify-between pb-2.5 border-b border-slate-800 mb-2.5 relative z-10 shrink-0">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-500/15 border border-sky-400/30 text-sky-300">
                   <Sparkles className="w-2.5 h-2.5 text-[#29abe2]" />
-                  Silo {currentStepIndex + 1} of {TOUR_STEPS.length}
+                  Sector {currentStepIndex + 1} of {TOUR_STEPS.length}
                 </span>
 
                 {currentStep.badge && (
@@ -374,25 +369,28 @@ export const TerminalTour: React.FC<TerminalTourProps> = ({
               </button>
             </div>
 
-            {/* Title */}
-            <h3 id="tour-step-title" className="text-base font-bold text-white tracking-tight mb-2.5 relative z-10 flex items-center gap-2">
-              {currentStep.title}
-            </h3>
+            {/* Scrollable / Flexible Middle Area */}
+            <div className="relative z-10 overflow-y-auto pr-0.5">
+              {/* Title */}
+              <h3 id="tour-step-title" className="text-base font-bold text-white tracking-tight mb-2 flex items-center gap-2">
+                {currentStep.title}
+              </h3>
 
-            {/* Bullet Points */}
-            <ul className="space-y-2 mb-4 relative z-10">
-              {currentStep.bullets.map((bullet, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-300 leading-relaxed font-medium">
-                  <div className="w-4 h-4 rounded-full bg-[#29abe2]/15 border border-[#29abe2]/40 text-[#29abe2] flex items-center justify-center shrink-0 mt-0.5">
-                    <Check size={10} strokeWidth={2.5} />
-                  </div>
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
+              {/* Bullet Points */}
+              <ul className="space-y-1.5 mb-3">
+                {currentStep.bullets.map((bullet, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-xs text-slate-300 leading-relaxed font-medium">
+                    <div className="w-4 h-4 rounded-full bg-[#29abe2]/15 border border-[#29abe2]/40 text-[#29abe2] flex items-center justify-center shrink-0 mt-0.5">
+                      <Check size={10} strokeWidth={2.5} />
+                    </div>
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            {/* Step Indicator Dots & Navigation Actions */}
-            <div className="flex items-center justify-between pt-3 border-t border-slate-800 relative z-10">
+            {/* Step Indicator Dots & Navigation Actions - ALWAYS PINNED AT BOTTOM */}
+            <div className="flex items-center justify-between pt-2.5 border-t border-slate-800 relative z-10 shrink-0 mt-auto">
               {/* Skip link */}
               <button
                 onClick={handleSkip}

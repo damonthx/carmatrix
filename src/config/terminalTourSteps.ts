@@ -9,7 +9,7 @@ export interface TourStep {
 export const TOUR_STEPS: TourStep[] = [
   {
     targetId: 'silo-recon',
-    title: 'Silo 01: Pre-Lot Recon',
+    title: 'Sector 01: Pre-Lot Recon',
     badge: 'INTEL & VERIFICATION',
     bullets: [
       'Decode factory build specs & open NHTSA safety recalls before contacting dealers',
@@ -20,7 +20,7 @@ export const TOUR_STEPS: TourStep[] = [
   },
   {
     targetId: 'silo-finance',
-    title: 'Silo 02: Finance Trap Detectors',
+    title: 'Sector 02: Finance Trap Detectors',
     badge: 'FINANCE GUARD',
     bullets: [
       'Expose backend APR markup and calculate true monthly purchasing power',
@@ -31,7 +31,7 @@ export const TOUR_STEPS: TourStep[] = [
   },
   {
     targetId: 'silo-closing',
-    title: 'Silo 03: The Closing Table',
+    title: 'Sector 03: The Closing Table',
     badge: 'ADD-ON DEFENSE',
     bullets: [
       'Audit dealer quote sheets to isolate legitimate fees from bogus dealer add-ons',
