@@ -3,16 +3,13 @@ import {
   ShieldCheck, 
   AlertTriangle, 
   Wrench, 
-  Search, 
   CheckCircle2, 
-  ExternalLink,
-  Info,
-  DollarSign,
-  TrendingDown,
-  Gauge
+  Info, 
+  DollarSign, 
+  TrendingDown, 
+  Gauge 
 } from 'lucide-react';
 import { VehicleRankingItem, ValuationChannel } from '@/lib/services/rankingsService';
-import { buildCarMatrixInventoryUrl } from '@/lib/utils/inventoryLinks';
 
 interface VehicleRankingCardProps {
   vehicle: VehicleRankingItem;
@@ -181,36 +178,17 @@ export const VehicleRankingCard: React.FC<VehicleRankingCardProps> = ({
       </div>
 
       {/* Card Action Buttons */}
-      <div className="space-y-2.5 pt-4 border-t border-slate-200/70">
+      <div className="pt-4 border-t border-slate-200/70">
         {/* Inspection Alerts Button with Glassmorphic Icon */}
         <button
           type="button"
           onClick={() => onOpenInspection(vehicle)}
-          className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-300 hover:border-slate-400 shadow-2xs transition-all cursor-pointer group/alert"
+          className="w-full flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] shadow-md hover:shadow-[#29abe2]/20 transition-all cursor-pointer group/alert"
         >
-          <div className="w-5 h-5 rounded-md bg-amber-500/15 border border-amber-400/40 backdrop-blur-md flex items-center justify-center text-amber-600 shadow-2xs shrink-0">
+          <div className="w-5 h-5 rounded-md bg-amber-500/20 border border-amber-400/30 backdrop-blur-md flex items-center justify-center text-amber-400 shadow-2xs shrink-0">
             <AlertTriangle size={12} strokeWidth={2.4} />
           </div>
           <span className="truncate">Street-Smart Inspection Alerts ({vehicle.inspection_alerts?.length || 0})</span>
-        </button>
-
-        {/* Inventory Search CTA with Glassmorphic Icon */}
-        <button
-          type="button"
-          onClick={() => {
-            if (onSearchInventory) {
-              onSearchInventory(vehicle.make, vehicle.model);
-            } else if (typeof window !== 'undefined') {
-              window.location.href = buildCarMatrixInventoryUrl(vehicle, channel);
-            }
-          }}
-          className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] shadow-md hover:shadow-[#29abe2]/25 transition-all cursor-pointer group/cta"
-        >
-          <div className="w-5 h-5 rounded-md bg-white/15 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-inner shrink-0">
-            <Search size={12} strokeWidth={2.4} />
-          </div>
-          <span className="truncate">Search Local Inventory on CarMatrix</span>
-          <ExternalLink size={12} className="opacity-70 shrink-0" />
         </button>
       </div>
     </div>

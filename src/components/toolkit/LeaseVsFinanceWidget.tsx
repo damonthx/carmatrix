@@ -7,14 +7,32 @@ import {
   TrendingUp, 
   ShieldCheck, 
   AlertTriangle,
-  Info 
+  Info,
+  ChevronDown
 } from 'lucide-react';
 
 export interface LeaseVsFinanceWidgetProps {
   className?: string;
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
 }
 
-export const LeaseVsFinanceWidget: React.FC<LeaseVsFinanceWidgetProps> = ({ className = '' }) => {
+export const LeaseVsFinanceWidget: React.FC<LeaseVsFinanceWidgetProps> = ({
+  className = '',
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}) => {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [vehiclePrice, setVehiclePrice] = useState<number>(8500);
   const [termMonths, setTermMonths] = useState<number>(36);
   const [downPayment, setDownPayment] = useState<number>(1000);
@@ -69,7 +87,12 @@ export const LeaseVsFinanceWidget: React.FC<LeaseVsFinanceWidgetProps> = ({ clas
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#29abe2]/40 to-transparent pointer-events-none" />
 
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+      <div
+        onClick={toggleToolOpen}
+        className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+          isToolOpen ? 'mb-6 pb-6 border-b border-slate-800' : ''
+        }`}
+      >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-[#29abe2]/15 to-transparent border border-sky-400/35 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -85,12 +108,29 @@ export const LeaseVsFinanceWidget: React.FC<LeaseVsFinanceWidgetProps> = ({ clas
           </div>
         </div>
 
-        <span className="text-[10.5px] font-bold uppercase bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-lg border border-emerald-500/25 shrink-0 self-start sm:self-auto">
-          Live Calculation
-        </span>
+        <div className="flex items-center gap-3 shrink-0 self-start sm:self-auto">
+          <span className="text-[10.5px] font-bold uppercase bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-lg border border-emerald-500/25 shrink-0">
+            Live Calculation
+          </span>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleToolOpen();
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer border border-slate-700 shrink-0"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
       </div>
 
-      {/* Price Slider & Direct Input Controls */}
+      {isToolOpen && (
+        <>
+          {/* Price Slider & Direct Input Controls */}
       <div className="space-y-3 mb-6 bg-slate-950/60 p-4 sm:p-5 rounded-2xl border border-slate-800/80">
         <div className="flex justify-between items-baseline text-xs sm:text-sm text-slate-400">
           <span className="font-semibold text-slate-300">Vehicle Price (Market Value)</span>
@@ -249,6 +289,8 @@ export const LeaseVsFinanceWidget: React.FC<LeaseVsFinanceWidgetProps> = ({ clas
           </div>
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 };

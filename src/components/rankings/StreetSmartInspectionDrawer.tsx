@@ -7,11 +7,9 @@ import {
   Wrench, 
   DollarSign, 
   Info, 
-  CheckSquare2, 
-  ExternalLink 
+  CheckSquare2
 } from 'lucide-react';
 import { VehicleRankingItem } from '@/lib/services/rankingsService';
-import { buildCarMatrixInventoryUrl } from '@/lib/utils/inventoryLinks';
 import { CostOfOwnershipWidget } from '../toolkit/CostOfOwnershipWidget';
 
 interface StreetSmartInspectionDrawerProps {
@@ -196,27 +194,11 @@ export const StreetSmartInspectionDrawer: React.FC<StreetSmartInspectionDrawerPr
         </div>
 
         {/* Bottom Drawer Actions */}
-        <div className="p-5 bg-white border-t border-slate-200 space-y-2">
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              if (onSearchInventory) {
-                onSearchInventory(vehicle.make, vehicle.model);
-              } else if (typeof window !== 'undefined') {
-                window.location.href = buildCarMatrixInventoryUrl(vehicle, 'private_party');
-              }
-            }}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] transition-colors cursor-pointer shadow-md"
-          >
-            <ExternalLink size={14} />
-            <span>Search Active Inventory for {vehicle.make} {vehicle.model}</span>
-          </button>
-
+        <div className="p-5 bg-white border-t border-slate-200">
           <button
             type="button"
             onClick={onClose}
-            className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+            className="w-full py-3 px-4 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
           >
             Close Checklist
           </button>

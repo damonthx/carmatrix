@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, ExternalLink } from 'lucide-react';
+import { Clock, ExternalLink, ChevronDown } from 'lucide-react';
 
 export interface AutomotiveArticle {
   id: string;
@@ -70,7 +70,26 @@ function stripHtml(html: string) {
   return tmp.textContent || tmp.innerText || '';
 }
 
-export default function LatestArticles() {
+export interface LatestArticlesProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function LatestArticles({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: LatestArticlesProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [articles, setArticles] = useState<AutomotiveArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -115,18 +134,39 @@ export default function LatestArticles() {
     : articles;
 
   return (
-    <section className="w-full bg-[#0d1117] border-t border-slate-800 py-20 px-4 sm:px-6 lg:px-8 font-sans">
+    <section className="w-full bg-[#0d1117] border-t border-slate-800 py-16 sm:py-20 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-[1200px] mx-auto">
-        <div className="mb-12 md:mb-16">
-          <h2 className="text-[#e8edf2] text-[15px] md:text-[16px] tracking-[0.15em] font-bold uppercase mb-3">
-            Latest From The Auto World
-          </h2>
-          <p className="text-[#8b95a3] text-[16px] md:text-[18px] font-medium max-w-[600px] leading-relaxed">
-            Stay informed with market insights, valuation trends, and car buying advice from trusted industry experts.
-          </p>
+        <div 
+          onClick={toggleToolOpen}
+          className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+            isToolOpen ? 'mb-10 md:mb-12' : ''
+          }`}
+        >
+          <div>
+            <h2 className="text-[#e8edf2] text-[15px] md:text-[16px] tracking-[0.15em] font-bold uppercase mb-2">
+              Latest From The Auto World
+            </h2>
+            <p className="text-[#8b95a3] text-[15px] md:text-[16px] font-medium max-w-[650px] leading-relaxed">
+              Stay informed with market insights, valuation trends, and car buying advice from trusted industry experts.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleToolOpen();
+            }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-[#161d26] hover:bg-[#232c38] text-[#e8edf2] transition-colors cursor-pointer border border-[#232c38] shrink-0 self-start sm:self-auto"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Articles'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 lg:gap-8">
+        {isToolOpen && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 lg:gap-8">
           {isLoading ? (
             // Skeleton Loading State
             Array.from({ length: 4 }).map((_, idx) => (
@@ -198,6 +238,7 @@ export default function LatestArticles() {
             ))
           )}
         </div>
+        )}
       </div>
     </section>
   );

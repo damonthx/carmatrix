@@ -54,7 +54,26 @@ const FAQ_ITEMS = [
   }
 ];
 
-export default function VINRecallWidget() {
+interface VINRecallWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function VINRecallWidget({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: VINRecallWidgetProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [vinInput, setVinInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -149,7 +168,10 @@ export default function VINRecallWidget() {
       {/* Functional Widget Container */}
       <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div 
+        className={"flex flex-col md:flex-row md:items-center justify-between gap-4 select-none cursor-pointer " + (isToolOpen ? "pb-6 border-b border-slate-200/80" : "")}
+        onClick={toggleToolOpen}
+      >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -160,7 +182,23 @@ export default function VINRecallWidget() {
             <p className="text-slate-500 text-sm mt-0.5">Verify factory specs, engine trim, and unperformed NHTSA safety recalls.</p>
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleToolOpen();
+          }}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0 self-start md:self-auto"
+          aria-expanded={isToolOpen}
+        >
+          <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+          <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+        </button>
       </div>
+
+      {isToolOpen && (
+        <>
 
       {/* Input Form */}
       <div className="mt-6 space-y-4">
@@ -356,9 +394,12 @@ export default function VINRecallWidget() {
           </div>
         )}
       </div>
-    </div>
+      </>
+    )}
+  </div>
 
     {/* SEO-Optimized Structural Content Section (Prevents Thin Content) */}
+    {isToolOpen && (
     <section 
       className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 sm:p-8 md:p-10 space-y-8 font-poppins relative overflow-hidden"
       aria-label="VIN Decoder Buyer Defense Guide & Technical FAQ"
@@ -509,6 +550,7 @@ export default function VINRecallWidget() {
         </div>
       </div>
     </section>
+    )}
   </div>
 );
 }

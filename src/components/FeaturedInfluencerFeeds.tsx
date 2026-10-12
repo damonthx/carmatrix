@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PlayCircle, ExternalLink, Radio, Clock } from 'lucide-react';
+import { PlayCircle, ExternalLink, Radio, Clock, ChevronDown } from 'lucide-react';
 
 export interface InfluencerVideoItem {
   id: string;
@@ -74,7 +74,26 @@ function stripHtml(html: string) {
   return tmp.textContent || tmp.innerText || '';
 }
 
-export default function FeaturedInfluencerFeeds() {
+export interface FeaturedInfluencerFeedsProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function FeaturedInfluencerFeeds({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: FeaturedInfluencerFeedsProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [videos, setVideos] = useState<InfluencerVideoItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -111,24 +130,44 @@ export default function FeaturedInfluencerFeeds() {
   }, []);
 
   return (
-    <section className="w-full bg-[#070b11] py-20 px-4 sm:px-6 lg:px-8 font-sans border-t border-slate-800/60">
+    <section className="w-full bg-[#070b11] py-16 sm:py-20 px-4 sm:px-6 lg:px-8 font-sans border-t border-slate-800/60">
       <div className="max-w-[1200px] mx-auto">
         {/* Header Section */}
-        <div className="mb-12 md:mb-16">
-          <div className="flex items-center gap-2 mb-3">
-            <Radio size={20} className="text-[#29abe2]" />
-            <h2 className="text-[#e8edf2] text-[13px] md:text-[14px] tracking-[0.15em] font-bold uppercase">
-              Voices in the Market
-            </h2>
+        <div 
+          onClick={toggleToolOpen}
+          className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+            isToolOpen ? 'mb-10 md:mb-12' : ''
+          }`}
+        >
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Radio size={20} className="text-[#29abe2]" />
+              <h2 className="text-[#e8edf2] text-[13px] md:text-[14px] tracking-[0.15em] font-bold uppercase">
+                Voices in the Market
+              </h2>
+            </div>
+            <p className="text-[#8b95a3] text-[15px] md:text-[16px] font-medium max-w-[700px] leading-relaxed">
+              Get raw, unedited transparency on car reliability, pricing traps, and buying strategies directly from the internet's top consumer watchdogs.
+            </p>
           </div>
-          <p className="text-[#8b95a3] text-[16px] md:text-[18px] font-medium max-w-[700px] leading-relaxed">
-            Get raw, unedited transparency on car reliability, pricing traps, and buying strategies directly from the internet's top consumer watchdogs.
-          </p>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleToolOpen();
+            }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-[#121822] hover:bg-[#1f2937] text-[#e8edf2] transition-colors cursor-pointer border border-[#1f2937] shrink-0 self-start sm:self-auto"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Voices'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
         </div>
 
-        {/* 3-Column Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8">
-          {isLoading ? (
+        {isToolOpen && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8">
+            {isLoading ? (
             // Skeleton Loading State (3 items)
             Array.from({ length: 3 }).map((_, idx) => (
               <div key={idx} className="flex flex-col bg-[#121822] rounded-2xl overflow-hidden border border-[#1f2937] animate-pulse">
@@ -203,6 +242,7 @@ export default function FeaturedInfluencerFeeds() {
             ))
           )}
         </div>
+        )}
       </div>
     </section>
   );

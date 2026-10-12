@@ -55,7 +55,26 @@ const POPULAR_PRICE_PRESETS = [4500, 12000, 25000, 38000, 55000, 75000];
 const POPULAR_BUDGET_PRESETS = [300, 450, 600, 800, 1000];
 const LOAN_TERMS = [24, 36, 48, 60, 72, 84];
 
-export const AutoLoanCalculatorWidget: React.FC = () => {
+export interface AutoLoanCalculatorWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export const AutoLoanCalculatorWidget: React.FC<AutoLoanCalculatorWidgetProps> = ({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}) => {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   // Mode selection: 'targetPrice' ("Can I afford this specific car?") or 'reverseBudget' ("What can I afford?")
   const [mode, setMode] = useState<'targetPrice' | 'reverseBudget'>('targetPrice');
 
@@ -222,7 +241,12 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
   return (
     <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 font-poppins relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div
+        onClick={toggleToolOpen}
+        className={`flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+          isToolOpen ? 'pb-6 border-b border-slate-200/80' : ''
+        }`}
+      >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-transparent border border-amber-300/40 shadow-[0_4px_16px_rgba(245,158,11,0.18)] flex items-center justify-center text-amber-500 shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -234,26 +258,43 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
           </div>
         </div>
 
-        {/* Primary Hero Calculation Badge */}
-        <div className="bg-[#29abe2] text-white p-4 rounded-2xl shrink-0 w-full md:w-auto min-w-[220px] shadow-sm">
-          <span className="text-[11px] font-semibold text-sky-100 uppercase tracking-wider block">
-            {mode === 'targetPrice' ? 'Est. Monthly Payment' : 'Estimated Max Vehicle Price'}
-          </span>
-          <span className="text-3xl font-black text-white leading-none block mt-1 font-poppins">
-            {mode === 'targetPrice' 
-              ? `$${calculation.monthlyPayment.toLocaleString()}/mo`
-              : `$${calculation.effectiveVehiclePrice.toLocaleString()}`}
-          </span>
-          <span className="text-[11px] text-sky-100 block mt-1 font-medium font-poppins">
-            at {((apr || 0) * 100).toFixed(2)}% APR ({loanTerm} mo)
-          </span>
+        <div className="flex items-center gap-3 shrink-0 flex-wrap sm:flex-nowrap">
+          {/* Primary Hero Calculation Badge */}
+          <div className="bg-[#29abe2] text-white p-4 rounded-2xl shrink-0 w-full sm:w-auto min-w-[200px] shadow-sm">
+            <span className="text-[11px] font-semibold text-sky-100 uppercase tracking-wider block">
+              {mode === 'targetPrice' ? 'Est. Monthly Payment' : 'Estimated Max Vehicle Price'}
+            </span>
+            <span className="text-3xl font-black text-white leading-none block mt-1 font-poppins">
+              {mode === 'targetPrice' 
+                ? `$${calculation.monthlyPayment.toLocaleString()}/mo`
+                : `$${calculation.effectiveVehiclePrice.toLocaleString()}`}
+            </span>
+            <span className="text-[11px] text-sky-100 block mt-1 font-medium font-poppins">
+              at {((apr || 0) * 100).toFixed(2)}% APR ({loanTerm} mo)
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleToolOpen();
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0 self-center"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
         </div>
       </div>
 
-      {/* Mode Switcher Tabs */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 p-1.5 bg-slate-100/80 rounded-2xl border border-slate-200/70">
-        <div className="flex items-center gap-1.5 w-full sm:w-auto">
-          <button
+      {isToolOpen && (
+        <>
+          {/* Mode Switcher Tabs */}
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 p-1.5 bg-slate-100/80 rounded-2xl border border-slate-200/70">
+            <div className="flex items-center gap-1.5 w-full sm:w-auto">
+              <button
             type="button"
             onClick={() => setMode('targetPrice')}
             className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
@@ -698,6 +739,8 @@ export const AutoLoanCalculatorWidget: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

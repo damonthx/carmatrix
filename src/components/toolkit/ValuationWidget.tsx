@@ -9,7 +9,26 @@ const CONDITIONS = [
   { id: 'rough', name: 'Rough', desc: 'Needs work, high wear or minor accident history', mult: 0.72 }
 ];
 
-export default function ValuationWidget() {
+interface ValuationWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function ValuationWidget({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: ValuationWidgetProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [year, setYear] = useState(2021);
   const [make, setMake] = useState('Toyota');
   const [model, setModel] = useState('RAV4');
@@ -63,7 +82,10 @@ export default function ValuationWidget() {
 
   return (
     <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div 
+        className={"flex flex-col md:flex-row md:items-center justify-between gap-4 select-none cursor-pointer " + (isToolOpen ? "pb-6 border-b border-slate-200/80" : "")}
+        onClick={toggleToolOpen}
+      >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400/20 via-amber-500/10 to-transparent border border-amber-300/40 shadow-[0_4px_16px_rgba(245,158,11,0.18)] flex items-center justify-center text-amber-500 shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -75,15 +97,28 @@ export default function ValuationWidget() {
           </div>
         </div>
 
-        <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 w-full md:w-auto min-w-[200px]">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Estimated Fair Market Value</span>
-          <span className="text-3xl font-black text-emerald-400 leading-none block mt-1">
-            {"$" + estimatedMarketValue.toLocaleString()}
-          </span>
-          <span className="text-[11px] text-slate-300 block mt-1 font-medium">{demandRating}</span>
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0 self-start md:self-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-slate-900 text-white p-3 sm:p-4 rounded-2xl shrink-0 w-full sm:w-auto min-w-[190px]">
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Estimated Fair Market Value</span>
+            <span className="text-2xl sm:text-3xl font-black text-emerald-400 leading-none block mt-0.5">
+              {"$" + estimatedMarketValue.toLocaleString()}
+            </span>
+            <span className="text-[10.5px] text-slate-300 block mt-0.5 font-medium">{demandRating}</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={toggleToolOpen}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
         </div>
       </div>
 
+      {isToolOpen && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
         <div className="lg:col-span-6 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
@@ -246,6 +281,7 @@ export default function ValuationWidget() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }

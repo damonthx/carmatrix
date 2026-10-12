@@ -54,7 +54,26 @@ const INITIAL_DEFAULT_ITEMS: FeeItem[] = [
   { id: '8', name: 'Dealer Prep & Reconditioning Fee', amount: 495, category: 'junk', reason: 'Cost of doing business already covered by retail price.' },
 ];
 
-export default function DealerQuoteAuditorWidget() {
+export interface DealerQuoteAuditorWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function DealerQuoteAuditorWidget({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: DealerQuoteAuditorWidgetProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   // Vehicle Selection State
   const [selectedYear, setSelectedYear] = useState<number>(2024);
   const [selectedMake, setSelectedMake] = useState<string>('Toyota');
@@ -282,7 +301,12 @@ ${buyerName.trim() || '[Your Name]'}`;
   return (
     <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden font-poppins">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div
+        onClick={toggleToolOpen}
+        className={`flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+          isToolOpen ? 'pb-6 border-b border-slate-200/80' : ''
+        }`}
+      >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-400/20 via-indigo-500/10 to-transparent border border-indigo-300/40 shadow-[0_4px_16px_rgba(99,102,241,0.18)] flex items-center justify-center text-indigo-600 shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -293,9 +317,26 @@ ${buyerName.trim() || '[Your Name]'}`;
             <p className="text-slate-500 text-sm mt-0.5">Audit dealer quotes, identify junk add-ons, and calculate target out-the-door pricing.</p>
           </div>
         </div>
+
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleToolOpen();
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
       </div>
 
-      {/* Dynamic Universal Vehicle Selector Bar */}
+      {isToolOpen && (
+        <>
+          {/* Dynamic Universal Vehicle Selector Bar */}
       <div className="mt-6 p-5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
@@ -712,6 +753,8 @@ ${buyerName.trim() || '[Your Name]'}`;
         dealershipName={dealershipName}
         buyerName={buyerName}
       />
+        </>
+      )}
     </div>
   );
 }

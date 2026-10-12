@@ -4,7 +4,7 @@ import {
   Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
-  Menu, X, ChevronRight, Cpu, ShoppingBag, Terminal, Activity, AlertTriangle
+  Menu, X, ChevronRight, Cpu, ShoppingBag, Terminal, Activity, AlertTriangle, BookOpen
 } from 'lucide-react';
 import TCOCalculator from './TCOCalculator';
 import VisionPage from './VisionPage';
@@ -965,11 +965,28 @@ const AUTO_REFINANCE_AFFILIATE_URL = "https://www.myautoloan.com/?aff_id=YOUR_MY
 // const LENDINGTREE_AFFILIATE_URL = "https://www.lendingtree.com/?aff_id=YOUR_LENDINGTREE_ID";
 // const RATEGENIUS_AFFILIATE_URL = "https://www.rategenius.com/?aff_id=YOUR_RATEGENIUS_ID";
 
-const EstimateBudgetSection = () => {
-  return <AutoLoanCalculatorWidget />;
+const EstimateBudgetSection = (props: any) => {
+  return <AutoLoanCalculatorWidget {...props} />;
 };
 
-const ResearchAndReviews = () => {
+const ResearchAndReviews = ({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+} = {}) => {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const reviews = [
     { 
       title: "2026 Cadillac Escalade Review", 
@@ -1005,47 +1022,82 @@ const ResearchAndReviews = () => {
   ];
 
   return (
-    <div className="space-y-12 font-poppins">
-      <div>
-        <div className="flex justify-between items-end mb-4">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 font-poppins relative overflow-hidden">
+      <div
+        onClick={toggleToolOpen}
+        className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+          isToolOpen ? 'pb-6 border-b border-slate-200/80 mb-8' : ''
+        }`}
+      >
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+            <BookOpen size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+          </div>
           <div>
-            <h3 className="text-xl font-semibold text-slate-900 tracking-tight font-poppins">Latest Vehicle Deep Dives</h3>
-            <p className="text-xs text-slate-500 mt-0.5 font-poppins">Independent road tests, reliability findings, and safety scores</p>
+            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Vehicle Reviews &amp; Buyer Guides</h3>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Independent road tests, reliability findings, and practical buyer advice.</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {reviews.map((item, idx) => (
-            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white/80 backdrop-blur-xl border border-white/70 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
-              <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
-                <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <span className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-poppins">
-                  {item.rating}
-                </span>
-              </div>
-              <h4 className="text-xs font-semibold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug font-poppins">{item.title}</h4>
-            </a>
-          ))}
-        </div>
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleToolOpen();
+          }}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0 self-start sm:self-auto"
+          aria-expanded={isToolOpen}
+        >
+          <span>{isToolOpen ? 'Collapse' : 'Expand Guides'}</span>
+          <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+        </button>
       </div>
 
-      <div>
-        <div className="flex justify-between items-end mb-4">
+      {isToolOpen && (
+        <div className="space-y-12 font-poppins">
           <div>
-            <h3 className="text-xl font-semibold text-slate-900 tracking-tight font-poppins">Buyer Research Guides</h3>
-            <p className="text-xs text-slate-500 mt-0.5 font-poppins">Practical strategies, financing tips, and inspection advice</p>
+            <div className="flex justify-between items-end mb-4">
+              <div>
+                <h4 className="text-lg font-bold text-slate-900 tracking-tight font-poppins">Latest Vehicle Deep Dives</h4>
+                <p className="text-xs text-slate-500 mt-0.5 font-poppins">Independent road tests, reliability findings, and safety scores</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {reviews.map((item, idx) => (
+                <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white/80 backdrop-blur-xl border border-white/70 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
+                  <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
+                    <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <span className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-poppins">
+                      {item.rating}
+                    </span>
+                  </div>
+                  <h5 className="text-xs font-semibold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug font-poppins">{item.title}</h5>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="flex justify-between items-end mb-4">
+              <div>
+                <h4 className="text-lg font-bold text-slate-900 tracking-tight font-poppins">Buyer Research Guides</h4>
+                <p className="text-xs text-slate-500 mt-0.5 font-poppins">Practical strategies, financing tips, and inspection advice</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {guides.map((item, idx) => (
+                <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white/80 backdrop-blur-xl border border-white/70 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
+                  <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
+                    <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <h5 className="text-xs font-semibold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug font-poppins">{item.title}</h5>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {guides.map((item, idx) => (
-            <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block group bg-white/80 backdrop-blur-xl border border-white/70 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all">
-              <div className="rounded-xl overflow-hidden mb-3 h-32 relative bg-slate-100">
-                <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-              </div>
-              <h4 className="text-xs font-semibold text-slate-900 group-hover:text-[#29abe2] transition-colors line-clamp-2 leading-snug font-poppins">{item.title}</h4>
-            </a>
-          ))}
-        </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -1186,13 +1238,69 @@ export default function App() {
     setIsTourOpen(true);
   };
 
+  // Track open/collapsed state of each tool and section. Default is false (collapsed) so cards stack neatly.
+  const [openTools, setOpenTools] = useState<Record<string, boolean>>({});
+
+  const toggleTool = (toolId: string, forceState?: boolean) => {
+    setOpenTools(prev => ({
+      ...prev,
+      [toolId]: forceState !== undefined ? forceState : !prev[toolId]
+    }));
+  };
+
+  const sector1Tools = [
+    'vin-checker',
+    'tco-calculator',
+    'valuation-estimator',
+    'inspection-checklist',
+    'test-drive-dossier'
+  ];
+
+  const sector2Tools = [
+    'loan-calculator',
+    'lease-vs-finance',
+    'depreciation-curve'
+  ];
+
+  const sector3Tools = [
+    'quote-auditor',
+    'ai-advisor',
+    'state-fees',
+    'ev-comparison',
+    'market-trends'
+  ];
+
+  const isSectorExpanded = (tools: string[]) => {
+    return tools.every(id => Boolean(openTools[id]));
+  };
+
+  const toggleSector = (tools: string[]) => {
+    const allExpanded = isSectorExpanded(tools);
+    setOpenTools(prev => {
+      const next = { ...prev };
+      tools.forEach(id => {
+        next[id] = !allExpanded;
+      });
+      return next;
+    });
+  };
+
+  const mapTargetToToolId = (target: string): string => {
+    if (target === 'cost-of-ownership') return 'tco-calculator';
+    if (target === 'cash-market-intel') return 'valuation-estimator';
+    if (target === 'loan-affordability') return 'loan-calculator';
+    return target;
+  };
+
   const scrollToTool = (toolId: string) => {
+    const actualId = mapTargetToToolId(toolId);
+    setOpenTools(prev => ({ ...prev, [actualId]: true }));
     setTimeout(() => {
-      const el = document.getElementById(toolId);
+      const el = document.getElementById(actualId) || document.getElementById(toolId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 100);
+    }, 150);
   };
 
   const navigateTo = (path: string) => {
@@ -1286,42 +1394,69 @@ export default function App() {
                     ========================================================================= */}
                 {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin' || activeToolkitFilter === 'tco' || activeToolkitFilter === 'valuation' || activeToolkitFilter === 'inspection' || activeToolkitFilter === 'dossier') && (
                   <section className="space-y-8 relative">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
-                      Pre-Lot Recon
-                    </h1>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
+                        Pre-Lot Recon
+                      </h1>
+                      <button
+                        type="button"
+                        onClick={() => toggleSector(sector1Tools)}
+                        className="self-start sm:self-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white/70 hover:bg-white/90 border border-slate-300/80 shadow-xs cursor-pointer transition-colors"
+                      >
+                        <ChevronDown size={14} className={`transition-transform duration-200 ${isSectorExpanded(sector1Tools) ? 'rotate-180' : ''}`} />
+                        <span>{isSectorExpanded(sector1Tools) ? 'Collapse Sector' : 'Expand Sector'}</span>
+                      </button>
+                    </div>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin') && (
                       <section id="vin-checker" className="scroll-mt-24">
-                        <VINRecallWidget />
+                        <VINRecallWidget 
+                          isOpen={Boolean(openTools['vin-checker'])} 
+                          onToggle={(open) => toggleTool('vin-checker', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'tco') && (
                       <section id="tco-calculator" data-tour-target="cost-of-ownership" className="scroll-mt-24 space-y-8">
                         <div id="cost-of-ownership" />
-                        <TCOCalculator />
-                        <div className="max-w-xl mx-auto">
-                          <CostOfOwnershipWidget />
-                        </div>
+                        <TCOCalculator 
+                          isOpen={Boolean(openTools['tco-calculator'])} 
+                          onToggle={(open) => toggleTool('tco-calculator', open)} 
+                        />
+                        {openTools['tco-calculator'] && (
+                          <div className="max-w-xl mx-auto">
+                            <CostOfOwnershipWidget />
+                          </div>
+                        )}
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'valuation') && (
                       <section id="valuation-estimator" data-tour-target="cash-market-intel" className="scroll-mt-24">
                         <div id="cash-market-intel" />
-                        <ValuationWidget />
+                        <ValuationWidget 
+                          isOpen={Boolean(openTools['valuation-estimator'])} 
+                          onToggle={(open) => toggleTool('valuation-estimator', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'inspection') && (
                       <section id="inspection-checklist" className="scroll-mt-24">
-                        <InspectionChecklistWidget />
+                        <InspectionChecklistWidget 
+                          isOpen={Boolean(openTools['inspection-checklist'])} 
+                          onToggle={(open) => toggleTool('inspection-checklist', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'dossier') && (
                       <section id="test-drive-dossier" className="scroll-mt-24">
-                        <TestDriveDossierWidget />
+                        <TestDriveDossierWidget 
+                          isOpen={Boolean(openTools['test-drive-dossier'])} 
+                          onToggle={(open) => toggleTool('test-drive-dossier', open)} 
+                        />
                       </section>
                     )}
                   </section>
@@ -1333,26 +1468,45 @@ export default function App() {
                     ========================================================================= */}
                 {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'loan' || activeToolkitFilter === 'lease' || activeToolkitFilter === 'depreciation') && (
                   <section className="space-y-8 relative">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
-                      Finance Trap Detectors
-                    </h1>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
+                        Finance Trap Detectors
+                      </h1>
+                      <button
+                        type="button"
+                        onClick={() => toggleSector(sector2Tools)}
+                        className="self-start sm:self-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white/70 hover:bg-white/90 border border-slate-300/80 shadow-xs cursor-pointer transition-colors"
+                      >
+                        <ChevronDown size={14} className={`transition-transform duration-200 ${isSectorExpanded(sector2Tools) ? 'rotate-180' : ''}`} />
+                        <span>{isSectorExpanded(sector2Tools) ? 'Collapse Sector' : 'Expand Sector'}</span>
+                      </button>
+                    </div>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'loan') && (
                       <section id="loan-calculator" data-tour-target="loan-affordability" className="scroll-mt-24">
                         <div id="loan-affordability" />
-                        <EstimateBudgetSection />
+                        <EstimateBudgetSection 
+                          isOpen={Boolean(openTools['loan-calculator'])} 
+                          onToggle={(open: boolean) => toggleTool('loan-calculator', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'lease') && (
                       <section id="lease-vs-finance" className="scroll-mt-24">
-                        <LeaseVsFinanceWidget />
+                        <LeaseVsFinanceWidget 
+                          isOpen={Boolean(openTools['lease-vs-finance'])} 
+                          onToggle={(open) => toggleTool('lease-vs-finance', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'finance' || activeToolkitFilter === 'depreciation') && (
                       <section id="depreciation-curve" className="scroll-mt-24">
-                        <DepreciationPredictorWidget />
+                        <DepreciationPredictorWidget 
+                          isOpen={Boolean(openTools['depreciation-curve'])} 
+                          onToggle={(open) => toggleTool('depreciation-curve', open)} 
+                        />
                       </section>
                     )}
                   </section>
@@ -1364,47 +1518,91 @@ export default function App() {
                     ========================================================================= */}
                 {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote' || activeToolkitFilter === 'ai' || activeToolkitFilter === 'state-fees' || activeToolkitFilter === 'ev' || activeToolkitFilter === 'market') && (
                   <section className="space-y-8 relative">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
-                      The Closing Table
-                    </h1>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
+                        The Closing Table
+                      </h1>
+                      <button
+                        type="button"
+                        onClick={() => toggleSector(sector3Tools)}
+                        className="self-start sm:self-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white/70 hover:bg-white/90 border border-slate-300/80 shadow-xs cursor-pointer transition-colors"
+                      >
+                        <ChevronDown size={14} className={`transition-transform duration-200 ${isSectorExpanded(sector3Tools) ? 'rotate-180' : ''}`} />
+                        <span>{isSectorExpanded(sector3Tools) ? 'Collapse Sector' : 'Expand Sector'}</span>
+                      </button>
+                    </div>
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'quote') && (
                       <section id="quote-auditor" data-tour-target="quote-auditor" className="scroll-mt-24">
-                        <DealerQuoteAuditorWidget />
+                        <DealerQuoteAuditorWidget 
+                          isOpen={Boolean(openTools['quote-auditor'])} 
+                          onToggle={(open) => toggleTool('quote-auditor', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'ai') && (
                       <section id="ai-advisor" className="scroll-mt-24">
-                        <AIAdvisorWidget />
+                        <AIAdvisorWidget 
+                          isOpen={Boolean(openTools['ai-advisor'])} 
+                          onToggle={(open) => toggleTool('ai-advisor', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'closing' || activeToolkitFilter === 'state-fees') && (
                       <section id="state-fees" className="scroll-mt-24">
-                        <StateFeeGuideWidget />
+                        <StateFeeGuideWidget 
+                          isOpen={Boolean(openTools['state-fees'])} 
+                          onToggle={(open) => toggleTool('state-fees', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'ev') && (
                       <section id="ev-comparison" className="scroll-mt-24">
-                        <EVComparisonWidget />
+                        <EVComparisonWidget 
+                          isOpen={Boolean(openTools['ev-comparison'])} 
+                          onToggle={(open) => toggleTool('ev-comparison', open)} 
+                        />
                       </section>
                     )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'market') && (
                       <section id="market-trends" className="scroll-mt-24 bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 font-poppins relative overflow-hidden">
-                        <div className="flex items-center gap-3.5 mb-6">
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
-                            <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
-                            <TrendingUp size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+                        <div 
+                          onClick={() => toggleTool('market-trends')}
+                          className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+                            openTools['market-trends'] ? 'pb-6 border-b border-slate-200/80 mb-6' : ''
+                          }`}
+                        >
+                          <div className="flex items-center gap-3.5">
+                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
+                              <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
+                              <TrendingUp size={22} strokeWidth={2.2} className="drop-shadow-xs" />
+                            </div>
+                            <div>
+                              <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Market Trends &amp; Price Index</h3>
+                              <p className="text-slate-600 text-sm mt-0.5 font-poppins">Track real-time inventory days-supply, wholesale price trajectory, and regional price adjustments.</p>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Market Trends &amp; Price Index</h3>
-                            <p className="text-slate-600 text-sm mt-0.5 font-poppins">Track real-time inventory days-supply, wholesale price trajectory, and regional price adjustments.</p>
-                          </div>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleTool('market-trends');
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0 self-start sm:self-auto"
+                            aria-expanded={Boolean(openTools['market-trends'])}
+                          >
+                            <span>{openTools['market-trends'] ? 'Collapse' : 'Expand Trends'}</span>
+                            <ChevronDown size={16} className={`transition-transform duration-300 ${openTools['market-trends'] ? 'rotate-180' : ''}`} />
+                          </button>
                         </div>
-                        <MarketPulse />
+                        {openTools['market-trends'] && (
+                          <MarketPulse />
+                        )}
                       </section>
                     )}
                   </section>
@@ -1413,14 +1611,29 @@ export default function App() {
               </div>
 
               <section className="pt-8 border-t border-slate-300/80">
-                <ResearchAndReviews />
+                <ResearchAndReviews 
+                  isOpen={Boolean(openTools['research-reviews'])} 
+                  onToggle={(open) => toggleTool('research-reviews', open)} 
+                />
               </section>
             </main>
           
-            <LatestArticles />
-            <ExpertAdviceFeeds />
-            <DealerTacticsExposed />
-            <FeaturedInfluencerFeeds />
+            <LatestArticles 
+              isOpen={Boolean(openTools['latest-articles'])} 
+              onToggle={(open) => toggleTool('latest-articles', open)} 
+            />
+            <ExpertAdviceFeeds 
+              isOpen={Boolean(openTools['expert-advice'])} 
+              onToggle={(open) => toggleTool('expert-advice', open)} 
+            />
+            <DealerTacticsExposed 
+              isOpen={Boolean(openTools['dealer-tactics'])} 
+              onToggle={(open) => toggleTool('dealer-tactics', open)} 
+            />
+            <FeaturedInfluencerFeeds 
+              isOpen={Boolean(openTools['influencer-feeds'])} 
+              onToggle={(open) => toggleTool('influencer-feeds', open)} 
+            />
           </>
         )}
       </div>

@@ -30,8 +30,25 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   { id: 'drv-suspension', category: 'Test Drive', title: 'Suspension Noise & Steering Play', detail: 'Listen for clunks over speed bumps and verify tight, responsive steering on center.' }
 ];
 
-export default function InspectionChecklistWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+interface InspectionChecklistWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function InspectionChecklistWidget({ 
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: InspectionChecklistWidgetProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleOpen = () => {
+    if (onToggle) onToggle(!isOpen);
+    if (!isControlled) setInternalOpen(!isOpen);
+  };
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<'checklist' | 'fee-detector'>('checklist');
 
@@ -61,7 +78,7 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
     <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 transition-all relative overflow-hidden">
       <div 
         className={"flex flex-col md:flex-row md:items-center justify-between gap-4 select-none cursor-pointer " + (isOpen ? "pb-6 border-b border-slate-200/80" : "")}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
       >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400/20 via-orange-500/10 to-transparent border border-orange-300/40 shadow-[0_4px_16px_rgba(249,115,22,0.18)] flex items-center justify-center text-orange-500 shrink-0 relative overflow-hidden">
@@ -101,8 +118,10 @@ export default function InspectionChecklistWidget({ defaultOpen = false }: { def
           )}
 
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            onClick={toggleOpen}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80"
+            aria-expanded={isOpen}
           >
             <span>{isOpen ? 'Collapse' : 'Expand Tool'}</span>
             <ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Calculator, Info, TrendingDown, Shield, Wrench, Fuel, Receipt, Battery, Gauge, Loader2 } from 'lucide-react';
+import { Calculator, Info, TrendingDown, Shield, Wrench, Fuel, Receipt, Battery, Gauge, Loader2, ChevronDown } from 'lucide-react';
 import { getVehicleTCO } from './services/marketcheck';
 import { getMakes, getModelsForMake } from './services/nhtsa';
 
@@ -7,7 +7,26 @@ const BODY_TYPES = ['Sedan', 'SUV', 'Pickup Truck', 'Coupe', 'Hatchback'];
 const FUEL_TYPES = ['Gas', 'Electric', 'Hybrid'];
 const STATES = ['TX', 'CA', 'NY', 'FL', 'IL', 'OH', 'GA', 'NC', 'MI'];
 
-export default function TCOCalculator() {
+interface TCOCalculatorProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function TCOCalculator({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: TCOCalculatorProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [make, setMake] = useState('Toyota');
   const [model, setModel] = useState('Camry');
   const [year, setYear] = useState(2022);
@@ -202,7 +221,10 @@ export default function TCOCalculator() {
         </div>
       )}
 
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-6 sm:p-8 text-white relative overflow-hidden">
+      <div 
+        className={"bg-gradient-to-r from-slate-900 to-slate-800 p-6 sm:p-8 text-white relative overflow-hidden select-none cursor-pointer transition-all " + (isToolOpen ? "" : "rounded-3xl")}
+        onClick={toggleToolOpen}
+      >
         <div className="absolute right-0 top-0 w-64 h-64 bg-blue-500/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
@@ -215,16 +237,32 @@ export default function TCOCalculator() {
             </div>
             <p className="text-slate-300 font-medium">Discover the "Real Price" of owning your next car beyond the sticker price.</p>
           </div>
-          {tcoData.isLive && (
-             <div className="bg-green-500/20 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shrink-0">
-               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-               Live API Data
-             </div>
-          )}
+          
+          <div className="flex items-center gap-3 shrink-0 self-start sm:self-auto">
+            {tcoData.isLive && (
+               <div className="bg-green-500/20 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shrink-0">
+                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                 Live API Data
+               </div>
+            )}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleToolOpen();
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer border border-slate-700 shrink-0"
+              aria-expanded={isToolOpen}
+            >
+              <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+              <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="p-5 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      {isToolOpen && (
+        <div className="p-5 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {/* Left side: Inputs */}
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
@@ -396,6 +434,7 @@ export default function TCOCalculator() {
 
         </div>
       </div>
+      )}
     </div>
   );
 }

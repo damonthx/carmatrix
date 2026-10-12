@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Loader2, Cpu, CheckCircle2 } from 'lucide-react';
+import { Send, Loader2, Cpu, CheckCircle2, ChevronDown } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
 import { queryAutomotiveKnowledgeEngine } from '../../utils/automotiveKnowledgeEngine';
 
@@ -12,7 +12,26 @@ const PRESET_PROMPTS = [
   'Used Tesla Model 3 under $25,000: How to qualify for the $4,000 EV Tax Credit'
 ];
 
-export default function AIAdvisorWidget() {
+export interface AIAdvisorWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function AIAdvisorWidget({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: AIAdvisorWidgetProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -69,7 +88,12 @@ export default function AIAdvisorWidget() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#29abe2]/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="relative z-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
+        <div
+          onClick={toggleToolOpen}
+          className={`flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+            isToolOpen ? 'pb-6 border-b border-slate-800/80' : ''
+          }`}
+        >
           <div className="flex items-center gap-3.5">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 via-sky-500/10 to-transparent border border-sky-300/40 shadow-[0_4px_16px_rgba(41,171,226,0.18)] flex items-center justify-center text-[#29abe2] shrink-0 relative overflow-hidden">
               <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -80,9 +104,25 @@ export default function AIAdvisorWidget() {
               <p className="text-slate-400 text-sm mt-0.5 font-poppins">Vehicle benchmarks, mechanical watchouts, pricing sanity checks, and negotiation scripts.</p>
             </div>
           </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleToolOpen();
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer border border-slate-700 shrink-0"
+              aria-expanded={isToolOpen}
+            >
+              <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+              <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
         </div>
 
-        <div className="mt-6 space-y-4">
+        {isToolOpen && (
+          <div className="mt-6 space-y-4">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -170,6 +210,7 @@ export default function AIAdvisorWidget() {
             </div>
           )}
         </div>
+      )}
       </div>
     </div>
   );

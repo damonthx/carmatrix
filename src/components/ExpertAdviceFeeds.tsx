@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { PlayCircle, ExternalLink, ShieldCheck, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { PlayCircle, ExternalLink, ShieldCheck, Clock, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 
 export interface VideoAdviceItem {
   id: string;
@@ -82,7 +82,26 @@ function formatPubDate(dateStr: string) {
   }
 }
 
-export default function ExpertAdviceFeeds() {
+export interface ExpertAdviceFeedsProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function ExpertAdviceFeeds({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: ExpertAdviceFeedsProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const displayVideos = curatedVideos;
   const isLoading = false;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -120,52 +139,82 @@ export default function ExpertAdviceFeeds() {
   };
 
   return (
-    <section className="w-full bg-[#0a0f16] py-20 px-4 sm:px-6 lg:px-8 font-sans border-t border-slate-800/60">
+    <section className="w-full bg-[#0a0f16] py-16 sm:py-20 px-4 sm:px-6 lg:px-8 font-sans border-t border-slate-800/60">
       <div className="max-w-[1200px] mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12">
+        <div 
+          onClick={toggleToolOpen}
+          className={`flex flex-col md:flex-row md:items-end justify-between gap-6 cursor-pointer select-none transition-all ${
+            isToolOpen ? 'mb-10 md:mb-12' : ''
+          }`}
+        >
           <div>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-2">
               <ShieldCheck size={20} className="text-[#29abe2]" />
               <h2 className="text-[#e8edf2] text-[15px] md:text-[16px] tracking-[0.15em] font-bold uppercase">
                 Smart Shopping Insights
               </h2>
             </div>
-            <p className="text-[#8b95a3] text-[16px] md:text-[18px] font-medium max-w-[700px] leading-relaxed">
+            <p className="text-[#8b95a3] text-[15px] md:text-[16px] font-medium max-w-[700px] leading-relaxed">
               Master the negotiation, spot hidden dealership fees, and choose high-reliability vehicles with advice from top automotive consumer advocates.
             </p>
           </div>
 
-          {/* Navigation Controls in Header */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          {/* Navigation Controls & Collapse Toggle */}
+          <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
+            {isToolOpen && (
+              <>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scroll('left');
+                  }}
+                  disabled={!canScrollLeft}
+                  className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                    canScrollLeft
+                      ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
+                      : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
+                  }`}
+                  aria-label="Previous videos"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scroll('right');
+                  }}
+                  disabled={!canScrollRight}
+                  className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                    canScrollRight
+                      ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
+                      : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
+                  }`}
+                  aria-label="Next videos"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
+
             <button
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
-              className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                canScrollLeft
-                  ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
-                  : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
-              }`}
-              aria-label="Previous videos"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleToolOpen();
+              }}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-900/80 hover:bg-slate-800 text-[#e8edf2] transition-colors cursor-pointer border border-slate-700 shrink-0"
+              aria-expanded={isToolOpen}
             >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
-              className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                canScrollRight
-                  ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
-                  : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
-              }`}
-              aria-label="Next videos"
-            >
-              <ChevronRight size={20} />
+              <span>{isToolOpen ? 'Collapse' : 'Expand Insights'}</span>
+              <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
             </button>
           </div>
         </div>
 
-        {/* Carousel Container with Side Floating Arrows */}
-        <div className="relative group/carousel">
+        {isToolOpen && (
+          <div className="relative group/carousel">
           {/* Left Side Floating Arrow */}
           <button
             onClick={() => scroll('left')}
@@ -267,6 +316,7 @@ export default function ExpertAdviceFeeds() {
             )}
           </div>
         </div>
+        )}
       </div>
     </section>
   );

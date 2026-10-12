@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingDown, Target, CheckCircle2, DollarSign, Calendar, Car, ShieldCheck, AlertCircle, Info } from 'lucide-react';
+import { TrendingDown, Target, CheckCircle2, DollarSign, Calendar, Car, ShieldCheck, AlertCircle, Info, ChevronDown } from 'lucide-react';
 
 export interface VehicleSegment {
   id: string;
@@ -96,7 +96,26 @@ export const SEGMENTS: VehicleSegment[] = [
   }
 ];
 
-export default function DepreciationPredictorWidget() {
+export interface DepreciationPredictorWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function DepreciationPredictorWidget({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: DepreciationPredictorWidgetProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [selectedSegmentId, setSelectedSegmentId] = useState('japanese_asian_luxury');
   const [originalMsrp, setOriginalMsrp] = useState<number>(46000);
 
@@ -113,7 +132,12 @@ export default function DepreciationPredictorWidget() {
   return (
     <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 font-poppins relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div
+        onClick={toggleToolOpen}
+        className={`flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+          isToolOpen ? 'pb-6 border-b border-slate-200/80' : ''
+        }`}
+      >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400/20 via-cyan-500/10 to-transparent border border-cyan-300/40 shadow-[0_4px_16px_rgba(6,182,212,0.18)] flex items-center justify-center text-cyan-600 shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -125,21 +149,38 @@ export default function DepreciationPredictorWidget() {
           </div>
         </div>
 
-        <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 w-full md:w-auto min-w-[210px] shadow-sm">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Optimal Buy Window</span>
-          <span className="text-xl font-black text-emerald-400 leading-tight block mt-1 font-poppins">
-            {activeSegment.sweetSpotYears.length > 1
-              ? `Years ${activeSegment.sweetSpotYears[0]}–${activeSegment.sweetSpotYears[activeSegment.sweetSpotYears.length - 1]}`
-              : `Year ${activeSegment.sweetSpotYears[0]}`}
-          </span>
-          <span className="text-[11px] text-slate-400 block mt-0.5 font-mono">
-            {Math.round(100 - activeSegment.yearRetentions[activeSegment.sweetSpotYears[0] - 1])}%–
-            {Math.round(100 - activeSegment.yearRetentions[activeSegment.sweetSpotYears[activeSegment.sweetSpotYears.length - 1] - 1])}% Off MSRP
-          </span>
+        <div className="flex items-center gap-3 shrink-0 flex-wrap sm:flex-nowrap">
+          <div className="bg-slate-900 text-white p-4 rounded-2xl shrink-0 w-full sm:w-auto min-w-[210px] shadow-sm">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Optimal Buy Window</span>
+            <span className="text-xl font-black text-emerald-400 leading-tight block mt-1 font-poppins">
+              {activeSegment.sweetSpotYears.length > 1
+                ? `Years ${activeSegment.sweetSpotYears[0]}–${activeSegment.sweetSpotYears[activeSegment.sweetSpotYears.length - 1]}`
+                : `Year ${activeSegment.sweetSpotYears[0]}`}
+            </span>
+            <span className="text-[11px] text-slate-400 block mt-0.5 font-mono">
+              {Math.round(100 - activeSegment.yearRetentions[activeSegment.sweetSpotYears[0] - 1])}%–
+              {Math.round(100 - activeSegment.yearRetentions[activeSegment.sweetSpotYears[activeSegment.sweetSpotYears.length - 1] - 1])}% Off MSRP
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleToolOpen();
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0 self-center"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
         </div>
       </div>
 
-      {/* Segment Selector Pills */}
+      {isToolOpen && (
+        <>
+          {/* Segment Selector Pills */}
       <div className="mt-6 flex flex-wrap gap-2">
         {SEGMENTS.map((s) => (
           <button
@@ -297,6 +338,8 @@ export default function DepreciationPredictorWidget() {
           </div>
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

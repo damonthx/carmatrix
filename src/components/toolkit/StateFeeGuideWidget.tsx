@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, ShieldCheck, AlertCircle, Info, Search, DollarSign, Scale } from 'lucide-react';
+import { MapPin, ShieldCheck, AlertCircle, Info, Search, DollarSign, Scale, ChevronDown } from 'lucide-react';
 
 interface StateData {
   code: string;
@@ -64,7 +64,26 @@ const STATES_DATA: StateData[] = [
   { code: 'WY', name: 'Wyoming', salesTax: 4.0, avgDocFee: 300, docFeeCap: null, tradeInTaxCredit: true, notes: '4% base state tax plus local county option tax.' }
 ];
 
-export default function StateFeeGuideWidget() {
+export interface StateFeeGuideWidgetProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function StateFeeGuideWidget({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: StateFeeGuideWidgetProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const [selectedStateCode, setSelectedStateCode] = useState('CA');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -78,7 +97,12 @@ export default function StateFeeGuideWidget() {
   return (
     <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div
+        onClick={toggleToolOpen}
+        className={`flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer select-none transition-all ${
+          isToolOpen ? 'pb-6 border-b border-slate-200/80' : ''
+        }`}
+      >
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-transparent border border-emerald-300/40 shadow-[0_4px_16px_rgba(16,185,129,0.18)] flex items-center justify-center text-emerald-600 shrink-0 relative overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-white/60 pointer-events-none" />
@@ -90,10 +114,11 @@ export default function StateFeeGuideWidget() {
           </div>
         </div>
 
-        {/* State Quick Selector */}
-        <div className="flex items-center gap-2">
+        {/* State Quick Selector & Toggle */}
+        <div className="flex items-center gap-3 shrink-0">
           <select
             value={selectedStateCode}
+            onClick={(e) => e.stopPropagation()}
             onChange={(e) => setSelectedStateCode(e.target.value)}
             className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 outline-none shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all cursor-pointer"
           >
@@ -101,11 +126,24 @@ export default function StateFeeGuideWidget() {
               <option key={s.code} value={s.code}>{s.name} ({s.code})</option>
             ))}
           </select>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleToolOpen();
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer border border-slate-200/80 shrink-0"
+            aria-expanded={isToolOpen}
+          >
+            <span>{isToolOpen ? 'Collapse' : 'Expand Tool'}</span>
+            <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+          </button>
         </div>
       </div>
 
-      {/* Selected State Overview Cards */}
-      <div className="mt-8 space-y-6">
+      {isToolOpen && (
+        <div className="mt-8 space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Doc Fee Metric */}
           <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
@@ -171,6 +209,7 @@ export default function StateFeeGuideWidget() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }

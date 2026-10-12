@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Play, ChevronLeft, ChevronRight, ExternalLink, X, Flame, ShieldAlert } from 'lucide-react';
+import { Play, ChevronLeft, ChevronRight, ExternalLink, X, Flame, ShieldAlert, ChevronDown } from 'lucide-react';
 
 export interface DealerTacticShort {
   id: string;
@@ -85,7 +85,26 @@ export const DEALER_TACTICS_SHORTS: DealerTacticShort[] = [
   }
 ];
 
-export default function DealerTacticsExposed() {
+export interface DealerTacticsExposedProps {
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: (open: boolean) => void;
+}
+
+export default function DealerTacticsExposed({
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onToggle
+}: DealerTacticsExposedProps = {}) {
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isToolOpen = isControlled ? controlledOpen : internalOpen;
+
+  const toggleToolOpen = () => {
+    if (onToggle) onToggle(!isToolOpen);
+    if (!isControlled) setInternalOpen(!isToolOpen);
+  };
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -139,9 +158,14 @@ export default function DealerTacticsExposed() {
 
       <div className="max-w-[1200px] mx-auto relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-10">
+        <div 
+          onClick={toggleToolOpen}
+          className={`flex flex-col md:flex-row md:items-end justify-between gap-6 cursor-pointer select-none transition-all ${
+            isToolOpen ? 'mb-8 md:mb-10' : ''
+          }`}
+        >
           <div>
-            <div className="flex items-center gap-2 mb-2.5">
+            <div className="flex items-center gap-2 mb-2">
               <span className="w-6 h-6 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center">
                 <Flame size={14} className="animate-pulse" />
               </span>
@@ -157,37 +181,62 @@ export default function DealerTacticsExposed() {
             </p>
           </div>
 
-          {/* Carousel Arrow Controls in Header */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Carousel Arrow Controls & Toggle */}
+          <div className="flex items-center gap-2 shrink-0 self-start md:self-auto">
+            {isToolOpen && (
+              <>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scroll('left');
+                  }}
+                  disabled={!canScrollLeft}
+                  className={`p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                    canScrollLeft
+                      ? 'bg-slate-900/90 hover:bg-slate-800 border-slate-700 hover:border-rose-500/60 text-white shadow-lg shadow-black/40 hover:scale-105 active:scale-95'
+                      : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-30'
+                  }`}
+                  aria-label="Previous shorts"
+                >
+                  <ChevronLeft size={19} />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scroll('right');
+                  }}
+                  disabled={!canScrollRight}
+                  className={`p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                    canScrollRight
+                      ? 'bg-slate-900/90 hover:bg-slate-800 border-slate-700 hover:border-rose-500/60 text-white shadow-lg shadow-black/40 hover:scale-105 active:scale-95'
+                      : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-30'
+                  }`}
+                  aria-label="Next shorts"
+                >
+                  <ChevronRight size={19} />
+                </button>
+              </>
+            )}
+
             <button
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
-              className={`p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                canScrollLeft
-                  ? 'bg-slate-900/90 hover:bg-slate-800 border-slate-700 hover:border-rose-500/60 text-white shadow-lg shadow-black/40 hover:scale-105 active:scale-95'
-                  : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-30'
-              }`}
-              aria-label="Previous shorts"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleToolOpen();
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900/90 hover:bg-slate-800 text-[#e8edf2] transition-colors cursor-pointer border border-slate-700 shrink-0"
+              aria-expanded={isToolOpen}
             >
-              <ChevronLeft size={19} />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
-              className={`p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                canScrollRight
-                  ? 'bg-slate-900/90 hover:bg-slate-800 border-slate-700 hover:border-rose-500/60 text-white shadow-lg shadow-black/40 hover:scale-105 active:scale-95'
-                  : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-30'
-              }`}
-              aria-label="Next shorts"
-            >
-              <ChevronRight size={19} />
+              <span>{isToolOpen ? 'Collapse' : 'Expand Shorts'}</span>
+              <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
             </button>
           </div>
         </div>
 
-        {/* Carousel Container with Side Floating Arrows */}
-        <div className="relative group/carousel">
+        {isToolOpen && (
+          <div className="relative group/carousel">
           {/* Left Side Floating Arrow */}
           <button
             onClick={() => scroll('left')}
@@ -268,6 +317,7 @@ export default function DealerTacticsExposed() {
             ))}
           </div>
         </div>
+        )}
       </div>
 
       {/* Video Modal Player */}
