@@ -91,14 +91,20 @@ const NavBar = ({
     };
   }, [mobileMenuOpen]);
 
+  const isOnTerminal = currentPath === 'terminal' || currentPath === 'home';
+
   const navItems = [
-    {
-      id: 'terminal',
-      label: 'Terminal',
-      icon: Terminal,
-      onClick: () => { setMobileMenuOpen(false); onTerminalClick?.(); },
-      isActive: currentPath === 'terminal' || currentPath === 'home',
-    },
+    ...(!isOnTerminal
+      ? [
+          {
+            id: 'terminal',
+            label: 'Terminal',
+            icon: Terminal,
+            onClick: () => { setMobileMenuOpen(false); onTerminalClick?.(); },
+            isActive: false,
+          },
+        ]
+      : []),
     {
       id: 'guided_evaluator',
       label: 'Deal Evaluator',
