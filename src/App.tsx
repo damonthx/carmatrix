@@ -4,7 +4,7 @@ import {
   Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
-  Menu, X, ChevronRight, Cpu, ShoppingBag, Terminal, Activity, AlertTriangle, BookOpen
+  Menu, X, ChevronRight, Cpu, ShoppingBag, Terminal, Activity, AlertTriangle, BookOpen, Compass
 } from 'lucide-react';
 import TCOCalculator from './TCOCalculator';
 import VisionPage from './VisionPage';
@@ -42,23 +42,31 @@ import DealerDirectoryPage from './DealerDirectoryPage';
 import DealerProfilePage from './DealerProfilePage';
 import RankingsPage from './RankingsPage';
 import TerminalTour from './components/tour/TerminalTour';
+import CarMatrixLanding from './CarMatrixLanding';
+import GuidedEvaluator from './GuidedEvaluator';
 
 const NavBar = ({ 
   onHomeClick, 
+  onTerminalClick,
+  onEvaluatorClick,
   onRankingsClick,
   onMarketPulseClick, 
   onGearClick,
   onDealerDirectoryClick,
   onScrollToTool,
   onStartTour,
+  currentPath = 'terminal',
 }: { 
   onHomeClick: () => void; 
+  onTerminalClick?: () => void;
+  onEvaluatorClick?: () => void;
   onRankingsClick?: () => void;
   onMarketPulseClick: () => void; 
   onGearClick?: () => void;
   onDealerDirectoryClick?: () => void;
   onScrollToTool?: (toolId: string) => void;
   onStartTour?: () => void;
+  currentPath?: string;
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -83,600 +91,229 @@ const NavBar = ({
     };
   }, [mobileMenuOpen]);
 
-  const handleNavClick = (toolId?: string) => {
-    setMobileMenuOpen(false);
-    onHomeClick();
-    if (toolId && onScrollToTool) {
-      setTimeout(() => {
-        onScrollToTool(toolId);
-      }, 50);
-    }
-  };
-
-  const mobileTools = [
+  const navItems = [
     {
-      id: 'ai-advisor',
-      name: 'Knowledge Engine',
-      tag: 'ENGINE',
-      desc: 'Vehicle & deal intelligence',
-      icon: Cpu,
-      gradient: 'from-[#29abe2]/30 via-sky-500/15 to-transparent',
-      border: 'border-[#29abe2]/40',
-      glow: 'rgba(41,171,226,0.35)',
-      color: 'text-[#29abe2]'
+      id: 'terminal',
+      label: 'Terminal',
+      icon: Terminal,
+      onClick: () => { setMobileMenuOpen(false); onTerminalClick?.(); },
+      isActive: currentPath === 'terminal' || currentPath === 'home',
     },
     {
-      id: 'vin-checker',
-      name: 'VIN & Recall',
-      tag: 'NHTSA',
-      desc: 'NHTSA factory records',
-      icon: Search,
-      gradient: 'from-blue-500/30 via-blue-600/15 to-transparent',
-      border: 'border-blue-400/40',
-      glow: 'rgba(59,130,246,0.35)',
-      color: 'text-blue-400'
+      id: 'guided_evaluator',
+      label: 'Deal Evaluator',
+      icon: Compass,
+      onClick: () => { setMobileMenuOpen(false); onEvaluatorClick?.(); },
+      isActive: currentPath === 'guided_evaluator',
     },
     {
-      id: 'quote-auditor',
-      name: 'Quote Auditor',
-      tag: 'AUDIT',
-      desc: 'Junk fee detector & script',
-      icon: FileSearch,
-      gradient: 'from-indigo-500/30 via-indigo-600/15 to-transparent',
-      border: 'border-indigo-400/40',
-      glow: 'rgba(99,102,241,0.35)',
-      color: 'text-indigo-400'
+      id: 'rankings',
+      label: 'Used Cars',
+      icon: TrendingUp,
+      onClick: () => { setMobileMenuOpen(false); onRankingsClick?.(); },
+      isActive: currentPath === 'rankings',
     },
     {
-      id: 'state-fees',
-      name: 'State Fee Guide',
-      tag: '50-STATE',
-      desc: 'Doc fee caps & tax rules',
-      icon: Scale,
-      gradient: 'from-emerald-500/30 via-emerald-600/15 to-transparent',
-      border: 'border-emerald-400/40',
-      glow: 'rgba(16,185,129,0.35)',
-      color: 'text-emerald-400'
+      id: 'market_pulse',
+      label: 'Market Pulse',
+      icon: Activity,
+      onClick: () => { setMobileMenuOpen(false); onMarketPulseClick(); },
+      isActive: currentPath === 'market_pulse',
     },
     {
-      id: 'lease-vs-finance',
-      name: 'Lease vs. Buy',
-      tag: 'COMPARE',
-      desc: '3-yr cashflow vs equity',
-      icon: ArrowLeftRight,
-      gradient: 'from-violet-500/30 via-violet-600/15 to-transparent',
-      border: 'border-violet-400/40',
-      glow: 'rgba(139,92,246,0.35)',
-      color: 'text-violet-400'
-    },
-    {
-      id: 'tco-calculator',
-      name: '5-Year TCO',
-      tag: '5-YEAR',
-      desc: 'Full ownership projection',
-      icon: Calculator,
-      gradient: 'from-teal-500/30 via-teal-600/15 to-transparent',
-      border: 'border-teal-400/40',
-      glow: 'rgba(20,184,166,0.35)',
-      color: 'text-teal-400'
-    },
-    {
-      id: 'loan-calculator',
-      name: 'Loan & Budget',
-      tag: 'FINANCE',
-      desc: 'Payment & interest math',
-      icon: SlidersHorizontal,
-      gradient: 'from-amber-500/30 via-amber-600/15 to-transparent',
-      border: 'border-amber-400/40',
-      glow: 'rgba(245,158,11,0.35)',
-      color: 'text-amber-400'
-    },
-    {
-      id: 'test-drive-dossier',
-      name: 'Test Dossier',
-      tag: 'PRINT',
-      desc: '1-click printable sheet',
-      icon: Printer,
-      gradient: 'from-rose-500/30 via-rose-600/15 to-transparent',
-      border: 'border-rose-400/40',
-      glow: 'rgba(244,63,94,0.35)',
-      color: 'text-rose-400'
-    },
-    {
-      id: 'depreciation-curve',
-      name: 'Value Curve',
-      tag: '7-YEAR',
-      desc: '7-yr value sweet spot',
-      icon: TrendingDown,
-      gradient: 'from-cyan-500/30 via-cyan-600/15 to-transparent',
-      border: 'border-cyan-400/40',
-      glow: 'rgba(6,182,212,0.35)',
-      color: 'text-cyan-400'
-    },
-    {
-      id: 'valuation-estimator',
-      name: 'Live Valuation',
-      tag: 'LIVE',
-      desc: 'Trade-in & market pricing',
-      icon: DollarSign,
-      gradient: 'from-yellow-500/30 via-amber-500/15 to-transparent',
-      border: 'border-yellow-400/40',
-      glow: 'rgba(234,179,8,0.35)',
-      color: 'text-yellow-400'
-    },
-    {
-      id: 'ev-comparison',
-      name: 'EV vs Gas',
-      tag: 'GREEN',
-      desc: 'Fuel & charger savings',
-      icon: Zap,
-      gradient: 'from-green-500/30 via-emerald-600/15 to-transparent',
-      border: 'border-green-400/40',
-      glow: 'rgba(34,197,94,0.35)',
-      color: 'text-green-400'
-    },
-    {
-      id: 'inspection-checklist',
-      name: 'Inspection List',
-      tag: 'CHECK',
-      desc: 'Pre-purchase detector',
+      id: 'dealer_directory',
+      label: 'Dealer Intel™',
       icon: ShieldCheck,
-      gradient: 'from-orange-500/30 via-orange-600/15 to-transparent',
-      border: 'border-orange-400/40',
-      glow: 'rgba(249,115,22,0.35)',
-      color: 'text-orange-400'
-    }
+      onClick: () => { setMobileMenuOpen(false); onDealerDirectoryClick?.(); },
+      isActive: currentPath === 'dealer_directory' || currentPath === 'dealers',
+      badge: 'DFW',
+    },
+    {
+      id: 'gear',
+      label: "Buyer's Gear",
+      icon: ShoppingBag,
+      onClick: () => { setMobileMenuOpen(false); onGearClick?.(); },
+      isActive: currentPath === 'gear',
+    },
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-md font-poppins text-white transition-colors">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-[72px] sm:h-[80px]">
-          {/* Logo */}
-          <div className="cursor-pointer flex items-center shrink-0" onClick={() => handleNavClick()}>
-            <img 
-              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1791661870/Logo-white-500_m3yxou.png" 
-              alt="CarMatrix Logo" 
-              className="w-[195px] sm:w-[225px] h-auto object-contain transition-all hover:opacity-90"
-              style={{ width: '225px' }}
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          
-          {/* Center Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm text-slate-300 font-medium font-poppins">
-            {/* Dropdown for Sectors 01, 02, 03 (Playbook Tools) */}
-            <div className="relative group cursor-pointer py-2">
-              <span className="flex items-center gap-1.5 hover:text-white transition-colors py-1">
-                <span>Playbook Tools</span>
-                <ChevronDown className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-200" />
-              </span>
+    <header className="sticky top-0 z-50 font-poppins text-white">
+      {/* Top Navbar Bar with glassmorphism */}
+      <div className="border-b border-white/[0.08] bg-[#070b14]/90 backdrop-blur-xl">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-[72px]">
+            {/* Logo */}
+            <div 
+              className="cursor-pointer flex items-center shrink-0 group" 
+              onClick={() => { setMobileMenuOpen(false); onHomeClick(); }}
+            >
+              <img 
+                src="https://res.cloudinary.com/yrhldsmj/image/upload/v1791661870/Logo-white-500_m3yxou.png" 
+                alt="CarMatrix Logo" 
+                className="w-[180px] sm:w-[210px] h-auto object-contain transition-opacity group-hover:opacity-90"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            
+            {/* Center Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-medium font-poppins">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={(e) => { e.preventDefault(); item.onClick(); }}
+                    className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer ${
+                      item.isActive
+                        ? 'text-white bg-white/[0.12] border border-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]'
+                        : 'text-slate-300 hover:text-white hover:bg-white/[0.06] border border-transparent'
+                    }`}
+                  >
+                    <Icon size={13} className={item.isActive ? 'text-[#29abe2]' : 'text-slate-400'} />
+                    <span>{item.label}</span>
+                    {item.badge && (
+                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300">
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
 
-              {/* Dropdown Panel rendering Sectors 01, 02, 03 */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                <div className="rounded-3xl bg-slate-950/95 border border-slate-800 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)] p-6 backdrop-blur-2xl relative overflow-hidden">
-                  {/* Ambient internal lighting glow */}
-                  <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-28 bg-[#29abe2]/20 rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#29abe2]/40 to-transparent pointer-events-none" />
+            {/* Right Action: Quick Tour & CTA */}
+            <div className="hidden lg:flex items-center gap-2.5">
+              <button 
+                onClick={(e) => { e.preventDefault(); onStartTour?.(); }} 
+                className="text-xs px-3 py-1.5 rounded-full border border-white/10 text-slate-300 bg-white/[0.04] hover:bg-white/[0.08] hover:text-white hover:border-white/20 transition-all flex items-center gap-1.5 font-medium whitespace-nowrap cursor-pointer"
+                title="Interactive Terminal Tour"
+              >
+                <HelpCircle className="w-3.5 h-3.5 text-[#29abe2]" />
+                <span>Quick Tour</span>
+              </button>
 
-                  <div className="grid grid-cols-3 gap-5 relative z-10">
-                    {/* Sector 01: Pre-Lot Recon */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 pb-2 border-b border-sky-500/20">
-                        <span className="w-5 h-5 rounded-md bg-sky-500/20 border border-sky-400/30 text-sky-400 font-mono text-[10px] font-black flex items-center justify-center">01</span>
-                        <span className="text-xs font-bold text-sky-300 uppercase tracking-wider">Pre-Lot Recon</span>
-                      </div>
-                      <div className="space-y-1">
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('vin-checker')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">VIN &amp; Recall Scanner</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">NHTSA factory records &amp; recalls</div>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('valuation-estimator')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">Live Market Valuation</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">Trade-in vs private party pricing</div>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('tco-calculator')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">5-Year Ownership TCO</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">Fuel, insurance &amp; depreciation</div>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('inspection-checklist')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-[#29abe2] transition-colors">Pre-Purchase Checklist</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">40-point pre-lot inspection</div>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Sector 02: Finance Traps */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 pb-2 border-b border-amber-500/20">
-                        <span className="w-5 h-5 rounded-md bg-amber-500/20 border border-amber-400/30 text-amber-400 font-mono text-[10px] font-black flex items-center justify-center">02</span>
-                        <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Finance Traps</span>
-                      </div>
-                      <div className="space-y-1">
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('loan-calculator')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">Auto Loan Calculator</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">Payment power &amp; interest math</div>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('lease-vs-finance')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">Lease vs. Buy Simulator</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">Equity vs lease cashflow traps</div>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('depreciation-curve')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">Negative Equity Curve</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">7-year residual depreciation</div>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Sector 03: The Closing Table */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 pb-2 border-b border-emerald-500/20">
-                        <span className="w-5 h-5 rounded-md bg-emerald-500/20 border border-emerald-400/30 text-emerald-400 font-mono text-[10px] font-black flex items-center justify-center">03</span>
-                        <span className="text-xs font-bold text-emerald-300 uppercase tracking-wider">The Closing Table</span>
-                      </div>
-                      <div className="space-y-1">
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('quote-auditor')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-emerald-400 transition-colors">Quote &amp; Fee Auditor</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">Detect &amp; delete dealer junk fees</div>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('state-fees')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-emerald-400 transition-colors">50-State Doc Fee Guide</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">Statutory caps &amp; tax averages</div>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('ai-advisor')}
-                          className="w-full text-left p-2 rounded-xl hover:bg-white/5 transition-colors group/item block cursor-pointer"
-                        >
-                          <div className="text-xs font-semibold text-slate-200 group-hover/item:text-emerald-400 transition-colors">AI Negotiation Advisor</div>
-                          <div className="text-[10.5px] text-slate-400 leading-tight">Counter-scripts &amp; leverage tips</div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {currentPath === 'guided_evaluator' ? (
+                <button 
+                  onClick={(e) => { e.preventDefault(); onTerminalClick?.(); }} 
+                  className="text-xs px-4 py-1.5 rounded-full font-semibold bg-gradient-to-r from-[#29abe2] to-sky-400 text-slate-950 hover:brightness-110 active:scale-95 shadow-[0_0_16px_rgba(41,171,226,0.35)] transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+                >
+                  <Terminal className="w-3.5 h-3.5" />
+                  <span>Open Terminal</span>
+                </button>
+              ) : (
+                <button 
+                  onClick={(e) => { e.preventDefault(); onEvaluatorClick?.(); }} 
+                  className="text-xs px-4 py-1.5 rounded-full font-semibold bg-gradient-to-r from-[#29abe2] to-sky-400 text-slate-950 hover:brightness-110 active:scale-95 shadow-[0_0_16px_rgba(41,171,226,0.35)] transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+                >
+                  <Compass className="w-3.5 h-3.5" />
+                  <span>Evaluate Deal</span>
+                </button>
+              )}
             </div>
 
-            {/* Direct Navigation Links */}
-            <button 
-              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onRankingsClick?.(); }} 
-              className="hover:text-white transition-colors py-2 cursor-pointer"
-            >
-              Used Cars
-            </button>
-
-            <button 
-              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }} 
-              className="hover:text-white transition-colors py-2 cursor-pointer"
-            >
-              Market Pulse
-            </button>
-
-            <button 
-              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onDealerDirectoryClick?.(); }} 
-              className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors py-2 cursor-pointer flex items-center gap-1.5"
-            >
-              Dealer Intel™
-            </button>
-          </nav>
-
-          {/* Right Action: Quick Tour & Buyer's Gear buttons */}
-          <div className="hidden lg:flex items-center gap-2.5">
-            <button 
-              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onStartTour?.(); }} 
-              className="text-xs px-3 py-1.5 rounded-full border border-sky-500/30 text-sky-300 bg-sky-500/10 hover:bg-sky-500/20 hover:border-sky-400/50 transition-all flex items-center gap-1.5 font-medium cursor-pointer"
-              title="Interactive Terminal Tour"
-            >
-              <HelpCircle className="w-3.5 h-3.5 text-[#29abe2]" />
-              <span>Quick Tour</span>
-            </button>
-
-            <button 
-              onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onGearClick?.(); }} 
-              className="text-xs px-3.5 py-1.5 rounded-full border border-sky-500/30 text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 hover:border-sky-400/50 transition-all flex items-center gap-1.5 font-medium cursor-pointer"
-            >
-              <ShoppingBag className="w-3.5 h-3.5 text-sky-400" />
-              <span>Buyer's Gear</span>
-            </button>
-          </div>
-
-          {/* Mobile Hamburger Button */}
-          <div className="lg:hidden flex items-center">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-[#29abe2] ${
-                mobileMenuOpen 
-                  ? "bg-slate-900 text-white border border-slate-700 shadow-lg shadow-black/20" 
-                  : "bg-slate-100 hover:bg-slate-200/80 active:scale-95 border border-slate-200/80 text-slate-800"
-              }`}
-              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
+            {/* Mobile Hamburger Button */}
+            <div className="lg:hidden flex items-center">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs focus:outline-none ${
+                  mobileMenuOpen 
+                    ? "bg-[#29abe2]/20 text-[#29abe2] border border-[#29abe2]/40 shadow-[0_0_15px_rgba(41,171,226,0.25)]" 
+                    : "bg-white/[0.08] hover:bg-white/[0.14] active:scale-95 border border-white/15 text-slate-200 hover:text-white"
+                }`}
+                aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer / Overlay */}
+      {/* Mobile Drawer / Overlay (Viewport Fixed) */}
       {mobileMenuOpen && (
-        <>
+        <div className="fixed inset-0 top-[72px] z-50 lg:hidden">
           {/* Frosted Dark Backdrop */}
           <div 
-            className="fixed inset-0 top-[72px] sm:top-[85px] z-40 bg-black/75 backdrop-blur-md lg:hidden transition-opacity"
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          {/* Luxury Glassmorphic Drawer Menu */}
-          <div className="fixed top-[72px] sm:top-[85px] left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] p-4 sm:p-6 max-h-[calc(100dvh-72px)] sm:max-h-[calc(100dvh-85px)] overflow-y-auto lg:hidden text-white relative">
-            {/* Ambient background glows */}
-            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-80 h-32 bg-[#29abe2]/15 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute top-1/2 -right-20 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-            
-            {/* Subtle grid texture */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] pointer-events-none opacity-40" />
-
-            <div className="max-w-md mx-auto space-y-4 relative z-10">
+          {/* Drawer Menu Content */}
+          <div className="relative z-10 h-full bg-[#070b14]/98 border-t border-white/10 p-4 sm:p-6 overflow-y-auto text-white flex flex-col justify-between shadow-2xl">
+            <div className="max-w-md mx-auto w-full space-y-3">
               {/* Header Badge */}
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#29abe2] animate-pulse" />
-                  <span className="text-[11px] font-black uppercase tracking-widest text-slate-300">
-                    Car Buyer Intelligence Suite
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-slate-300">
+                    CarMatrix Navigation
                   </span>
                 </div>
-                <span className="text-[10px] font-extrabold text-[#29abe2] bg-[#29abe2]/10 border border-[#29abe2]/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
-                  100% Free
+                <span className="text-[10px] font-bold text-[#29abe2] bg-[#29abe2]/10 border border-[#29abe2]/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                  Live Tools
                 </span>
               </div>
 
-              {/* Tool Links Grid (Hero Section Glassmorphism) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {mobileTools.map((tool) => {
-                  const Icon = tool.icon;
+              {/* Navigation Items */}
+              <div className="space-y-2 pt-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
                   return (
                     <button
-                      key={tool.id}
-                      onClick={() => handleNavClick(tool.id)}
-                      className="group relative flex items-center gap-3.5 p-3 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-b from-white/[0.08] via-white/[0.04] to-transparent hover:from-white/[0.14] hover:via-white/[0.08] hover:to-white/[0.03] border-white/[0.12] hover:border-[#29abe2]/50 shadow-[0_4px_16px_0_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.12)] active:scale-[0.98] text-left"
+                      key={item.id}
+                      onClick={(e) => { e.preventDefault(); item.onClick(); }}
+                      className={`w-full flex items-center justify-between p-3.5 rounded-xl border transition-all text-left cursor-pointer ${
+                        item.isActive
+                          ? 'bg-white/[0.12] border-[#29abe2]/50 text-white shadow-[0_0_20px_rgba(41,171,226,0.15)]'
+                          : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-slate-200'
+                      }`}
                     >
-                      {/* Specular top light ray */}
-                      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
-
-                      {/* Frosted jewel icon pedestal */}
-                      <div
-                        className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 shadow-inner border relative bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.color} group-hover:scale-105 group-hover:shadow-[0_0_16px_${tool.glow}] group-hover:border-white/40`}
-                      >
-                        <Icon size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
-                      </div>
-
-                      {/* Text info */}
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5 mb-0.5">
-                          <span className="text-[8.5px] font-black uppercase tracking-widest text-slate-400/90 group-hover:text-slate-300 transition-colors">
-                            {tool.tag}
-                          </span>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center border ${
+                          item.isActive 
+                            ? 'bg-[#29abe2]/20 border-[#29abe2]/40 text-[#29abe2]' 
+                            : 'bg-white/[0.06] border-white/10 text-slate-300'
+                        }`}>
+                          <Icon size={18} />
                         </div>
-                        <div className="text-[12.5px] font-bold text-white tracking-tight leading-snug group-hover:text-[#29abe2] transition-colors truncate">
-                          {tool.name}
-                        </div>
-                        <div className="text-[10.5px] text-slate-400 font-medium truncate leading-tight">
-                          {tool.desc}
+                        <div>
+                          <div className="text-sm font-semibold text-white flex items-center gap-2">
+                            <span>{item.label}</span>
+                            {item.badge && (
+                              <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300">
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-
-                      {/* Right indicator */}
-                      <div className="opacity-30 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-slate-400 group-hover:text-[#29abe2] shrink-0 pr-0.5">
-                        <ChevronRight size={16} />
-                      </div>
+                      <ChevronRight size={16} className={item.isActive ? 'text-[#29abe2]' : 'text-slate-500'} />
                     </button>
                   );
                 })}
               </div>
 
-              {/* Top-Rated Used Cars Link - Mobile Glass Banner */}
-              <div className="pt-2 border-t border-white/10">
-                <button
-                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onRankingsClick?.(); }}
-                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-emerald-500/10 to-white/[0.04] hover:from-emerald-500/20 hover:to-white/[0.08] border-emerald-400/40 shadow-[0_4px_20px_0_rgba(0,0,0,0.4)] active:scale-[0.99] text-left"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-emerald-300/40 bg-gradient-to-br from-emerald-400/30 via-teal-500/15 to-transparent text-emerald-300 group-hover:scale-105 transition-all">
-                      <TrendingUp size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[8.5px] font-black uppercase tracking-widest text-emerald-400">
-                          RANKINGS • STREET VALUE
-                        </span>
-                      </div>
-                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-emerald-400 transition-colors">
-                        Top-Rated Used Cars
-                      </div>
-                      <div className="text-[10.5px] text-slate-400 font-medium">
-                        Ranked by price bracket, reliability &amp; cash spread
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-400 shrink-0 pl-2">
-                    <span>Rankings</span>
-                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </button>
-              </div>
-
-              {/* Market Pulse Link - Elevated Luxury Glass Banner */}
-              <div className="pt-2">
-                <button
-                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onMarketPulseClick(); }}
-                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-[#29abe2]/10 to-white/[0.04] hover:from-[#29abe2]/20 hover:via-sky-500/15 hover:to-white/[0.08] border-[#29abe2]/40 hover:border-[#29abe2]/70 shadow-[0_4px_20px_0_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.2)] active:scale-[0.99] text-left"
-                >
-                  {/* Specular top light ray */}
-                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
-
-                  <div className="flex items-center gap-3.5">
-                    {/* Jewel Icon Pedestal */}
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-sky-300/40 bg-gradient-to-br from-sky-400/30 via-blue-500/15 to-transparent text-sky-300 group-hover:scale-105 group-hover:shadow-[0_0_16px_rgba(56,189,248,0.4)] transition-all">
-                      <TrendingUp size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[8.5px] font-black uppercase tracking-widest text-[#29abe2]">
-                          INDEX • LIVE FEED
-                        </span>
-                      </div>
-                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-[#29abe2] transition-colors">
-                        Consumer Market Pulse
-                      </div>
-                      <div className="text-[10.5px] text-slate-400 font-medium">
-                        Real-time inventory, pricing index & macro analysis
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1 text-[11px] font-bold text-[#29abe2] shrink-0 pl-2">
-                    <span>Open</span>
-                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </button>
-              </div>
-
-              {/* Buyer's Gear Guide Link - Mobile Glass Banner */}
-              <div className="pt-2">
-                <button
-                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onGearClick?.(); }}
-                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-amber-500/10 to-white/[0.04] hover:from-amber-500/20 hover:to-white/[0.08] border-amber-400/40 shadow-[0_4px_20px_0_rgba(0,0,0,0.4)] active:scale-[0.99] text-left"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-amber-300/40 bg-gradient-to-br from-amber-400/30 via-orange-500/15 to-transparent text-amber-300 group-hover:scale-105 transition-all">
-                      <ShoppingBag size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[8.5px] font-black uppercase tracking-widest text-amber-400">
-                          ESSENTIALS • BUYER GEAR
-                        </span>
-                      </div>
-                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-amber-400 transition-colors">
-                        Buyer's Gear Guide
-                      </div>
-                      <div className="text-[10.5px] text-slate-400 font-medium">
-                        OBD2 scanners, jump starters & emergency tech
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1 text-[11px] font-bold text-amber-400 shrink-0 pl-2">
-                    <span>View</span>
-                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </button>
-              </div>
-
-              {/* Dealer Intel Directory Link - Mobile Glass Banner */}
-              <div className="pt-2">
-                <button
-                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onDealerDirectoryClick?.(); }}
-                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-emerald-500/10 to-white/[0.04] hover:from-emerald-500/20 hover:to-white/[0.08] border-emerald-400/40 shadow-[0_4px_20px_0_rgba(0,0,0,0.4)] active:scale-[0.99] text-left"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-emerald-300/40 bg-gradient-to-br from-emerald-400/30 via-teal-500/15 to-transparent text-emerald-300 group-hover:scale-105 transition-all">
-                      <ShieldCheck size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[8.5px] font-black uppercase tracking-widest text-emerald-400">
-                          DIRECTORY • DEALER INTEL™
-                        </span>
-                      </div>
-                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-emerald-400 transition-colors">
-                        Dealership Directory
-                      </div>
-                      <div className="text-[10.5px] text-slate-400 font-medium">
-                        50+ verified DFW dealers &amp; fee transparency
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-400 shrink-0 pl-2">
-                    <span>Explore</span>
-                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </button>
-              </div>
-
-              {/* Quick Terminal Tour - Mobile Glass Banner */}
-              <div className="pt-2">
+              {/* Bottom Actions */}
+              <div className="pt-4 mt-2 border-t border-white/10 flex flex-col gap-2">
                 <button
                   onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onStartTour?.(); }}
-                  className="group relative w-full flex items-center justify-between p-3.5 rounded-2xl transition-all duration-200 cursor-pointer backdrop-blur-xl border overflow-hidden bg-gradient-to-r from-white/[0.08] via-sky-500/10 to-white/[0.04] hover:from-sky-500/20 hover:to-white/[0.08] border-sky-400/40 shadow-[0_4px_20px_0_rgba(0,0,0,0.4)] active:scale-[0.99] text-left"
+                  className="w-full py-2.5 px-4 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-xs font-medium text-slate-300 flex items-center justify-center gap-2 cursor-pointer transition-colors"
                 >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-inner border border-sky-300/40 bg-gradient-to-br from-sky-400/30 via-blue-500/15 to-transparent text-sky-300 group-hover:scale-105 transition-all">
-                      <HelpCircle size={20} strokeWidth={2.3} className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[8.5px] font-black uppercase tracking-widest text-[#29abe2]">
-                          GUIDE • WALKTHROUGH
-                        </span>
-                      </div>
-                      <div className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-[#29abe2] transition-colors">
-                        Quick Terminal Tour
-                      </div>
-                      <div className="text-[10.5px] text-slate-400 font-medium">
-                        Explore key anti-dealer tools in 4 steps
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1 text-[11px] font-bold text-[#29abe2] shrink-0 pl-2">
-                    <span>Start</span>
-                    <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
+                  <HelpCircle size={15} className="text-[#29abe2]" />
+                  <span>Interactive Terminal Tour</span>
+                </button>
+                <button
+                  onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onHomeClick(); }}
+                  className="w-full py-2 px-4 text-center text-xs text-slate-400 hover:text-slate-200 cursor-pointer transition-colors"
+                >
+                  ← Return to Home Overview
                 </button>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </header>
   );
@@ -1103,16 +740,16 @@ const ResearchAndReviews = ({
 };
 
 const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
-  <footer className="bg-slate-950 text-slate-400 text-xs py-14 border-t border-slate-800 mt-20">
+  <footer className="bg-slate-950 text-slate-200 text-xs py-14 border-t border-slate-800 mt-20">
     <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
       {/* FTC Affiliate & Compensation Disclosure Banner */}
-      <div className="mb-12 p-5 rounded-2xl bg-slate-900/90 border border-slate-800/80 text-[11.5px] text-slate-400 leading-relaxed shadow-lg">
-        <div className="flex items-center gap-2 mb-2 text-slate-200 font-bold uppercase tracking-wider text-[10.5px]">
+      <div className="mb-12 p-5 rounded-2xl bg-slate-900/90 border border-slate-800/80 text-[11.5px] text-slate-200 leading-relaxed shadow-lg">
+        <div className="flex items-center gap-2 mb-2 text-white font-bold uppercase tracking-wider text-[10.5px]">
           <ShieldCheck size={14} className="text-[#29abe2]" />
           <span>FTC Affiliate & Consumer Compensation Disclosure</span>
         </div>
         <p>
-          CarMatrix is an independent consumer automotive intelligence platform operated by <strong className="text-slate-200">Defiant Digital Holdings LLC</strong>. We may receive referral compensation from partner links, pre-qualification requests, insurance quote inquiries, and vehicle history lookups at zero additional cost to you. This compensation does not influence our algorithmic valuation estimates, 5-year ownership cost calculations, dealer quote fee audits, or editorial integrity. All vehicles, trademarks, and brand names belong to their respective owners.
+          CarMatrix is an independent consumer automotive intelligence platform operated by <strong className="text-white">Defiant Digital Holdings LLC</strong>. We may receive referral compensation from partner links, pre-qualification requests, insurance quote inquiries, and vehicle history lookups at zero additional cost to you. This compensation does not influence our algorithmic valuation estimates, 5-year ownership cost calculations, dealer quote fee audits, or editorial integrity. All vehicles, trademarks, and brand names belong to their respective owners.
         </p>
       </div>
 
@@ -1120,13 +757,13 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         <div className="col-span-1 sm:col-span-2 space-y-3">
           <div className="flex items-center">
             <img 
-              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1790959350/Logo-CarMatrix_i1t78a.png" 
+              src="https://res.cloudinary.com/yrhldsmj/image/upload/v1791661870/Logo-white-500_m3yxou.png" 
               alt="CarMatrix Logo" 
-              className="h-11 w-auto object-contain transition-all hover:opacity-90"
+              className="w-[195px] sm:w-[215px] h-auto object-contain transition-all hover:opacity-90"
               referrerPolicy="no-referrer"
             />
           </div>
-          <p className="text-slate-400 text-xs max-w-sm leading-relaxed">
+          <p className="text-slate-200 text-xs max-w-sm leading-relaxed">
             Empowering smart vehicle buyers with unbiased research tools, transparent 5-year ownership projections, and real-time market data.
           </p>
 
@@ -1170,16 +807,29 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
               </svg>
             </a>
+
+            <a
+              href="https://www.tiktok.com/@carmatrixapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all duration-200 hover:scale-105 hover:text-[#29abe2]"
+              aria-label="CarMatrix on TikTok"
+              title="CarMatrix on TikTok"
+            >
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+              </svg>
+            </a>
           </div>
 
-          <div className="pt-2 text-[11px] text-slate-500 leading-relaxed">
+          <div className="pt-2 text-[11px] text-slate-300 leading-relaxed">
             © 2026 CarMatrix — Defiant Digital Holdings LLC. All rights reserved. Data powered by NHTSA &amp; MarketCheck.
           </div>
         </div>
 
         <div>
           <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Research Tools</h4>
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-slate-200">
             <li><button onClick={() => onNavigate('rankings')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><TrendingUp size={13} /> Top-Rated Used Cars</button></li>
             <li><button onClick={() => onNavigate('dealer_directory')} className="hover:text-white cursor-pointer text-emerald-400 font-semibold flex items-center gap-1.5"><ShieldCheck size={13} /> Dealer Intel™ Directory</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">AI Buying Advisor</button></li>
@@ -1196,7 +846,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
 
         <div>
           <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Trust & Compliance</h4>
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-slate-200">
             <li><button onClick={() => onNavigate('affiliate_disclosure')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold">Affiliate Disclosure</button></li>
             <li><button onClick={() => onNavigate('privacy')} className="hover:text-white cursor-pointer">Privacy Policy</button></li>
             <li><button onClick={() => onNavigate('terms')} className="hover:text-white cursor-pointer">Terms of Service</button></li>
@@ -1212,26 +862,59 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
   </footer>
 );
 
+const getInitialPath = (): string => {
+  if (typeof window === 'undefined') return 'landing';
+  const path = window.location.pathname.toLowerCase();
+  if (path === '/terminal') return 'terminal';
+  if (path === '/guided-evaluator' || path === '/guided_evaluator' || path === '/evaluator') return 'guided_evaluator';
+  if (path === '/rankings') return 'rankings';
+  if (path === '/dealers' || path === '/dealer_directory') return 'dealer_directory';
+  if (path === '/dealer_profile') return 'dealer_profile';
+  if (path === '/market-pulse' || path === '/market_pulse') return 'market_pulse';
+  if (path === '/gear') return 'gear';
+  if (path === '/finance') return 'finance';
+  if (path === '/privacy') return 'privacy';
+  if (path === '/terms') return 'terms';
+  if (path === '/affiliate-disclosure' || path === '/affiliate_disclosure') return 'affiliate_disclosure';
+  if (path === '/vision') return 'vision';
+  if (path === '/team') return 'team';
+  if (path === '/press') return 'press';
+  if (path === '/pr') return 'pr';
+  if (path === '/faq') return 'faq';
+  if (path === '/contact') return 'contact';
+  if (path === '/influencers') return 'influencers';
+  // Root index '/' or unmapped route defaults to the new landing page
+  return 'landing';
+};
+
 export default function App() {
-  const [currentPath, setCurrentPath] = useState<string>('home');
+  const [currentPath, setCurrentPath] = useState<string>(getInitialPath);
   const [selectedDealerSlug, setSelectedDealerSlug] = useState<string>('sewell-lexus-dallas');
   const [activeToolkitFilter, setActiveToolkitFilter] = useState<string>('all');
   const [isTourOpen, setIsTourOpen] = useState(false);
 
   useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(getInitialPath());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
     // Only show for first-time visitors; do NOT show automatically on recurring visits
     const tourSeen = localStorage.getItem('carmatrix_tour_seen');
-    if (!tourSeen) {
+    if (!tourSeen && currentPath === 'terminal') {
       const timer = setTimeout(() => {
         setIsTourOpen(true);
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [currentPath]);
 
   const handleStartTour = () => {
-    if (currentPath !== 'home') {
-      setCurrentPath('home');
+    if (currentPath !== 'terminal' && currentPath !== 'home') {
+      navigateTo('terminal');
     }
     setActiveToolkitFilter('all');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1295,10 +978,22 @@ export default function App() {
   const scrollToTool = (toolId: string) => {
     const actualId = mapTargetToToolId(toolId);
     setOpenTools(prev => ({ ...prev, [actualId]: true }));
+    if (currentPath !== 'terminal' && currentPath !== 'home') {
+      setCurrentPath('terminal');
+      try {
+        if (window.location.pathname !== '/terminal') {
+          window.history.pushState({ path: 'terminal' }, '', '/terminal');
+        }
+      } catch (e) {}
+    }
     setTimeout(() => {
       const el = document.getElementById(actualId) || document.getElementById(toolId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.classList.add('ring-2', 'ring-[#29abe2]', 'ring-offset-4', 'ring-offset-slate-900', 'transition-all');
+        setTimeout(() => {
+          el.classList.remove('ring-2', 'ring-[#29abe2]', 'ring-offset-4', 'ring-offset-slate-900');
+        }, 3000);
       }
     }, 150);
   };
@@ -1306,12 +1001,64 @@ export default function App() {
   const navigateTo = (path: string) => {
     setCurrentPath(path);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    try {
+      let targetUrl = '/';
+      if (path === 'terminal') targetUrl = '/terminal';
+      else if (path === 'guided_evaluator') targetUrl = '/guided-evaluator';
+      else if (path === 'rankings') targetUrl = '/rankings';
+      else if (path === 'dealer_directory' || path === 'dealers') targetUrl = '/dealers';
+      else if (path === 'market_pulse') targetUrl = '/market-pulse';
+      else if (path === 'gear') targetUrl = '/gear';
+      else if (path === 'landing') targetUrl = '/';
+      else if (path === 'home') targetUrl = '/terminal';
+      else targetUrl = `/${path}`;
+
+      if (window.location.pathname !== targetUrl) {
+        window.history.pushState({ path }, '', targetUrl);
+      }
+    } catch (e) {
+      // Ignore if history state is restricted
+    }
   };
+
+  // Render Root Landing View
+  if (currentPath === 'landing') {
+    return (
+      <div className="font-poppins text-slate-100 min-h-screen relative flex flex-col bg-[#070b14]">
+        <CarMatrixLanding 
+          onAccessTerminal={() => navigateTo('terminal')}
+          onOpenGuidedEvaluator={() => navigateTo('guided_evaluator')}
+          onNavigate={navigateTo}
+        />
+        <CookieConsentBanner onNavigate={navigateTo} />
+      </div>
+    );
+  }
+
+  // Render Guided Evaluator View
+  if (currentPath === 'guided_evaluator') {
+    return (
+      <div className="font-poppins text-slate-100 min-h-screen relative flex flex-col bg-[#070b14]">
+        <GuidedEvaluator 
+          onBackToLanding={() => navigateTo('landing')}
+          onOpenTerminalTool={(toolId) => {
+            scrollToTool(toolId);
+          }}
+          onNavigate={navigateTo}
+        />
+        <CookieConsentBanner onNavigate={navigateTo} />
+      </div>
+    );
+  }
 
   return (
     <div className="font-poppins text-slate-900 min-h-screen selection:bg-[#29abe2]/30 selection:text-slate-900 relative flex flex-col bg-[#DDE3EA]">
       <NavBar 
-        onHomeClick={() => navigateTo('home')}
+        currentPath={currentPath}
+        onHomeClick={() => navigateTo('landing')}
+        onTerminalClick={() => navigateTo('terminal')}
+        onEvaluatorClick={() => navigateTo('guided_evaluator')}
         onRankingsClick={() => navigateTo('rankings')}
         onMarketPulseClick={() => navigateTo('market_pulse')}
         onGearClick={() => navigateTo('gear')}

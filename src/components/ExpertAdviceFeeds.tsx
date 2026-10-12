@@ -88,20 +88,7 @@ export interface ExpertAdviceFeedsProps {
   onToggle?: (open: boolean) => void;
 }
 
-export default function ExpertAdviceFeeds({
-  defaultOpen = false,
-  isOpen: controlledOpen,
-  onToggle
-}: ExpertAdviceFeedsProps = {}) {
-  const isControlled = controlledOpen !== undefined;
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const isToolOpen = isControlled ? controlledOpen : internalOpen;
-
-  const toggleToolOpen = () => {
-    if (onToggle) onToggle(!isToolOpen);
-    if (!isControlled) setInternalOpen(!isToolOpen);
-  };
-
+export default function ExpertAdviceFeeds(_props: ExpertAdviceFeedsProps = {}) {
   const displayVideos = curatedVideos;
   const isLoading = false;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -141,12 +128,7 @@ export default function ExpertAdviceFeeds({
   return (
     <section className="w-full bg-[#0a0f16] py-16 sm:py-20 px-4 sm:px-6 lg:px-8 font-sans border-t border-slate-800/60">
       <div className="max-w-[1200px] mx-auto">
-        <div 
-          onClick={toggleToolOpen}
-          className={`flex flex-col md:flex-row md:items-end justify-between gap-6 cursor-pointer select-none transition-all ${
-            isToolOpen ? 'mb-10 md:mb-12' : ''
-          }`}
-        >
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <ShieldCheck size={20} className="text-[#29abe2]" />
@@ -159,62 +141,38 @@ export default function ExpertAdviceFeeds({
             </p>
           </div>
 
-          {/* Navigation Controls & Collapse Toggle */}
+          {/* Navigation Controls */}
           <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
-            {isToolOpen && (
-              <>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    scroll('left');
-                  }}
-                  disabled={!canScrollLeft}
-                  className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                    canScrollLeft
-                      ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
-                      : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
-                  }`}
-                  aria-label="Previous videos"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    scroll('right');
-                  }}
-                  disabled={!canScrollRight}
-                  className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                    canScrollRight
-                      ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
-                      : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
-                  }`}
-                  aria-label="Next videos"
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </>
-            )}
-
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleToolOpen();
-              }}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-900/80 hover:bg-slate-800 text-[#e8edf2] transition-colors cursor-pointer border border-slate-700 shrink-0"
-              aria-expanded={isToolOpen}
+              onClick={() => scroll('left')}
+              disabled={!canScrollLeft}
+              className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                canScrollLeft
+                  ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
+                  : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
+              }`}
+              aria-label="Previous videos"
             >
-              <span>{isToolOpen ? 'Collapse' : 'Expand Insights'}</span>
-              <ChevronDown size={16} className={`transition-transform duration-300 ${isToolOpen ? 'rotate-180' : ''}`} />
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scroll('right')}
+              disabled={!canScrollRight}
+              className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                canScrollRight
+                  ? 'bg-slate-900/80 hover:bg-slate-800 border-slate-700 hover:border-[#29abe2] text-white shadow-lg shadow-black/30 hover:scale-105 active:scale-95'
+                  : 'bg-slate-900/40 border-slate-800/60 text-slate-600 cursor-not-allowed opacity-40'
+              }`}
+              aria-label="Next videos"
+            >
+              <ChevronRight size={20} />
             </button>
           </div>
         </div>
 
-        {isToolOpen && (
-          <div className="relative group/carousel">
+        <div className="relative group/carousel">
           {/* Left Side Floating Arrow */}
           <button
             onClick={() => scroll('left')}
@@ -316,7 +274,6 @@ export default function ExpertAdviceFeeds({
             )}
           </div>
         </div>
-        )}
       </div>
     </section>
   );

@@ -31,7 +31,7 @@ export async function getModelsForMake(make: string): Promise<string[]> {
     
     const data = await response.json();
     if (data && data.Results) {
-      return Array.from(new Set(
+      return Array.from(new Set<string>(
         data.Results
           .map((m: NHTSAModel) => m.Model_Name.trim())
           .filter(Boolean)
@@ -56,7 +56,7 @@ export async function getModelsForMakeYear(make: string, year?: number): Promise
 
     const data = await response.json();
     if (data && data.Results && data.Results.length > 0) {
-      return Array.from(new Set(
+      return Array.from(new Set<string>(
         data.Results
           .map((m: NHTSAModel) => m.Model_Name.trim())
           .filter(Boolean)
