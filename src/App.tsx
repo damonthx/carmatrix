@@ -4,7 +4,7 @@ import {
   Calculator, Zap, DollarSign, ShieldCheck,
   TrendingUp, Bot, HelpCircle, Layers, SlidersHorizontal,
   FileSearch, Scale, ArrowLeftRight, Printer, TrendingDown,
-  Menu, X, ChevronRight, Cpu, ShoppingBag, Terminal, Activity, AlertTriangle, BookOpen, Compass
+  Menu, X, ChevronRight, Cpu, ShoppingBag, Terminal, Activity, AlertTriangle, BookOpen, Compass, Wrench
 } from 'lucide-react';
 import TCOCalculator from './TCOCalculator';
 import VisionPage from './VisionPage';
@@ -31,12 +31,12 @@ import ValuationWidget from './components/toolkit/ValuationWidget';
 import InspectionChecklistWidget from './components/toolkit/InspectionChecklistWidget';
 import AIAdvisorWidget from './components/toolkit/AIAdvisorWidget';
 import VINRecallWidget from './components/toolkit/VINRecallWidget';
+import ReliabilityProblemsWidget from './components/toolkit/ReliabilityProblemsWidget';
 import DealerQuoteAuditorWidget from './components/toolkit/DealerQuoteAuditorWidget';
 import StateFeeGuideWidget from './components/toolkit/StateFeeGuideWidget';
 import LeaseVsFinanceWidget from './components/toolkit/LeaseVsFinanceWidget';
 import TestDriveDossierWidget from './components/toolkit/TestDriveDossierWidget';
 import DepreciationPredictorWidget from './components/toolkit/DepreciationPredictorWidget';
-import CostOfOwnershipWidget from './components/toolkit/CostOfOwnershipWidget';
 import AutoLoanCalculatorWidget from './components/toolkit/AutoLoanCalculatorWidget';
 import DealerDirectoryPage from './DealerDirectoryPage';
 import DealerProfilePage from './DealerProfilePage';
@@ -841,6 +841,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">AI Buying Advisor</button></li>
             <li><button onClick={() => onNavigate('gear')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><ShoppingBag size={13} /> Buyer's Gear Guide</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">VIN & Recall Scanner</button></li>
+            <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer text-sky-300 font-semibold flex items-center gap-1.5"><Wrench size={13} /> Used Car Reliability</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Dealer Quote Auditor</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">State Doc Fee Guide</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">Lease vs. Finance</button></li>
@@ -939,6 +940,7 @@ export default function App() {
 
   const sector1Tools = [
     'vin-checker',
+    'reliability-problems',
     'tco-calculator',
     'valuation-estimator',
     'inspection-checklist',
@@ -1170,6 +1172,15 @@ export default function App() {
                       </section>
                     )}
 
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin' || activeToolkitFilter === 'reliability') && (
+                      <section id="reliability-problems" className="scroll-mt-24">
+                        <ReliabilityProblemsWidget 
+                          isOpen={Boolean(openTools['reliability-problems'])} 
+                          onToggle={(open) => toggleTool('reliability-problems', open)} 
+                        />
+                      </section>
+                    )}
+
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'tco') && (
                       <section id="tco-calculator" data-tour-target="cost-of-ownership" className="scroll-mt-24 space-y-8">
                         <div id="cost-of-ownership" />
@@ -1177,11 +1188,6 @@ export default function App() {
                           isOpen={Boolean(openTools['tco-calculator'])} 
                           onToggle={(open) => toggleTool('tco-calculator', open)} 
                         />
-                        {openTools['tco-calculator'] && (
-                          <div className="max-w-xl mx-auto">
-                            <CostOfOwnershipWidget />
-                          </div>
-                        )}
                       </section>
                     )}
 
