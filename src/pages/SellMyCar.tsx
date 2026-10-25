@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ExternalLink, ArrowUpDown, RefreshCw, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Search, ExternalLink, ArrowUpDown, RefreshCw, ShieldCheck, AlertCircle, ChevronDown, Loader2 } from 'lucide-react';
+import { getMakes, getModelsForMakeYear } from '../services/nhtsa';
 // @ts-ignore
 import heroVehicle from '../assets/hero-vehicle.png';
 // @ts-ignore
 import logoMark from '../assets/logo-mark.png';
+
+const MODEL_YEARS = Array.from({ length: 32 }, (_, i) => 2026 - i);
 
 interface SellMyCarProps {}
 
@@ -249,18 +252,61 @@ const SecureReliableIcon = () => (
 const SellMyCar: React.FC<SellMyCarProps> = () => {
   // Form State
   const [vin, setVin] = useState('');
-  const [year, setYear] = useState('');
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
+  const [year, setYear] = useState('2022');
+  const [make, setMake] = useState('Toyota');
+  const [model, setModel] = useState('RAV4');
   const [mileage, setMileage] = useState('');
   const [condition, setCondition] = useState('');
+
+  // Dropdown options state
+  const [availableMakes, setAvailableMakes] = useState<string[]>([]);
+  const [availableModels, setAvailableModels] = useState<string[]>([]);
+  const [isLoadingModels, setIsLoadingModels] = useState(false);
+
+  // Load makes on mount
+  useEffect(() => {
+    let isMounted = true;
+    async function initMakes() {
+      try {
+        const m = await getMakes();
+        if (isMounted) setAvailableMakes(m);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    initMakes();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Fetch models whenever make or year updates
+  useEffect(() => {
+    let isMounted = true;
+    async function loadModels() {
+      if (!make) return;
+      setIsLoadingModels(true);
+      try {
+        const models = await getModelsForMakeYear(make, year ? parseInt(year) : undefined);
+        if (isMounted) {
+          setAvailableModels(models);
+          if (models.length > 0 && !models.some(m => m.toLowerCase() === model.toLowerCase())) {
+            setModel(models[0]);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (isMounted) setIsLoadingModels(false);
+      }
+    }
+    loadModels();
+    return () => { isMounted = false; };
+  }, [make, year]);
   
   // Ref for scrolling to the buyer lineup section
   const buyerGridRef = useRef<HTMLDivElement>(null);
 
   const handleMakeChange = (selectedMake: string) => {
     setMake(selectedMake);
-    setModel(''); // Reset model when make changes
   };
 
   // Offers State
@@ -486,41 +532,69 @@ const SellMyCar: React.FC<SellMyCarProps> = () => {
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
               Year
             </label>
-            <input
-              type="number"
-              min="1990"
-              max={new Date().getFullYear() + 1}
-              placeholder="e.g. 2020"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
-            />
+            <div className="relative">
+              <select
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs appearance-none pr-10 cursor-pointer font-semibold transition-all"
+              >
+                {MODEL_YEARS.map((y) => (
+                  <option key={y} value={y.toString()}>{y}</option>
+                ))}
+              </select>
+              <ChevronDown size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            </div>
           </div>
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-              Make
+              Brand / Make
             </label>
-            <input
-              type="text"
-              placeholder="e.g. Toyota"
-              value={make}
-              onChange={(e) => setMake(e.target.value)}
-              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
-            />
+            <div className="relative">
+              <select
+                value={make}
+                onChange={(e) => handleMakeChange(e.target.value)}
+                className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs appearance-none pr-10 cursor-pointer font-semibold transition-all"
+              >
+                <option value="" disabled>Select Brand...</option>
+                {availableMakes.map((m) => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
+              </select>
+              <ChevronDown size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-              Model
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center justify-between">
+              <span>Model</span>
+              {isLoadingModels && <Loader2 size={12} className="animate-spin text-[#29abe2]" />}
             </label>
-            <input
-              type="text"
-              placeholder="e.g. RAV4"
-              value={model}
-              onChange={(e) => setModel(e.target.value)}
-              className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs transition-all"
-            />
+            <div className="relative">
+              {availableModels.length > 0 ? (
+                <select
+                  value={model}
+                  onChange={(e) => setModel(e.target.value)}
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs appearance-none pr-10 cursor-pointer font-semibold transition-all"
+                >
+                  <option value="" disabled>Select Model...</option>
+                  {availableModels.map((mod) => (
+                    <option key={mod} value={mod}>{mod}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="e.g. RAV4"
+                  value={model}
+                  onChange={(e) => setModel(e.target.value)}
+                  className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#29abe2]/20 focus:border-[#29abe2] shadow-xs font-semibold transition-all"
+                />
+              )}
+              {availableModels.length > 0 && (
+                <ChevronDown size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              )}
+            </div>
           </div>
 
           <div>

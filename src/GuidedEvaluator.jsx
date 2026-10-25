@@ -5,10 +5,14 @@ import {
   Copy, TrendingUp, DollarSign, ShieldAlert,
   CarFront, Gauge, Building2, Scale, Landmark,
   FileText, FileCheck, ScanLine, Cpu, FileSearch,
-  SlidersHorizontal, Wallet, BadgeCheck, Layers
+  SlidersHorizontal, Wallet, BadgeCheck, Layers,
+  ChevronDown, Loader2, Edit3
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { DFW_DEALERSHIPS_SEED } from './services/dfwDealerSeedData';
+import { getMakes, getModelsForMakeYear } from './services/nhtsa';
+
+const MODEL_YEARS = Array.from({ length: 32 }, (_, i) => 2026 - i);
 
 /**
  * Evaluates the user's wizard data based on vehicle specs (year, mileage, trim, price),
@@ -792,6 +796,52 @@ export default function GuidedEvaluator({
   const [errors, setErrors] = useState({});
   const [analysisResult, setAnalysisResult] = useState(null);
 
+  const [availableMakes, setAvailableMakes] = useState([]);
+  const [availableModels, setAvailableModels] = useState([]);
+  const [isLoadingModels, setIsLoadingModels] = useState(false);
+  const [isManualMake, setIsManualMake] = useState(false);
+  const [isManualModel, setIsManualModel] = useState(false);
+
+  // Load popular vehicle brands on mount
+  useEffect(() => {
+    let isMounted = true;
+    async function loadMakes() {
+      try {
+        const makes = await getMakes();
+        if (isMounted) setAvailableMakes(makes);
+      } catch (err) {
+        console.error('Error loading makes:', err);
+      }
+    }
+    loadMakes();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Fetch dynamic models for selected make & year from NHTSA VPIC API
+  useEffect(() => {
+    let isMounted = true;
+    async function loadModels() {
+      if (!inputs.make || isManualMake) return;
+      setIsLoadingModels(true);
+      try {
+        const models = await getModelsForMakeYear(inputs.make, Number(inputs.year) || undefined);
+        if (isMounted) {
+          setAvailableModels(models);
+          // If current model isn't in new list, pick the first or keep if list is empty
+          if (models.length > 0 && !models.some(m => m.toLowerCase() === inputs.model.toLowerCase())) {
+            handleInputChange('model', models[0]);
+          }
+        }
+      } catch (err) {
+        console.error('Error loading NHTSA models:', err);
+      } finally {
+        if (isMounted) setIsLoadingModels(false);
+      }
+    }
+    loadModels();
+    return () => { isMounted = false; };
+  }, [inputs.make, inputs.year, isManualMake]);
+
   const handleInputChange = (field, value) => {
     setInputs(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
@@ -1010,63 +1060,171 @@ export default function GuidedEvaluator({
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Make */}
+                  {/* Make / Brand Selector */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                      Make <span className="text-[#29abe2]">*</span>
-                    </label>
-                    <input 
-                      type="text"
-                      value={inputs.make}
-                      onChange={(e) => handleInputChange('make', e.target.value)}
-                      placeholder="e.g. Toyota"
-                      className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
-                    />
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                        Brand / Make <span className="text-[#29abe2]">*</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsManualMake(!isManualMake);
+                          if (!isManualMake) setIsManualModel(true);
+                        }}
+                        className="text-[11px] text-[#29abe2] hover:text-[#52c1ee] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                      >
+                        <Edit3 size={11} />
+                        <span>{isManualMake ? 'Use Brand Menu' : 'Type manually'}</span>
+                      </button>
+                    </div>
+
+                    {!isManualMake ? (
+                      <div className="relative">
+                        <select
+                          value={inputs.make}
+                          onChange={(e) => {
+                            if (e.target.value === '__custom__') {
+                              setIsManualMake(true);
+                              setIsManualModel(true);
+                            } else {
+                              handleInputChange('make', e.target.value);
+                            }
+                          }}
+                          className="w-full bg-slate-900 border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold appearance-none pr-10 cursor-pointer"
+                        >
+                          <option value="" disabled className="bg-slate-900 text-slate-400">Select Brand / Make...</option>
+                          {availableMakes.map((m) => (
+                            <option key={m} value={m} className="bg-slate-900 text-white py-1">
+                              {m}
+                            </option>
+                          ))}
+                          <option value="__custom__" className="bg-slate-800 text-[#29abe2] font-bold">
+                            + Other Brand (type manually)...
+                          </option>
+                        </select>
+                        <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      </div>
+                    ) : (
+                      <input 
+                        type="text"
+                        value={inputs.make}
+                        onChange={(e) => handleInputChange('make', e.target.value)}
+                        placeholder="e.g. Toyota"
+                        className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
+                      />
+                    )}
                     {errors.make && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.make}</p>}
                   </div>
 
-                  {/* Model */}
+                  {/* Model Selector (NHTSA dynamic) */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                      Model <span className="text-[#29abe2]">*</span>
-                    </label>
-                    <input 
-                      type="text"
-                      value={inputs.model}
-                      onChange={(e) => handleInputChange('model', e.target.value)}
-                      placeholder="e.g. RAV4"
-                      className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
-                    />
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <span>Model</span>
+                        <span className="text-[#29abe2]">*</span>
+                        {isLoadingModels && <Loader2 size={12} className="animate-spin text-[#29abe2]" />}
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setIsManualModel(!isManualModel)}
+                        className="text-[11px] text-[#29abe2] hover:text-[#52c1ee] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                      >
+                        <Edit3 size={11} />
+                        <span>{isManualModel ? 'Use Model Menu' : 'Type manually'}</span>
+                      </button>
+                    </div>
+
+                    {!isManualModel && availableModels.length > 0 ? (
+                      <div className="relative">
+                        <select
+                          value={inputs.model}
+                          onChange={(e) => {
+                            if (e.target.value === '__custom__') {
+                              setIsManualModel(true);
+                            } else {
+                              handleInputChange('model', e.target.value);
+                            }
+                          }}
+                          className="w-full bg-slate-900 border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold appearance-none pr-10 cursor-pointer"
+                        >
+                          <option value="" disabled className="bg-slate-900 text-slate-400">Select Model...</option>
+                          {availableModels.map((mod) => (
+                            <option key={mod} value={mod} className="bg-slate-900 text-white py-1">
+                              {mod}
+                            </option>
+                          ))}
+                          <option value="__custom__" className="bg-slate-800 text-[#29abe2] font-bold">
+                            + Other Model (type manually)...
+                          </option>
+                        </select>
+                        <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      </div>
+                    ) : (
+                      <input 
+                        type="text"
+                        value={inputs.model}
+                        onChange={(e) => handleInputChange('model', e.target.value)}
+                        placeholder="e.g. RAV4"
+                        className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
+                      />
+                    )}
                     {errors.model && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.model}</p>}
                   </div>
 
-                  {/* Year */}
+                  {/* Model Year Selector */}
                   <div>
                     <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                       Model Year <span className="text-[#29abe2]">*</span>
                     </label>
-                    <input 
-                      type="number"
-                      value={inputs.year}
-                      onChange={(e) => handleInputChange('year', e.target.value)}
-                      placeholder="e.g. 2024"
-                      className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
-                    />
+                    <div className="relative">
+                      <select
+                        value={inputs.year}
+                        onChange={(e) => handleInputChange('year', e.target.value)}
+                        className="w-full bg-slate-900 border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold appearance-none pr-10 cursor-pointer"
+                      >
+                        {MODEL_YEARS.map((y) => (
+                          <option key={y} value={y} className="bg-slate-900 text-white py-1">
+                            {y}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                    </div>
                     {errors.year && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.year}</p>}
                   </div>
 
-                  {/* Trim */}
+                  {/* Trim Package */}
                   <div>
                     <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                      Trim Package
+                      Trim / Edition Package
                     </label>
-                    <input 
-                      type="text"
-                      value={inputs.trim}
-                      onChange={(e) => handleInputChange('trim', e.target.value)}
-                      placeholder="e.g. XLE Premium"
-                      className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
-                    />
+                    <div className="space-y-2">
+                      <input 
+                        type="text"
+                        value={inputs.trim}
+                        onChange={(e) => handleInputChange('trim', e.target.value)}
+                        placeholder="e.g. XLE Premium, Sport, AWD"
+                        className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
+                      />
+                      <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                        <span className="text-[10px] text-slate-400 uppercase font-semibold mr-0.5">Popular:</span>
+                        {['Base', 'LE', 'XLE', 'Sport', 'Premium', 'Limited', 'Touring', 'GT'].map((trimBadge) => (
+                          <button
+                            key={trimBadge}
+                            type="button"
+                            onClick={() => handleInputChange('trim', trimBadge)}
+                            className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold border transition-all cursor-pointer ${
+                              inputs.trim === trimBadge
+                                ? 'bg-[#29abe2]/25 border-[#29abe2] text-[#29abe2]'
+                                : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30 hover:text-white'
+                            }`}
+                          >
+                            {trimBadge}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
                   {/* Mileage */}
@@ -1086,6 +1244,23 @@ export default function GuidedEvaluator({
                         <Gauge size={13} className="text-[#29abe2]" />
                         <span>MILES</span>
                       </span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                      <span className="text-[10px] text-slate-400 uppercase font-semibold mr-0.5">Quick Picks:</span>
+                      {[10000, 25000, 45000, 60000, 85000, 100000].map((quickMiles) => (
+                        <button
+                          key={quickMiles}
+                          type="button"
+                          onClick={() => handleInputChange('mileage', quickMiles.toString())}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-all cursor-pointer ${
+                            Number(inputs.mileage) === quickMiles
+                              ? 'bg-[#29abe2]/25 border-[#29abe2] text-[#29abe2]'
+                              : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30 hover:text-white'
+                          }`}
+                        >
+                          {quickMiles.toLocaleString()} mi
+                        </button>
+                      ))}
                     </div>
                     {errors.mileage && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.mileage}</p>}
                   </div>
@@ -1167,13 +1342,48 @@ export default function GuidedEvaluator({
                     </div>
                   </div>
 
-                  <input 
-                    type="text"
-                    value={inputs.dealerName}
-                    onChange={(e) => handleInputChange('dealerName', e.target.value)}
-                    placeholder="e.g. Sewell Lexus of Dallas"
-                    className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
-                  />
+                  <div className="relative">
+                    <input 
+                      type="text"
+                      list="dfw-dealers-list"
+                      value={inputs.dealerName}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        handleInputChange('dealerName', val);
+                        const match = DFW_DEALERSHIPS_SEED.find(d => d.name.toLowerCase() === val.toLowerCase());
+                        if (match) {
+                          handleInputChange('dealerCityState', `${match.city}, TX`);
+                        }
+                      }}
+                      placeholder="e.g. Sewell Lexus of Dallas"
+                      className="w-full bg-slate-950/75 backdrop-blur-xl border border-white/15 focus:border-[#29abe2] rounded-xl px-4 py-3 sm:py-3.5 min-h-[48px] text-base sm:text-sm text-white outline-none focus:ring-2 focus:ring-[#29abe2]/25 shadow-inner transition-all font-semibold"
+                    />
+                    <datalist id="dfw-dealers-list">
+                      {DFW_DEALERSHIPS_SEED.map(d => (
+                        <option key={d.id} value={d.name}>{d.city}, TX</option>
+                      ))}
+                    </datalist>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="text-[10px] text-slate-400 uppercase font-semibold mr-0.5">Quick Picks:</span>
+                    {DFW_DEALERSHIPS_SEED.slice(0, 5).map(d => (
+                      <button
+                        key={d.id}
+                        type="button"
+                        onClick={() => {
+                          handleInputChange('dealerName', d.name);
+                          handleInputChange('dealerCityState', `${d.city}, TX`);
+                        }}
+                        className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold border transition-all cursor-pointer ${
+                          inputs.dealerName === d.name
+                            ? 'bg-[#29abe2]/25 border-[#29abe2] text-[#29abe2]'
+                            : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30 hover:text-white'
+                        }`}
+                      >
+                        {d.name}
+                      </button>
+                    ))}
+                  </div>
                   {errors.dealerName && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.dealerName}</p>}
                 </div>
 
