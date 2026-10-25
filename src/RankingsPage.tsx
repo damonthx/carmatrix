@@ -168,7 +168,7 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4">
         {/* 1. Header Section */}
         <RankingsHeader totalRanked={totalRankedVehicles} />
 
