@@ -114,8 +114,8 @@ const NavBar = ({
     },
     {
       id: 'rankings',
-      label: 'Used Cars',
-      icon: TrendingUp,
+      label: 'Reliability Scores',
+      icon: ShieldCheck,
       onClick: () => { setMobileMenuOpen(false); onRankingsClick?.(); },
       isActive: currentPath === 'rankings',
     },
@@ -836,7 +836,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: any) => void }) => (
         <div>
           <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Research Tools</h4>
           <ul className="space-y-2 text-slate-200">
-            <li><button onClick={() => onNavigate('rankings')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><TrendingUp size={13} /> Top-Rated Used Cars</button></li>
+            <li><button onClick={() => onNavigate('rankings')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><ShieldCheck size={13} /> Vehicle Reliability Scores</button></li>
             <li><button onClick={() => onNavigate('dealer_directory')} className="hover:text-white cursor-pointer text-emerald-400 font-semibold flex items-center gap-1.5"><ShieldCheck size={13} /> Dealer Intel™ Directory</button></li>
             <li><button onClick={() => onNavigate('home')} className="hover:text-white cursor-pointer">AI Buying Advisor</button></li>
             <li><button onClick={() => onNavigate('gear')} className="hover:text-white cursor-pointer text-[#29abe2] font-semibold flex items-center gap-1.5"><ShoppingBag size={13} /> Buyer's Gear Guide</button></li>

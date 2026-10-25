@@ -16,7 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { vin, make, model, year, state } = req.query;
-    let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr';
+    let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx';
     
     const buildUrl = (key: string) => {
       let url = `https://mc-api.marketcheck.com/v2/predict/car/costs?api_key=${key}`;
@@ -31,7 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let response = await fetch(buildUrl(apiKey));
     
     if (!response.ok && process.env.VITE_MARKETCHECK_API_KEY) {
-      response = await fetch(buildUrl('ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr'));
+      response = await fetch(buildUrl('mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx'));
     }
 
     if (!response.ok) {

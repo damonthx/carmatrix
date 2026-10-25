@@ -16,7 +16,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { make, model, year, query, rows, zip, radius } = req.query;
-    let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr';
+    let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx';
+    const safeRadius = radius ? Math.min(100, Math.max(1, Number(radius))) : undefined;
     
     const buildUrl = (key: string) => {
       let url = `https://mc-api.marketcheck.com/v2/search/car/active?api_key=${key}`;
@@ -25,16 +26,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (model) url += `&model=${encodeURIComponent(model as string)}`;
       if (year) url += `&year=${encodeURIComponent(year as string)}`;
       if (zip) url += `&zip=${encodeURIComponent(zip as string)}`;
-      if (radius) url += `&radius=${encodeURIComponent(radius as string)}`;
+      if (safeRadius) url += `&radius=${safeRadius}`;
       return url;
     };
 
     let response = await fetch(buildUrl(apiKey));
     
-    // If unauthorized, fallback to the default demo key
+    // If unauthorized, fallback to the default key
     if (!response.ok && process.env.VITE_MARKETCHECK_API_KEY) {
-      console.warn(`Configured API key returned ${response.status}, falling back to demo key.`);
-      response = await fetch(buildUrl('ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr'));
+      console.warn(`Configured API key returned ${response.status}, falling back to default key.`);
+      response = await fetch(buildUrl('mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx'));
     }
 
     if (!response.ok) {

@@ -1,13 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { DollarSign, Award, ChevronDown, ArrowUpRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { DollarSign, Award, ChevronDown, ArrowUpRight, Activity, MapPin, ExternalLink, ShieldCheck, RefreshCw, Car } from 'lucide-react';
 import { getMakes, getModelsForMake } from '../../services/nhtsa';
+import { getVehicleValuation, LiveValuationResult } from '../../services/marketcheck';
 
 const CONDITIONS = [
-  { id: 'excellent', name: 'Excellent', desc: 'Looks new, flawless paint & interior, full service history', mult: 1.08 },
+  { id: 'excellent', name: 'Excellent', desc: 'Looks new, flawless paint & interior, full service history', mult: 1.05 },
   { id: 'good', name: 'Good', desc: 'Minor cosmetic wear, well maintained, clean title', mult: 1.0 },
   { id: 'fair', name: 'Fair', desc: 'Some mechanical or cosmetic defects, clean title', mult: 0.88 },
-  { id: 'rough', name: 'Rough', desc: 'Needs work, high wear or minor accident history', mult: 0.72 }
+  { id: 'rough', name: 'Rough', desc: 'Needs work, high wear or minor accident history', mult: 0.74 }
 ];
+
+// Fallback MSRP estimator by vehicle class when offline
+function getEstimatedFallbackMSRP(make: string, model: string): number {
+  const m = model.toLowerCase();
+  const mk = make.toLowerCase();
+
+  // Exotics & Supercars
+  if (mk === 'porsche') {
+    if (m.includes('911')) return 135000;
+    if (m.includes('taycan')) return 110000;
+    if (m.includes('cayenne')) return 88000;
+    if (m.includes('panamera')) return 105000;
+    if (m.includes('macan')) return 68000;
+    return 95000;
+  }
+
+  // Luxury Full-Size / Performance
+  if (['bmw', 'mercedes-benz', 'audi', 'lexus', 'land rover', 'cadillac'].includes(mk)) {
+    if (m.includes('escalade') || m.includes('navigator') || m.includes('range rover') || m.includes('x7') || m.includes('gls') || m.includes('lx')) return 98000;
+    if (m.includes('7 series') || m.includes('s-class') || m.includes('a8') || m.includes('ls')) return 92000;
+    if (m.includes('5 series') || m.includes('e-class') || m.includes('a6') || m.includes('x5') || m.includes('gle') || m.includes('rx')) return 68000;
+    if (m.includes('3 series') || m.includes('c-class') || m.includes('a4') || m.includes('x3') || m.includes('glc') || m.includes('nx')) return 51000;
+    return 56000;
+  }
+
+  // Heavy Duty & Full Size Trucks / Full Size SUVs
+  if (m.includes('f-250') || m.includes('f-350') || m.includes('2500') || m.includes('3500') || m.includes('super duty')) return 65000;
+  if (m.includes('f-150') || m.includes('silverado') || m.includes('sierra') || m.includes('ram 1500') || m.includes('tundra')) return 52000;
+  if (m.includes('tahoe') || m.includes('suburban') || m.includes('expedition') || m.includes('yukon') || m.includes('sequoia')) return 68000;
+
+  // Mid-Size SUVs & Minivans
+  if (m.includes('highlander') || m.includes('pilot') || m.includes('explorer') || m.includes('grand cherokee') || m.includes('traverse') || m.includes('telluride') || m.includes('palisade') || m.includes('sienna') || m.includes('odyssey')) return 44000;
+
+  // Compact SUVs
+  if (m.includes('rav4') || m.includes('cr-v') || m.includes('forester') || m.includes('cx-5') || m.includes('equinox') || m.includes('escape') || m.includes('rogue') || m.includes('tucson') || m.includes('sportage')) return 33000;
+
+  // Midsize Sedans
+  if (m.includes('camry') || m.includes('accord') || m.includes('altima') || m.includes('sonata') || m.includes('legacy') || m.includes('k5')) return 30000;
+
+  // Compact / Economy Cars
+  if (m.includes('corolla') || m.includes('civic') || m.includes('sentra') || m.includes('elantra') || m.includes('forte') || m.includes('mazda3') || m.includes('impreza')) return 24500;
+
+  return 36000;
+}
 
 interface ValuationWidgetProps {
   defaultOpen?: boolean;
@@ -39,6 +84,15 @@ export default function ValuationWidget({
   const [availableMakes, setAvailableMakes] = useState<string[]>([]);
   const [availableModels, setAvailableModels] = useState<string[]>([]);
 
+  // Live API State
+  const [liveData, setLiveData] = useState<LiveValuationResult | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLiveSuccess, setIsLiveSuccess] = useState(false);
+  const [showComps, setShowComps] = useState(false);
+
+  // Debounce ref to avoid hammering API during typing
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     async function load() {
       const makes = await getMakes();
@@ -58,27 +112,70 @@ export default function ValuationWidget({
     if (make) loadModels();
   }, [make]);
 
+  // Fetch Live Valuation from MarketCheck API
+  useEffect(() => {
+    if (!year || !make || !model) return;
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    setIsLoading(true);
+
+    debounceTimerRef.current = setTimeout(async () => {
+      try {
+        const result = await getVehicleValuation({
+          year,
+          make,
+          model,
+          mileage: Number(mileage) || 0,
+          zip: zip.trim(),
+          condition,
+          radius: 100
+        });
+
+        if (result && result.success) {
+          setLiveData(result);
+          setIsLiveSuccess(true);
+        } else {
+          setIsLiveSuccess(false);
+        }
+      } catch (err) {
+        console.error('Error fetching live market valuation:', err);
+        setIsLiveSuccess(false);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 450);
+
+    return () => {
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+    };
+  }, [year, make, model, mileage, condition, zip]);
+
+  // Fallback calculation in case API is offline or returns empty
   const currentYear = 2026;
   const age = Math.max(0, currentYear - year);
-  
-  let baseMsrp = 34000;
-  if (['BMW', 'Mercedes-Benz', 'Audi', 'Porsche', 'Lexus', 'Land Rover'].includes(make)) baseMsrp = 54000;
-  else if (['Toyota', 'Honda', 'Subaru', 'Mazda'].includes(make)) baseMsrp = 32000;
-  else if (['Chevrolet', 'Ford', 'Ram', 'GMC'].includes(make)) baseMsrp = 42000;
-
-  const depFactor = Math.pow(0.85, age);
-  const expectedMiles = age * 12500;
-  const excessMiles = mileage - expectedMiles;
+  const baseMsrp = getEstimatedFallbackMSRP(make, model);
+  const depFactor = Math.pow(0.88, age);
+  const expectedMiles = Math.max(1000, age * 12500);
+  const excessMiles = (mileage || 0) - expectedMiles;
   const mileageFactor = 1 - (excessMiles * 0.000008);
   const condMult = CONDITIONS.find(c => c.id === condition)?.mult || 1.0;
 
-  const estimatedMarketValue = Math.round(Math.max(2500, baseMsrp * depFactor * Math.max(0.65, mileageFactor) * condMult));
-  const tradeInLow = Math.round(estimatedMarketValue * 0.88);
-  const tradeInHigh = Math.round(estimatedMarketValue * 0.94);
-  const privatePartyValue = Math.round(estimatedMarketValue * 1.04);
-  const dealerRetailValue = Math.round(estimatedMarketValue * 1.14);
+  const fallbackEstimatedMarketValue = Math.round(Math.max(2500, baseMsrp * depFactor * Math.max(0.65, mileageFactor) * condMult));
+  const fallbackTradeInLow = Math.round(fallbackEstimatedMarketValue * 0.82);
+  const fallbackTradeInHigh = Math.round(fallbackEstimatedMarketValue * 0.88);
+  const fallbackPrivateParty = fallbackEstimatedMarketValue;
+  const fallbackDealerRetail = Math.round(fallbackEstimatedMarketValue * 1.12);
 
-  const demandRating = ['Toyota', 'Honda', 'Porsche', 'Subaru'].includes(make) ? 'High Demand (Fast Turn)' : 'Moderate Demand';
+  // Active Display Numbers: Prioritize verified live MarketCheck data
+  const estimatedMarketValue = liveData ? liveData.estimatedMarketValue : fallbackEstimatedMarketValue;
+  const tradeInLow = liveData ? liveData.tradeInLow : fallbackTradeInLow;
+  const tradeInHigh = liveData ? liveData.tradeInHigh : fallbackTradeInHigh;
+  const privatePartyValue = liveData ? liveData.privatePartyValue : fallbackPrivateParty;
+  const dealerRetailValue = liveData ? liveData.dealerRetailValue : fallbackDealerRetail;
+  const demandRating = liveData ? liveData.demandRating : (['Toyota', 'Honda', 'Porsche', 'Subaru'].includes(make) ? 'High Demand (Fast Turn)' : 'Moderate Demand');
 
   return (
     <div className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-[0_12px_36px_rgba(15,23,42,0.06)] rounded-3xl p-6 md:p-8 relative overflow-hidden">
@@ -92,18 +189,34 @@ export default function ValuationWidget({
             <DollarSign size={22} strokeWidth={2.2} className="drop-shadow-xs" />
           </div>
           <div>
-            <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Instant Trade-In &amp; Market Value Estimator</h3>
-            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Private party, trade-in, and dealer retail valuations based on market data.</p>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-2xl font-semibold text-slate-900 tracking-tight font-poppins">Instant Trade-In &amp; Market Value Estimator</h3>
+              {isLiveSuccess && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-700 border border-emerald-500/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Live MarketCheck Verified
+                </span>
+              )}
+            </div>
+            <p className="text-slate-500 text-sm mt-0.5 font-poppins">Real dealer listings, trade-in wholesale ranges, and private sale comps.</p>
           </div>
         </div>
 
         <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0 self-start md:self-auto" onClick={(e) => e.stopPropagation()}>
-          <div className="bg-slate-900 text-white p-3 sm:p-4 rounded-2xl shrink-0 w-full sm:w-auto min-w-[190px]">
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Estimated Fair Market Value</span>
+          <div className="bg-slate-900 text-white p-3 sm:p-4 rounded-2xl shrink-0 w-full sm:w-auto min-w-[210px] relative overflow-hidden">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Estimated Fair Market Value</span>
+              {isLoading && <RefreshCw size={12} className="text-slate-400 animate-spin" />}
+            </div>
             <span className="text-2xl sm:text-3xl font-black text-emerald-400 leading-none block mt-0.5">
               {"$" + estimatedMarketValue.toLocaleString()}
             </span>
-            <span className="text-[10.5px] text-slate-300 block mt-0.5 font-medium">{demandRating}</span>
+            <div className="flex items-center justify-between mt-1 text-[10.5px]">
+              <span className="text-slate-300 font-medium">{demandRating}</span>
+              {liveData && (
+                <span className="text-slate-400 font-normal">({liveData.sampleCount} active comps)</span>
+              )}
+            </div>
           </div>
 
           <button
@@ -130,7 +243,7 @@ export default function ValuationWidget({
                   onChange={(e) => setYear(Number(e.target.value))}
                   className="w-full bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 appearance-none outline-none cursor-pointer shadow-xs focus:border-[#29abe2] focus:ring-2 focus:ring-[#29abe2]/20 transition-all"
                 >
-                  {[2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014].map(y => (
+                  {[2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010].map(y => (
                     <option key={y} value={y}>{y}</option>
                   ))}
                 </select>
@@ -224,22 +337,58 @@ export default function ValuationWidget({
               ))}
             </div>
           </div>
+
+          {/* Live Data Source Notice */}
+          <div className="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2">
+              <Activity size={16} className={isLiveSuccess ? "text-emerald-500" : "text-amber-500"} />
+              <div>
+                <span className="font-bold text-slate-800 block">
+                  {isLiveSuccess ? "MarketCheck Active Dealer Feed" : "Calibrated Automotive Baseline"}
+                </span>
+                <span className="text-[11px] text-slate-500">
+                  {liveData 
+                    ? `${liveData.sampleCount} real-time active listings analyzed ${liveData.isLocal ? `within ${liveData.radiusMiles || 100} miles of ${zip}` : 'nationwide'}`
+                    : "Connecting to live dealer network..."}
+                </span>
+              </div>
+            </div>
+            {liveData?.comps && liveData.comps.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowComps(!showComps)}
+                className="text-xs font-bold text-[#29abe2] hover:underline cursor-pointer"
+              >
+                {showComps ? 'Hide Comps' : 'View Comps'}
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="lg:col-span-6 space-y-4">
-          <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">{"Valuation Spectrum (" + year + " " + make + " " + model + ")"}</h4>
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              {"Valuation Spectrum (" + year + " " + make + " " + model + ")"}
+            </h4>
+            {isLoading && (
+              <span className="text-[11px] text-slate-400 font-medium flex items-center gap-1.5">
+                <RefreshCw size={12} className="animate-spin text-[#29abe2]" />
+                Updating live market data...
+              </span>
+            )}
+          </div>
 
           <div className="space-y-3">
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-slate-800 block">Instant Dealer Trade-In</span>
-                <span className="text-[11px] text-slate-500">Fastest payout, wholesale baseline</span>
+                <span className="text-[11px] text-slate-500">Wholesale dealer cash offer baseline</span>
               </div>
               <div className="text-right">
                 <span className="text-base font-extrabold text-slate-900 block">
                   {"$" + tradeInLow.toLocaleString() + " - $" + tradeInHigh.toLocaleString()}
                 </span>
-                <span className="text-[10px] text-slate-400 font-medium">Wholesale Range</span>
+                <span className="text-[10px] text-slate-400 font-medium">Wholesale Auction Floor</span>
               </div>
             </div>
 
@@ -247,9 +396,9 @@ export default function ValuationWidget({
               <div>
                 <span className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
                   <Award size={14} className="text-emerald-600" />
-                  Private Party Sale (Recommended)
+                  Private Party Sale (Consumer Fair Market)
                 </span>
-                <span className="text-[11px] text-emerald-700">Maximum value to individual buyer</span>
+                <span className="text-[11px] text-emerald-700">Maximum return selling directly to an individual</span>
               </div>
               <div className="text-right">
                 <span className="text-lg font-black text-emerald-700 block">
@@ -262,21 +411,68 @@ export default function ValuationWidget({
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-slate-800 block">Dealer Retail Asking Price</span>
-                <span className="text-[11px] text-slate-500">Typical dealer lot price before fees</span>
+                <span className="text-[11px] text-slate-500">Average dealer showroom price before taxes & fees</span>
               </div>
               <div className="text-right">
                 <span className="text-base font-extrabold text-slate-900 block">
                   {"$" + dealerRetailValue.toLocaleString()}
                 </span>
-                <span className="text-[10px] text-slate-400 font-medium">Retail Baseline</span>
+                <span className="text-[10px] text-slate-400 font-medium">Active Dealer Lot Average</span>
               </div>
             </div>
           </div>
 
+          {/* Mileage Adjustment Details */}
+          {liveData && (
+            <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80 text-[11px] text-slate-600 flex items-center justify-between">
+              <span>
+                Benchmark Cohort Miles: <strong className="text-slate-900">{liveData.cohortBenchmarkMiles.toLocaleString()} mi</strong>
+              </span>
+              <span>
+                Mileage Adj:{' '}
+                <strong className={liveData.mileageAdjustment >= 0 ? "text-emerald-600" : "text-amber-600"}>
+                  {liveData.mileageAdjustment >= 0 ? `+$${liveData.mileageAdjustment.toLocaleString()}` : `-$${Math.abs(liveData.mileageAdjustment).toLocaleString()}`}
+                </strong>
+              </span>
+            </div>
+          )}
+
+          {/* Live Comparable Listings Drawer */}
+          {showComps && liveData?.comps && liveData.comps.length > 0 && (
+            <div className="p-4 bg-sky-50/50 rounded-2xl border border-sky-200/70 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-sky-950 flex items-center gap-1.5">
+                  <ShieldCheck size={14} className="text-[#29abe2]" />
+                  Active Market Listings Supporting This Valuation
+                </span>
+                <span className="text-[10px] text-sky-700 font-medium">MarketCheck Verified</span>
+              </div>
+
+              <div className="space-y-2">
+                {liveData.comps.map((comp) => (
+                  <div key={comp.id} className="p-2.5 bg-white rounded-xl border border-slate-200 flex items-center justify-between gap-3 text-xs">
+                    <div className="min-w-0">
+                      <span className="font-bold text-slate-900 block truncate">{comp.heading}</span>
+                      <span className="text-[10px] text-slate-500 flex items-center gap-1.5 mt-0.5">
+                        <MapPin size={11} className="text-slate-400 shrink-0" />
+                        {comp.dealerName} {comp.city && `• ${comp.city}, ${comp.state}`}
+                        {comp.distance !== null && ` (${comp.distance} mi)`}
+                      </span>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="font-extrabold text-slate-900 block">${comp.price?.toLocaleString()}</span>
+                      <span className="text-[10px] text-slate-500">{comp.miles?.toLocaleString()} mi</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="p-3 bg-sky-50 rounded-xl border border-sky-200/60 flex items-center justify-between text-xs text-sky-900 font-medium">
-            <span>Planning to buy or trade?</span>
-            <span className="font-bold text-[#29abe2] flex items-center gap-1 cursor-pointer">
-              Compare Options <ArrowUpRight size={14} />
+            <span>Looking to trade or purchase? Check dealer fees before signing:</span>
+            <span className="font-bold text-[#29abe2] flex items-center gap-1 cursor-pointer hover:underline">
+              Audit Dealer Quote <ArrowUpRight size={14} />
             </span>
           </div>
         </div>

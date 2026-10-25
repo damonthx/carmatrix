@@ -90,3 +90,81 @@ export async function getVehicleTCO(params: { vin?: string; make?: string; model
   }
 }
 
+export interface ValuationComp {
+  id: string;
+  vin: string;
+  heading: string;
+  price: number;
+  miles: number;
+  dom?: number;
+  dealerName: string;
+  city: string;
+  state: string;
+  distance: number | null;
+  photo: string | null;
+  vdpUrl: string | null;
+}
+
+export interface LiveValuationResult {
+  success: boolean;
+  source: 'marketcheck_live' | 'smart_fallback';
+  isLocal: boolean;
+  radiusMiles: number | null;
+  sampleCount: number;
+  cohortBenchmarkMiles: number;
+  userMileage: number;
+  mileageAdjustment: number;
+  condition: string;
+  conditionMultiplier: number;
+  estimatedMarketValue: number;
+  tradeInLow: number;
+  tradeInHigh: number;
+  privatePartyValue: number;
+  dealerRetailValue: number;
+  spreadVsTradeIn: number;
+  demandRating: string;
+  avgDaysOnMarket: number;
+  marketStats?: {
+    retailMedian: number;
+    minPrice: number;
+    maxPrice: number;
+    p25: number;
+    p75: number;
+  };
+  comps: ValuationComp[];
+  cached?: boolean;
+}
+
+export async function getVehicleValuation(params: {
+  year: number;
+  make: string;
+  model: string;
+  mileage?: number;
+  zip?: string;
+  condition?: string;
+  radius?: number;
+}): Promise<LiveValuationResult | null> {
+  try {
+    const searchParams = new URLSearchParams();
+    searchParams.append('year', params.year.toString());
+    searchParams.append('make', params.make);
+    searchParams.append('model', params.model);
+    if (params.mileage !== undefined) searchParams.append('mileage', params.mileage.toString());
+    if (params.zip) searchParams.append('zip', params.zip);
+    if (params.condition) searchParams.append('condition', params.condition);
+    if (params.radius) searchParams.append('radius', params.radius.toString());
+
+    const response = await fetch(`/api/marketcheck/valuation?${searchParams.toString()}`);
+    if (!response.ok) {
+      console.warn('Valuation API returned non-OK status:', response.status);
+      return null;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch vehicle valuation from live source:', error);
+    return null;
+  }
+}
+
+

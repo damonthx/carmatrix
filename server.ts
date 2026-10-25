@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 // @ts-ignore
 import marketPulseHandler from "./api/market-pulse.js";
+import valuationHandler from "./api/marketcheck/valuation.js";
 import { dealerIntelRouter } from "./src/services/dealerIntelRoutes";
 import { rankingsRouter } from "./src/services/rankingsRoutes";
 
@@ -28,11 +29,31 @@ async function startServer() {
   // Top-Rated Used Cars API routes
   app.use("/api/rankings", rankingsRouter);
 
+  // Live Vehicle Valuation API endpoint
+  app.get("/api/marketcheck/valuation", async (req, res) => {
+    try {
+      await valuationHandler(req as any, res as any);
+    } catch (error) {
+      console.error("Valuation Proxy Error:", error);
+      res.status(500).json({ error: "Failed to calculate valuation", details: String(error) });
+    }
+  });
+
+  app.get("/api/valuation", async (req, res) => {
+    try {
+      await valuationHandler(req as any, res as any);
+    } catch (error) {
+      console.error("Valuation Proxy Error:", error);
+      res.status(500).json({ error: "Failed to calculate valuation", details: String(error) });
+    }
+  });
+
   // Add a proxy endpoint for MarketCheck
   app.get("/api/marketcheck/search", async (req, res) => {
     try {
       const { make, model, year, query, rows, zip, radius } = req.query;
-      let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr';
+      let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx';
+      const safeRadius = radius ? Math.min(100, Math.max(1, Number(radius))) : undefined;
       
       const buildUrl = (key: string) => {
         let url = `https://mc-api.marketcheck.com/v2/search/car/active?api_key=${key}`;
@@ -41,16 +62,16 @@ async function startServer() {
         if (model) url += `&model=${encodeURIComponent(model as string)}`;
         if (year) url += `&year=${encodeURIComponent(year as string)}`;
         if (zip) url += `&zip=${encodeURIComponent(zip as string)}`;
-        if (radius) url += `&radius=${encodeURIComponent(radius as string)}`;
+        if (safeRadius) url += `&radius=${safeRadius}`;
         return url;
       };
 
       let response = await fetch(buildUrl(apiKey));
       
-      // If unauthorized, fallback to the default demo key
+      // If unauthorized, fallback to the default key
       if (!response.ok && process.env.VITE_MARKETCHECK_API_KEY) {
-        console.warn(`Configured API key returned ${response.status}, falling back to demo key.`);
-        response = await fetch(buildUrl('ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr'));
+        console.warn(`Configured API key returned ${response.status}, falling back to default key.`);
+        response = await fetch(buildUrl('mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx'));
       }
 
       if (!response.ok) {
@@ -70,7 +91,7 @@ async function startServer() {
   app.get("/api/marketcheck/predict", async (req, res) => {
     try {
       const { vin, make, model, year, state } = req.query;
-      let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr';
+      let apiKey = process.env.VITE_MARKETCHECK_API_KEY || 'mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx';
       
       const buildUrl = (key: string) => {
         let url = `https://mc-api.marketcheck.com/v2/predict/car/costs?api_key=${key}`;
@@ -85,7 +106,7 @@ async function startServer() {
       let response = await fetch(buildUrl(apiKey));
       
       if (!response.ok && process.env.VITE_MARKETCHECK_API_KEY) {
-        response = await fetch(buildUrl('ThoKb13BeDzhQhMeHuh5XkO8UiwFRedr'));
+        response = await fetch(buildUrl('mc_live_bWXACzVN4ZhxDOYsbTHTvK060bcV2Zsx'));
       }
 
       if (!response.ok) {

@@ -1,459 +1,269 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
-  ArrowUpDown, 
-  Car, 
   ShieldCheck, 
-  RotateCcw,
-  AlertCircle,
-  Info
+  Car, 
+  Truck, 
+  Zap, 
+  Compass, 
+  Award, 
+  Info,
+  CheckCircle2,
+  ArrowRight
 } from 'lucide-react';
 import { RankingsHeader } from './components/rankings/RankingsHeader';
-import { PriceBracketNav } from './components/rankings/PriceBracketNav';
+import { CategoryNav, RELIABILITY_CATEGORIES } from './components/rankings/CategoryNav';
 import { VehicleRankingCard } from './components/rankings/VehicleRankingCard';
 import { StreetSmartInspectionDrawer } from './components/rankings/StreetSmartInspectionDrawer';
 import { ShareRankingsBar } from './components/rankings/ShareRankingsBar';
-import { useRankingsAnalytics } from './hooks/useRankingsAnalytics';
-import { 
-  ValuationChannel, 
-  TierSummaryItem, 
-  VehicleRankingItem,
-  RankingsService
-} from '@/lib/services/rankingsService';
-import { vehicleBodyTypes } from '@/lib/validations/rankingsSchema';
+import { VEHICLE_RANKINGS_DATA, StaticRankedVehicle } from '@/lib/data/vehicleRankingsData';
+import { VehicleRankingItem, enrichVehicleRecord } from '@/lib/services/rankingsService';
 
 interface RankingsPageProps {
   onBackToHome?: () => void;
   onSearchInventory?: (make: string, model: string) => void;
 }
 
+interface CategoryGroup {
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  vehicles: VehicleRankingItem[];
+}
+
 export const RankingsPage: React.FC<RankingsPageProps> = ({
   onBackToHome,
   onSearchInventory,
 }) => {
-  // Valuation Mode State: 'private_party' vs 'dealer_retail'
-  const [channel, setChannel] = useState<ValuationChannel>('private_party');
+  // Active Category State: 'all', 'suv', 'sedan', 'truck', 'hybrid_ev', 'wagon_hatchback'
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // Active Price Bracket Tier State (e.g. 'sub-6k', '6k-11k', etc., or null for all)
-  const [activeTier, setActiveTier] = useState<string | null>(null);
-
-  // Body Type Filter: 'all', 'sedan', 'suv', 'truck', 'hybrid_ev', etc.
-  const [selectedBodyType, setSelectedBodyType] = useState<string>('all');
-
-  // Sort State: 'score_desc', 'reliability_desc', 'ownership_cost_asc', 'spread_desc'
-  const [sortBy, setSortBy] = useState<string>('score_desc');
-
-  // Data States
-  const [vehicles, setVehicles] = useState<VehicleRankingItem[]>([]);
-  const [tiersSummary, setTiersSummary] = useState<TierSummaryItem[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isFallback, setIsFallback] = useState<boolean>(false);
-  const [fallbackMessage, setFallbackMessage] = useState<string | null>(null);
-
-  // Selected vehicle for Inspection Drawer
+  // Selected vehicle for NHTSA Inspection Drawer
   const [inspectingVehicle, setInspectingVehicle] = useState<VehicleRankingItem | null>(null);
+
+  // Set document title
+  useEffect(() => {
+    document.title = 'Vehicle Reliability Scores | CarMatrix';
+  }, []);
 
   // Synchronize state with URL query parameters on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const urlChannel = params.get('channel');
-      const urlTier = params.get('tier');
-      const urlBody = params.get('body_type');
-      const urlSort = params.get('sort_by');
-
-      if (urlChannel === 'dealer_retail' || urlChannel === 'private_party') {
-        setChannel(urlChannel as ValuationChannel);
-      }
-      if (urlTier) {
-        setActiveTier(urlTier);
-      }
-      if (urlBody) {
-        setSelectedBodyType(urlBody);
-      }
-      if (urlSort) {
-        setSortBy(urlSort);
+      const urlCategory = params.get('category');
+      if (urlCategory && ['all', 'suv', 'sedan', 'truck', 'hybrid_ev', 'wagon_hatchback'].includes(urlCategory)) {
+        setSelectedCategory(urlCategory);
       }
     }
   }, []);
 
-  // Update URL params when user changes filters
-  const updateUrlParams = (newChannel: ValuationChannel, newTier: string | null, newBody: string, newSort: string) => {
+  const handleSelectCategory = (catId: string) => {
+    setSelectedCategory(catId);
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      params.set('channel', newChannel);
-      if (newTier) params.set('tier', newTier); else params.delete('tier');
-      if (newBody !== 'all') params.set('body_type', newBody); else params.delete('body_type');
-      if (newSort !== 'score_desc') params.set('sort_by', newSort); else params.delete('sort_by');
-
-      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      if (catId !== 'all') {
+        params.set('category', catId);
+      } else {
+        params.delete('category');
+      }
+      const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
       window.history.replaceState({}, '', newUrl);
     }
   };
 
-  // Fetch Tier Summaries whenever channel changes (instant in-memory with optional network sync)
-  useEffect(() => {
-    let isCancelled = false;
+  // Compute Top 5 most reliable vehicles per category
+  const categoryGroups = useMemo<CategoryGroup[]>(() => {
+    // Enrich all static vehicles
+    const allEnriched = VEHICLE_RANKINGS_DATA.map((v) => enrichVehicleRecord(v, 'private_party'));
 
-    async function loadTiersSummary() {
-      // 1. Immediately hydrate from in-memory service
-      try {
-        const localSummaries = await RankingsService.getTiersSummary(channel);
-        if (!isCancelled && localSummaries && localSummaries.length > 0) {
-          setTiersSummary(localSummaries);
-        }
-      } catch (err) {
-        console.warn('Local tier summary calculation error:', err);
-      }
+    const defs = [
+      {
+        id: 'suv',
+        name: 'SUVs & Crossovers',
+        description: 'All-weather capability, robust all-wheel-drive systems, and proven high-mileage chassis endurance.',
+        icon: Compass,
+        filter: (v: VehicleRankingItem) => v.body_type === 'suv' && !v.model.toLowerCase().includes('outback'),
+      },
+      {
+        id: 'sedan',
+        name: 'Sedans',
+        description: 'Executive highway cruisers and daily commuters with legendary powertrain longevity and minimal defect records.',
+        icon: Car,
+        filter: (v: VehicleRankingItem) => v.body_type === 'sedan',
+      },
+      {
+        id: 'truck',
+        name: 'Trucks',
+        description: 'Heavy towing capacity, durable body-on-frame platforms, and industrial-grade V8 and V6 powertrains.',
+        icon: Truck,
+        filter: (v: VehicleRankingItem) => v.body_type === 'truck',
+      },
+      {
+        id: 'hybrid_ev',
+        name: 'Hybrids & Electrified Vehicles',
+        description: 'Exceptional thermal efficiency, regenerative brake longevity, and million-mile taxi/fleet proven battery architectures.',
+        icon: Zap,
+        filter: (v: VehicleRankingItem) => v.body_type === 'hybrid_ev',
+      },
+      {
+        id: 'wagon_hatchback',
+        name: 'Wagons & Hatchbacks',
+        description: 'Maximum cargo utility per footprint with simple, highly durable mechanical drivetrains and low failure rates.',
+        icon: ShieldCheck,
+        filter: (v: VehicleRankingItem) => v.body_type === 'wagon' || v.body_type === 'hatchback' || v.model.toLowerCase().includes('outback'),
+      },
+    ];
 
-      // 2. Optionally attempt network sync if API route is responding
-      try {
-        const res = await fetch(`/api/rankings/tiers-summary?channel=${channel}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (!isCancelled && data.tiers && data.tiers.length > 0) {
-            setTiersSummary(data.tiers);
-          }
-        }
-      } catch {
-        // Network unavailable, already safely hydrated from in-memory data
-      }
-    }
+    return defs.map((def) => {
+      const top5 = allEnriched
+        .filter(def.filter)
+        .sort((a, b) => b.reliability_rating - a.reliability_rating)
+        .slice(0, 5);
 
-    loadTiersSummary();
-    return () => {
-      isCancelled = true;
-    };
-  }, [channel]);
-
-  // Fetch Vehicles whenever filters change (instant in-memory with optional network sync)
-  useEffect(() => {
-    let isCancelled = false;
-
-    async function loadVehicles() {
-      setIsLoading(true);
-      setError(null);
-
-      // 1. Instantly compute and render vehicles from pure in-memory service
-      try {
-        const validBodyTypes = selectedBodyType !== 'all'
-          ? [selectedBodyType as any]
-          : undefined;
-
-        const result = await RankingsService.getRankings({
-          channel,
-          tier: activeTier || undefined,
-          body_type: validBodyTypes,
-          sort_by: sortBy as any,
-          limit: 50,
-          offset: 0,
-        });
-
-        if (!isCancelled && result.items) {
-          setVehicles(result.items);
-          setIsFallback(Boolean(result.is_fallback));
-          setFallbackMessage(result.fallback_message || null);
-          setIsLoading(false);
-          setError(null);
-        }
-      } catch (memErr) {
-        console.error('In-memory rankings load failed:', memErr);
-      }
-
-      // 2. Optionally check network API if reachable without overriding with error on failure
-      try {
-        const query = new URLSearchParams();
-        query.set('channel', channel);
-        if (activeTier) query.set('tier', activeTier);
-        if (selectedBodyType !== 'all') query.set('body_type', selectedBodyType);
-        query.set('sort_by', sortBy);
-
-        const res = await fetch(`/api/rankings?${query.toString()}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (!isCancelled && data.items && data.items.length > 0) {
-            setVehicles(data.items);
-            setIsFallback(Boolean(data.is_fallback));
-            setFallbackMessage(data.fallback_message || null);
-            setIsLoading(false);
-            setError(null);
-          }
-        }
-      } catch {
-        // Safe: in-memory rankings are already loaded and interactive
-      }
-    }
-
-    loadVehicles();
-    return () => {
-      isCancelled = true;
-    };
-  }, [channel, activeTier, selectedBodyType, sortBy]);
-
-  // Analytics hook
-  const { logEvent } = useRankingsAnalytics();
-
-  // Handlers
-  const handleChannelChange = (newChannel: ValuationChannel) => {
-    setChannel(newChannel);
-    logEvent('rankings_channel_switched', { channel: newChannel });
-    updateUrlParams(newChannel, activeTier, selectedBodyType, sortBy);
-  };
-
-  const handleSelectTier = (newTier: string | null) => {
-    setActiveTier(newTier);
-    logEvent('price_tier_selected', { tier: newTier, channel });
-    updateUrlParams(channel, newTier, selectedBodyType, sortBy);
-  };
-
-  const handleBodyTypeChange = (newBody: string) => {
-    setSelectedBodyType(newBody);
-    logEvent('body_type_filtered', { bodyType: newBody });
-    updateUrlParams(channel, activeTier, newBody, sortBy);
-  };
-
-  const handleSortChange = (newSort: string) => {
-    setSortBy(newSort);
-    logEvent('sort_mode_changed', { sortBy: newSort });
-    updateUrlParams(channel, activeTier, selectedBodyType, newSort);
-  };
-
-  const handleResetFilters = () => {
-    setActiveTier(null);
-    setSelectedBodyType('all');
-    setSortBy('score_desc');
-    setIsFallback(false);
-    setFallbackMessage(null);
-    updateUrlParams(channel, null, 'all', 'score_desc');
-  };
-
-  const handleOpenInspection = (v: VehicleRankingItem) => {
-    setInspectingVehicle(v);
-    logEvent('inspection_drawer_viewed', { 
-      vehicleId: v.id, 
-      vehicleName: `${v.year_start} ${v.make} ${v.model}`,
-      alertsCount: v.inspection_alerts?.length || 0 
+      return {
+        id: def.id,
+        name: def.name,
+        description: def.description,
+        icon: def.icon,
+        vehicles: top5,
+      };
     });
-  };
+  }, []);
 
-  const handleSearchInventoryClick = (make: string, model: string) => {
-    logEvent('inventory_cta_clicked', { make, model, channel });
-    if (onSearchInventory) {
-      onSearchInventory(make, model);
+  const totalRankedVehicles = useMemo(() => {
+    const ids = new Set<string>();
+    categoryGroups.forEach((g) => g.vehicles.forEach((v) => ids.add(v.id)));
+    return ids.size;
+  }, [categoryGroups]);
+
+  // Active displayed groups
+  const displayedGroups = useMemo(() => {
+    if (selectedCategory === 'all') {
+      return categoryGroups;
     }
-  };
+    return categoryGroups.filter((g) => g.id === selectedCategory);
+  }, [categoryGroups, selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-[#DDE3EA] py-8 sm:py-12 font-poppins">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Back Link if nested inside App */}
-        {onBackToHome && (
-          <div className="mb-4">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-poppins pb-24">
+      {/* Top Banner / Breadcrumb */}
+      <div className="bg-slate-950 text-white border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-slate-400">
             <button
               type="button"
               onClick={onBackToHome}
-              className="text-xs font-bold text-slate-600 hover:text-[#29abe2] transition-colors flex items-center gap-1 cursor-pointer"
+              className="hover:text-white transition-colors cursor-pointer"
             >
-              <span>← Back to CarMatrix Home</span>
+              CarMatrix
             </button>
+            <span>/</span>
+            <span className="text-white font-semibold">Vehicle Reliability Scores</span>
           </div>
-        )}
 
-        {/* 1. Hero Header & Channel Toggle */}
-        <RankingsHeader 
-          channel={channel} 
-          onChannelChange={handleChannelChange} 
-          totalVehicles={vehicles.length}
+          <div className="flex items-center gap-2 text-[11px] text-emerald-400 font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>NHTSA Federal Safety Data</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+        {/* 1. Header Section */}
+        <RankingsHeader totalRanked={totalRankedVehicles} />
+
+        {/* 2. Category Navigation */}
+        <CategoryNav
+          selectedCategory={selectedCategory}
+          onSelectCategory={handleSelectCategory}
         />
 
-        {/* Unified Controls Toolbar: Price Bracket, Category, Sort, and Share */}
-        <div className="p-3 sm:p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-white/70 shadow-sm mb-8 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3 sm:gap-4">
-          {/* Filter Dropdowns Cluster */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-            {/* Price Bracket Dropdown Menu */}
-            <PriceBracketNav
-              channel={channel}
-              activeTier={activeTier}
-              onSelectTier={handleSelectTier}
-              tiersSummary={tiersSummary}
-            />
+        {/* 3. Reliability Categories Sections */}
+        <div className="space-y-12">
+          {displayedGroups.map((group) => {
+            const IconComp = group.icon;
 
-            {/* Category Dropdown Menu */}
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex items-center justify-center text-[#29abe2] shadow-2xs shrink-0">
-                <Car size={13} strokeWidth={2.4} />
-              </div>
-              <label htmlFor="category-select" className="text-xs font-bold text-slate-700 shrink-0">
-                Category:
-              </label>
-              <select
-                id="category-select"
-                value={selectedBodyType}
-                onChange={(e) => handleBodyTypeChange(e.target.value)}
-                className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer focus:ring-2 focus:ring-[#29abe2]/20 transition-colors shadow-2xs"
-              >
-                <option value="all">All Styles</option>
-                <option value="sedan">Sedan</option>
-                <option value="suv">SUV</option>
-                <option value="truck">Truck</option>
-                <option value="hatchback">Hatchback</option>
-                <option value="wagon">Wagon</option>
-                <option value="hybrid_ev">Hybrid / EV</option>
-              </select>
-            </div>
+            return (
+              <section key={group.id} id={group.id} className="space-y-5 scroll-mt-20">
+                {/* Section Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-md">
+                      <IconComp size={20} className="text-[#29abe2]" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                          {group.name}
+                        </h2>
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
+                          Top 5 Most Reliable
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {group.description}
+                      </p>
+                    </div>
+                  </div>
 
-            {/* Sort Dropdown Menu */}
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-slate-100/90 border border-slate-200/80 backdrop-blur-md flex items-center justify-center text-slate-600 shadow-2xs shrink-0">
-                <ArrowUpDown size={12} strokeWidth={2.4} />
-              </div>
-              <label htmlFor="sort-select" className="text-xs font-bold text-slate-700 shrink-0">
-                Sort By:
-              </label>
-              <select
-                id="sort-select"
-                value={sortBy}
-                onChange={(e) => handleSortChange(e.target.value)}
-                className="bg-white border border-slate-300 hover:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer focus:ring-2 focus:ring-[#29abe2]/20 transition-colors shadow-2xs"
-              >
-                <option value="score_desc">CarMatrix Score (Highest)</option>
-                <option value="reliability_desc">Reliability (Highest)</option>
-                <option value="ownership_cost_asc">5-Yr Ownership Cost (Lowest)</option>
-                <option value="spread_desc">Cash Savings Delta (Biggest Spread)</option>
-              </select>
-            </div>
+                  {selectedCategory === 'all' && (
+                    <button
+                      type="button"
+                      onClick={() => handleSelectCategory(group.id)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#29abe2] hover:text-sky-700 transition-colors cursor-pointer self-start sm:self-auto"
+                    >
+                      <span>Focus Category</span>
+                      <ArrowRight size={14} />
+                    </button>
+                  )}
+                </div>
 
-            {/* Reset Filters Button */}
-            {(activeTier !== null || selectedBodyType !== 'all' || sortBy !== 'score_desc') && (
-              <button
-                type="button"
-                onClick={handleResetFilters}
-                className="w-8 h-8 rounded-xl text-slate-500 hover:text-slate-800 bg-slate-100/80 hover:bg-slate-200/90 border border-slate-200 flex items-center justify-center transition-colors cursor-pointer shadow-2xs shrink-0"
-                title="Reset filters"
-                aria-label="Reset filters"
-              >
-                <RotateCcw size={13} strokeWidth={2.4} />
-              </button>
-            )}
-          </div>
-
-          {/* Small Footprint Share Rankings Box */}
-          <ShareRankingsBar
-            channel={channel}
-            tierSlug={activeTier}
-            bodyType={selectedBodyType}
-            totalCount={vehicles.length}
-          />
+                {/* Top 5 Vehicle Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {group.vehicles.map((vehicle, idx) => (
+                    <VehicleRankingCard
+                      key={vehicle.id}
+                      vehicle={vehicle}
+                      rank={idx + 1}
+                      onOpenInspection={(v) => setInspectingVehicle(v)}
+                      onSearchInventory={onSearchInventory}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
-        {/* Subtle Fallback Notification Banner */}
-        {isFallback && vehicles.length > 0 && !isLoading && (
-          <div className="mb-6 p-4 rounded-2xl bg-sky-500/10 border border-sky-400/30 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sky-950 shadow-xs animate-in fade-in duration-300">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-[#29abe2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] shrink-0">
-                <Info size={16} strokeWidth={2.4} />
-              </div>
-              <div>
-                <span className="text-xs font-bold text-slate-900 block">
-                  {fallbackMessage || 'Showing top-rated alternatives nearby for this selection.'}
-                </span>
-                <span className="text-[11px] text-slate-500">
-                  Showing high-reliability vehicle recommendations matching your criteria closely.
-                </span>
-              </div>
+        {/* 4. Methodology Notice */}
+        <div className="mt-14 p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-3">
+          <div className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+            <div className="w-6 h-6 rounded-lg bg-sky-50 border border-sky-200 flex items-center justify-center text-[#29abe2] shadow-2xs">
+              <Info size={13} strokeWidth={2.4} />
             </div>
-            <button
-              type="button"
-              onClick={handleResetFilters}
-              className="text-xs font-bold text-[#0284c7] hover:text-sky-800 underline underline-offset-2 shrink-0 cursor-pointer self-start sm:self-auto"
-            >
-              Reset Filters
-            </button>
+            <span>NHTSA Scoring Methodology &amp; Trust Transparency</span>
           </div>
-        )}
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Vehicle Reliability Scores are computed strictly on empirical safety defect frequencies from the National Highway Traffic Safety Administration (NHTSA) database. Scores prioritize lack of catastrophic powertrain (engine &amp; transmission) failures, absence of uncontained fires or sudden steering lockups, minimal safety recall frequency, and verified long-term mechanical survival past 250,000 miles. CarMatrix does not accept dealer fees or sponsor placements on this leaderboard.
+          </p>
+        </div>
 
-        {/* 4. Vehicles Grid / Skeletons / Empty State */}
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((idx) => (
-              <div
-                key={idx}
-                className="rounded-3xl p-6 bg-white/60 border border-white/60 h-96 animate-pulse space-y-4"
-              >
-                <div className="h-6 bg-slate-200 rounded-full w-24" />
-                <div className="h-8 bg-slate-200 rounded-xl w-3/4" />
-                <div className="h-24 bg-slate-100 rounded-2xl w-full" />
-                <div className="h-16 bg-slate-200 rounded-xl w-full" />
-              </div>
-            ))}
-          </div>
-        ) : error ? (
-          <div className="p-10 rounded-3xl bg-white border border-rose-200 text-center max-w-lg mx-auto space-y-3">
-            <AlertCircle size={36} className="text-rose-500 mx-auto" />
-            <h3 className="text-base font-bold text-slate-900">Failed to load rankings</h3>
-            <p className="text-xs text-slate-500">{error}</p>
-            <button
-              type="button"
-              onClick={() => handleResetFilters()}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 cursor-pointer"
-            >
-              Retry &amp; Reset Filters
-            </button>
-          </div>
-        ) : vehicles.length === 0 ? (
-          <div className="p-12 rounded-3xl bg-white/80 border border-white/80 text-center max-w-lg mx-auto space-y-4 shadow-sm">
-            <Car size={36} className="text-slate-400 mx-auto" />
-            <h3 className="text-base font-bold text-slate-850">
-              No Vehicles Meeting Clean-Title Reliability Standards
-            </h3>
-            <p className="text-xs text-slate-500 leading-relaxed max-w-md mx-auto">
-              {selectedBodyType !== 'all' && activeTier
-                ? `No ${selectedBodyType}s found meeting strict clean-title reliability standards in the ${activeTier.replace('-', '–')} tier. In street markets, high-reliability ${selectedBodyType}s usually trade in higher price brackets.`
-                : 'No vehicles match the selected combination of criteria. Try expanding your search or clearing price and category constraints.'}
-            </p>
-            <div className="flex items-center justify-center gap-3 pt-1">
-              <button
-                type="button"
-                onClick={handleResetFilters}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-[#29abe2] transition-colors cursor-pointer"
-              >
-                Clear All Filters
-              </button>
-              {activeTier && (
-                <button
-                  type="button"
-                  onClick={() => handleSelectTier(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
-                >
-                  View All Tiers
-                </button>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {vehicles.map((vehicle, index) => (
-              <VehicleRankingCard
-                key={vehicle.id || `${vehicle.make}-${vehicle.model}-${vehicle.year_start}`}
-                vehicle={vehicle}
-                rank={index + 1}
-                channel={channel}
-                onOpenInspection={handleOpenInspection}
-                onSearchInventory={handleSearchInventoryClick}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* 5. Slide-Out Inspection Drawer */}
-        <StreetSmartInspectionDrawer
-          vehicle={inspectingVehicle}
-          isOpen={inspectingVehicle !== null}
-          onClose={() => setInspectingVehicle(null)}
-          onSearchInventory={handleSearchInventoryClick}
-        />
+        {/* 5. Share Rankings Bar */}
+        <div className="mt-8">
+          <ShareRankingsBar
+            category={selectedCategory}
+            totalCount={totalRankedVehicles}
+          />
+        </div>
       </div>
+
+      {/* 6. Slide-Out Inspection Drawer */}
+      <StreetSmartInspectionDrawer
+        vehicle={inspectingVehicle}
+        isOpen={inspectingVehicle !== null}
+        onClose={() => setInspectingVehicle(null)}
+        onSearchInventory={onSearchInventory}
+      />
     </div>
   );
 };
