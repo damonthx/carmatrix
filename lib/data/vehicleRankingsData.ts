@@ -1487,5 +1487,388 @@ export const VEHICLE_RANKINGS_DATA: StaticRankedVehicle[] = [
     ],
     is_clean_title_only: true,
     is_active: true
+  },
+  // ============================================================================
+  // TOP 10 EXPANSION: TRUCKS, HYBRIDS, WAGONS, AND SEDANS
+  // ============================================================================
+  {
+    id: 'honda-ridgeline-2006-2014',
+    make: 'Honda',
+    model: 'Ridgeline (1st Gen)',
+    year_start: 2006,
+    year_end: 2014,
+    display_name: '2006–2014 Honda Ridgeline',
+    body_type: 'truck',
+    engine_notes: 'Honda 3.5L J35 V6 / 5-Speed Auto / VTM-4 AWD',
+    dealer_retail_mid: 11500,
+    private_party_mid: 9200,
+    reliability_rating: 4.7,
+    five_year_maintenance_cost: 3800,
+    depreciation_rate_pct: 16.0,
+    key_strengths: [
+      'Reinforced unibody frame with lockable in-bed trunk and dual-action tailgate',
+      'Bulletproof J35 naturally aspirated V6 powertrain capable of 300k+ miles',
+      'Smooth independent rear suspension with 5,000 lbs towing capability'
+    ],
+    inspection_alerts: [
+      'Ensure timing belt and water pump service was completed every 105k miles',
+      'Inspect radiator lower fittings for S-MOD corrosion before transmission fluid cross-contamination',
+      'Check rear differential fluid replacement history (requires Honda VTM-4 fluid)'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'honda-ridgeline-2017-2020',
+    make: 'Honda',
+    model: 'Ridgeline (2nd Gen)',
+    year_start: 2017,
+    year_end: 2020,
+    display_name: '2017–2020 Honda Ridgeline',
+    body_type: 'truck',
+    engine_notes: 'Honda 3.5L Earth Dreams i-VTEC V6 / 6-Speed Auto / i-VTM4 AWD',
+    dealer_retail_mid: 24500,
+    private_party_mid: 21200,
+    reliability_rating: 4.65,
+    five_year_maintenance_cost: 4100,
+    depreciation_rate_pct: 18.0,
+    key_strengths: [
+      'Best-in-class highway ride comfort and handling in the midsize truck class',
+      'i-VTM4 torque-vectoring AWD with intelligent traction management modes',
+      'Weatherproof lockable in-bed trunk with drain plug and composite scratchproof bed'
+    ],
+    inspection_alerts: [
+      'Verify 6-speed automatic transmission fluid was serviced with genuine Honda ATF DW-1',
+      'Check rear tailgate wire harness recall completion (TSB 22-038)',
+      'Inspect direct injection fuel injectors for misfire codes or fuel smell'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'nissan-frontier-2015-2019',
+    make: 'Nissan',
+    model: 'Frontier (D40 Late)',
+    year_start: 2015,
+    year_end: 2019,
+    display_name: '2015–2019 Nissan Frontier',
+    body_type: 'truck',
+    engine_notes: 'Nissan 4.0L VQ40DE V6 / 5-Speed Auto',
+    dealer_retail_mid: 18900,
+    private_party_mid: 15800,
+    reliability_rating: 4.6,
+    five_year_maintenance_cost: 4300,
+    depreciation_rate_pct: 17.5,
+    key_strengths: [
+      'Simple, proven mechanical architecture: no turbos, no direct injection, no CVT',
+      'Late-run D40 generation with all earlier radiator strawberry milkshake issues resolved',
+      'Rugged boxed steel frame with high ground clearance and mechanical low-range 4WD'
+    ],
+    inspection_alerts: [
+      'Inspect rear axle breather valve (upgrade to extended breather kit to prevent axle seal leak)',
+      'Check crankshaft position sensor and camshaft sensors for intermittent starting stalls',
+      'Verify transmission fluid is clean and pink'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'lexus-es-300h-2013-2018',
+    make: 'Lexus',
+    model: 'ES 300h (6th Gen)',
+    year_start: 2013,
+    year_end: 2018,
+    display_name: '2013–2018 Lexus ES 300h',
+    body_type: 'hybrid_ev',
+    engine_notes: 'Toyota 2.5L 2AR-FXE Hybrid Synergy Drive / eCVT',
+    dealer_retail_mid: 19800,
+    private_party_mid: 16500,
+    reliability_rating: 4.85,
+    five_year_maintenance_cost: 3900,
+    depreciation_rate_pct: 18.0,
+    key_strengths: [
+      'Exceptional 40 MPG real-world fuel economy in a whisper-quiet luxury sedan',
+      'Heavy fleet/taxi proven powertrain surpassing 400,000 miles routinely',
+      'eCVT planetary gear transmission with zero belts, clutches, or failure points'
+    ],
+    inspection_alerts: [
+      'Check hybrid battery cooling fan filter under rear seat for lint obstruction',
+      'Verify inverter coolant and engine coolant service history',
+      'Check 12V auxiliary battery health in trunk'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'lexus-ct-200h-2011-2017',
+    make: 'Lexus',
+    model: 'CT 200h',
+    year_start: 2011,
+    year_end: 2017,
+    display_name: '2011–2017 Lexus CT 200h',
+    body_type: 'hybrid_ev',
+    engine_notes: 'Toyota 1.8L 2ZR-FXE Hybrid Synergy Drive / eCVT',
+    dealer_retail_mid: 14200,
+    private_party_mid: 11800,
+    reliability_rating: 4.75,
+    five_year_maintenance_cost: 3600,
+    depreciation_rate_pct: 17.5,
+    key_strengths: [
+      'Lexus build quality and premium acoustic isolation on proven Prius powertrain',
+      '43 MPG combined city/highway with hatchback cargo versatility',
+      'Low insurance, affordable replacement parts, and near-zero brake pad wear'
+    ],
+    inspection_alerts: [
+      'Prioritize 2014+ facelift models with revised piston rings to prevent oil consumption',
+      'Inspect EGR valve and cooler for carbon buildup causing cold-start rough idle',
+      'Verify hybrid traction battery state of health using diagnostic scan'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'toyota-avalon-hybrid-2013-2018',
+    make: 'Toyota',
+    model: 'Avalon Hybrid',
+    year_start: 2013,
+    year_end: 2018,
+    display_name: '2013–2018 Toyota Avalon Hybrid',
+    body_type: 'hybrid_ev',
+    engine_notes: 'Toyota 2.5L 2AR-FXE Hybrid Synergy Drive / eCVT',
+    dealer_retail_mid: 18200,
+    private_party_mid: 15400,
+    reliability_rating: 4.8,
+    five_year_maintenance_cost: 3800,
+    depreciation_rate_pct: 18.5,
+    key_strengths: [
+      'Full-size luxury comfort with 40 MPG real-world highway range exceeding 600 miles',
+      'Bulletproof 2.5L Atkinson-cycle 4-cylinder paired with planetary eCVT',
+      'Spacious rear legroom, high crash test ratings, and low maintenance overhead'
+    ],
+    inspection_alerts: [
+      'Inspect rear seat hybrid battery intake vent for dust blockage',
+      'Check front strut boots and sway bar end links for rubber deterioration',
+      'Verify inverter cooling system fluid flush records'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'toyota-highlander-hybrid-2014-2019',
+    make: 'Toyota',
+    model: 'Highlander Hybrid',
+    year_start: 2014,
+    year_end: 2019,
+    display_name: '2014–2019 Toyota Highlander Hybrid',
+    body_type: 'hybrid_ev',
+    engine_notes: 'Toyota 3.5L 2GR-FXE V6 Hybrid / eCVT AWD-i',
+    dealer_retail_mid: 24200,
+    private_party_mid: 20800,
+    reliability_rating: 4.8,
+    five_year_maintenance_cost: 4400,
+    depreciation_rate_pct: 17.0,
+    key_strengths: [
+      '3-row family utility with 280 HP hybrid V6 and intelligent electronic all-wheel drive',
+      'Class-leading reliability among 3-row family crossovers',
+      'Regenerative braking dramatically extends brake rotor life past 100k miles'
+    ],
+    inspection_alerts: [
+      'Check rear electric motor-generator (MGR) wiring harness connector for corrosion',
+      'Verify water pump weep hole is dry and pink coolant level is full',
+      'Inspect panoramic moonroof drainage tubes for clogs'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'toyota-prius-v-2012-2017',
+    make: 'Toyota',
+    model: 'Prius v (Wagon)',
+    year_start: 2012,
+    year_end: 2017,
+    display_name: '2012–2017 Toyota Prius v Wagon',
+    body_type: 'wagon',
+    engine_notes: 'Toyota 1.8L 2ZR-FXE Hybrid / eCVT',
+    dealer_retail_mid: 13800,
+    private_party_mid: 11400,
+    reliability_rating: 4.75,
+    five_year_maintenance_cost: 3500,
+    depreciation_rate_pct: 16.5,
+    key_strengths: [
+      'Substantial 67.3 cu. ft. cargo capacity: wagon versatility with 42 MPG combined',
+      'Slide-and-recline 60/40 rear seating with cavernous legroom',
+      'Simpler, more dependable powertrain architecture than European diesel wagons'
+    ],
+    inspection_alerts: [
+      'Prioritize 2015+ models with updated piston rings and head gasket revisions',
+      'Clean EGR cooler pipe to prevent carbon buildup and cold-start rattle',
+      'Inspect brake actuator assembly for continuous cycling or high-pressure pump noise'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'toyota-corolla-hatch-2019-2022',
+    make: 'Toyota',
+    model: 'Corolla Hatchback (E210)',
+    year_start: 2019,
+    year_end: 2022,
+    display_name: '2019–2022 Toyota Corolla Hatchback',
+    body_type: 'hatchback',
+    engine_notes: 'Toyota 2.0L Dynamic Force M20A-FKS / Dynamic-Shift CVT',
+    dealer_retail_mid: 20500,
+    private_party_mid: 17800,
+    reliability_rating: 4.8,
+    five_year_maintenance_cost: 3200,
+    depreciation_rate_pct: 15.0,
+    key_strengths: [
+      'TNGA platform architecture: outstanding chassis rigidity and modern crash safety',
+      'Dynamic-Shift CVT featuring a physical mechanical 1st launch gear to prevent belt wear',
+      'Naturally aspirated 40% thermal efficiency 2.0L engine achieving 38 MPG highway'
+    ],
+    inspection_alerts: [
+      'Verify transmission recall remedy (early 2019 torque converter failure bulletin)',
+      'Inspect front bumper lower valence for curb scrapes',
+      'Check Toyota Safety Sense 2.0 radar camera calibration'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'mazda-3-hatch-2014-2018',
+    make: 'Mazda',
+    model: 'Mazda3 5-Door (3rd Gen)',
+    year_start: 2014,
+    year_end: 2018,
+    display_name: '2014–2018 Mazda3 Hatchback',
+    body_type: 'hatchback',
+    engine_notes: 'Mazda 2.0L / 2.5L SkyActiv-G / 6-Speed Auto',
+    dealer_retail_mid: 14500,
+    private_party_mid: 12200,
+    reliability_rating: 4.7,
+    five_year_maintenance_cost: 3600,
+    depreciation_rate_pct: 18.0,
+    key_strengths: [
+      'Naturally aspirated SkyActiv engine paired with responsive traditional 6-speed automatic (No CVT)',
+      'Sharp steering precision and upscale European-grade interior ergonomics',
+      'High-strength steel chassis with excellent rust protection and IIHS Top Safety Pick+'
+    ],
+    inspection_alerts: [
+      'Check infotainment screen for ghost touching / delamination (Mazda customer support program)',
+      'Inspect rear multi-link suspension bushings for premature wear',
+      'Check serpentine belt tensioner for hydraulic fluid weeping'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'toyota-matrix-2009-2013',
+    make: 'Toyota',
+    model: 'Matrix (2nd Gen)',
+    year_start: 2009,
+    year_end: 2013,
+    display_name: '2009–2013 Toyota Matrix',
+    body_type: 'wagon',
+    engine_notes: 'Toyota 1.8L 2ZR-FE / 2.4L 2AZ-FE / 4-5 Speed Auto',
+    dealer_retail_mid: 9800,
+    private_party_mid: 7900,
+    reliability_rating: 4.7,
+    five_year_maintenance_cost: 3300,
+    depreciation_rate_pct: 16.0,
+    key_strengths: [
+      'Fold-flat hard plastic cargo floor with utility track tie-down cleats',
+      'Bulletproof 1.8L 2ZR-FE engine with dual VVT-i and durable timing chain',
+      'Simple, affordable maintenance with ubiquitous parts availability'
+    ],
+    inspection_alerts: [
+      'On 2.4L models, monitor engine oil level (2AZ-FE piston ring consumption TSB)',
+      'Inspect front water pump for pink crust / coolant seepage',
+      'Check rear hatch strut pressure'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'toyota-avalon-2013-2018',
+    make: 'Toyota',
+    model: 'Avalon (4th Gen)',
+    year_start: 2013,
+    year_end: 2018,
+    display_name: '2013–2018 Toyota Avalon',
+    body_type: 'sedan',
+    engine_notes: 'Toyota 3.5L 2GR-FE V6 (268 HP) / 6-Speed Auto',
+    dealer_retail_mid: 17800,
+    private_party_mid: 14900,
+    reliability_rating: 4.85,
+    five_year_maintenance_cost: 4100,
+    depreciation_rate_pct: 19.0,
+    key_strengths: [
+      'Lexus ES 350 luxury and isolation at mainstream Toyota ownership costs',
+      'Legendary 268 HP port-injected 2GR-FE V6 engine with zero direct injection carbon issues',
+      'Vault-like cabin quietness, 10 standard airbags, and heated/ventilated leather seating'
+    ],
+    inspection_alerts: [
+      'Inspect front timing cover seal for minor oil seepage (common high-mileage 2GR trait)',
+      'Check touch-capacitive dashboard climate controls for button responsiveness',
+      'Verify automatic transmission fluid drain-and-fill was completed'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'lexus-ls-430-2001-2006',
+    make: 'Lexus',
+    model: 'LS 430 (XF30)',
+    year_start: 2001,
+    year_end: 2006,
+    display_name: '2001–2006 Lexus LS 430',
+    body_type: 'sedan',
+    engine_notes: 'Toyota 4.3L 3UZ-FE V8 / 5-6 Speed Auto',
+    dealer_retail_mid: 11200,
+    private_party_mid: 8800,
+    reliability_rating: 4.95,
+    five_year_maintenance_cost: 4200,
+    depreciation_rate_pct: 14.0,
+    key_strengths: [
+      'Universally acknowledged by automotive engineers as one of the most reliable luxury cars ever built',
+      'Silky 4.3L 3UZ-FE V8 engine routinely surpasses 500,000 miles without internal overhaul',
+      'Double-pane acoustic glass, over-engineered electricals, and zero modern complex screens'
+    ],
+    inspection_alerts: [
+      'Verify timing belt and water pump service interval (every 90k miles / 7 years)',
+      'If equipped with Ultra Luxury package, check air suspension struts or verify coil-spring conversion',
+      'Check subwoofer surround foam in rear deck'
+    ],
+    is_clean_title_only: true,
+    is_active: true
+  },
+  {
+    id: 'toyota-corolla-im-2016-2018',
+    make: 'Toyota',
+    model: 'Corolla iM / Scion iM',
+    year_start: 2016,
+    year_end: 2018,
+    display_name: '2016–2018 Toyota Corolla iM',
+    body_type: 'hatchback',
+    engine_notes: 'Toyota 1.8L 2ZR-FAE Valvematic / CVT',
+    dealer_retail_mid: 13900,
+    private_party_mid: 11800,
+    reliability_rating: 4.75,
+    five_year_maintenance_cost: 3400,
+    depreciation_rate_pct: 16.5,
+    key_strengths: [
+      'Toyota Auris European chassis design: double-wishbone rear suspension and sharp road feel',
+      'Naturally aspirated Valvematic 1.8L 4-cylinder engine with rock-solid durability',
+      'Standard Toyota Safety Sense C suite with automatic emergency braking and 35 MPG highway'
+    ],
+    inspection_alerts: [
+      'Verify CVT fluid drain-and-fill history with genuine Toyota FE fluid',
+      'Inspect front lower air dam for parking curb scrapes',
+      'Check rear hatchback cargo cover latches'
+    ],
+    is_clean_title_only: true,
+    is_active: true
   }
 ];
+
+

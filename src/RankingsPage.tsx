@@ -115,17 +115,17 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
     ];
 
     return defs.map((def) => {
-      const top5 = allEnriched
+      const top10 = allEnriched
         .filter(def.filter)
         .sort((a, b) => b.reliability_rating - a.reliability_rating)
-        .slice(0, 5);
+        .slice(0, 10);
 
       return {
         id: def.id,
         name: def.name,
         description: def.description,
         icon: def.icon,
-        vehicles: top5,
+        vehicles: top10,
       };
     });
   }, []);
@@ -197,7 +197,7 @@ export const RankingsPage: React.FC<RankingsPageProps> = ({
                           {group.name}
                         </h2>
                         <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
-                          Top 5 Most Reliable
+                          Top 10 Most Reliable
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-0.5">

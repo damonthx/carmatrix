@@ -29,8 +29,8 @@ export const ShareRankingsBar: React.FC<ShareRankingsBarProps> = ({
     : category === 'wagon_hatchback' ? 'Wagons & Hatchbacks'
     : 'All Categories';
 
-  const shareTitle = `Top 5 Most Reliable Vehicles (${categoryName}) — CarMatrix Reliability Scores`;
-  const shareText = `Explore the top 5 most reliable vehicles in ${categoryName.toLowerCase()}, scored strictly using official free NHTSA safety defect data on CarMatrix:`;
+  const shareTitle = `Top 10 Most Reliable Vehicles (${categoryName}) — CarMatrix Reliability Scores`;
+  const shareText = `Explore the top 10 most reliable vehicles in ${categoryName.toLowerCase()}, scored strictly using official free NHTSA safety defect data on CarMatrix:`;
 
   const getShareUrl = () => {
     if (typeof window !== 'undefined') {

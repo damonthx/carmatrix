@@ -22,7 +22,7 @@ export const RELIABILITY_CATEGORIES: CategoryItem[] = [
     label: 'All Categories',
     shortLabel: 'All',
     icon: Layers,
-    description: 'Top 5 leaders across every vehicle class'
+    description: 'Top 10 leaders across every vehicle class'
   },
   {
     id: 'suv',
@@ -102,7 +102,7 @@ export const CategoryNav: React.FC<CategoryNavProps> = ({
                   ? 'bg-white/20 text-white' 
                   : 'bg-slate-100 text-slate-500'
               }`}>
-                Top 5
+                Top 10
               </span>
             </button>
           );

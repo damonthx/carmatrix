@@ -41,7 +41,7 @@ export const RankingsHeader: React.FC<RankingsHeaderProps> = ({
           </h1>
 
           <p className="text-xs sm:text-base text-slate-200 leading-relaxed font-normal max-w-2xl drop-shadow-xs">
-            Top 5 most reliable vehicles across every major category. Evaluated strictly on mechanical durability, crash/defect reports, and recall history using free public safety data from the National Highway Traffic Safety Administration (NHTSA).
+            Top 10 most reliable vehicles across every major category. Evaluated strictly on mechanical durability, crash/defect reports, and recall history using free public safety data from the National Highway Traffic Safety Administration (NHTSA).
           </p>
 
           <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-300 flex-wrap font-medium">
