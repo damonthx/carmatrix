@@ -14,6 +14,14 @@ const FALLBACK_THUMBNAIL = "https://images.unsplash.com/photo-1549317661-bd32c8c
 
 const curatedVideos: VideoAdviceItem[] = [
   {
+    id: "curated-008",
+    title: "Say This Before They Run Your Credit and Save Thousands",
+    sourceUrl: "https://youtu.be/YfWGilfgLJQ?si=YdunShjd6xpOECrE",
+    imageUrl: "https://img.youtube.com/vi/YfWGilfgLJQ/maxresdefault.jpg",
+    sourceName: "The Car Guy Chronicles",
+    publishedAt: "2026-10-15"
+  },
+  {
     id: "curated-005",
     title: "Leasing vs Buying a Car in the US — The Real Math Nobody Shows You",
     sourceUrl: "https://youtu.be/0qwfPCGgu6c?si=7HrwQ3NePjQ4H-TD",
