@@ -22,6 +22,14 @@ const curatedVideos: VideoAdviceItem[] = [
     publishedAt: "2026-10-15"
   },
   {
+    id: "curated-009",
+    title: "He Said Don't Ask For The Best Price — That's The Oldest Car Dealer Trick There Is",
+    sourceUrl: "https://youtu.be/zuS_KzhjEP4?si=5qqslMD95GoGKuaO",
+    imageUrl: "https://img.youtube.com/vi/zuS_KzhjEP4/maxresdefault.jpg",
+    sourceName: "The Car Guy Chronicles",
+    publishedAt: "2026-10-10"
+  },
+  {
     id: "curated-005",
     title: "Leasing vs Buying a Car in the US — The Real Math Nobody Shows You",
     sourceUrl: "https://youtu.be/0qwfPCGgu6c?si=7HrwQ3NePjQ4H-TD",
