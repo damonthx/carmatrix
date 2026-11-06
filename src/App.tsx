@@ -26,6 +26,7 @@ import LegalCompliancePage from './LegalCompliancePage';
 import CookieConsentBanner from './components/CookieConsentBanner';
 
 // Toolkit Widgets
+import VehicleProsConsAuditor from './components/tools/VehicleProsConsAuditor';
 import EVComparisonWidget from './components/toolkit/EVComparisonWidget';
 import ValuationWidget from './components/toolkit/ValuationWidget';
 import InspectionChecklistWidget from './components/toolkit/InspectionChecklistWidget';
@@ -357,6 +358,7 @@ const ToolkitHeroHeader = ({
       exploreBtnHover: 'hover:border-sky-400/40 hover:bg-sky-500/10 hover:text-sky-200',
       exploreIconColor: 'text-[#29abe2]',
       tools: [
+        { id: 'pros-cons', name: 'Used Car Pros & Cons Auditor', tag: 'TRUTH MATRIX', icon: Scale, target: 'pros-cons-auditor', desc: 'Raw consumer breakdown: mechanical flaws, pros & verdict' },
         { id: 'vin', name: 'VIN & Recall Decoder', tag: 'NHTSA AUDIT', icon: Search, target: 'vin-checker', desc: 'Scan factory specs & open safety campaigns' },
         { id: 'tco', name: '5-Year Ownership TCO', tag: 'DEPRECIATION', icon: Calculator, target: 'tco-calculator', desc: 'True cost of fuel, insurance & maintenance' },
         { id: 'valuation', name: 'Live Market Valuation', tag: 'TRUE VALUE', icon: DollarSign, target: 'valuation-estimator', desc: 'Fair retail & wholesale trade equity' },
@@ -939,6 +941,7 @@ export default function App() {
   };
 
   const sector1Tools = [
+    'pros-cons-auditor',
     'vin-checker',
     'reliability-problems',
     'tco-calculator',
@@ -980,6 +983,7 @@ export default function App() {
     if (target === 'cost-of-ownership') return 'tco-calculator';
     if (target === 'cash-market-intel') return 'valuation-estimator';
     if (target === 'loan-affordability') return 'loan-calculator';
+    if (target === 'pros-cons-auditor' || target === 'pros-cons') return 'pros-cons-auditor';
     return target;
   };
 
@@ -1147,7 +1151,7 @@ export default function App() {
                     SECTOR 01: PRE-LOT RECON
                     (VIN Decoder, 5-Year Ownership, Live Market Valuation)
                     ========================================================================= */}
-                {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin' || activeToolkitFilter === 'tco' || activeToolkitFilter === 'valuation' || activeToolkitFilter === 'inspection' || activeToolkitFilter === 'dossier') && (
+                {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'pros-cons' || activeToolkitFilter === 'vin' || activeToolkitFilter === 'tco' || activeToolkitFilter === 'valuation' || activeToolkitFilter === 'inspection' || activeToolkitFilter === 'dossier') && (
                   <section className="space-y-8 relative">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-poppins">
@@ -1162,6 +1166,16 @@ export default function App() {
                         <span>{isSectorExpanded(sector1Tools) ? 'Collapse Sector' : 'Expand Sector'}</span>
                       </button>
                     </div>
+
+                    {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'pros-cons') && (
+                      <section id="pros-cons-auditor" className="scroll-mt-24">
+                        <VehicleProsConsAuditor 
+                          isOpen={Boolean(openTools['pros-cons-auditor'])} 
+                          onToggle={(open) => toggleTool('pros-cons-auditor', open)} 
+                          onScrollToTool={scrollToTool}
+                        />
+                      </section>
+                    )}
 
                     {(activeToolkitFilter === 'all' || activeToolkitFilter === 'recon' || activeToolkitFilter === 'vin') && (
                       <section id="vin-checker" className="scroll-mt-24">

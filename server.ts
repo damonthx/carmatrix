@@ -5,6 +5,7 @@ import fs from "fs";
 // @ts-ignore
 import marketPulseHandler from "./api/market-pulse.js";
 import valuationHandler from "./api/marketcheck/valuation.js";
+import prosConsHandler from "./api/tools/vehicle-pros-cons";
 import { dealerIntelRouter } from "./src/services/dealerIntelRoutes";
 import { rankingsRouter } from "./src/services/rankingsRoutes";
 
@@ -45,6 +46,16 @@ async function startServer() {
     } catch (error) {
       console.error("Valuation Proxy Error:", error);
       res.status(500).json({ error: "Failed to calculate valuation", details: String(error) });
+    }
+  });
+
+  // Used Car Pros & Cons Auditor API endpoint
+  app.post("/api/tools/vehicle-pros-cons", async (req, res) => {
+    try {
+      await prosConsHandler(req as any, res as any);
+    } catch (error) {
+      console.error("Vehicle Pros & Cons Proxy Error:", error);
+      res.status(500).json({ error: "Failed to audit vehicle", details: String(error) });
     }
   });
 
